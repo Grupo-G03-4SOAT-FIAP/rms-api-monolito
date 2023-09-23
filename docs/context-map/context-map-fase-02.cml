@@ -4,20 +4,56 @@ ContextMap RMSContextMap {
 	state = TO_BE
 	
 	/* Add bounded contexts to this context map: */
-	contains RMSBoundedContext
-	contains ProxyPagamentosBoundedContext
+	contains AutoatendimentoBoundedContext
+	contains GatewayPagamentoBoundedContext
+	contains AcompanhamentoPedidosBoundedContext
+	contains GerenciamentoCardapioBoundedContext
+	contains GerenciamentoClientesBoundedContext
+	contains PainelAdministrativoBoundedContext
 	
 	/* Define the context relationships: */ 
 
-	RMSBoundedContext [D,ACL]<-[U,OHS,PL] ProxyPagamentosBoundedContext {
+	AutoatendimentoBoundedContext [D,ACL]<-[U,OHS,PL] GatewayPagamentoBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	AutoatendimentoBoundedContext <- AcompanhamentoPedidosBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	AutoatendimentoBoundedContext <- GerenciamentoCardapioBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	AutoatendimentoBoundedContext <- GerenciamentoClientesBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	PainelAdministrativoBoundedContext <- GerenciamentoCardapioBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	PainelAdministrativoBoundedContext <- GerenciamentoClientesBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	PainelAdministrativoBoundedContext <- AcompanhamentoPedidosBoundedContext {
 		implementationTechnology = "REST"
 	}
 }
 
 /* Bounded Context Definitions */
-BoundedContext RMSBoundedContext implements AutoatendimentoDomain, GerenciamentoCardapioDomain, AcompanhamentoPedidosDomain, GerenciamentoClientesDomain, PainelAdministrativoDomain
+BoundedContext AutoatendimentoBoundedContext implements AutoatendimentoDomain
 
-BoundedContext ProxyPagamentosBoundedContext implements PagamentoDomain
+BoundedContext GatewayPagamentoBoundedContext implements PagamentoDomain
+
+BoundedContext AcompanhamentoPedidosBoundedContext implements AcompanhamentoPedidosDomain
+
+BoundedContext GerenciamentoCardapioBoundedContext implements GerenciamentoCardapioDomain
+
+BoundedContext GerenciamentoClientesBoundedContext implements GerenciamentoClientesDomain
+
+BoundedContext PainelAdministrativoBoundedContext implements PainelAdministrativoDomain
 
 /* Domain & Subdomain Definitions */
 Domain RMSDomain {
