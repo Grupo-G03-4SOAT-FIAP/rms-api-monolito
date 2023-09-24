@@ -14,7 +14,7 @@ Para visualizar as Domain Stories utilizando a ferramenta [egon.io](https://egon
 
 #### Domínio Digitalizado *(TO-BE)*
 
-[Clique aqui para baixar o arquivo .dst](/docs/domain-storytelling/domain-story-digitalizado.dst)
+[Clique aqui para baixar o arquivo .dst](/docs/ddd/domain-storytelling/domain-story-digitalizado.dst)
 
 ### Event Storming
 
@@ -23,7 +23,7 @@ https://miro.com/app/board/uXjVMkhS5vo=/?share_link_id=406772706555
 
 ### Context Map
 
-O Context Map encontra-se na pasta [docs/context-map](/docs/context-map).\
+O Context Map encontra-se na pasta [/docs/ddd/context-map](/docs/ddd/context-map).\
 Para visualizar o Context Map utilizando a ferramenta [Context Mapper](https://contextmapper.org/) siga o passo a passo abaixo:
 1. Clone o repositório;\
    `git clone https://github.com/Grupo-G03-4SOAT-FIAP/RMS-backend-fase01.git`
