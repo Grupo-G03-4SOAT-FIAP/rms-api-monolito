@@ -32,3 +32,7 @@ Para gerar e visualizar o Context Map utilizando a ferramenta [Context Mapper](h
 4. Baixe e instale a última versão do Graphviz de https://graphviz.org/download/
 5. Abra o arquivo `context-map.cml` no Visual Studio Code;
 6. Clique com o botão direito do mouse sobre o código do Context Map > **Generate Graphical Context Map**.
+
+### Glossário da Linguagem Ubíqua
+
+O Glossário da Linguagem Ubíqua do DDD está disponível na Wiki do projeto no GitHub em https://github.com/Grupo-G03-4SOAT-FIAP/RMS-backend-fase01/wiki/Gloss%C3%A1rio-da-Linguagem-Ub%C3%ADqua-do-DDD
