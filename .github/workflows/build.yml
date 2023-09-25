@@ -1,0 +1,28 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      # O Step abaixo foi adicionado manualmente pelo Danilo a fim de enviar o resultado do test coverage para o SonarCloud.
+      # Mais informações em https://docs.sonarsource.com/sonarqube/9.8/analyzing-source-code/test-coverage/javascript-typescript-test-coverage/#add-coverage
+      - name: Install dependencies
+        run: npm install
+      # O Step abaixo foi adicionado manualmente pelo Danilo a fim de enviar o resultado do test coverage para o SonarCloud.
+      # Mais informações em https://docs.sonarsource.com/sonarqube/9.8/analyzing-source-code/test-coverage/javascript-typescript-test-coverage/#add-coverage
+      - name: Test and coverage
+        run: npx jest --coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
