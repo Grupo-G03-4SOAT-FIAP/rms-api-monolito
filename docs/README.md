@@ -29,3 +29,8 @@ Para visualizar o Context Map utilizando a ferramenta [Context Mapper](https://c
    `git clone https://github.com/Grupo-G03-4SOAT-FIAP/RMS-backend-fase01.git`
 3. Instale a extensão [Context Mapper para Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=contextmapper.context-mapper-vscode-extension);
 4. Siga as instruções em https://contextmapper.org/docs/getting-started/
+
+### Glossário da Linguagem Ubíqua
+
+ O Glossário da Linguagem Ubíqua do DDD está disponível na pasta [/docs/ddd/glossario-linguagem-ubiqua.md](/docs/ddd/glossario-linguagem-ubiqua.md)
+ 
