@@ -17,27 +17,27 @@ ContextMap RMSContextMap {
 		implementationTechnology = "REST"
 	}
 
-	AutoatendimentoBoundedContext <- AcompanhamentoPedidosBoundedContext {
+	AutoatendimentoBoundedContext [P]<->[P] AcompanhamentoPedidosBoundedContext {
 		implementationTechnology = "REST"
 	}
 
-	AutoatendimentoBoundedContext <- GerenciamentoCardapioBoundedContext {
+	AutoatendimentoBoundedContext [P]<->[P] GerenciamentoCardapioBoundedContext {
 		implementationTechnology = "REST"
 	}
 
-	AutoatendimentoBoundedContext <- GerenciamentoClientesBoundedContext {
+	AutoatendimentoBoundedContext [P]<->[P] GerenciamentoClientesBoundedContext {
 		implementationTechnology = "REST"
 	}
 
-	PainelAdministrativoBoundedContext <- GerenciamentoCardapioBoundedContext {
+	PainelAdministrativoBoundedContext [P]<->[P] GerenciamentoCardapioBoundedContext {
 		implementationTechnology = "REST"
 	}
 
-	PainelAdministrativoBoundedContext <- GerenciamentoClientesBoundedContext {
+	PainelAdministrativoBoundedContext [P]<->[P] GerenciamentoClientesBoundedContext {
 		implementationTechnology = "REST"
 	}
 
-	PainelAdministrativoBoundedContext <- AcompanhamentoPedidosBoundedContext {
+	PainelAdministrativoBoundedContext [P]<->[P] AcompanhamentoPedidosBoundedContext {
 		implementationTechnology = "REST"
 	}
 }
