@@ -3,9 +3,11 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
+    restart: always
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -13,18 +15,24 @@ services:
       - "5432:5432"
     networks:
       - default
-    restart: unless-stopped
 
   api:
     container_name: api-container
     image: rms-backend-fase01
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
+    env_file:
+      - .env
     ports:
       - "3000:3000"
     links:
       - postgres
     depends_on:
       - postgres
+    networks:
+      - default
 
 networks:
   default:
