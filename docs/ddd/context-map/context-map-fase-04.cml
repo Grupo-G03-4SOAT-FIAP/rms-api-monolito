@@ -1,45 +1,59 @@
 /* Context Map written with 'ContextMapper DSL' */
-ContextMap InsuranceContextMap {
+ContextMap RMSContextMap {
 	type = SYSTEM_LANDSCAPE
 	state = TO_BE
 	
 	/* Add bounded contexts to this context map: */
 	contains AutoatendimentoBoundedContext
-	contains PagamentoBoundedContext
-	contains AcompanhamentoPedidoBoundedContext
+	contains GatewayPagamentoBoundedContext
+	contains AcompanhamentoPedidosBoundedContext
 	contains GerenciamentoCardapioBoundedContext
 	contains GerenciamentoClientesBoundedContext
 	contains PainelAdministrativoBoundedContext
 	
 	/* Define the context relationships: */ 
 
-	PagamentoBoundedContext <- AutoatendimentoBoundedContext
-	
-	AutoatendimentoBoundedContext <- AcompanhamentoPedidoBoundedContext
-	
-	AcompanhamentoPedidoBoundedContext -> GerenciamentoCardapioBoundedContext
-	
-	GerenciamentoClientesBoundedContext <-> GerenciamentoCardapioBoundedContext
+	AutoatendimentoBoundedContext [D,ACL]<-[U,OHS,PL] GatewayPagamentoBoundedContext {
+		implementationTechnology = "REST"
+	}
 
-	GerenciamentoCardapioBoundedContext <- AutoatendimentoBoundedContext
+	AutoatendimentoBoundedContext [P]<->[P] AcompanhamentoPedidosBoundedContext {
+		implementationTechnology = "REST"
+	}
 
-	PainelAdministrativoBoundedContext <- AcompanhamentoPedidoBoundedContext
+	AutoatendimentoBoundedContext [P]<->[P] GerenciamentoCardapioBoundedContext {
+		implementationTechnology = "REST"
+	}
 
-	GerenciamentoCardapioBoundedContext <-> PainelAdministrativoBoundedContext	
+	AutoatendimentoBoundedContext [P]<->[P] GerenciamentoClientesBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	PainelAdministrativoBoundedContext [P]<->[P] GerenciamentoCardapioBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	PainelAdministrativoBoundedContext [P]<->[P] GerenciamentoClientesBoundedContext {
+		implementationTechnology = "REST"
+	}
+
+	PainelAdministrativoBoundedContext [P]<->[P] AcompanhamentoPedidosBoundedContext {
+		implementationTechnology = "REST"
+	}
 }
 
 /* Bounded Context Definitions */
-BoundedContext AutoatendimentoBoundedContext implements GerenciamentoClientesDomain
+BoundedContext AutoatendimentoBoundedContext implements AutoatendimentoDomain
 
-BoundedContext PagamentoBoundedContext implements GerenciamentoClientesDomain
+BoundedContext GatewayPagamentoBoundedContext implements PagamentoDomain
 
-BoundedContext AcompanhamentoPedidoBoundedContext implements AutoatendimentoDomain
+BoundedContext AcompanhamentoPedidosBoundedContext implements AcompanhamentoPedidosDomain
 
 BoundedContext GerenciamentoCardapioBoundedContext implements GerenciamentoCardapioDomain
 
-BoundedContext GerenciamentoClientesBoundedContext implements PagamentoDomain
+BoundedContext GerenciamentoClientesBoundedContext implements GerenciamentoClientesDomain
 
-BoundedContext PainelAdministrativoBoundedContext implements AcompanhamentoPedidosDomain
+BoundedContext PainelAdministrativoBoundedContext implements PainelAdministrativoDomain
 
 /* Domain & Subdomain Definitions */
 Domain RMSDomain {
@@ -47,7 +61,7 @@ Domain RMSDomain {
 		type = CORE_DOMAIN
 		domainVisionStatement = "Os clientes são apresentados a uma interface de seleção na qual podem optar por se identificarem via CPF, se cadastrarem com nome, e-mail ou não se identificar, podendo montar o combo na seguinte sequência, sendo todas elas opcionais: 1. Lanche, 2. Acompanhamento, 3. Bebida. Em cada etapa é exibido o nome, descrição e preço de cada produto."
 	}
-	Subdomain PagamentoDomain {
+  Subdomain PagamentoDomain {
 		type = GENERIC_SUBDOMAIN
 		domainVisionStatement = "O sistema deverá possuir uma opção de pagamento integrada para MVP. A forma de pagamento oferecida será via QRCode do Mercado Pago."
 	}
@@ -55,7 +69,7 @@ Domain RMSDomain {
 		type = CORE_DOMAIN
 		domainVisionStatement = "Uma vez que o pedido é confirmado e pago, ele é enviado para a cozinha para ser preparado. Simultaneamente deve aparecer em um monitor para o cliente acompanhar o progresso do seu pedido com as seguintes etapas: Recebido, Em preparação, Pronto, Finalizado."
 	}
-	Subdomain GerenciamentoCardapioDomain {
+  Subdomain GerenciamentoCardapioDomain {
 		type = SUPPORTING_DOMAIN
 		domainVisionStatement = "Os produtos dispostos para escolha do cliente serão gerenciados pelo estabelecimento, definindo nome, categoria, preço, descrição e imagens. Para esse sistema teremos categorias fixas."
 	}
