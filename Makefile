@@ -3,7 +3,13 @@
 ##
 # Lint section
 ###
+.PHONY: lint ## Run lint
+lint:
+	@npm run lint
 
+.PHONY: format ## Run format code
+format:
+	@npm run format
 
 
 
@@ -11,7 +17,7 @@
 # Tests section
 ###
 .PHONY: test ## Run tests
-test: clean
+test:
 	@npm run test
 
 .PHONY: test-coverage ## Run tests with coverage
