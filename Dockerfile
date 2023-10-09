@@ -1,9 +1,15 @@
 FROM node:18
-WORKDIR /usr/src/RMS-backend-fase01
+
+RUN adduser --system --group --no-create-home nonroot
+
+WORKDIR /app
+
 COPY package*.json tsconfig.json ./
 COPY src ./src
 RUN npm install --ignore-scripts
 RUN npm run build
+
+
 EXPOSE 3000
-USER node
+USER nonroot
 CMD [ "node", "dist/main.js" ]

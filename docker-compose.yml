@@ -1,38 +1,71 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  postgres:
+
+  db:
+    container_name: db
+    hostname: db
     image: postgres:latest
-    restart: always
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready -U ${DATABASE_USER:-pguser} -d ${DATABASE_NAME:-rms}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DATABASE_USER:-pguser}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-pgpwd}
+      POSTGRES_DB: ${DATABASE_NAME:-rms}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
-    ports:
-      - "5432:5432"
+    restart: always
     networks:
       - default
 
   api:
-    container_name: api-container
-    image: rms-backend-fase01
+    container_name: api
+    hostname: api
     build:
       context: .
       dockerfile: Dockerfile
-    restart: always
-    env_file:
-      - .env
     ports:
       - "3000:3000"
-    links:
-      - postgres
-    depends_on:
-      - postgres
+    expose:
+      - 3000
+    env_file:
+      - .env
+    environment:
+      DATABASE_USER: ${DATABASE_USER:-pguser}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-pgpwd}
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-rms}
+    restart: always
     networks:
       - default
+    depends_on:
+      - db
+
+  sonarqube:
+    container_name: sonarqube
+    hostname: sonarqube
+    image: sonarqube
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    expose:
+      - 9000
+    networks:
+      - default
+    depends_on:
+      - db
 
 networks:
   default:

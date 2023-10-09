@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from './adapters/inbound/rest/v1/controllers/app/app.controller';
+import { AppUseCase } from './domain/use_cases/app/app.use_case';
 
 @Module({
   imports: [
@@ -17,6 +17,6 @@ import { AppService } from './app.service';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppUseCase],
 })
 export class AppModule {}
