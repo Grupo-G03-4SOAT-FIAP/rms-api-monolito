@@ -1,2 +1,56 @@
-GET http://localhost:3000
+###
+GET http://localhost:3000/categorias
 
+###
+POST http://localhost:3000/categorias
+Content-Type: application/json
+
+{
+    "nome": "Lanches",
+    "descricao": "Lanches para todos os gostos!"
+}
+
+###
+PUT http://localhost:3000/categorias/1
+Content-Type: application/json
+
+{
+    "nome": "Bebidas",
+    "descricao": "Refrigerantes, sucos e bebidas alcoolicas",
+    "ativo": true
+}
+
+###
+DELETE http://localhost:3000/categorias/1
+
+
+###
+GET http://localhost:3000/produtos
+
+###
+POST http://localhost:3000/produtos
+Content-Type: application/json
+
+{
+    "nome": "X-Tudo",
+    "valorUnitario": 12,
+    "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
+    "imagemUrl": "https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg",
+    "idCategoria": null
+}
+
+###
+PUT http://localhost:3000/produtos/894a2d09-c7e0-4615-ae38-476663108207
+Content-Type: application/json
+
+{
+    "nome": "X-Salada",
+    "valorUnitario": 15,
+    "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
+    "imagemUrl": "https://anamariabraga.globo.com/wp-content/uploads/2016/11/x-salada-classico.jpg",
+    "idCategoria": null,
+    "ativo": true
+}
+
+###
+DELETE http://localhost:3000/produtos/f64fdf7d-2233-4164-a37d-818d07e6e6c6

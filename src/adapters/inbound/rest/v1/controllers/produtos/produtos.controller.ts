@@ -3,18 +3,22 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
 
-import { AtualizaProdutoDTO } from '../../../../../outbound/models/dto/AtualizaProduto.dto';
-import { CriaProdutoDTO } from '../../../../../outbound/models/dto/CriaProduto.dto';
-import { ProdutoUseCase } from 'src/domain/use_cases/app/produto.use_case';
+import { AtualizaProdutoDTO } from '../../presenters/dto/produto/AtualizaProduto.dto';
+import { CriaProdutoDTO } from '../../presenters/dto/produto/CriaProduto.dto';
+import { IProdutoUseCase } from 'src/domain/ports/produto/IProdutoUseCase';
 
 @Controller('produtos')
 export class ProdutoController {
-  constructor(private readonly produtoUseCase: ProdutoUseCase) {}
+  constructor(
+    @Inject(IProdutoUseCase)
+    private readonly produtoUseCase: IProdutoUseCase,
+  ) {}
 
   @Post()
   async criaNovo(@Body() dadosProduto: CriaProdutoDTO) {
