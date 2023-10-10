@@ -1,2 +1,32 @@
-GET http://localhost:3000
+###
+GET http://localhost:3000/produtos
 
+###
+# @name createProduto
+POST http://localhost:3000/produtos
+Content-Type: application/json
+
+{
+    "nome": "X-Tudo",
+    "usuarioId": 1,
+    "valor": 12,
+    "quantidade": 1,
+    "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
+    "categoria": "Lanches"
+}
+
+###
+PUT http://localhost:3000/produtos/894a2d09-c7e0-4615-ae38-476663108207
+Content-Type: application/json
+
+{
+    "nome": "X-Salada",
+    "usuarioId": 1,
+    "valor": 10,
+    "quantidade": 1,
+    "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
+    "categoria": "Lanches"
+}
+
+###
+DELETE http://localhost:3000/produtos/f64fdf7d-2233-4164-a37d-818d07e6e6c6
