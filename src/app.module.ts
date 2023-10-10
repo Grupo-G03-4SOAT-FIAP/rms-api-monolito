@@ -11,7 +11,7 @@ import { AppController } from './adapters/inbound/rest/v1/controllers/app/app.co
 import { AppUseCase } from './domain/use_cases/app/app.use_case';
 
 import { ProdutoController } from './adapters/inbound/rest/v1/controllers/produtos/produtos.controller';
-import { ProdutoUseCase } from './domain/use_cases/app/produtos/produtos.use_case';
+import { ProdutoUseCase } from './domain/use_cases/produtos/produtos.use_case';
 
 @Module({
   imports: [
