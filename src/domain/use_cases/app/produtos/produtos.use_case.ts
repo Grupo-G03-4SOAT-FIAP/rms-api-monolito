@@ -3,7 +3,6 @@ import { ProdutoService } from 'src/adapters/outbound/repositories/produto.servi
 import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 import { CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/CriaProduto.dto';
 import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/AtualizaProduto.dto';
-import { randomUUID } from 'crypto';
 
 @Injectable()
 export class ProdutoUseCase {

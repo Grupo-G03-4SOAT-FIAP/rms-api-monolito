@@ -10,7 +10,7 @@ import {
 
 import { AtualizaProdutoDTO } from '../../presenters/dto/AtualizaProduto.dto';
 import { CriaProdutoDTO } from '../../presenters/dto/CriaProduto.dto';
-import { ProdutoUseCase } from 'src/domain/use_cases/app/produto.use_case';
+import { ProdutoUseCase } from 'src/domain/use_cases/app/produtos/produtos.use_case';
 
 @Controller('produtos')
 export class ProdutoController {
