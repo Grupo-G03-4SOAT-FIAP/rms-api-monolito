@@ -10,7 +10,7 @@ import { ProdutoEntity } from './domain/entities/produto.entity';
 import { AppController } from './adapters/inbound/rest/v1/controllers/app/app.controller';
 import { AppUseCase } from './domain/use_cases/app/app.use_case';
 
-import { ProdutoController } from './adapters/inbound/rest/v1/controllers/app/produto.controller';
+import { ProdutoController } from './adapters/inbound/rest/v1/controllers/produtos/produtos.controller';
 import { ProdutoUseCase } from './domain/use_cases/app/produtos/produtos.use_case';
 
 @Module({
