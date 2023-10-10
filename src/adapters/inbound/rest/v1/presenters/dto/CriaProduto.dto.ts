@@ -11,7 +11,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { ProdutoEntity } from '../../../../domain/entities/produto.entity';
+import { ProdutoEntity } from '../../../../../../domain/entities/produto.entity';
 
 export class CaracteristicaProdutoDTO {
   id: string;

@@ -8,8 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { AtualizaProdutoDTO } from '../../../../../outbound/models/dto/AtualizaProduto.dto';
-import { CriaProdutoDTO } from '../../../../../outbound/models/dto/CriaProduto.dto';
+import { AtualizaProdutoDTO } from '../../presenters/dto/AtualizaProduto.dto';
+import { CriaProdutoDTO } from '../../presenters/dto/CriaProduto.dto';
 import { ProdutoUseCase } from 'src/domain/use_cases/app/produto.use_case';
 
 @Controller('produtos')
