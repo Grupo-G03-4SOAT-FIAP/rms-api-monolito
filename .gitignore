@@ -36,3 +36,5 @@ lerna-debug.log*
 
 # Context Mapper output
 /src-gen
+
+package-lock.json
