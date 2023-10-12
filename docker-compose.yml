@@ -11,7 +11,7 @@ services:
     expose:
       - 5432
     healthcheck:
-      test: ["CMD", "pg_isready -U ${DATABASE_USER:-pguser} -d ${DATABASE_NAME:-rms}"]
+      test: ["CMD", "pg_isready -U ${DB_USER:-pguser} -d ${DB_NAME:-rms}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -19,15 +19,15 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_USER: ${DATABASE_USER:-pguser}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-pgpwd}
-      POSTGRES_DB: ${DATABASE_NAME:-rms}
+      POSTGRES_HOST: ${DB_HOST:-db}
+      POSTGRES_PORT: ${DB_PORT:-5432}
+      POSTGRES_USER: ${DB_USER:-pguser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-pgpwd}
+      POSTGRES_DB: ${DB_NAME:-rms}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
     restart: always
-    networks:
-      - default
 
   api:
     container_name: api
@@ -42,34 +42,28 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_USER: ${DATABASE_USER:-pguser}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-pgpwd}
-      DATABASE_HOST: ${DATABASE_HOST:-db}
-      DATABASE_PORT: ${DATABASE_PORT:-5432}
-      DATABASE_NAME: ${DATABASE_NAME:-rms}
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-pguser}
+      DB_PASSWORD: ${DB_PASSWORD:-pgpwd}
+      DB_NAME: ${DB_NAME:-rms}
     restart: always
-    networks:
-      - default
     depends_on:
       - db
 
-  sonarqube:
-    container_name: sonarqube
-    hostname: sonarqube
-    image: sonarqube
-    ports:
-      - "9000:9000"
-      - "9092:9092"
-    expose:
-      - 9000
-    networks:
-      - default
-    depends_on:
-      - db
-
-networks:
-  default:
-    driver: bridge
+  # sonarqube:
+  #   container_name: sonarqube
+  #   hostname: sonarqube
+  #   image: sonarqube
+  #   ports:
+  #     - "9000:9000"
+  #     - "9092:9092"
+  #   expose:
+  #     - 9000
+  #   networks:
+  #     - default
+  #   depends_on:
+  #     - db
 
 volumes:
   postgres:
