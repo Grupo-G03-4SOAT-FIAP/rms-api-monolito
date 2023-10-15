@@ -5,6 +5,7 @@ import {
   Get,
   Inject,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -22,37 +23,29 @@ export class CategoriaController {
 
   @Post()
   async criaNovo(@Body() dadosCategoria: CriaCategoriaDTO) {
-    return this.CategoriaUseCase.criaNova(dadosCategoria);
+    return await this.CategoriaUseCase.criaNova(dadosCategoria);
   }
 
   @Get()
   async listaTodos() {
-    return this.CategoriaUseCase.listaTodas();
+    return await this.CategoriaUseCase.listaTodas();
+  }
+
+  @Get(':id')
+  async listaUma(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.CategoriaUseCase.listaUma(id);
   }
 
   @Put('/:id')
   async atualiza(
-    @Param('id') id: number,
+    @Param('id', new ParseUUIDPipe()) id: string,
     @Body() dadosCategoria: AtualizaCategoriaDTO,
   ) {
-    const categoriaAlterada = await this.CategoriaUseCase.atualiza(
-      id,
-      dadosCategoria,
-    );
-
-    return {
-      mensagem: 'categoria atualizada com sucesso',
-      categoria: categoriaAlterada,
-    };
+    return await this.CategoriaUseCase.atualiza(id, dadosCategoria);
   }
 
   @Delete('/:id')
-  async remove(@Param('id') id: number) {
-    const categoriaRemovida = await this.CategoriaUseCase.remove(id);
-
-    return {
-      mensagem: 'categoria removida com sucesso',
-      categoria: categoriaRemovida,
-    };
+  async remove(@Param('id') id: string) {
+    return await this.CategoriaUseCase.remove(id);
   }
 }

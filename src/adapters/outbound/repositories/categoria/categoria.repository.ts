@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ListaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/ListaCategoria.dto';
 import { CategoriaModel } from '../../models/categoria.model';
 import { Repository } from 'typeorm';
 import { AtualizaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
-import { Categoria } from 'src/domain/entities/Categoria';
+import { CriaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/CriaCategoria.dto';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {
@@ -14,9 +14,10 @@ export class CategoriaRepository implements ICategoriaRepository {
     private readonly categoriaRepository: Repository<CategoriaModel>,
   ) {}
 
-  async criaCategoria(categoria: Categoria) {
-    const categoriaModel = this.toCategoria(categoria);
-    await this.categoriaRepository.save(categoriaModel);
+  async criaCategoria(categoria: CriaCategoriaDTO) {
+    return await this.categoriaRepository.save(
+      this.categoriaRepository.create(categoria),
+    );
   }
 
   async listaCategorias() {
@@ -29,52 +30,33 @@ export class CategoriaRepository implements ICategoriaRepository {
       },
     });
     const categoriasLista = categoriasSalvos.map(
-      (categoria) =>
-        new ListaCategoriaDTO(
-          categoria.id,
-          categoria.nome,
-          categoria.descricao,
-          categoria.ativo,
-        ),
+      (categoria) => new ListaCategoriaDTO(categoria),
     );
     return categoriasLista;
   }
 
-  async atualizaCategoria(id: number, novosDados: AtualizaCategoriaDTO) {
-    const entityName = await this.categoriaRepository.findOneBy({ id });
-    Object.assign(entityName, novosDados);
-    await this.categoriaRepository.save(entityName);
+  async listaCategoria(id: string): Promise<ListaCategoriaDTO> {
+    try {
+      const categoria = await this.categoriaRepository.findOneOrFail({
+        where: { id },
+      });
+      const categoriaLista = new ListaCategoriaDTO(categoria);
+      return categoriaLista;
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 
-  async deletaCategoria(id: number) {
-    await this.categoriaRepository.delete(id);
+  async atualizaCategoria(id: string, novosDados: AtualizaCategoriaDTO) {
+    const categoria = await this.categoriaRepository.findOneOrFail({
+      where: { id },
+    });
+    this.categoriaRepository.merge(categoria, novosDados);
+    return this.categoriaRepository.save(categoria);
   }
 
-  private toCategoria(categoria: Categoria): CategoriaModel {
-    const categoriaModel: CategoriaModel = new CategoriaModel();
-
-    categoriaModel.id = categoria.id;
-    categoriaModel.nome = categoria.nome;
-    categoriaModel.descricao = categoria.descricao;
-    categoriaModel.ativo = categoria.ativo;
-    categoriaModel.produtos = categoria.produtos
-      ? Object.assign(categoria.produtos)
-      : null;
-
-    return categoriaModel;
-  }
-
-  private toCategoriaModel(categoriaModel: CategoriaModel): Categoria {
-    const categoria: Categoria = new Categoria();
-
-    categoria.id = categoriaModel.id;
-    categoria.nome = categoriaModel.nome;
-    categoria.descricao = categoriaModel.descricao;
-    categoria.ativo = categoriaModel.ativo;
-    categoria.produtos = categoriaModel.produtos
-      ? Object.assign(categoriaModel.produtos)
-      : null;
-
-    return categoria;
+  async deletaCategoria(id: string) {
+    await this.categoriaRepository.findOneOrFail({ where: { id } });
+    await this.categoriaRepository.softDelete(id);
   }
 }

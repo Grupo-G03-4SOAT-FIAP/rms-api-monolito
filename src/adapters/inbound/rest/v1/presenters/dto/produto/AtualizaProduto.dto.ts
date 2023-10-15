@@ -24,7 +24,7 @@ export class AtualizaProdutoDTO {
   @Min(1, { message: 'O valor precisa ser maior que zero' })
   valorUnitario: number;
 
-  @IsUrl({ message: 'URL para imagem inválida' })
+  @IsUrl(undefined, { message: 'URL para imagem inválida' })
   imagemUrl: string;
 
   @IsBoolean()

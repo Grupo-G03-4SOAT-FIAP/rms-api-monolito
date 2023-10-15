@@ -2,25 +2,34 @@
 
 import { Produto } from './Produto';
 
-export class Categoria {
-  id: number;
+interface ICategoria {
+  id: string;
   nome: string;
   descricao: string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
-  produtos: Produto[];
   ativo: boolean;
+  produtos: Produto[];
+}
 
-  constructor(
-    id?: number,
-    nome?: string,
-    descricao?: string,
-    ativo: boolean = true,
-  ) {
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.ativo = ativo;
+export class Categoria {
+  id: string;
+  nome: string;
+  descricao: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  ativo: boolean;
+  produtos: Produto[];
+  constructor(categoria?: Partial<ICategoria>) {
+    this.id = categoria?.id;
+    this.nome = categoria?.nome;
+    this.descricao = categoria?.descricao;
+    this.ativo = categoria?.ativo;
+    this.createdAt = categoria?.createdAt;
+    this.updatedAt = categoria?.updatedAt;
+    this.deletedAt = categoria?.deletedAt;
+    this.produtos = categoria?.produtos;
   }
 }

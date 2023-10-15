@@ -1,6 +1,15 @@
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
+interface ICriaCategoriaDTO {
+  nome: string;
+  descricao: string;
+}
+
 export class CriaCategoriaDTO {
+  constructor(categoria?: ICriaCategoriaDTO) {
+    this.nome = categoria?.nome;
+    this.descricao = categoria?.descricao;
+  }
   @IsString()
   @IsNotEmpty({ message: 'Nome da categoria não pode ser vazio' })
   nome: string;
@@ -14,5 +23,5 @@ export class CriaCategoriaDTO {
 
   @IsBoolean()
   @IsNotEmpty({ message: 'Ativo não pode ser vazio' })
-  ativo: boolean;
+  ativo: boolean = true;
 }
