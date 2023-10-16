@@ -89,7 +89,7 @@ describe('CategoriaController', () => {
     expect(categoriaUseCase).toBeDefined();
   });
 
-  describe('create', () => {
+  describe('criaNovo', () => {
     it('Deve ser retornado sucesso ao cadastrar uma categoria', async () => {
       const categoria = await categoriaController.criaNovo(
         novaCategoriaEntidade,
@@ -109,7 +109,7 @@ describe('CategoriaController', () => {
     });
   });
 
-  describe('findAll', () => {
+  describe('listaTodos', () => {
     it('Deve ser retornada todas as categorias', async () => {
       const categorias = await categoriaController.listaTodos();
       expect(categorias).toEqual(todasAsCategorias);
@@ -125,7 +125,7 @@ describe('CategoriaController', () => {
     });
   });
 
-  describe('findOneOrFail', () => {
+  describe('listaUma', () => {
     it('Deve ser retornada uma categoria', async () => {
       const categorias = await categoriaController.listaUma(1);
       expect(categorias).toEqual(todasAsCategorias[1]);
@@ -141,7 +141,7 @@ describe('CategoriaController', () => {
     });
   });
 
-  describe('update', () => {
+  describe('atualiza', () => {
     it('Deve ser possível atualizar uma categoria com sucesso', async () => {
       const atualizacaoCategoria = {
         descricao: 'Lanches para todos os tipos - Atualizado',
