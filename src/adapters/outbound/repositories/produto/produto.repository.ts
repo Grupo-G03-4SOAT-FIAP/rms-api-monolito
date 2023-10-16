@@ -37,9 +37,6 @@ export class ProdutoRepository implements IProdutoRepository {
   async listaProdutosPorCategoria(id_categoria: string) {
     const produtos = await this.produtoRepository.find({
       where: { categoria: { id: id_categoria } },
-      relations: {
-        categoria: true,
-      },
     });
     const produtosLista = produtos.map(
       (produto) =>
