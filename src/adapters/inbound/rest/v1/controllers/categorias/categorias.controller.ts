@@ -5,7 +5,6 @@ import {
   Get,
   Inject,
   Param,
-  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -32,20 +31,20 @@ export class CategoriaController {
   }
 
   @Get(':id')
-  async listaUma(@Param('id', new ParseUUIDPipe()) id: string) {
+  async listaUma(@Param('id') id: number) {
     return await this.CategoriaUseCase.listaUma(id);
   }
 
   @Put('/:id')
   async atualiza(
-    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('id') id: number,
     @Body() dadosCategoria: AtualizaCategoriaDTO,
   ) {
     return await this.CategoriaUseCase.atualiza(id, dadosCategoria);
   }
 
   @Delete('/:id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: number) {
     return await this.CategoriaUseCase.remove(id);
   }
 }

@@ -35,7 +35,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     return categoriasLista;
   }
 
-  async listaCategoria(id: string): Promise<ListaCategoriaDTO> {
+  async listaCategoria(id: number): Promise<ListaCategoriaDTO> {
     try {
       const categoria = await this.categoriaRepository.findOneOrFail({
         where: { id },
@@ -47,7 +47,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     }
   }
 
-  async atualizaCategoria(id: string, novosDados: AtualizaCategoriaDTO) {
+  async atualizaCategoria(id: number, novosDados: AtualizaCategoriaDTO) {
     const categoria = await this.categoriaRepository.findOneOrFail({
       where: { id },
     });
@@ -55,7 +55,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     return this.categoriaRepository.save(categoria);
   }
 
-  async deletaCategoria(id: string) {
+  async deletaCategoria(id: number) {
     await this.categoriaRepository.findOneOrFail({ where: { id } });
     await this.categoriaRepository.softDelete(id);
   }

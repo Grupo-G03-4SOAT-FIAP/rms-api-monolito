@@ -19,7 +19,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produto.descricao = dadosProduto.descricao;
     produto.valorUnitario = dadosProduto.valorUnitario;
     produto.imagemUrl = dadosProduto.imagemUrl;
-    produto.categoria = <any>{ id_categoria: dadosProduto.idCategoria };
+    produto.categoria = <any>{ id: dadosProduto.idCategoria };
     produto.ativo = dadosProduto.ativo;
 
     const produtoCadastrado = this.produtoRepository.criaProduto(produto);
@@ -30,7 +30,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     return this.produtoRepository.listaProdutos();
   }
 
-  async listaPorCategoria(categoriaId: string) {
+  async listaPorCategoria(categoriaId: number) {
     return await this.produtoRepository.listaProdutosPorCategoria(categoriaId);
   }
 

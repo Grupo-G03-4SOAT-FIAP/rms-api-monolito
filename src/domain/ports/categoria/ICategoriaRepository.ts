@@ -10,12 +10,12 @@ import { CriaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/ca
 export interface ICategoriaRepository {
   criaCategoria(ProdutoModel: CriaCategoriaDTO): Promise<CategoriaModel>;
   listaCategorias(): Promise<ListaCategoriaDTO[]>;
-  listaCategoria(id: string): Promise<ListaCategoriaDTO>;
+  listaCategoria(id: number): Promise<ListaCategoriaDTO>;
   atualizaCategoria(
-    id: string,
+    id: number,
     novosDados: AtualizaCategoriaDTO,
   ): Promise<CategoriaModel>;
-  deletaCategoria(id: string): Promise<void>;
+  deletaCategoria(id: number): Promise<void>;
 }
 
 export const ICategoriaRepository = Symbol('ICategoriaRepository');

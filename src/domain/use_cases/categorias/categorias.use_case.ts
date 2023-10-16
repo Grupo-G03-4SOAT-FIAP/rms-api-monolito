@@ -24,11 +24,11 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     return this.categoriaRepository.listaCategorias();
   }
 
-  async listaUma(id: string) {
+  async listaUma(id: number) {
     return await this.categoriaRepository.listaCategoria(id);
   }
 
-  async atualiza(id: string, dadosCategoria: AtualizaCategoriaDTO) {
+  async atualiza(id: number, dadosCategoria: AtualizaCategoriaDTO) {
     await this.categoriaRepository.listaCategoria(id);
     const categoriaAlterada = await this.categoriaRepository.atualizaCategoria(
       id,
@@ -41,7 +41,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     };
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     await this.categoriaRepository.listaCategoria(id);
     await this.categoriaRepository.deletaCategoria(id);
     return {

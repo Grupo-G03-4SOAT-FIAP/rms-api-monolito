@@ -9,7 +9,7 @@ import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/
 export interface IProdutoUseCase {
   criaNovo(dadosProduto: CriaProdutoDTO): Promise<void>;
   listaTodos(): Promise<ListaProdutoDTO[]>;
-  listaPorCategoria(categoriaId: string): Promise<ListaProdutoDTO[]>;
+  listaPorCategoria(categoriaId: number): Promise<ListaProdutoDTO[]>;
   atualiza(id: string, dadosProduto: AtualizaProdutoDTO);
   remove(id: string);
 }

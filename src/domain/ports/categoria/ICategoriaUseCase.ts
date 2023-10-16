@@ -11,12 +11,12 @@ export interface ICategoriaUseCase {
     dadosCategoria: CriaCategoriaDTO,
   ): Promise<{ mensagem: string; categoria: any }>;
   listaTodas(): Promise<ListaCategoriaDTO[]>;
-  listaUma(id: string): Promise<any>;
+  listaUma(id: number): Promise<any>;
   atualiza(
-    id: string,
+    id: number,
     dadosCategoria: AtualizaCategoriaDTO,
   ): Promise<{ mensagem: string; categoria: any }>;
-  remove(id: string): Promise<{ mensagem: string }>;
+  remove(id: number): Promise<{ mensagem: string }>;
 }
 
 export const ICategoriaUseCase = Symbol('ICategoriaUseCase');

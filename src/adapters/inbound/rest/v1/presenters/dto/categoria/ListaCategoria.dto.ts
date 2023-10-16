@@ -1,11 +1,11 @@
 interface IListaCategoria {
-  id: string;
+  id: number;
   nome: string;
   descricao: string;
 }
 
 export class ListaCategoriaDTO {
-  readonly id: string;
+  readonly id: number;
   readonly nome: string;
   readonly descricao: string;
   constructor(categoria?: Partial<IListaCategoria>) {
