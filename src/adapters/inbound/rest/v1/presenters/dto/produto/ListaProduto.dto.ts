@@ -1,3 +1,5 @@
+import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
+
 export class ListaProdutoDTO {
   constructor(
     readonly id: string,
@@ -5,7 +7,7 @@ export class ListaProdutoDTO {
     readonly descricao: string,
     readonly valorUnitario: number,
     readonly imagemUrl: string,
-    readonly idCategoria: number,
+    readonly idCategoria: CategoriaModel,
     readonly ativo: boolean,
   ) {}
 }

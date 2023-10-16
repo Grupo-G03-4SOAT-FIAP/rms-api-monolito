@@ -12,7 +12,7 @@ import {
 
 import { AtualizaCategoriaDTO } from '../../presenters/dto/categoria/AtualizaCategoria.dto';
 import { CriaCategoriaDTO } from '../../presenters/dto/categoria/CriaCategoria.dto';
-import { ICategoriaUseCase } from 'src/domain/ports/categoria/ICategoriaUseCase';
+import { ICategoriaUseCase } from '../../../../../../domain/ports/categoria/ICategoriaUseCase';
 
 @Controller('categorias')
 export class CategoriaController {

@@ -11,7 +11,7 @@ import {
 
 import { AtualizaProdutoDTO } from '../../presenters/dto/produto/AtualizaProduto.dto';
 import { CriaProdutoDTO } from '../../presenters/dto/produto/CriaProduto.dto';
-import { IProdutoUseCase } from 'src/domain/ports/produto/IProdutoUseCase';
+import { IProdutoUseCase } from '../../../../../../domain/ports/produto/IProdutoUseCase';
 
 @Controller('produtos')
 export class ProdutoController {
@@ -28,6 +28,11 @@ export class ProdutoController {
   @Get()
   async listaTodos() {
     return this.produtoUseCase.listaTodos();
+  }
+
+  @Get('categorias/:id')
+  async listaPorCategoria(@Param('categoriaId') categoriaId: string) {
+    return await this.produtoUseCase.listaPorCategoria(categoriaId);
   }
 
   @Put('/:id')

@@ -33,7 +33,7 @@ export class CategoriaModel {
     this.produtos = categoria?.produtos;
   }
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ name: 'nome', length: 100, nullable: false })

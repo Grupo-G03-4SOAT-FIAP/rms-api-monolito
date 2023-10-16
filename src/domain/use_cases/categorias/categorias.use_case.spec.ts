@@ -128,7 +128,7 @@ describe('CategoriaUseCase', () => {
       const data: CriaCategoriaDTO = {
         ativo: true,
         descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
+        nome: 'Lanche Atualizado',
       };
       jest
         .spyOn(categoryRepository, 'criaCategoria')

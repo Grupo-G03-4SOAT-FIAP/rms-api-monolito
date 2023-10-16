@@ -3,7 +3,7 @@ import { CategoriaController } from './categorias.controller';
 import { AtualizaCategoriaDTO } from '../../presenters/dto/categoria/AtualizaCategoria.dto';
 import { CriaCategoriaDTO } from '../../presenters/dto/categoria/CriaCategoria.dto';
 import { Categoria } from '../../../../../../domain/entities/Categoria';
-import { ICategoriaUseCase } from 'src/domain/ports/categoria/ICategoriaUseCase';
+import { ICategoriaUseCase } from '../../../../../../domain/ports/categoria/ICategoriaUseCase';
 
 // Listagem de categorias como retorna do banco
 const todasAsCategorias: Categoria[] = [

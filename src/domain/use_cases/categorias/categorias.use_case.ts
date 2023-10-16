@@ -25,7 +25,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   }
 
   async listaUma(id: string) {
-    return this.categoriaRepository.listaCategoria(id);
+    return await this.categoriaRepository.listaCategoria(id);
   }
 
   async atualiza(id: string, dadosCategoria: AtualizaCategoriaDTO) {
