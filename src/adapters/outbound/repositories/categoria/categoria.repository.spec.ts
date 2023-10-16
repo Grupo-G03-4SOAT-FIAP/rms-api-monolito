@@ -10,7 +10,7 @@ import { ListaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/c
 
 const ListaCategoriaEntidade: CategoriaModel[] = [
   new CategoriaModel({
-    id: '1',
+    id: 1,
     ativo: true,
     descricao: 'Lanches de todos os tipos',
     nome: 'Lanche',
@@ -19,7 +19,7 @@ const ListaCategoriaEntidade: CategoriaModel[] = [
     deletedAt: '',
   }),
   new CategoriaModel({
-    id: '2',
+    id: 2,
     ativo: true,
     descricao: 'Bebidas de todos os tipos',
     nome: 'Bebidas',
@@ -28,7 +28,7 @@ const ListaCategoriaEntidade: CategoriaModel[] = [
     deletedAt: '',
   }),
   new CategoriaModel({
-    id: '3',
+    id: 2,
     ativo: true,
     descricao: 'Acompanhamento de todos os tipos',
     nome: 'Acompanhamento',
@@ -96,7 +96,7 @@ describe('CategoriaRepository', () => {
 
   describe('listaCategoria', () => {
     it('Deve ser retornado um item da entidade categoria', async () => {
-      const result = await categoriaRepository.listaCategoria('1');
+      const result = await categoriaRepository.listaCategoria(1);
       const categoriaEsperada = new ListaCategoriaDTO(
         ListaCategoriaEntidade[0],
       );
@@ -108,7 +108,7 @@ describe('CategoriaRepository', () => {
       jest
         .spyOn(categoryModel, 'findOneOrFail')
         .mockRejectedValueOnce(new Error());
-      expect(categoriaRepository.listaCategoria('1')).rejects.toThrowError(
+      expect(categoriaRepository.listaCategoria(1)).rejects.toThrowError(
         NotFoundException,
       );
     });
@@ -151,7 +151,7 @@ describe('CategoriaRepository', () => {
         .spyOn(categoryModel, 'save')
         .mockResolvedValueOnce(updateCategoriaEntidadeItem);
       const result = await categoriaRepository.atualizaCategoria(
-        '1',
+        1,
         atualizaCategoria,
       );
       expect(result).toEqual(updateCategoriaEntidadeItem);
@@ -167,7 +167,7 @@ describe('CategoriaRepository', () => {
         .spyOn(categoryModel, 'findOneOrFail')
         .mockRejectedValueOnce(new NotFoundException());
       expect(
-        categoriaRepository.atualizaCategoria('1', atualizaCategoria),
+        categoriaRepository.atualizaCategoria(1, atualizaCategoria),
       ).rejects.toThrowError(NotFoundException);
     });
 
@@ -179,14 +179,14 @@ describe('CategoriaRepository', () => {
       const atualizaCategoria = new AtualizaCategoriaDTO(data);
       jest.spyOn(categoryModel, 'save').mockRejectedValueOnce(new Error());
       expect(
-        categoriaRepository.atualizaCategoria('1', atualizaCategoria),
+        categoriaRepository.atualizaCategoria(1, atualizaCategoria),
       ).rejects.toThrowError();
     });
   });
 
   describe('deletaCategoria', () => {
     it('Deve ser removida a entidade da categoria com sucesso', async () => {
-      const result = await categoriaRepository.deletaCategoria('1');
+      const result = await categoriaRepository.deletaCategoria(1);
       expect(result).toBeUndefined();
       expect(categoryModel.findOneOrFail).toHaveBeenCalledTimes(1);
       expect(categoryModel.softDelete).toHaveBeenCalledTimes(1);
@@ -196,7 +196,7 @@ describe('CategoriaRepository', () => {
       jest
         .spyOn(categoryModel, 'findOneOrFail')
         .mockRejectedValueOnce(new NotFoundException());
-      expect(categoriaRepository.deletaCategoria('1')).rejects.toThrowError(
+      expect(categoriaRepository.deletaCategoria(1)).rejects.toThrowError(
         NotFoundException,
       );
     });
@@ -205,7 +205,7 @@ describe('CategoriaRepository', () => {
       jest
         .spyOn(categoryModel, 'softDelete')
         .mockRejectedValueOnce(new Error());
-      expect(categoriaRepository.deletaCategoria('1')).rejects.toThrowError();
+      expect(categoriaRepository.deletaCategoria(1)).rejects.toThrowError();
     });
   });
 });

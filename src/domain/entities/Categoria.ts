@@ -3,7 +3,7 @@
 import { Produto } from './Produto';
 
 interface ICategoria {
-  id: string;
+  id: number;
   nome: string;
   descricao: string;
   createdAt: string;
@@ -14,7 +14,7 @@ interface ICategoria {
 }
 
 export class Categoria {
-  id: string;
+  id: number;
   nome: string;
   descricao: string;
   createdAt: string;

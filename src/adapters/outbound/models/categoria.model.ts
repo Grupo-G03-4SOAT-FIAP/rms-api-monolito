@@ -9,8 +9,27 @@ import {
 } from 'typeorm';
 import { ProdutoModel } from './produto.model';
 
+interface ICategory {
+  id: number;
+  nome: string;
+  descricao: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  ativo: boolean;
+}
+
 @Entity('categorias')
 export class CategoriaModel {
+  constructor(categoria?: Partial<ICategory>) {
+    this.id = categoria?.id;
+    this.nome = categoria?.nome;
+    this.descricao = categoria?.descricao;
+    this.ativo = categoria?.ativo;
+    this.createdAt = categoria?.createdAt;
+    this.updatedAt = categoria?.updatedAt;
+    this.deletedAt = categoria?.deletedAt;
+  }
   @PrimaryGeneratedColumn()
   id: number;
 

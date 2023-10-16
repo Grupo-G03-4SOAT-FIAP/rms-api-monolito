@@ -8,7 +8,7 @@ import { ICategoriaUseCase } from '../../../../../../domain/ports/categoria/ICat
 // Listagem de categorias como retorna do banco
 const todasAsCategorias: Categoria[] = [
   {
-    id: '1',
+    id: 1,
     ativo: true,
     descricao: 'Lanches de todos os tipos',
     nome: 'Lanche',
@@ -18,7 +18,7 @@ const todasAsCategorias: Categoria[] = [
     produtos: [],
   },
   {
-    id: '2',
+    id: 2,
     ativo: true,
     descricao: 'Bebidas de todos os tipos',
     nome: 'Bebidas',
@@ -28,7 +28,7 @@ const todasAsCategorias: Categoria[] = [
     produtos: [],
   },
   {
-    id: '3',
+    id: 3,
     ativo: true,
     descricao: 'Acompanhamento de todos os tipos',
     nome: 'Acompanhamento',
@@ -127,7 +127,7 @@ describe('CategoriaController', () => {
 
   describe('findOneOrFail', () => {
     it('Deve ser retornada uma categoria', async () => {
-      const categorias = await categoriaController.listaUma('1');
+      const categorias = await categoriaController.listaUma(1);
       expect(categorias).toEqual(todasAsCategorias[1]);
       expect(categoriaUseCase.listaUma).toHaveBeenCalledTimes(1);
     });
@@ -136,7 +136,7 @@ describe('CategoriaController', () => {
       jest
         .spyOn(categoriaUseCase, 'listaUma')
         .mockRejectedValueOnce(new Error());
-      expect(categoriaController.listaUma('1')).rejects.toThrowError();
+      expect(categoriaController.listaUma(1)).rejects.toThrowError();
       expect(categoriaUseCase.listaUma).toHaveBeenCalledTimes(1);
     });
   });
@@ -149,13 +149,13 @@ describe('CategoriaController', () => {
       };
       const categoriaAtualizar = new AtualizaCategoriaDTO(atualizacaoCategoria);
       const categoriaAtualizada = await categoriaController.atualiza(
-        '1',
+        1,
         categoriaAtualizar,
       );
       expect(categoriaAtualizada).toEqual(categoriaEntidadeAtualizada);
       expect(categoriaUseCase.atualiza).toHaveBeenCalledTimes(1);
       expect(categoriaUseCase.atualiza).toHaveBeenCalledWith(
-        '1',
+        1,
         categoriaAtualizar,
       );
     });
@@ -169,20 +169,20 @@ describe('CategoriaController', () => {
       jest
         .spyOn(categoriaUseCase, 'atualiza')
         .mockRejectedValueOnce(new Error());
-      expect(categoriaController.atualiza('1', body)).rejects.toThrowError();
+      expect(categoriaController.atualiza(1, body)).rejects.toThrowError();
       expect(categoriaUseCase.atualiza).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('remove', () => {
     it('Deve ser possível remover uma categoria com sucesso', async () => {
-      const result = await categoriaController.remove('1');
+      const result = await categoriaController.remove(1);
       expect(result).toBeUndefined();
     });
 
     it('Deve ser retornada uma exceção em caso de erros ao remover uma categoria', async () => {
       jest.spyOn(categoriaUseCase, 'remove').mockRejectedValueOnce(new Error());
-      expect(categoriaController.remove('1')).rejects.toThrowError();
+      expect(categoriaController.remove(1)).rejects.toThrowError();
     });
   });
 });
