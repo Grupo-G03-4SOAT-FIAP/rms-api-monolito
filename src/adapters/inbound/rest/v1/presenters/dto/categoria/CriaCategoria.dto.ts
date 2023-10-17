@@ -1,12 +1,7 @@
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
-interface ICriaCategoriaDTO {
-  nome: string;
-  descricao: string;
-}
-
 export class CriaCategoriaDTO {
-  constructor(categoria?: ICriaCategoriaDTO) {
+  constructor(categoria?: { nome: string; descricao: string }) {
     this.nome = categoria?.nome;
     this.descricao = categoria?.descricao;
   }

@@ -1,16 +1,14 @@
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
-interface IAtualizaCategoria {
-  nome?: string;
-  descricao?: string;
-  ativo?: boolean;
-}
-
 export class AtualizaCategoriaDTO {
-  constructor(categoria?: Partial<IAtualizaCategoria>) {
-    this.nome = categoria?.nome;
-    this.descricao = categoria?.descricao;
-    this.ativo = categoria?.ativo;
+  constructor(categoria?: {
+    nome?: string;
+    descricao?: string;
+    ativo?: boolean;
+  }) {
+    this.nome = categoria.nome;
+    this.descricao = categoria.descricao;
+    this.ativo = categoria.ativo;
   }
 
   @IsString()
