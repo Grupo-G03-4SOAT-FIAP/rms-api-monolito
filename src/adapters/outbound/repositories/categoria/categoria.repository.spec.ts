@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { CategoriaModel } from '../../models/categoria.model';
 import { CategoriaRepository } from '../categoria/categoria.repository';
-import { CriaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/CriaCategoria.dto';
 import { AtualizaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
 import { ListaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/ListaCategoria.dto';
 
@@ -116,10 +115,15 @@ describe('CategoriaRepository', () => {
 
   describe('criaCategoria', () => {
     it('Deve criar uma categoria com sucesso', async () => {
-      const categoria: CriaCategoriaDTO = {
+      const categoria: CategoriaModel = {
         ativo: true,
         descricao: 'Lanches para todos os tipos - Atualizado',
         nome: 'Lanche Atualizado ',
+        id: 0,
+        createdAt: '',
+        updatedAt: '',
+        deletedAt: '',
+        produtos: [],
       };
       const result = await categoriaRepository.criaCategoria(categoria);
       expect(result).toEqual(ListaCategoriaEntidade[0]);
@@ -128,10 +132,15 @@ describe('CategoriaRepository', () => {
     });
 
     it('Deve ser lançada uma exceção em caso de erro', () => {
-      const categoria: CriaCategoriaDTO = {
+      const categoria: CategoriaModel = {
         ativo: true,
         descricao: 'Lanches para todos os tipos - Atualizado',
         nome: 'Lanche Atualizado ',
+        id: 0,
+        createdAt: '',
+        updatedAt: '',
+        deletedAt: '',
+        produtos: [],
       };
       jest.spyOn(categoryModel, 'save').mockRejectedValueOnce(new Error());
       expect(
