@@ -20,13 +20,13 @@ export class CategoriaModel {
     deletedAt?: string;
     ativo?: boolean;
   }) {
-    this.id = categoria.id;
-    this.nome = categoria.nome;
-    this.descricao = categoria.descricao;
-    this.ativo = categoria.ativo;
-    this.createdAt = categoria.createdAt;
-    this.updatedAt = categoria.updatedAt;
-    this.deletedAt = categoria.deletedAt;
+    this.id = categoria?.id;
+    this.nome = categoria?.nome;
+    this.descricao = categoria?.descricao;
+    this.ativo = categoria?.ativo;
+    this.createdAt = categoria?.createdAt;
+    this.updatedAt = categoria?.updatedAt;
+    this.deletedAt = categoria?.deletedAt;
   }
   @PrimaryGeneratedColumn()
   id: number;
