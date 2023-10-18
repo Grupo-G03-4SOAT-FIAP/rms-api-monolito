@@ -2,17 +2,6 @@
 
 import { Produto } from './Produto';
 
-interface ICategoria {
-  id: number;
-  nome: string;
-  descricao: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  ativo: boolean;
-  produtos: Produto[];
-}
-
 export class Categoria {
   id: number;
   nome: string;
@@ -22,7 +11,16 @@ export class Categoria {
   deletedAt: string;
   ativo: boolean;
   produtos: Produto[];
-  constructor(categoria?: Partial<ICategoria>) {
+  constructor(categoria: {
+    id: number;
+    nome: string;
+    descricao: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string;
+    ativo: boolean;
+    produtos: Produto[];
+  }) {
     this.id = categoria?.id;
     this.nome = categoria?.nome;
     this.descricao = categoria?.descricao;

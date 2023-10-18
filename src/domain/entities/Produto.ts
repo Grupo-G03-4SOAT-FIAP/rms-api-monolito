@@ -15,12 +15,12 @@ export class Produto {
   ativo: boolean;
 
   constructor(
-    id?: string,
-    nome?: string,
-    descricao?: string,
-    categoria?: Categoria,
-    valorUnitario?: number,
-    imagemUrl?: string,
+    id: string,
+    nome: string,
+    descricao: string,
+    categoria: Categoria,
+    valorUnitario: number,
+    imagemUrl: string,
     ativo: boolean = true,
   ) {
     this.id = id;
