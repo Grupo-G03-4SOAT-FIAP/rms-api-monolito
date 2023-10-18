@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
 import { NotFoundException } from '@nestjs/common';
-import { CriaCategoriaDTO } from '../../../adapters/inbound/rest/v1/presenters/dto/categoria/CriaCategoria.dto';
 import { AtualizaCategoriaDTO } from '../../../adapters/inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
 import { CategoriaUseCase } from './categorias.use_case';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
@@ -111,12 +110,7 @@ describe('CategoriaUseCase', () => {
 
   describe('criaNova', () => {
     it('Deve criar uma categoria com sucesso', async () => {
-      const data: CriaCategoriaDTO = {
-        ativo: true,
-        descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
-      };
-      const result = await categoriaUseCase.criaNova(data);
+      const result = await categoriaUseCase.criaNova(ListaCategoriaEntidade[0]);
       expect(result).toEqual({
         categoria: ListaCategoriaEntidade[0],
         mensagem: 'categoria criada com sucesso',
@@ -125,10 +119,15 @@ describe('CategoriaUseCase', () => {
     });
 
     it('Deve ser lançada uma exceção em caso de erro', () => {
-      const data: CriaCategoriaDTO = {
+      const data: CategoriaModel = {
         ativo: true,
         descricao: 'Lanches para todos os tipos - Atualizado',
         nome: 'Lanche Atualizado',
+        id: 0,
+        createdAt: '',
+        updatedAt: '',
+        deletedAt: '',
+        produtos: [],
       };
       jest
         .spyOn(categoryRepository, 'criaCategoria')
