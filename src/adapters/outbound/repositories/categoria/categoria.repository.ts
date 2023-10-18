@@ -5,6 +5,7 @@ import { CategoriaModel } from '../../models/categoria.model';
 import { Repository } from 'typeorm';
 import { AtualizaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
+import { CriaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/CriaCategoria.dto';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {
@@ -13,7 +14,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     private readonly categoriaRepository: Repository<CategoriaModel>,
   ) {}
 
-  async criaCategoria(categoria: CategoriaModel) {
+  async criaCategoria(categoria: CriaCategoriaDTO) {
     return await this.categoriaRepository.save(
       this.categoriaRepository.create(categoria),
     );
