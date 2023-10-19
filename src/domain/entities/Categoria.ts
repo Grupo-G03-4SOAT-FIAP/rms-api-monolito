@@ -12,14 +12,14 @@ export class Categoria {
   ativo: boolean;
   produtos: Produto[];
   constructor(categoria: {
-    id: number;
-    nome: string;
-    descricao: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string;
-    ativo: boolean;
-    produtos: Produto[];
+    id?: number;
+    nome?: string;
+    descricao?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    deletedAt?: string;
+    ativo?: boolean;
+    produtos?: Produto[];
   }) {
     this.id = categoria?.id;
     this.nome = categoria?.nome;

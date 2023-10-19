@@ -3,6 +3,7 @@ import { CriaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/ca
 import { AtualizaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
 import { ICategoriaUseCase } from 'src/domain/ports/categoria/ICategoriaUseCase';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
+import { Categoria } from 'src/domain/entities/Categoria';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
@@ -12,11 +13,12 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   ) {}
 
   async criaNova(dadosCategoria: CriaCategoriaDTO) {
-    const categoria =
-      await this.categoriaRepository.criaCategoria(dadosCategoria);
+    const categoria = new Categoria(dadosCategoria);
+    const novaCategoria =
+      await this.categoriaRepository.criaCategoria(categoria);
     return {
       mensagem: 'categoria criada com sucesso',
-      categoria: categoria,
+      categoria: novaCategoria,
     };
   }
 
