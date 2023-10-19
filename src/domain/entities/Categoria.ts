@@ -9,18 +9,25 @@ export class Categoria {
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
-  produtos: Produto[];
   ativo: boolean;
-
-  constructor(
-    id?: number,
-    nome?: string,
-    descricao?: string,
-    ativo: boolean = true,
-  ) {
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.ativo = ativo;
+  produtos: Produto[];
+  constructor(categoria: {
+    id?: number;
+    nome?: string;
+    descricao?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    deletedAt?: string;
+    ativo?: boolean;
+    produtos?: Produto[];
+  }) {
+    this.id = categoria?.id;
+    this.nome = categoria?.nome;
+    this.descricao = categoria?.descricao;
+    this.ativo = categoria?.ativo;
+    this.createdAt = categoria?.createdAt;
+    this.updatedAt = categoria?.updatedAt;
+    this.deletedAt = categoria?.deletedAt;
+    this.produtos = categoria?.produtos;
   }
 }

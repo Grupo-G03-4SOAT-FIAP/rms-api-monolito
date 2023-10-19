@@ -7,10 +7,16 @@ import { AtualizaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dt
  */
 
 export interface ICategoriaUseCase {
-  criaNova(dadosCategoria: CriaCategoriaDTO): Promise<void>;
+  criaNova(
+    dadosCategoria: CriaCategoriaDTO,
+  ): Promise<{ mensagem: string; categoria: any }>;
   listaTodas(): Promise<ListaCategoriaDTO[]>;
-  atualiza(id: number, dadosCategoria: AtualizaCategoriaDTO);
-  remove(id: number);
+  listaUma(id: number): Promise<any>;
+  atualiza(
+    id: number,
+    dadosCategoria: AtualizaCategoriaDTO,
+  ): Promise<{ mensagem: string; categoria: any }>;
+  remove(id: number): Promise<{ mensagem: string }>;
 }
 
 export const ICategoriaUseCase = Symbol('ICategoriaUseCase');

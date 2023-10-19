@@ -1,6 +1,16 @@
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class AtualizaCategoriaDTO {
+  constructor(categoria?: {
+    nome?: string;
+    descricao?: string;
+    ativo?: boolean;
+  }) {
+    this.nome = categoria?.nome;
+    this.descricao = categoria?.descricao;
+    this.ativo = categoria?.ativo;
+  }
+
   @IsString()
   @IsNotEmpty({ message: 'Nome da categoria não pode ser vazio' })
   nome: string;

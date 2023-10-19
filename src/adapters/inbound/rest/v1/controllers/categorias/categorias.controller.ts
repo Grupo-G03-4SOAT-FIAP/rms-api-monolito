@@ -11,7 +11,7 @@ import {
 
 import { AtualizaCategoriaDTO } from '../../presenters/dto/categoria/AtualizaCategoria.dto';
 import { CriaCategoriaDTO } from '../../presenters/dto/categoria/CriaCategoria.dto';
-import { ICategoriaUseCase } from 'src/domain/ports/categoria/ICategoriaUseCase';
+import { ICategoriaUseCase } from '../../../../../../domain/ports/categoria/ICategoriaUseCase';
 
 @Controller('categorias')
 export class CategoriaController {
@@ -22,12 +22,17 @@ export class CategoriaController {
 
   @Post()
   async criaNovo(@Body() dadosCategoria: CriaCategoriaDTO) {
-    return this.CategoriaUseCase.criaNova(dadosCategoria);
+    return await this.CategoriaUseCase.criaNova(dadosCategoria);
   }
 
   @Get()
   async listaTodos() {
-    return this.CategoriaUseCase.listaTodas();
+    return await this.CategoriaUseCase.listaTodas();
+  }
+
+  @Get(':id')
+  async listaUma(@Param('id') id: number) {
+    return await this.CategoriaUseCase.listaUma(id);
   }
 
   @Put('/:id')
@@ -35,24 +40,11 @@ export class CategoriaController {
     @Param('id') id: number,
     @Body() dadosCategoria: AtualizaCategoriaDTO,
   ) {
-    const categoriaAlterada = await this.CategoriaUseCase.atualiza(
-      id,
-      dadosCategoria,
-    );
-
-    return {
-      mensagem: 'categoria atualizada com sucesso',
-      categoria: categoriaAlterada,
-    };
+    return await this.CategoriaUseCase.atualiza(id, dadosCategoria);
   }
 
   @Delete('/:id')
   async remove(@Param('id') id: number) {
-    const categoriaRemovida = await this.CategoriaUseCase.remove(id);
-
-    return {
-      mensagem: 'categoria removida com sucesso',
-      categoria: categoriaRemovida,
-    };
+    return await this.CategoriaUseCase.remove(id);
   }
 }

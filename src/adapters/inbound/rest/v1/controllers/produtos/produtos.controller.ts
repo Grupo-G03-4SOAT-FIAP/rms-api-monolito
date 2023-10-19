@@ -27,7 +27,12 @@ export class ProdutoController {
 
   @Get()
   async listaTodos() {
-    return this.produtoUseCase.listaTodos();
+    return await this.produtoUseCase.listaTodos();
+  }
+
+  @Get('/categoria/:id')
+  async listaTodosPorCategoria(@Param('id') id_categoria: number) {
+    return await this.produtoUseCase.listaPorCategoria(id_categoria);
   }
 
   @Put('/:id')
