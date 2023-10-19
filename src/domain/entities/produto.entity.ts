@@ -1,12 +1,12 @@
 /* istanbul ignore file */
 
-import { Categoria } from './Categoria';
+import { CategoriaEntity } from './categoria.entity';
 
-export class Produto {
+export class ProdutoEntity {
   id: string;
   nome: string;
   descricao: string;
-  categoria: Categoria;
+  categoria: CategoriaEntity;
   valorUnitario: number;
   imagemUrl: string;
   createdAt: string;
@@ -18,7 +18,7 @@ export class Produto {
     id?: string,
     nome?: string,
     descricao?: string,
-    categoria?: Categoria,
+    categoria?: CategoriaEntity,
     valorUnitario?: number,
     imagemUrl?: string,
     ativo: boolean = true,

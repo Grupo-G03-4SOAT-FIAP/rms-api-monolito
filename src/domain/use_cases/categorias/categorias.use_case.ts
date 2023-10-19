@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
-import { CriaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/CriaCategoria.dto';
-import { AtualizaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
+import { CriaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria/CriaCategoria.dto';
+import { AtualizaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria/AtualizaCategoria.dto';
 import { ICategoriaUseCase } from 'src/domain/ports/categoria/ICategoriaUseCase';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
 
@@ -19,7 +19,8 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoria.descricao = dadosCategoria.descricao;
     categoria.ativo = dadosCategoria.ativo;
 
-    const categoriaCadastrado = this.categoriaRepository.criaCategoria(categoria);
+    const categoriaCadastrado =
+      this.categoriaRepository.criaCategoria(categoria);
     return categoriaCadastrado;
   }
 
@@ -40,7 +41,8 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   }
 
   async remove(id: number) {
-    const categoriaRemovida = await this.categoriaRepository.deletaCategoria(id);
+    const categoriaRemovida =
+      await this.categoriaRepository.deletaCategoria(id);
 
     return {
       mensagem: 'categoria removida com sucesso',

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ListaProdutoDTO } from '../../../inbound/rest/v1/presenters/dto/produto/ListaProduto.dto';
+import { ListaProdutoDTO } from '../../../inbound/rest/v1/presenters/produto/ListaProduto.dto';
 import { ProdutoModel } from '../../models/produto.model';
 import { Repository } from 'typeorm';
-import { AtualizaProdutoDTO } from '../../../inbound/rest/v1/presenters/dto/produto/AtualizaProduto.dto';
+import { AtualizaProdutoDTO } from '../../../inbound/rest/v1/presenters/produto/AtualizaProduto.dto';
 import { IProdutoRepository } from 'src/domain/ports/produto/IProdutoRepository';
-import { Produto } from 'src/domain/entities/Produto';
+import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 
 @Injectable()
 export class ProdutoRepository implements IProdutoRepository {
@@ -55,7 +55,7 @@ export class ProdutoRepository implements IProdutoRepository {
     await this.produtoRepository.delete(id);
   }
 
-  private toProduto(produto: Produto): ProdutoModel {
+  private toProduto(produto: ProdutoEntity): ProdutoModel {
     const produtoModel: ProdutoModel = new ProdutoModel();
 
     produtoModel.id = produto.id;
@@ -71,8 +71,8 @@ export class ProdutoRepository implements IProdutoRepository {
     return produtoModel;
   }
 
-  private toCategoriaModel(produtoModel: ProdutoModel): Produto {
-    const produto: Produto = new Produto();
+  private toCategoriaModel(produtoModel: ProdutoModel): ProdutoEntity {
+    const produto: ProdutoEntity = new ProdutoEntity();
 
     produto.id = produtoModel.id;
     produto.nome = produtoModel.nome;

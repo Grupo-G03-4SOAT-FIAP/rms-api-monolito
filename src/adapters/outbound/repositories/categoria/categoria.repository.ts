@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ListaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/ListaCategoria.dto';
+import { ListaCategoriaDTO } from '../../../inbound/rest/v1/presenters/categoria/ListaCategoria.dto';
 import { CategoriaModel } from '../../models/categoria.model';
 import { Repository } from 'typeorm';
-import { AtualizaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
+import { AtualizaCategoriaDTO } from '../../../inbound/rest/v1/presenters/categoria/AtualizaCategoria.dto';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
-import { Categoria } from 'src/domain/entities/Categoria';
+import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {
@@ -14,7 +14,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     private readonly categoriaRepository: Repository<CategoriaModel>,
   ) {}
 
-  async criaCategoria(categoria: Categoria) {
+  async criaCategoria(categoria: CategoriaEntity) {
     const categoriaModel = this.toCategoria(categoria);
     await this.categoriaRepository.save(categoriaModel);
   }
@@ -50,7 +50,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     await this.categoriaRepository.delete(id);
   }
 
-  private toCategoria(categoria: Categoria): CategoriaModel {
+  private toCategoria(categoria: CategoriaEntity): CategoriaModel {
     const categoriaModel: CategoriaModel = new CategoriaModel();
 
     categoriaModel.id = categoria.id;
@@ -64,8 +64,8 @@ export class CategoriaRepository implements ICategoriaRepository {
     return categoriaModel;
   }
 
-  private toCategoriaModel(categoriaModel: CategoriaModel): Categoria {
-    const categoria: Categoria = new Categoria();
+  private toCategoriaModel(categoriaModel: CategoriaModel): CategoriaEntity {
+    const categoria: CategoriaEntity = new CategoriaEntity();
 
     categoria.id = categoriaModel.id;
     categoria.nome = categoriaModel.nome;

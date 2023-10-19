@@ -11,8 +11,8 @@ import { ProdutoModel } from './produto.model';
 
 @Entity('categorias')
 export class CategoriaModel {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;
@@ -20,14 +20,14 @@ export class CategoriaModel {
   @Column({ name: 'descricao', length: 255, nullable: true })
   descricao: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: string;
+  @CreateDateColumn({ name: 'criado_em' })
+  criadoEm: string;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: string;
+  @UpdateDateColumn({ name: 'atualizado_em' })
+  atualizadoEm: string;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: string;
+  @DeleteDateColumn({ name: 'excluido_em' })
+  excluidoEm: string;
 
   @Column({ name: 'ativo', nullable: false, default: true })
   ativo: boolean;

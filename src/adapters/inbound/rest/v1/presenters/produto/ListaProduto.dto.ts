@@ -5,7 +5,7 @@ export class ListaProdutoDTO {
     readonly descricao: string,
     readonly valorUnitario: number,
     readonly imagemUrl: string,
-    readonly idCategoria: number,
+    readonly idCategoria: string,
     readonly ativo: boolean,
   ) {}
 }

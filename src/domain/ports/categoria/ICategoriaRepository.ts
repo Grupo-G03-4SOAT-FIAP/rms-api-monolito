@@ -1,6 +1,6 @@
 import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
-import { ListaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/ListaCategoria.dto';
-import { AtualizaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
+import { ListaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria/ListaCategoria.dto';
+import { AtualizaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria/AtualizaCategoria.dto';
 
 /**
  * Our domain input port

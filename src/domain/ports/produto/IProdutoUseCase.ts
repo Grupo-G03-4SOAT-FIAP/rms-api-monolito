@@ -1,6 +1,6 @@
-import { CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/produto/CriaProduto.dto';
-import { ListaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/produto/ListaProduto.dto';
-import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/produto/AtualizaProduto.dto';
+import { CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/CriaProduto.dto';
+import { ListaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/ListaProduto.dto';
+import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/AtualizaProduto.dto';
 
 /**
  * Our domain input port

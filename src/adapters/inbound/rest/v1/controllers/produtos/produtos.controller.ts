@@ -9,11 +9,11 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { AtualizaProdutoDTO } from '../../presenters/dto/produto/AtualizaProduto.dto';
-import { CriaProdutoDTO } from '../../presenters/dto/produto/CriaProduto.dto';
+import { AtualizaProdutoDTO } from '../../presenters/produto/AtualizaProduto.dto';
+import { CriaProdutoDTO } from '../../presenters/produto/CriaProduto.dto';
 import { IProdutoUseCase } from 'src/domain/ports/produto/IProdutoUseCase';
 
-@Controller('produtos')
+@Controller('produto')
 export class ProdutoController {
   constructor(
     @Inject(IProdutoUseCase)
@@ -22,7 +22,11 @@ export class ProdutoController {
 
   @Post()
   async criaNovo(@Body() dadosProduto: CriaProdutoDTO) {
-    return this.produtoUseCase.criaNovo(dadosProduto);
+    const produtoCriado = this.produtoUseCase.criaNovo(dadosProduto);
+    return {
+      mensagem: 'produto criado com sucesso',
+      produto: produtoCriado,
+    };
   }
 
   @Get()

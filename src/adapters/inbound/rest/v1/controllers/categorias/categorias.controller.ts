@@ -9,11 +9,11 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { AtualizaCategoriaDTO } from '../../presenters/dto/categoria/AtualizaCategoria.dto';
-import { CriaCategoriaDTO } from '../../presenters/dto/categoria/CriaCategoria.dto';
+import { AtualizaCategoriaDTO } from '../../presenters/categoria/AtualizaCategoria.dto';
+import { CriaCategoriaDTO } from '../../presenters/categoria/CriaCategoria.dto';
 import { ICategoriaUseCase } from 'src/domain/ports/categoria/ICategoriaUseCase';
 
-@Controller('categorias')
+@Controller('categoria')
 export class CategoriaController {
   constructor(
     @Inject(ICategoriaUseCase)
@@ -22,7 +22,11 @@ export class CategoriaController {
 
   @Post()
   async criaNovo(@Body() dadosCategoria: CriaCategoriaDTO) {
-    return this.CategoriaUseCase.criaNova(dadosCategoria);
+    const categoriaCriada = this.CategoriaUseCase.criaNova(dadosCategoria);
+    return {
+      mensagem: 'categoria criada com sucesso',
+      categoria: categoriaCriada,
+    };
   }
 
   @Get()

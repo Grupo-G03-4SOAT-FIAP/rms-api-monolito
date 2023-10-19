@@ -19,15 +19,15 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_HOST: ${DB_HOST:-db}
-      POSTGRES_PORT: ${DB_PORT:-5432}
-      POSTGRES_USER: ${DB_USER:-pguser}
+      POSTGRES_USER: ${DB_USERNAME:-pguser}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-pgpwd}
       POSTGRES_DB: ${DB_NAME:-rms}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
     restart: always
+    networks:
+      - default
 
   api:
     container_name: api
@@ -42,28 +42,34 @@ services:
     env_file:
       - .env
     environment:
-      DB_HOST: ${DB_HOST:-db}
-      DB_PORT: ${DB_PORT:-5432}
-      DB_USER: ${DB_USER:-pguser}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USERNAME:-pguser}
       DB_PASSWORD: ${DB_PASSWORD:-pgpwd}
       DB_NAME: ${DB_NAME:-rms}
     restart: always
+    networks:
+      - default
     depends_on:
       - db
 
-  # sonarqube:
-  #   container_name: sonarqube
-  #   hostname: sonarqube
-  #   image: sonarqube
-  #   ports:
-  #     - "9000:9000"
-  #     - "9092:9092"
-  #   expose:
-  #     - 9000
-  #   networks:
-  #     - default
-  #   depends_on:
-  #     - db
+  sonarqube:
+    container_name: sonarqube
+    hostname: sonarqube
+    image: sonarqube
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    expose:
+      - 9000
+    networks:
+      - default
+    depends_on:
+      - db
+
+networks:
+  default:
+    driver: bridge
 
 volumes:
   postgres:

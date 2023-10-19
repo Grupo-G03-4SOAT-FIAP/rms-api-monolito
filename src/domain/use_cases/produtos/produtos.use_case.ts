@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
-import { CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/produto/CriaProduto.dto';
-import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/produto/AtualizaProduto.dto';
+import { CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/CriaProduto.dto';
+import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/AtualizaProduto.dto';
 import { IProdutoUseCase } from 'src/domain/ports/produto/IProdutoUseCase';
 import { IProdutoRepository } from 'src/domain/ports/produto/IProdutoRepository';
 

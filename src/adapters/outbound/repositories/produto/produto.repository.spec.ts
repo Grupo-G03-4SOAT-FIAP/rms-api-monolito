@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
 import { ProdutoRepository } from './produto.repository';
-import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/produto/AtualizaProduto.dto';
+import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/AtualizaProduto.dto';
 
 const testUuid1 = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 const testProd1 = 'X-Tudo';

@@ -1,19 +1,19 @@
 /* istanbul ignore file */
 
-import { Produto } from './Produto';
+import { ProdutoEntity } from './produto.entity';
 
-export class Categoria {
-  id: number;
+export class CategoriaEntity {
+  id: string;
   nome: string;
   descricao: string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
-  produtos: Produto[];
+  produtos: ProdutoEntity[];
   ativo: boolean;
 
   constructor(
-    id?: number,
+    id?: string,
     nome?: string,
     descricao?: string,
     ativo: boolean = true,
