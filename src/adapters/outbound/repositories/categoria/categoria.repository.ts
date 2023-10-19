@@ -15,8 +15,9 @@ export class CategoriaRepository implements ICategoriaRepository {
   ) {}
 
   async criaCategoria(categoria: CriaCategoriaDTO) {
+    const categoriaModel = new CategoriaModel(categoria);
     return await this.categoriaRepository.save(
-      this.categoriaRepository.create(categoria),
+      this.categoriaRepository.create(categoriaModel),
     );
   }
 

@@ -8,7 +8,7 @@ import { CriaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/ca
  */
 
 export interface ICategoriaRepository {
-  criaCategoria(ProdutoModel: CriaCategoriaDTO): Promise<CategoriaModel>;
+  criaCategoria(categoria: CriaCategoriaDTO): Promise<CategoriaModel>;
   listaCategorias(): Promise<ListaCategoriaDTO[]>;
   listaCategoria(id: number): Promise<ListaCategoriaDTO>;
   atualizaCategoria(

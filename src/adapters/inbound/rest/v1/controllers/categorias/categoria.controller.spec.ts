@@ -144,7 +144,6 @@ describe('CategoriaController', () => {
   describe('atualiza', () => {
     it('Deve ser possível atualizar uma categoria com sucesso', async () => {
       const atualizacaoCategoria = {
-        descricao: 'Lanches para todos os tipos - Atualizado',
         nome: 'Lanche Atualizado ',
       };
       const categoriaAtualizar = new AtualizaCategoriaDTO(atualizacaoCategoria);
@@ -161,15 +160,14 @@ describe('CategoriaController', () => {
     });
 
     it('Deve ser lançada uma exceção em caso de erro ao atualizar uma categoria', async () => {
-      const body: AtualizaCategoriaDTO = {
-        descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
+      const data = {
         ativo: false,
       };
+      const atualiza = new AtualizaCategoriaDTO(data);
       jest
         .spyOn(categoriaUseCase, 'atualiza')
         .mockRejectedValueOnce(new Error());
-      expect(categoriaController.atualiza(1, body)).rejects.toThrowError();
+      expect(categoriaController.atualiza(1, atualiza)).rejects.toThrowError();
       expect(categoriaUseCase.atualiza).toHaveBeenCalledTimes(1);
     });
   });
