@@ -31,6 +31,6 @@ export class CriaProdutoDTO {
   @IsNotEmpty({ message: 'Ativo não pode ser vazio' })
   ativo: boolean;
 
-  @IsString()
-  idCategoria: string;
+  @IsNumber()
+  idCategoria: number;
 }
