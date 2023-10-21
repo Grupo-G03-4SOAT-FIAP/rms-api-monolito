@@ -1,5 +1,3 @@
-/* istanbul ignore file */
-
 import { CategoriaEntity } from './categoria.entity';
 
 export class ProdutoEntity {
@@ -15,12 +13,12 @@ export class ProdutoEntity {
   ativo: boolean;
 
   constructor(
-    id?: string,
-    nome?: string,
-    descricao?: string,
-    categoria?: CategoriaEntity,
-    valorUnitario?: number,
-    imagemUrl?: string,
+    id: string,
+    nome: string,
+    descricao: string,
+    categoria: CategoriaEntity,
+    valorUnitario: number,
+    imagemUrl: string,
     ativo: boolean = true,
   ) {
     this.id = id;

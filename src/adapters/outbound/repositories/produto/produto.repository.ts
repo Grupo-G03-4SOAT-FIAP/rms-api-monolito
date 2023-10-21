@@ -5,7 +5,6 @@ import { ProdutoModel } from '../../models/produto.model';
 import { Repository } from 'typeorm';
 import { AtualizaProdutoDTO } from '../../../inbound/rest/v1/presenters/produto/AtualizaProduto.dto';
 import { IProdutoRepository } from 'src/domain/ports/produto/IProdutoRepository';
-import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 
 @Injectable()
 export class ProdutoRepository implements IProdutoRepository {
@@ -19,11 +18,7 @@ export class ProdutoRepository implements IProdutoRepository {
   }
 
   async listaProdutos() {
-    const produtosSalvos = await this.produtoRepository.find({
-      relations: {
-        categoria: true,
-      },
-    });
+    const produtosSalvos = await this.produtoRepository.find();
     const produtosLista = produtosSalvos.map(
       (produto) =>
         new ListaProdutoDTO(
@@ -32,7 +27,26 @@ export class ProdutoRepository implements IProdutoRepository {
           produto.descricao,
           produto.valorUnitario,
           produto.imagemUrl,
-          produto.categoria?.id ?? null,
+          produto.categoria,
+          produto.ativo,
+        ),
+    );
+    return produtosLista;
+  }
+
+  async listaProdutosPorCategoria(id_categoria: number) {
+    const produtos = await this.produtoRepository.find({
+      where: { categoria: { id: id_categoria } },
+    });
+    const produtosLista = produtos.map(
+      (produto) =>
+        new ListaProdutoDTO(
+          produto.id,
+          produto.nome,
+          produto.descricao,
+          produto.valorUnitario,
+          produto.imagemUrl,
+          produto.categoria,
           produto.ativo,
         ),
     );
@@ -53,33 +67,5 @@ export class ProdutoRepository implements IProdutoRepository {
 
   async deletaProduto(id: string) {
     await this.produtoRepository.delete(id);
-  }
-
-  private toProduto(produto: ProdutoEntity): ProdutoModel {
-    const produtoModel: ProdutoModel = new ProdutoModel();
-
-    produtoModel.id = produto.id;
-    produtoModel.nome = produto.nome;
-    produtoModel.descricao = produto.descricao;
-    produtoModel.categoria = produto.categoria
-      ? Object.assign(produto.categoria)
-      : null;
-    produtoModel.valorUnitario = produto.valorUnitario;
-    produtoModel.imagemUrl = produto.imagemUrl;
-    produtoModel.ativo = produto.ativo;
-
-    return produtoModel;
-  }
-
-  private toCategoriaModel(produtoModel: ProdutoModel): ProdutoEntity {
-    const produto: ProdutoEntity = new ProdutoEntity();
-
-    produto.id = produtoModel.id;
-    produto.nome = produtoModel.nome;
-    produto.descricao = produtoModel.descricao;
-    produto.ativo = produtoModel.ativo;
-    produto.categoria = Object.assign(produtoModel.categoria);
-
-    return produto;
   }
 }

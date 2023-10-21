@@ -24,7 +24,6 @@ export class CriaProdutoDTO {
   @Min(1, { message: 'O valor precisa ser maior que zero' })
   valorUnitario: number;
 
-  @IsString({ message: 'Must be a string!' })
   @IsUrl(undefined, { message: 'URL para imagem inválida' })
   imagemUrl: string;
 
@@ -32,6 +31,6 @@ export class CriaProdutoDTO {
   @IsNotEmpty({ message: 'Ativo não pode ser vazio' })
   ativo: boolean;
 
-  @IsString()
-  idCategoria: string;
+  @IsNumber()
+  idCategoria: number;
 }

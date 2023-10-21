@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUrl,
   MaxLength,
@@ -10,7 +11,8 @@ import {
 
 export class AtualizaProdutoDTO {
   @IsString()
-  @IsNotEmpty({ message: 'Nome do produto não pode ser vazio' })
+  @IsNotEmpty({ message: 'Nome do produto não pode ser vazia' })
+  @IsOptional()
   nome: string;
 
   @IsString()
@@ -18,29 +20,34 @@ export class AtualizaProdutoDTO {
   @MaxLength(1000, {
     message: 'Descrição não pode ter mais que 1000 caracteres',
   })
+  @IsOptional()
   descricao: string;
 
   @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
   @Min(1, { message: 'O valor precisa ser maior que zero' })
+  @IsOptional()
   valorUnitario: number;
 
   @IsUrl(undefined, { message: 'URL para imagem inválida' })
+  @IsOptional()
   imagemUrl: string;
 
   @IsBoolean()
   @IsNotEmpty({ message: 'Ativo não pode ser vazio' })
+  @IsOptional()
   ativo: boolean;
 
-  @IsString()
-  idCategoria: string;
+  @IsNumber()
+  @IsOptional()
+  idCategoria: number;
 
   constructor(
     nome?: string,
     descricao?: string,
     valorUnitario?: number,
     imagemUrl?: string,
-    ativo: boolean = true,
-    idCategoria?: string,
+    ativo?: boolean,
+    idCategoria?: number,
   ) {
     this.nome = nome;
     this.descricao = descricao;

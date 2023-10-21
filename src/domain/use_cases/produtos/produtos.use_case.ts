@@ -30,6 +30,10 @@ export class ProdutoUseCase implements IProdutoUseCase {
     return this.produtoRepository.listaProdutos();
   }
 
+  async listaPorCategoria(categoriaId: number) {
+    return await this.produtoRepository.listaProdutosPorCategoria(categoriaId);
+  }
+
   async atualiza(id: string, dadosProduto: AtualizaProdutoDTO) {
     const produtoAlterado = await this.produtoRepository.atualizaProduto(
       id,
