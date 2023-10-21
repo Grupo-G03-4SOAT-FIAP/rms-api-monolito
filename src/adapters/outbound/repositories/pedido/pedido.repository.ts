@@ -5,8 +5,16 @@ import { PedidoModel } from '../../models/pedido.model';
 
 @Injectable()
 export class PedidoRepository implements IPedidoRepository {
-  async criarPedido(pedido: PedidoEntity) {}
-  async editarPedido(pedidoId: string, pedido: PedidoEntity) {}
-  async buscarPedido(pedidoId: string) {}
-  async listarPedido() {}
+  criarPedido(pedido: PedidoEntity): Promise<PedidoModel> {
+    throw new Error('Method not implemented.');
+  }
+  editarPedido(pedidoId: string, pedido: PedidoEntity): Promise<PedidoModel> {
+    throw new Error('Method not implemented.');
+  }
+  buscarPedido(pedidoId: string): Promise<PedidoModel> {
+    throw new Error('Method not implemented.');
+  }
+  listarPedido(): Promise<PedidoModel[]> {
+    throw new Error('Method not implemented.');
+  }
 }
