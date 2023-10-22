@@ -7,19 +7,16 @@ export class ProdutoEntity {
   categoria: CategoriaEntity;
   valorUnitario: number;
   imagemUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
   ativo: boolean;
 
   constructor(
-    id: string,
     nome: string,
-    descricao: string,
     categoria: CategoriaEntity,
     valorUnitario: number,
     imagemUrl: string,
-    ativo: boolean = true,
+    id?: string,
+    descricao?: string,
+    ativo?: boolean,
   ) {
     this.id = id;
     this.nome = nome;

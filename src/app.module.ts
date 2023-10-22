@@ -20,10 +20,13 @@ import { ICategoriaUseCase } from './domain/ports/categoria/ICategoriaUseCase';
 import { CategoriaUseCase } from './domain/use_cases/categorias/categorias.use_case';
 import { ICategoriaRepository } from './domain/ports/categoria/ICategoriaRepository';
 import { CategoriaRepository } from './adapters/outbound/repositories/categoria/categoria.repository';
+import { PedidoModel } from './adapters/outbound/models/pedido.model';
+import { PedidoRepository } from './adapters/outbound/repositories/pedido/pedido.repository';
+import { IPedidoRepository } from './domain/ports/pedido/IPedidoRepository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ProdutoModel, CategoriaModel]),
+    TypeOrmModule.forFeature([ProdutoModel, CategoriaModel, PedidoModel]),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -39,6 +42,7 @@ import { CategoriaRepository } from './adapters/outbound/repositories/categoria/
     ProdutoRepository,
     CategoriaUseCase,
     CategoriaRepository,
+    PedidoRepository,
     {
       provide: IProdutoUseCase,
       useClass: ProdutoUseCase,
@@ -54,6 +58,10 @@ import { CategoriaRepository } from './adapters/outbound/repositories/categoria/
     {
       provide: ICategoriaRepository,
       useClass: CategoriaRepository,
+    },
+    {
+      provide: IPedidoRepository,
+      useClass: PedidoRepository,
     },
   ],
 })

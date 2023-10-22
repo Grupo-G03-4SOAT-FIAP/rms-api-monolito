@@ -1,17 +1,16 @@
-import { ProdutoModel } from '../../../adapters/outbound/models/produto.model';
-import { ListaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/ListaProduto.dto';
-import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/AtualizaProduto.dto';
-
-/**
- * Our domain input port
- */
+import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
+import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 
 export interface IProdutoRepository {
-  criaProduto(ProdutoModel: ProdutoModel): Promise<void>;
-  listaProdutos(): Promise<ListaProdutoDTO[]>;
-  listaProdutosPorCategoria(id_categoria: number): Promise<ListaProdutoDTO[]>;
-  atualizaProduto(id: string, novosDados: AtualizaProdutoDTO);
-  deletaProduto(id: string);
+  criarProduto(produto: ProdutoEntity): Promise<ProdutoModel>;
+  editarProduto(
+    produtoId: string,
+    produto: ProdutoEntity,
+  ): Promise<ProdutoModel>;
+  deletarProduto(produtoId: string): Promise<void>;
+  buscarProduto(produtoId: string): Promise<ProdutoModel | null>;
+  listarProdutos(): Promise<ProdutoModel[] | []>;
+  listarProdutosPorCategoria(categoriaId: string): Promise<ProdutoModel[] | []>;
 }
 
 export const IProdutoRepository = Symbol('IProdutoRepository');

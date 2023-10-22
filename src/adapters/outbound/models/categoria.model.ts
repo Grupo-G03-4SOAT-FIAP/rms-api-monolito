@@ -12,24 +12,18 @@ import { ProdutoModel } from './produto.model';
 @Entity('categorias')
 export class CategoriaModel {
   constructor(categoria: {
-    id?: number;
+    id?: string;
     nome?: string;
     descricao?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    deletedAt?: string;
     ativo?: boolean;
   }) {
     this.id = categoria?.id;
     this.nome = categoria?.nome;
     this.descricao = categoria?.descricao;
     this.ativo = categoria?.ativo;
-    this.createdAt = categoria?.createdAt;
-    this.updatedAt = categoria?.updatedAt;
-    this.deletedAt = categoria?.deletedAt;
   }
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;

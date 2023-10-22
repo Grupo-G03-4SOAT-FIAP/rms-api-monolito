@@ -1,21 +1,15 @@
 import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
-import { ListaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/ListaCategoria.dto';
-import { AtualizaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
-import { Categoria } from 'src/domain/entities/Categoria';
-
-/**
- * Our domain input port
- */
+import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 
 export interface ICategoriaRepository {
-  criaCategoria(categoria: Categoria): Promise<CategoriaModel>;
-  listaCategorias(): Promise<ListaCategoriaDTO[]>;
-  listaCategoria(id: number): Promise<ListaCategoriaDTO>;
-  atualizaCategoria(
-    id: number,
-    novosDados: AtualizaCategoriaDTO,
+  criarCategoria(categoria: CategoriaEntity): Promise<CategoriaModel>;
+  editarCategoria(
+    categoriaId: string,
+    categoria: CategoriaEntity,
   ): Promise<CategoriaModel>;
-  deletaCategoria(id: number): Promise<void>;
+  deletarCategoria(categoriaId: string): Promise<void>;
+  buscarCategoria(categoriaId: string): Promise<CategoriaModel | null>;
+  listarCategorias(): Promise<CategoriaModel[] | []>;
 }
 
 export const ICategoriaRepository = Symbol('ICategoriaRepository');
