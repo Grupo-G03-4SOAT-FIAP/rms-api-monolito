@@ -6,7 +6,7 @@ import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 import { ClienteEntity } from 'src/domain/entities/cliente.entity';
 import { PedidoModel } from '../../models/pedido.model';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 const clienteEntity = new ClienteEntity(
   'Cliente A',
@@ -107,5 +107,53 @@ describe('PedidoRepository', () => {
       where: { id: pedidoId },
     });
     expect(resultado).toBe(pedidoModel);
+  });
+
+  it('deve editar o status de um pedido', async () => {
+    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const novoStatusPedido = 'Recebido';
+
+    mockPedidoModel.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
+
+    const resultado = await pedidoRepository.editarStatusPedido(
+      pedidoId,
+      novoStatusPedido,
+    );
+
+    expect(mockPedidoModel.update).toHaveBeenCalledWith(pedidoId, {
+      statusPedido: novoStatusPedido,
+    });
+    expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
+      where: { id: pedidoId },
+    });
+    expect(resultado).toBe(pedidoModel);
+  });
+
+  it('deve buscar um pedido', async () => {
+    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+
+    mockPedidoModel.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
+
+    const resultado = await pedidoRepository.buscarPedido(pedidoId);
+
+    expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
+      where: { id: pedidoId },
+    });
+    expect(resultado).toBe(pedidoModel);
+  });
+
+  it('deve listar pedidos com statusPagamento aprovado e ordenado por statusPedido', async () => {
+    const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
+    mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
+
+    const resultado = await pedidoRepository.listarPedidos();
+
+    expect(mockPedidoModel.find).toHaveBeenCalledWith({
+      where: {
+        statusPagamento: 'Aprovado',
+        statusPedido: In(['Pronto', 'Em preparação', 'Recebido']),
+      },
+    });
+    expect(resultado).toBe(listaPedidos);
   });
 });
