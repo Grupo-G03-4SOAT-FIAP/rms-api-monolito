@@ -11,17 +11,6 @@ import { ProdutoModel } from './produto.model';
 
 @Entity('categorias')
 export class CategoriaModel {
-  constructor(categoria: {
-    id?: string;
-    nome?: string;
-    descricao?: string;
-    ativo?: boolean;
-  }) {
-    this.id = categoria?.id;
-    this.nome = categoria?.nome;
-    this.descricao = categoria?.descricao;
-    this.ativo = categoria?.ativo;
-  }
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

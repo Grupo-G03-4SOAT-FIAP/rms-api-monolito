@@ -47,22 +47,4 @@ export class ProdutoModel {
   })
   @JoinColumn({ name: 'id_categoria' })
   categoria: CategoriaModel;
-
-  constructor(
-    id?: string,
-    nome?: string,
-    descricao?: string,
-    valorUnitario?: number,
-    imagemUrl?: string,
-    categoria?: CategoriaModel,
-    ativo: boolean = true,
-  ) {
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.valorUnitario = valorUnitario;
-    this.imagemUrl = imagemUrl;
-    this.categoria = categoria;
-    this.ativo = ativo;
-  }
 }
