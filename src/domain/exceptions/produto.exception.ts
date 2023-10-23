@@ -1,7 +1,13 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class ProdutoNaoLocalizadoErro extends HttpException {
-  constructor() {
-    super('Produto não localizado', HttpStatus.NOT_FOUND);
+  constructor(message: string) {
+    super(message, HttpStatus.NOT_FOUND);
+  }
+}
+
+export class NomeProdutoDuplicadoErro extends HttpException {
+  constructor(message: string) {
+    super(message, HttpStatus.BAD_REQUEST);
   }
 }
