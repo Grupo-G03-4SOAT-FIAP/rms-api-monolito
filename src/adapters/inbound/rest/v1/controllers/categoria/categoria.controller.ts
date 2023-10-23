@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Inject,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -31,17 +32,38 @@ export class CategoriaController {
     @Param('id') id: string,
     @Body() categoria: AtualizaCategoriaDTO,
   ) {
-    return await this.categoriaUseCase.editarCategoria(id, categoria);
+    try {
+      return await this.categoriaUseCase.editarCategoria(id, categoria);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Delete('/:id')
   async remover(@Param('id') id: string) {
-    return await this.categoriaUseCase.excluirCategoria(id);
+    try {
+      return await this.categoriaUseCase.excluirCategoria(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Get('/:id')
   async buscar(@Param('id') id: string) {
-    return await this.categoriaUseCase.buscarCategoria(id);
+    try {
+      return await this.categoriaUseCase.buscarCategoria(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Get()

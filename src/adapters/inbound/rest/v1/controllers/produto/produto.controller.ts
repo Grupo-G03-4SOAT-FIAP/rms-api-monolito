@@ -32,22 +32,35 @@ export class ProdutoController {
     @Param('id') id: string,
     @Body() produto: AtualizaProdutoDTO,
   ) {
-    return await this.produtoUseCase.editarProduto(id, produto);
+    try {
+      return await this.produtoUseCase.editarProduto(id, produto);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Delete('/:id')
   async remover(@Param('id') id: string) {
-    return await this.produtoUseCase.excluirProduto(id);
+    try {
+      return await this.produtoUseCase.excluirProduto(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Get('/:id')
   async buscar(@Param('id') id: string) {
     try {
-      const result = await this.produtoUseCase.buscarProduto(id);
-      return result;
+      return await this.produtoUseCase.buscarProduto(id);
     } catch (error) {
       if (error instanceof NotFoundException) {
-        throw new NotFoundException('Produto não localizado');
+        throw new NotFoundException(error.message);
       }
       throw error;
     }
