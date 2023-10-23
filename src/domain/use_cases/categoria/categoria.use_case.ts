@@ -8,6 +8,7 @@ import {
   CriaCategoriaDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
+import { CategoriaNaoLocalizadoErro } from 'src/domain/exceptions/categoria.exception';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
@@ -42,7 +43,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoria(categoriaId);
     if (!buscaCategoria) {
-      throw new Error('Categoria não localizada');
+      throw new CategoriaNaoLocalizadoErro();
     }
 
     const { nome, descricao } = categoria; // Desempacotando os valores do DTO
@@ -67,7 +68,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoria(categoriaId);
     if (!buscaCategoria) {
-      throw new Error('Categoria não localizada');
+      throw new CategoriaNaoLocalizadoErro();
     }
 
     await this.categoriaRepository.excluirCategoria(categoriaId);
@@ -79,7 +80,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   async buscarCategoria(categoriaId: string): Promise<CategoriaDTO> {
     const result = await this.categoriaRepository.buscarCategoria(categoriaId);
     if (!result) {
-      throw new Error('Categoria não localizada');
+      throw new CategoriaNaoLocalizadoErro();
     }
 
     const categoriaDTO = new CategoriaDTO();

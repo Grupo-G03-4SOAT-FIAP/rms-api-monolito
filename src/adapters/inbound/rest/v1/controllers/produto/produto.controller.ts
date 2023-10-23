@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Inject,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -41,7 +42,15 @@ export class ProdutoController {
 
   @Get('/:id')
   async buscar(@Param('id') id: string) {
-    return await this.produtoUseCase.buscarProduto(id);
+    try {
+      const result = await this.produtoUseCase.buscarProduto(id);
+      return result;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('Produto não localizado');
+      }
+      throw error;
+    }
   }
 
   @Get()

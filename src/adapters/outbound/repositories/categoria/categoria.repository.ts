@@ -40,11 +40,7 @@ export class CategoriaRepository implements ICategoriaRepository {
   }
 
   async listarCategorias(): Promise<CategoriaModel[] | []> {
-    const categorias = await this.categoriaRepository.find({
-      relations: {
-        produtos: false,
-      },
-    });
+    const categorias = await this.categoriaRepository.find({});
     return categorias;
   }
 }

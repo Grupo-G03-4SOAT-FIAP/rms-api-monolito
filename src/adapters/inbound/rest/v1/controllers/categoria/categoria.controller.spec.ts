@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriaController } from './categorias.controller';
+import { CategoriaController } from './categoria.controller';
 import { AtualizaCategoriaDTO } from '../../presenters/dto/categoria/AtualizaCategoria.dto';
 import { CriaCategoriaDTO } from '../../presenters/dto/categoria/CriaCategoria.dto';
 import { Categoria } from '../../../../../../domain/entities/Categoria';

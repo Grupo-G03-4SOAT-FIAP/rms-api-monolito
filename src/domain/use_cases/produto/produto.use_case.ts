@@ -9,6 +9,9 @@ import {
 import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
+import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
+import { ProdutoNaoLocalizadoErro } from 'src/domain/exceptions/produto.exception';
+import { CategoriaNaoLocalizadoErro } from 'src/domain/exceptions/categoria.exception';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {
@@ -27,7 +30,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoria(categoriaId);
     if (!buscaCategoria) {
-      throw new Error('Categoria não localizada');
+      throw new CategoriaNaoLocalizadoErro();
     }
 
     const produtoEntity = new ProdutoEntity(
@@ -45,7 +48,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-    produtoDTO.categoria = result.categoria;
+
+    const categoriaDTO = new CategoriaDTO();
+    categoriaDTO.id = result.categoria.id;
+    categoriaDTO.nome = result.categoria.nome;
+    categoriaDTO.descricao = result.categoria.descricao;
+
+    produtoDTO.categoria = categoriaDTO;
 
     return {
       mensagem: 'Produto criado com sucesso',
@@ -59,7 +68,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
   ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
     const buscaProduto = await this.produtoRepository.buscarProduto(produtoId);
     if (!buscaProduto) {
-      throw new Error('Produto não localizado');
+      throw new ProdutoNaoLocalizadoErro();
     }
 
     const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
@@ -67,7 +76,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoria(categoriaId);
     if (!buscaCategoria) {
-      throw new Error('Categoria não localizada');
+      throw new CategoriaNaoLocalizadoErro();
     }
 
     const produtoEntity = new ProdutoEntity(
@@ -88,7 +97,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-    produtoDTO.categoria = result.categoria;
+
+    const categoriaDTO = new CategoriaDTO();
+    categoriaDTO.id = result.categoria.id;
+    categoriaDTO.nome = result.categoria.nome;
+    categoriaDTO.descricao = result.categoria.descricao;
+
+    produtoDTO.categoria = categoriaDTO;
 
     return {
       mensagem: 'Produto criado com sucesso',
@@ -99,7 +114,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
   async excluirProduto(produtoId: string): Promise<{ mensagem: string }> {
     const buscaProduto = await this.produtoRepository.buscarProduto(produtoId);
     if (!buscaProduto) {
-      throw new Error('Produto não localizado');
+      throw new ProdutoNaoLocalizadoErro();
     }
 
     await this.produtoRepository.excluirProduto(produtoId);
@@ -111,7 +126,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
   async buscarProduto(produtoId: string): Promise<ProdutoDTO> {
     const result = await this.produtoRepository.buscarProduto(produtoId);
     if (!result) {
-      throw new Error('Produto não localizado');
+      throw new ProdutoNaoLocalizadoErro();
     }
 
     const produtoDTO = new ProdutoDTO();
@@ -120,7 +135,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-    produtoDTO.categoria = result.categoria;
+
+    const categoriaDTO = new CategoriaDTO();
+    categoriaDTO.id = result.categoria.id;
+    categoriaDTO.nome = result.categoria.nome;
+    categoriaDTO.descricao = result.categoria.descricao;
+
+    produtoDTO.categoria = categoriaDTO;
 
     return produtoDTO;
   }
@@ -134,7 +155,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
       produtoDTO.descricao = produto.descricao;
       produtoDTO.valorUnitario = produto.valorUnitario;
       produtoDTO.imagemUrl = produto.imagemUrl;
-      produtoDTO.categoria = produto.categoria;
+
+      const categoriaDTO = new CategoriaDTO();
+      categoriaDTO.id = produto.categoria.id;
+      categoriaDTO.nome = produto.categoria.nome;
+      categoriaDTO.descricao = produto.categoria.descricao;
+
+      produtoDTO.categoria = categoriaDTO;
       return produtoDTO;
     });
 
@@ -153,7 +180,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
       produtoDTO.descricao = produto.descricao;
       produtoDTO.valorUnitario = produto.valorUnitario;
       produtoDTO.imagemUrl = produto.imagemUrl;
-      produtoDTO.categoria = produto.categoria;
+
+      const categoriaDTO = new CategoriaDTO();
+      categoriaDTO.id = produto.categoria.id;
+      categoriaDTO.nome = produto.categoria.nome;
+      categoriaDTO.descricao = produto.categoria.descricao;
+
+      produtoDTO.categoria = categoriaDTO;
       return produtoDTO;
     });
 

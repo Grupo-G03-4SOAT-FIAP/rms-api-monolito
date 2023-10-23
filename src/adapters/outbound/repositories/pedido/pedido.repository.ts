@@ -28,6 +28,7 @@ export class PedidoRepository implements IPedidoRepository {
 
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },
+      relations: ['cliente'],
     });
   }
 
@@ -41,12 +42,14 @@ export class PedidoRepository implements IPedidoRepository {
 
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },
+      relations: ['cliente'],
     });
   }
 
   async buscarPedido(pedidoId: string): Promise<PedidoModel | null> {
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },
+      relations: ['cliente'],
     });
   }
 
@@ -62,6 +65,7 @@ export class PedidoRepository implements IPedidoRepository {
         statusPagamento: 'Aprovado',
         statusPedido: In(['Pronto', 'Em preparação', 'Recebido']),
       },
+      relations: ['cliente'],
     });
 
     if (pedidos.length > 0) {

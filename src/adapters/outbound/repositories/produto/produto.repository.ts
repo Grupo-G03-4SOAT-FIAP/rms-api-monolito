@@ -26,6 +26,7 @@ export class ProdutoRepository implements IProdutoRepository {
 
     return await this.produtoRepository.findOne({
       where: { id: produtoId },
+      relations: ['categoria'], // Especifica a relação que você deseja incluir
     });
   }
 
@@ -36,11 +37,14 @@ export class ProdutoRepository implements IProdutoRepository {
   async buscarProduto(produtoId: string): Promise<ProdutoModel | null> {
     return await this.produtoRepository.findOne({
       where: { id: produtoId },
+      relations: ['categoria'],
     });
   }
 
   async listarProdutos(): Promise<ProdutoModel[] | []> {
-    const produtos = await this.produtoRepository.find({});
+    const produtos = await this.produtoRepository.find({
+      relations: ['categoria'],
+    });
     return produtos;
   }
 
@@ -49,6 +53,7 @@ export class ProdutoRepository implements IProdutoRepository {
   ): Promise<ProdutoModel[] | []> {
     const produtos = await this.produtoRepository.find({
       where: { categoria: { id: categoriaId } },
+      relations: ['categoria'],
     });
     return produtos;
   }
