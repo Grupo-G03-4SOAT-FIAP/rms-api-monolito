@@ -188,6 +188,12 @@ export class ProdutoUseCase implements IProdutoUseCase {
   async listarProdutosPorCategoria(
     categoriaId: string,
   ): Promise<ProdutoDTO[] | []> {
+    const buscaCategoria =
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+    if (!buscaCategoria) {
+      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+    }
+
     const result =
       await this.produtoRepository.listarProdutosPorCategoria(categoriaId);
     const listaProdutosDTO = result.map((produto: ProdutoModel) => {

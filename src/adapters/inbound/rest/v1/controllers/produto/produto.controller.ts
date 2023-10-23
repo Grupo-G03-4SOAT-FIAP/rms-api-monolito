@@ -87,6 +87,13 @@ export class ProdutoController {
 
   @Get('/categoria/:id')
   async listarPorCategoria(@Param('id') id: string) {
-    return await this.produtoUseCase.listarProdutosPorCategoria(id);
+    try {
+      return await this.produtoUseCase.listarProdutosPorCategoria(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 }
