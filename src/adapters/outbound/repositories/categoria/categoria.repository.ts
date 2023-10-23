@@ -33,9 +33,19 @@ export class CategoriaRepository implements ICategoriaRepository {
     await this.categoriaRepository.delete({ id: categoriaId });
   }
 
-  async buscarCategoria(categoriaId: string): Promise<CategoriaModel | null> {
+  async buscarCategoriaPorId(
+    categoriaId: string,
+  ): Promise<CategoriaModel | null> {
     return await this.categoriaRepository.findOne({
       where: { id: categoriaId },
+    });
+  }
+
+  async buscarCategoriaPorNome(
+    nomeCategoria: string,
+  ): Promise<CategoriaModel | null> {
+    return await this.categoriaRepository.findOne({
+      where: { nome: nomeCategoria },
     });
   }
 

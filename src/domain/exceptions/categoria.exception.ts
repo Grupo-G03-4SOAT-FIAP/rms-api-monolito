@@ -8,6 +8,6 @@ export class CategoriaNaoLocalizadaErro extends HttpException {
 
 export class NomeCategoriaDuplicadoErro extends HttpException {
   constructor(message: string) {
-    super(message, HttpStatus.BAD_REQUEST);
+    super(message, HttpStatus.CONFLICT);
   }
 }

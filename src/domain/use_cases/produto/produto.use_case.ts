@@ -10,7 +10,10 @@ import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
 import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
-import { ProdutoNaoLocalizadoErro } from 'src/domain/exceptions/produto.exception';
+import {
+  NomeProdutoDuplicadoErro,
+  ProdutoNaoLocalizadoErro,
+} from 'src/domain/exceptions/produto.exception';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
 
 @Injectable()
@@ -27,8 +30,14 @@ export class ProdutoUseCase implements IProdutoUseCase {
   ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
     const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
 
+    const buscaProduto =
+      await this.produtoRepository.buscarProdutoPorNome(nome);
+    if (buscaProduto) {
+      throw new NomeProdutoDuplicadoErro('Existe um produto com esse nome');
+    }
+
     const buscaCategoria =
-      await this.categoriaRepository.buscarCategoria(categoriaId);
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
@@ -66,15 +75,22 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoId: string,
     produto: AtualizaProdutoDTO,
   ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
-    const buscaProduto = await this.produtoRepository.buscarProduto(produtoId);
-    if (!buscaProduto) {
+    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
+
+    const buscaProdutoPorNome =
+      await this.produtoRepository.buscarProdutoPorNome(nome);
+    if (buscaProdutoPorNome) {
+      throw new NomeProdutoDuplicadoErro('Existe um produto com esse nome');
+    }
+
+    const buscaProdutoPorId =
+      await this.produtoRepository.buscarProdutoPorId(produtoId);
+    if (!buscaProdutoPorId) {
       throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
     }
 
-    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
-
     const buscaCategoria =
-      await this.categoriaRepository.buscarCategoria(categoriaId);
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
@@ -112,7 +128,8 @@ export class ProdutoUseCase implements IProdutoUseCase {
   }
 
   async excluirProduto(produtoId: string): Promise<{ mensagem: string }> {
-    const buscaProduto = await this.produtoRepository.buscarProduto(produtoId);
+    const buscaProduto =
+      await this.produtoRepository.buscarProdutoPorId(produtoId);
     if (!buscaProduto) {
       throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
     }
@@ -124,7 +141,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
   }
 
   async buscarProduto(produtoId: string): Promise<ProdutoDTO> {
-    const result = await this.produtoRepository.buscarProduto(produtoId);
+    const result = await this.produtoRepository.buscarProdutoPorId(produtoId);
     if (!result) {
       throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
     }

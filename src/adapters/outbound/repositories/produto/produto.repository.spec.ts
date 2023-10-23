@@ -89,10 +89,9 @@ describe('ProdutoRepository', () => {
   });
 
   it('deve editar um produto', async () => {
-    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
 
+    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const resultado = await produtoRepository.editarProduto(
       produtoId,
       produtoEntity,
@@ -104,13 +103,13 @@ describe('ProdutoRepository', () => {
     );
     expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
       where: { id: produtoId },
+      relations: ['categoria'],
     });
     expect(resultado).toBe(produtoModel);
   });
 
   it('deve excluir uma categoria', async () => {
     const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     await produtoRepository.excluirProduto(produtoId);
 
     expect(mockProdutoModel.delete).toHaveBeenCalledWith({
@@ -118,15 +117,28 @@ describe('ProdutoRepository', () => {
     });
   });
 
-  it('deve buscar um produto', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
+  it('deve buscar um produto por id', async () => {
     mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
 
-    const resultado = await produtoRepository.buscarProduto(pedidoId);
+    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado = await produtoRepository.buscarProdutoPorId(produtoId);
 
     expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
-      where: { id: pedidoId },
+      where: { id: produtoId },
+      relations: ['categoria'],
+    });
+    expect(resultado).toBe(produtoModel);
+  });
+
+  it('deve buscar um produto por nome', async () => {
+    mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
+
+    const nomeProduto = 'Produto X';
+    const resultado = await produtoRepository.buscarProdutoPorNome(nomeProduto);
+
+    expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
+      where: { nome: nomeProduto },
+      relations: ['categoria'],
     });
     expect(resultado).toBe(produtoModel);
   });
@@ -137,20 +149,23 @@ describe('ProdutoRepository', () => {
 
     const resultado = await produtoRepository.listarProdutos();
 
-    expect(mockProdutoModel.find).toHaveBeenCalledWith({});
+    expect(mockProdutoModel.find).toHaveBeenCalledWith({
+      relations: ['categoria'],
+    });
     expect(resultado).toBe(listaProdutos);
   });
 
   it('deve listar produtos por categoria', async () => {
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const listaProdutos = [produtoModel, produtoModel, produtoModel];
     mockProdutoModel.find.mockResolvedValue(Promise.resolve(listaProdutos));
 
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const resultado =
       await produtoRepository.listarProdutosPorCategoria(categoriaId);
 
     expect(mockProdutoModel.find).toHaveBeenCalledWith({
       where: { categoria: { id: categoriaId } },
+      relations: ['categoria'],
     });
     expect(resultado).toBe(listaProdutos);
   });

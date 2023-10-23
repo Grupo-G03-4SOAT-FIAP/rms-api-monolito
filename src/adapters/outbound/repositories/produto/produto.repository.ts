@@ -34,9 +34,18 @@ export class ProdutoRepository implements IProdutoRepository {
     await this.produtoRepository.delete({ id: produtoId });
   }
 
-  async buscarProduto(produtoId: string): Promise<ProdutoModel | null> {
+  async buscarProdutoPorId(produtoId: string): Promise<ProdutoModel | null> {
     return await this.produtoRepository.findOne({
       where: { id: produtoId },
+      relations: ['categoria'],
+    });
+  }
+
+  async buscarProdutoPorNome(
+    nomeProduto: string,
+  ): Promise<ProdutoModel | null> {
+    return await this.produtoRepository.findOne({
+      where: { nome: nomeProduto },
       relations: ['categoria'],
     });
   }

@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
@@ -24,7 +25,14 @@ export class CategoriaController {
 
   @Post()
   async criar(@Body() categoria: CriaCategoriaDTO) {
-    return await this.categoriaUseCase.criarCategoria(categoria);
+    try {
+      return await this.categoriaUseCase.criarCategoria(categoria);
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw new ConflictException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Put('/:id')
@@ -35,6 +43,9 @@ export class CategoriaController {
     try {
       return await this.categoriaUseCase.editarCategoria(id, categoria);
     } catch (error) {
+      if (error instanceof ConflictException) {
+        throw new ConflictException(error.message);
+      }
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
       }

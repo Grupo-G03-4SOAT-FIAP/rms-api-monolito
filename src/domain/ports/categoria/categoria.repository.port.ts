@@ -8,7 +8,8 @@ export interface ICategoriaRepository {
     categoria: CategoriaEntity,
   ): Promise<CategoriaModel>;
   excluirCategoria(categoriaId: string): Promise<void>;
-  buscarCategoria(categoriaId: string): Promise<CategoriaModel | null>;
+  buscarCategoriaPorId(categoriaId: string): Promise<CategoriaModel | null>;
+  buscarCategoriaPorNome(nomeCategoria: string): Promise<CategoriaModel | null>;
   listarCategorias(): Promise<CategoriaModel[] | []>;
 }
 

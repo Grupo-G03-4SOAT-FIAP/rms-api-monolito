@@ -66,12 +66,11 @@ describe('CategoriaRepository', () => {
   });
 
   it('deve editar uma categoria', async () => {
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     mockCategoriaModel.findOne.mockResolvedValue(
       Promise.resolve(categoriaModel),
     );
 
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const resultado = await categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntity,
@@ -89,7 +88,6 @@ describe('CategoriaRepository', () => {
 
   it('deve excluir uma categoria', async () => {
     const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     await categoriaRepository.excluirCategoria(categoriaId);
 
     expect(mockCategoriaModel.delete).toHaveBeenCalledWith({
@@ -97,17 +95,32 @@ describe('CategoriaRepository', () => {
     });
   });
 
-  it('deve buscar uma categoria', async () => {
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
+  it('deve buscar uma categoria por id', async () => {
     mockCategoriaModel.findOne.mockResolvedValue(
       Promise.resolve(categoriaModel),
     );
 
-    const resultado = await categoriaRepository.buscarCategoria(categoriaId);
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado =
+      await categoriaRepository.buscarCategoriaPorId(categoriaId);
 
     expect(mockCategoriaModel.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
+    });
+    expect(resultado).toBe(categoriaModel);
+  });
+
+  it('deve buscar uma categoria por nome', async () => {
+    mockCategoriaModel.findOne.mockResolvedValue(
+      Promise.resolve(categoriaModel),
+    );
+
+    const nomeCategoria = 'Lanche';
+    const resultado =
+      await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
+
+    expect(mockCategoriaModel.findOne).toHaveBeenCalledWith({
+      where: { nome: nomeCategoria },
     });
     expect(resultado).toBe(categoriaModel);
   });
@@ -118,11 +131,7 @@ describe('CategoriaRepository', () => {
 
     const resultado = await categoriaRepository.listarCategorias();
 
-    expect(mockCategoriaModel.find).toHaveBeenCalledWith({
-      relations: {
-        produtos: false,
-      },
-    });
+    expect(mockCategoriaModel.find).toHaveBeenCalledWith({});
     expect(resultado).toBe(listaCategorias);
   });
 });

@@ -8,7 +8,10 @@ import {
   CriaCategoriaDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
-import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
+import {
+  CategoriaNaoLocalizadaErro,
+  NomeCategoriaDuplicadoErro,
+} from 'src/domain/exceptions/categoria.exception';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
@@ -21,6 +24,15 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoria: CriaCategoriaDTO,
   ): Promise<{ mensagem: string; categoria: CategoriaDTO }> {
     const { nome, descricao } = categoria; // Desempacotando os valores do DTO
+
+    const buscaCategoria =
+      await this.categoriaRepository.buscarCategoriaPorNome(nome);
+    if (buscaCategoria) {
+      throw new NomeCategoriaDuplicadoErro(
+        'Existe uma categoria com esse nome',
+      );
+    }
+
     const categoriaEntity = new CategoriaEntity(nome, descricao);
     const result =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
@@ -40,13 +52,22 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoriaId: string,
     categoria: AtualizaCategoriaDTO,
   ): Promise<{ mensagem: string; categoria: CategoriaDTO }> {
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoria(categoriaId);
-    if (!buscaCategoria) {
+    const { nome, descricao } = categoria; // Desempacotando os valores do DTO
+
+    const buscaCategoriaPorNome =
+      await this.categoriaRepository.buscarCategoriaPorNome(nome);
+    if (buscaCategoriaPorNome) {
+      throw new NomeCategoriaDuplicadoErro(
+        'Existe uma categoria com esse nome',
+      );
+    }
+
+    const buscaCategoriaPorId =
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+    if (!buscaCategoriaPorId) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
 
-    const { nome, descricao } = categoria; // Desempacotando os valores do DTO
     const categoriaEntity = new CategoriaEntity(nome, descricao);
     const result = await this.categoriaRepository.editarCategoria(
       categoriaId,
@@ -66,7 +87,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
 
   async excluirCategoria(categoriaId: string): Promise<{ mensagem: string }> {
     const buscaCategoria =
-      await this.categoriaRepository.buscarCategoria(categoriaId);
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
@@ -78,7 +99,8 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   }
 
   async buscarCategoria(categoriaId: string): Promise<CategoriaDTO> {
-    const result = await this.categoriaRepository.buscarCategoria(categoriaId);
+    const result =
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!result) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }

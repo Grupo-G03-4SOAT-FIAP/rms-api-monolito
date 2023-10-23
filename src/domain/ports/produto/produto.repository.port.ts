@@ -8,7 +8,8 @@ export interface IProdutoRepository {
     produto: ProdutoEntity,
   ): Promise<ProdutoModel>;
   excluirProduto(produtoId: string): Promise<void>;
-  buscarProduto(produtoId: string): Promise<ProdutoModel | null>;
+  buscarProdutoPorId(produtoId: string): Promise<ProdutoModel | null>;
+  buscarProdutoPorNome(nomeProduto: string): Promise<ProdutoModel | null>;
   listarProdutos(): Promise<ProdutoModel[] | []>;
   listarProdutosPorCategoria(categoriaId: string): Promise<ProdutoModel[] | []>;
 }

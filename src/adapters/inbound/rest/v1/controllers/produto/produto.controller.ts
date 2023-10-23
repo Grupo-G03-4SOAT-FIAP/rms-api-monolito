@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
@@ -24,7 +25,17 @@ export class ProdutoController {
 
   @Post()
   async criar(@Body() produto: CriaProdutoDTO) {
-    return await this.produtoUseCase.criarProduto(produto);
+    try {
+      return await this.produtoUseCase.criarProduto(produto);
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw new ConflictException(error.message);
+      }
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Put('/:id')
@@ -35,6 +46,9 @@ export class ProdutoController {
     try {
       return await this.produtoUseCase.editarProduto(id, produto);
     } catch (error) {
+      if (error instanceof ConflictException) {
+        throw new ConflictException(error.message);
+      }
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
       }
