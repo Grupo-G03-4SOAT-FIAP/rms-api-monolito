@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ListaProdutoDTO } from '../../../inbound/rest/v1/presenters/dto/produto/ListaProduto.dto';
 import { ProdutoModel } from '../../models/produto.model';
 import { Repository } from 'typeorm';
-import { AtualizaProdutoDTO } from '../../../inbound/rest/v1/presenters/dto/produto/AtualizaProduto.dto';
-import { IProdutoRepository } from 'src/domain/ports/produto/IProdutoRepository';
+import { IProdutoRepository } from 'src/domain/ports/produto/produto.repository.port';
+import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 
 @Injectable()
 export class ProdutoRepository implements IProdutoRepository {
@@ -13,59 +12,58 @@ export class ProdutoRepository implements IProdutoRepository {
     private readonly produtoRepository: Repository<ProdutoModel>,
   ) {}
 
-  async criaProduto(ProdutoModel: ProdutoModel) {
-    await this.produtoRepository.save(ProdutoModel);
+  async criarProduto(produto: ProdutoEntity): Promise<ProdutoModel> {
+    const novoProduto = this.produtoRepository.create(produto);
+    await this.produtoRepository.save(novoProduto);
+    return novoProduto;
   }
 
-  async listaProdutos() {
-    const produtosSalvos = await this.produtoRepository.find();
-    const produtosLista = produtosSalvos.map(
-      (produto) =>
-        new ListaProdutoDTO(
-          produto.id,
-          produto.nome,
-          produto.descricao,
-          produto.valorUnitario,
-          produto.imagemUrl,
-          produto.categoria,
-          produto.ativo,
-        ),
-    );
-    return produtosLista;
+  async editarProduto(
+    produtoId: string,
+    produto: ProdutoEntity,
+  ): Promise<ProdutoModel> {
+    await this.produtoRepository.update(produtoId, produto);
+
+    return await this.produtoRepository.findOne({
+      where: { id: produtoId },
+      relations: ['categoria'], // Especifica a relação que você deseja incluir
+    });
   }
 
-  async listaProdutosPorCategoria(id_categoria: number) {
+  async excluirProduto(produtoId: string): Promise<void> {
+    await this.produtoRepository.delete({ id: produtoId });
+  }
+
+  async buscarProdutoPorId(produtoId: string): Promise<ProdutoModel | null> {
+    return await this.produtoRepository.findOne({
+      where: { id: produtoId },
+      relations: ['categoria'],
+    });
+  }
+
+  async buscarProdutoPorNome(
+    nomeProduto: string,
+  ): Promise<ProdutoModel | null> {
+    return await this.produtoRepository.findOne({
+      where: { nome: nomeProduto },
+      relations: ['categoria'],
+    });
+  }
+
+  async listarProdutos(): Promise<ProdutoModel[] | []> {
     const produtos = await this.produtoRepository.find({
-      where: { categoria: { id: id_categoria } },
+      relations: ['categoria'],
     });
-    const produtosLista = produtos.map(
-      (produto) =>
-        new ListaProdutoDTO(
-          produto.id,
-          produto.nome,
-          produto.descricao,
-          produto.valorUnitario,
-          produto.imagemUrl,
-          produto.categoria,
-          produto.ativo,
-        ),
-    );
-    return produtosLista;
+    return produtos;
   }
 
-  async atualizaProduto(id: string, novosDados: AtualizaProdutoDTO) {
-    const entityName = await this.produtoRepository.findOne({
-      where: { id: id },
-      relations: {
-        categoria: true,
-      },
+  async listarProdutosPorCategoria(
+    categoriaId: string,
+  ): Promise<ProdutoModel[] | []> {
+    const produtos = await this.produtoRepository.find({
+      where: { categoria: { id: categoriaId } },
+      relations: ['categoria'],
     });
-    Object.assign(entityName, novosDados);
-    entityName.categoria = <any>{ id: novosDados.idCategoria };
-    await this.produtoRepository.save(entityName);
-  }
-
-  async deletaProduto(id: string) {
-    await this.produtoRepository.delete(id);
+    return produtos;
   }
 }

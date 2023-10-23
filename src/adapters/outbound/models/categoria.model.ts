@@ -6,30 +6,14 @@ import {
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { ProdutoModel } from './produto.model';
 
 @Entity('categorias')
 export class CategoriaModel {
-  constructor(categoria: {
-    id?: number;
-    nome?: string;
-    descricao?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    deletedAt?: string;
-    ativo?: boolean;
-  }) {
-    this.id = categoria?.id;
-    this.nome = categoria?.nome;
-    this.descricao = categoria?.descricao;
-    this.ativo = categoria?.ativo;
-    this.createdAt = categoria?.createdAt;
-    this.updatedAt = categoria?.updatedAt;
-    this.deletedAt = categoria?.deletedAt;
-  }
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;
@@ -37,21 +21,22 @@ export class CategoriaModel {
   @Column({ name: 'descricao', length: 255, nullable: true })
   descricao: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: string;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: string;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: string;
-
   @Column({ name: 'ativo', nullable: false, default: true })
   ativo: boolean;
+
+  @CreateDateColumn({ name: 'criado_em' })
+  criadoEm: string;
+
+  @UpdateDateColumn({ name: 'atualizado_em' })
+  atualizadoEm: string;
+
+  @DeleteDateColumn({ name: 'excluido_em' })
+  excluidoEm: string;
 
   @OneToMany(() => ProdutoModel, (produtoModel) => produtoModel.categoria, {
     cascade: true,
     eager: false,
   })
+  @JoinColumn({ name: 'categoria_id' })
   produtos: ProdutoModel[];
 }

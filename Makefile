@@ -7,8 +7,8 @@
 lint:
 	@npm run lint
 
-.PHONY: format ## Run format code
-format:
+.PHONY: format-code ## Run format code
+format-code:
 	@npm run format
 
 

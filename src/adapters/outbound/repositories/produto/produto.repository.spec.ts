@@ -1,100 +1,172 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ProdutoEntity } from 'src/domain/entities/produto.entity';
+import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 import { Repository } from 'typeorm';
-import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
+import { ProdutoModel } from '../../models/produto.model';
+import { CategoriaModel } from '../../models/categoria.model';
 import { ProdutoRepository } from './produto.repository';
-import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/produto/AtualizaProduto.dto';
 
-const testUuid1 = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-const testProd1 = 'X-Tudo';
-const testDesc1 = 'Ingredientes X-Tudo aqui';
+const categoriaEntity = new CategoriaEntity(
+  'Lanche',
+  'Lanche x tudo',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
 
-const prodArray = [
-  new ProdutoModel(testUuid1, testProd1, testDesc1, 14),
-  new ProdutoModel(
-    '294e880f-a4b2-400e-b186-47de17b46bc2',
-    'X-Salada',
-    'Ingredientes X-Salada aqui',
-    13,
-  ),
-  new ProdutoModel(
-    '42edaa42-4c88-4952-9d70-b9e895f21fc6',
-    'X-Bacon',
-    'Ingredientes X-Bacon aqui',
-    12,
-  ),
-];
+const produtoEntity = new ProdutoEntity(
+  'Produto X',
+  categoriaEntity,
+  5.0,
+  'http://',
+  'Teste produto x',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
 
-const oneProd = new ProdutoModel(testUuid1, testProd1, testDesc1, 14);
+const categoriaModel = new CategoriaModel();
+categoriaModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+categoriaModel.nome = 'Lanche';
+categoriaModel.descricao = 'Lanche x tudo';
+categoriaModel.produtos = null;
+categoriaModel.ativo = true;
+categoriaModel.criadoEm = new Date().toISOString();
+categoriaModel.atualizadoEm = new Date().toISOString();
+categoriaModel.excluidoEm = new Date().toISOString();
+
+const produtoModel = new ProdutoModel();
+produtoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+produtoModel.nome = 'Produto X';
+produtoModel.descricao = 'Teste produto x';
+produtoModel.valorUnitario = 5.0;
+produtoModel.imagemUrl = 'http://';
+produtoModel.ativo = true;
+produtoModel.categoria = categoriaModel;
+produtoModel.criadoEm = new Date().toISOString();
+produtoModel.atualizadoEm = new Date().toISOString();
+produtoModel.excluidoEm = new Date().toISOString();
 
 describe('ProdutoRepository', () => {
-  let service: ProdutoRepository;
-  let repo: Repository<ProdutoModel>;
+  let produtoRepository: ProdutoRepository;
+  let mockProdutoModel: jest.Mocked<Repository<ProdutoModel>>;
 
   beforeEach(async () => {
+    mockProdutoModel = {
+      create: jest.fn(),
+      save: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+      findOne: jest.fn(),
+      find: jest.fn(),
+    } as Partial<Repository<ProdutoModel>> as jest.Mocked<
+      Repository<ProdutoModel>
+    >;
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProdutoRepository,
         {
           provide: getRepositoryToken(ProdutoModel),
-          // define all the methods that you use from the catRepo
-          // give proper return values as expected or mock implementations, your choice
-          useValue: {
-            find: jest.fn().mockResolvedValue(prodArray),
-            findOne: jest.fn().mockResolvedValue(prodArray),
-            findOneOrFail: jest.fn().mockResolvedValue(oneProd),
-            create: jest.fn().mockReturnValue(oneProd),
-            save: jest.fn(),
-            // as these do not actually use their return values in our sample
-            // we just make sure that their resolve is true to not crash
-            update: jest.fn().mockResolvedValue(true),
-            // as these do not actually use their return values in our sample
-            // we just make sure that their resolve is true to not crash
-            delete: jest.fn().mockResolvedValue(true),
-          },
+          useValue: mockProdutoModel,
         },
       ],
     }).compile();
 
-    service = module.get<ProdutoRepository>(ProdutoRepository);
-    repo = module.get<Repository<ProdutoModel>>(
-      getRepositoryToken(ProdutoModel),
-    );
+    produtoRepository = module.get<ProdutoRepository>(ProdutoRepository);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
-  describe('listaProdutos', () => {
-    it('should return an array of products', async () => {
-      const prods = await service.listaProdutos();
-      //expect(prods).toEqual(prodArray);
-      expect(repo.find).toBeCalledTimes(1);
+
+  it('deve criar um produto', async () => {
+    mockProdutoModel.create.mockReturnValue(produtoModel);
+    mockProdutoModel.save.mockResolvedValue(Promise.resolve(produtoModel));
+
+    const resultado = await produtoRepository.criarProduto(produtoEntity);
+
+    expect(mockProdutoModel.create).toHaveBeenCalledWith(produtoEntity);
+    expect(mockProdutoModel.save).toHaveBeenCalledWith(produtoModel);
+    expect(resultado).toBe(produtoModel);
+  });
+
+  it('deve editar um produto', async () => {
+    mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
+
+    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado = await produtoRepository.editarProduto(
+      produtoId,
+      produtoEntity,
+    );
+
+    expect(mockProdutoModel.update).toHaveBeenCalledWith(
+      produtoId,
+      produtoEntity,
+    );
+    expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
+      where: { id: produtoId },
+      relations: ['categoria'],
+    });
+    expect(resultado).toBe(produtoModel);
+  });
+
+  it('deve excluir uma categoria', async () => {
+    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    await produtoRepository.excluirProduto(produtoId);
+
+    expect(mockProdutoModel.delete).toHaveBeenCalledWith({
+      id: produtoId,
     });
   });
-  describe('criaProduto', () => {
-    it('should successfully insert a product', () => {
-      expect(
-        service.criaProduto(
-          new ProdutoModel(testUuid1, testProd1, testDesc1, 14),
-        ),
-      ).resolves.toEqual(undefined);
-      expect(repo.save).toBeCalledTimes(1);
+
+  it('deve buscar um produto por id', async () => {
+    mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
+
+    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado = await produtoRepository.buscarProdutoPorId(produtoId);
+
+    expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
+      where: { id: produtoId },
+      relations: ['categoria'],
     });
+    expect(resultado).toBe(produtoModel);
   });
-  describe('atualizaProduto', () => {
-    it('should call the update method', async () => {
-      const prod = await service.atualizaProduto(
-        '0a14aa4e-75e7-405f-8301-81f60646c93d',
-        new AtualizaProdutoDTO(testProd1, testDesc1, 14),
-      );
-      expect(prod).toEqual(undefined);
-      expect(repo.save).toBeCalledTimes(1);
+
+  it('deve buscar um produto por nome', async () => {
+    mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
+
+    const nomeProduto = 'Produto X';
+    const resultado = await produtoRepository.buscarProdutoPorNome(nomeProduto);
+
+    expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
+      where: { nome: nomeProduto },
+      relations: ['categoria'],
     });
+    expect(resultado).toBe(produtoModel);
   });
-  describe('deletaProduto', () => {
-    it('should return {deleted: true}', () => {
-      expect(service.deletaProduto(testUuid1)).resolves.toEqual(undefined);
+
+  it('deve listar todos produtos', async () => {
+    const listaProdutos = [produtoModel, produtoModel, produtoModel];
+    mockProdutoModel.find.mockResolvedValue(Promise.resolve(listaProdutos));
+
+    const resultado = await produtoRepository.listarProdutos();
+
+    expect(mockProdutoModel.find).toHaveBeenCalledWith({
+      relations: ['categoria'],
     });
+    expect(resultado).toBe(listaProdutos);
+  });
+
+  it('deve listar produtos por categoria', async () => {
+    const listaProdutos = [produtoModel, produtoModel, produtoModel];
+    mockProdutoModel.find.mockResolvedValue(Promise.resolve(listaProdutos));
+
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado =
+      await produtoRepository.listarProdutosPorCategoria(categoriaId);
+
+    expect(mockProdutoModel.find).toHaveBeenCalledWith({
+      where: { categoria: { id: categoriaId } },
+      relations: ['categoria'],
+    });
+    expect(resultado).toBe(listaProdutos);
   });
 });

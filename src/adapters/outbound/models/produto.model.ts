@@ -24,20 +24,20 @@ export class ProdutoModel {
   @Column({ name: 'valor_unitario', nullable: false })
   valorUnitario: number;
 
-  @Column({ name: 'imagem_url', length: 2048, nullable: true })
+  @Column({ name: 'imagem_url', length: 2048, nullable: false })
   imagemUrl: string;
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: string;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: string;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: string;
 
   @Column({ name: 'ativo', nullable: false, default: true })
   ativo: boolean;
+
+  @CreateDateColumn({ name: 'criado_em' })
+  criadoEm: string;
+
+  @UpdateDateColumn({ name: 'atualizado_em' })
+  atualizadoEm: string;
+
+  @DeleteDateColumn({ name: 'excluido_em' })
+  excluidoEm: string;
 
   @ManyToOne(() => CategoriaModel, (categoria) => categoria.produtos, {
     orphanedRowAction: 'delete',
@@ -45,24 +45,6 @@ export class ProdutoModel {
     onUpdate: 'CASCADE',
     nullable: true,
   })
-  @JoinColumn({ name: 'id_categoria' })
+  @JoinColumn({ name: 'categoria_id' })
   categoria: CategoriaModel;
-
-  constructor(
-    id?: string,
-    nome?: string,
-    descricao?: string,
-    valorUnitario?: number,
-    imagemUrl?: string,
-    categoria?: CategoriaModel,
-    ativo: boolean = true,
-  ) {
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.valorUnitario = valorUnitario;
-    this.imagemUrl = imagemUrl;
-    this.categoria = categoria;
-    this.ativo = ativo;
-  }
 }

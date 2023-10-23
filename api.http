@@ -1,7 +1,12 @@
-###
+### Healthcheck
+GET http://localhost:3000/
+
+
+### Listar categorias
 GET http://localhost:3000/categorias
 
-###
+
+### Criar categoria
 POST http://localhost:3000/categorias
 Content-Type: application/json
 
@@ -10,7 +15,8 @@ Content-Type: application/json
     "descricao": "Lanches para todos os gostos!"
 }
 
-###
+
+### Editar categoria
 PUT http://localhost:3000/categorias/1
 Content-Type: application/json
 
@@ -20,14 +26,16 @@ Content-Type: application/json
     "ativo": true
 }
 
-###
+
+### Deletar categoria
 DELETE http://localhost:3000/categorias/1
 
 
-###
+### Listar produtos
 GET http://localhost:3000/produtos
 
-###
+
+### Criar produto
 POST http://localhost:3000/produtos
 Content-Type: application/json
 
@@ -39,7 +47,7 @@ Content-Type: application/json
     "idCategoria": null
 }
 
-###
+### Editar produto
 PUT http://localhost:3000/produtos/894a2d09-c7e0-4615-ae38-476663108207
 Content-Type: application/json
 
@@ -52,5 +60,6 @@ Content-Type: application/json
     "ativo": true
 }
 
-###
+
+### Remover produto
 DELETE http://localhost:3000/produtos/f64fdf7d-2233-4164-a37d-818d07e6e6c6

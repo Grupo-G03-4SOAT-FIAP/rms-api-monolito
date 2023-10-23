@@ -1,11 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ListaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/ListaCategoria.dto';
 import { CategoriaModel } from '../../models/categoria.model';
 import { Repository } from 'typeorm';
-import { AtualizaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
-import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
-import { Categoria } from 'src/domain/entities/Categoria';
+import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
+import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {
@@ -14,50 +12,45 @@ export class CategoriaRepository implements ICategoriaRepository {
     private readonly categoriaRepository: Repository<CategoriaModel>,
   ) {}
 
-  async criaCategoria(categoria: Categoria) {
-    const categoriaModel = new CategoriaModel(categoria);
-    return await this.categoriaRepository.save(
-      this.categoriaRepository.create(categoriaModel),
-    );
+  async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaModel> {
+    const novoPedido = this.categoriaRepository.create(categoria);
+    await this.categoriaRepository.save(novoPedido);
+    return novoPedido;
   }
 
-  async listaCategorias() {
-    const categoriasSalvos = await this.categoriaRepository.find({
-      order: {
-        id: 'ASC',
-      },
-      relations: {
-        produtos: false,
-      },
+  async editarCategoria(
+    categoriaId: string,
+    categoria: CategoriaEntity,
+  ): Promise<CategoriaModel> {
+    await this.categoriaRepository.update(categoriaId, categoria);
+
+    return await this.categoriaRepository.findOne({
+      where: { id: categoriaId },
     });
-    const categoriasLista = categoriasSalvos.map(
-      (categoria) => new ListaCategoriaDTO(categoria),
-    );
-    return categoriasLista;
   }
 
-  async listaCategoria(id: number): Promise<ListaCategoriaDTO> {
-    try {
-      const categoria = await this.categoriaRepository.findOneOrFail({
-        where: { id },
-      });
-      const categoriaLista = new ListaCategoriaDTO(categoria);
-      return categoriaLista;
-    } catch (error) {
-      throw new NotFoundException(error.message);
-    }
+  async excluirCategoria(categoriaId: string): Promise<void> {
+    await this.categoriaRepository.delete({ id: categoriaId });
   }
 
-  async atualizaCategoria(id: number, novosDados: AtualizaCategoriaDTO) {
-    const categoria = await this.categoriaRepository.findOneOrFail({
-      where: { id },
+  async buscarCategoriaPorId(
+    categoriaId: string,
+  ): Promise<CategoriaModel | null> {
+    return await this.categoriaRepository.findOne({
+      where: { id: categoriaId },
     });
-    this.categoriaRepository.merge(categoria, novosDados);
-    return this.categoriaRepository.save(categoria);
   }
 
-  async deletaCategoria(id: number) {
-    await this.categoriaRepository.findOneOrFail({ where: { id } });
-    await this.categoriaRepository.softDelete(id);
+  async buscarCategoriaPorNome(
+    nomeCategoria: string,
+  ): Promise<CategoriaModel | null> {
+    return await this.categoriaRepository.findOne({
+      where: { nome: nomeCategoria },
+    });
+  }
+
+  async listarCategorias(): Promise<CategoriaModel[] | []> {
+    const categorias = await this.categoriaRepository.find({});
+    return categorias;
   }
 }

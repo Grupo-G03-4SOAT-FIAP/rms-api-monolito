@@ -1,220 +1,137 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Test, TestingModule } from '@nestjs/testing';
+import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 import { Repository } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
 import { CategoriaModel } from '../../models/categoria.model';
-import { CategoriaRepository } from '../categoria/categoria.repository';
-import { AtualizaCategoriaDTO } from '../../../inbound/rest/v1/presenters/dto/categoria/AtualizaCategoria.dto';
-import { ListaCategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/dto/categoria/ListaCategoria.dto';
+import { CategoriaRepository } from './categoria.repository';
 
-const ListaCategoriaEntidade: CategoriaModel[] = [
-  new CategoriaModel({
-    id: 1,
-    ativo: true,
-    descricao: 'Lanches de todos os tipos',
-    nome: 'Lanche',
-    updatedAt: '',
-    createdAt: '',
-    deletedAt: '',
-  }),
-  new CategoriaModel({
-    id: 2,
-    ativo: true,
-    descricao: 'Bebidas de todos os tipos',
-    nome: 'Bebidas',
-    updatedAt: '',
-    createdAt: '',
-    deletedAt: '',
-  }),
-  new CategoriaModel({
-    id: 2,
-    ativo: true,
-    descricao: 'Acompanhamento de todos os tipos',
-    nome: 'Acompanhamento',
-    updatedAt: '',
-    createdAt: '',
-    deletedAt: '',
-  }),
-];
+const categoriaEntity = new CategoriaEntity(
+  'Lanche',
+  'Lanche x tudo',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
 
-const updateCategoriaEntidadeItem = new CategoriaModel({
-  descricao: 'Lanches para todos os tipos - Atualizado',
-  nome: 'Lanche Atualizado ',
-});
+const categoriaModel = new CategoriaModel();
+categoriaModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+categoriaModel.nome = 'Lanche';
+categoriaModel.descricao = 'Lanche x tudo';
+categoriaModel.produtos = null;
+categoriaModel.ativo = true;
+categoriaModel.criadoEm = new Date().toISOString();
+categoriaModel.atualizadoEm = new Date().toISOString();
+categoriaModel.excluidoEm = new Date().toISOString();
 
 describe('CategoriaRepository', () => {
   let categoriaRepository: CategoriaRepository;
-  let categoryModel: Repository<CategoriaModel>;
+  let mockCategoriaModel: jest.Mocked<Repository<CategoriaModel>>;
 
   beforeEach(async () => {
+    mockCategoriaModel = {
+      create: jest.fn(),
+      save: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+      findOne: jest.fn(),
+      find: jest.fn(),
+    } as Partial<Repository<CategoriaModel>> as jest.Mocked<
+      Repository<CategoriaModel>
+    >;
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CategoriaRepository,
         {
           provide: getRepositoryToken(CategoriaModel),
-          useValue: {
-            find: jest.fn().mockResolvedValue(ListaCategoriaEntidade),
-            findOneOrFail: jest
-              .fn()
-              .mockResolvedValue(ListaCategoriaEntidade[0]),
-            create: jest.fn().mockReturnValue(ListaCategoriaEntidade[0]),
-            save: jest.fn().mockResolvedValue(ListaCategoriaEntidade[0]),
-            merge: jest.fn().mockResolvedValue(updateCategoriaEntidadeItem),
-            softDelete: jest.fn().mockReturnValue(undefined),
-          },
+          useValue: mockCategoriaModel,
         },
       ],
     }).compile();
 
     categoriaRepository = module.get<CategoriaRepository>(CategoriaRepository);
-    categoryModel = module.get<Repository<CategoriaModel>>(
-      getRepositoryToken(CategoriaModel),
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('deve criar uma categoria', async () => {
+    mockCategoriaModel.create.mockReturnValue(categoriaModel);
+    mockCategoriaModel.save.mockResolvedValue(Promise.resolve(categoriaModel));
+
+    const resultado = await categoriaRepository.criarCategoria(categoriaEntity);
+
+    expect(mockCategoriaModel.create).toHaveBeenCalledWith(categoriaEntity);
+    expect(mockCategoriaModel.save).toHaveBeenCalledWith(categoriaModel);
+    expect(resultado).toBe(categoriaModel);
+  });
+
+  it('deve editar uma categoria', async () => {
+    mockCategoriaModel.findOne.mockResolvedValue(
+      Promise.resolve(categoriaModel),
     );
+
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado = await categoriaRepository.editarCategoria(
+      categoriaId,
+      categoriaEntity,
+    );
+
+    expect(mockCategoriaModel.update).toHaveBeenCalledWith(
+      categoriaId,
+      categoriaEntity,
+    );
+    expect(mockCategoriaModel.findOne).toHaveBeenCalledWith({
+      where: { id: categoriaId },
+    });
+    expect(resultado).toBe(categoriaModel);
   });
 
-  it('should be defined', () => {
-    expect(categoriaRepository).toBeDefined();
-    expect(categoryModel).toBeDefined();
-  });
+  it('deve excluir uma categoria', async () => {
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    await categoriaRepository.excluirCategoria(categoriaId);
 
-  describe('listaCategorias', () => {
-    it('Deve ser retornada uma lista de entidades de todas as categorias', async () => {
-      const result = await categoriaRepository.listaCategorias();
-      const listaCategoriasEsperadas = result.map(
-        (item) => new ListaCategoriaDTO(item),
-      );
-      expect(result).toEqual(listaCategoriasEsperadas);
-      expect(categoryModel.find).toHaveBeenCalledTimes(1);
-    });
-
-    it('Deve ser retornada uma exceção em caso de erro', () => {
-      jest.spyOn(categoryModel, 'find').mockRejectedValueOnce(new Error());
-      expect(categoriaRepository.listaCategorias()).rejects.toThrowError();
-    });
-  });
-
-  describe('listaCategoria', () => {
-    it('Deve ser retornado um item da entidade categoria', async () => {
-      const result = await categoriaRepository.listaCategoria(1);
-      const categoriaEsperada = new ListaCategoriaDTO(
-        ListaCategoriaEntidade[0],
-      );
-      expect(result).toEqual(categoriaEsperada);
-      expect(categoryModel.findOneOrFail).toHaveBeenCalledTimes(1);
-    });
-
-    it('Deve ser lançada uma exceção (not found exception) em caso de erro', () => {
-      jest
-        .spyOn(categoryModel, 'findOneOrFail')
-        .mockRejectedValueOnce(new Error());
-      expect(categoriaRepository.listaCategoria(1)).rejects.toThrowError(
-        NotFoundException,
-      );
+    expect(mockCategoriaModel.delete).toHaveBeenCalledWith({
+      id: categoriaId,
     });
   });
 
-  describe('criaCategoria', () => {
-    it('Deve criar uma categoria com sucesso', async () => {
-      const categoria: CategoriaModel = {
-        ativo: true,
-        descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
-        id: 0,
-        createdAt: '',
-        updatedAt: '',
-        deletedAt: '',
-        produtos: [],
-      };
-      const result = await categoriaRepository.criaCategoria(categoria);
-      expect(result).toEqual(ListaCategoriaEntidade[0]);
-      expect(categoryModel.create).toHaveBeenCalledTimes(1);
-      expect(categoryModel.save).toHaveBeenCalledTimes(1);
-    });
+  it('deve buscar uma categoria por id', async () => {
+    mockCategoriaModel.findOne.mockResolvedValue(
+      Promise.resolve(categoriaModel),
+    );
 
-    it('Deve ser lançada uma exceção em caso de erro', () => {
-      const categoria: CategoriaModel = {
-        ativo: true,
-        descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
-        id: 0,
-        createdAt: '',
-        updatedAt: '',
-        deletedAt: '',
-        produtos: [],
-      };
-      jest.spyOn(categoryModel, 'save').mockRejectedValueOnce(new Error());
-      expect(
-        categoriaRepository.criaCategoria(categoria),
-      ).rejects.toThrowError();
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado =
+      await categoriaRepository.buscarCategoriaPorId(categoriaId);
+
+    expect(mockCategoriaModel.findOne).toHaveBeenCalledWith({
+      where: { id: categoriaId },
     });
+    expect(resultado).toBe(categoriaModel);
   });
 
-  describe('atualizaCategoria', () => {
-    it('Deve ser atualiza uma categoria com sucesso', async () => {
-      const data = {
-        descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
-      };
-      const atualizaCategoria = new AtualizaCategoriaDTO(data);
-      jest
-        .spyOn(categoryModel, 'save')
-        .mockResolvedValueOnce(updateCategoriaEntidadeItem);
-      const result = await categoriaRepository.atualizaCategoria(
-        1,
-        atualizaCategoria,
-      );
-      expect(result).toEqual(updateCategoriaEntidadeItem);
-    });
+  it('deve buscar uma categoria por nome', async () => {
+    mockCategoriaModel.findOne.mockResolvedValue(
+      Promise.resolve(categoriaModel),
+    );
 
-    it('Deve lançar uma not found exception se a categoria não existir', async () => {
-      const data = {
-        descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
-      };
-      const atualizaCategoria = new AtualizaCategoriaDTO(data);
-      jest
-        .spyOn(categoryModel, 'findOneOrFail')
-        .mockRejectedValueOnce(new NotFoundException());
-      expect(
-        categoriaRepository.atualizaCategoria(1, atualizaCategoria),
-      ).rejects.toThrowError(NotFoundException);
-    });
+    const nomeCategoria = 'Lanche';
+    const resultado =
+      await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
 
-    it('Deve lançar uma exceção quando não conseguir salvar', () => {
-      const data = {
-        descricao: 'Lanches para todos os tipos - Atualizado',
-        nome: 'Lanche Atualizado ',
-      };
-      const atualizaCategoria = new AtualizaCategoriaDTO(data);
-      jest.spyOn(categoryModel, 'save').mockRejectedValueOnce(new Error());
-      expect(
-        categoriaRepository.atualizaCategoria(1, atualizaCategoria),
-      ).rejects.toThrowError();
+    expect(mockCategoriaModel.findOne).toHaveBeenCalledWith({
+      where: { nome: nomeCategoria },
     });
+    expect(resultado).toBe(categoriaModel);
   });
 
-  describe('deletaCategoria', () => {
-    it('Deve ser removida a entidade da categoria com sucesso', async () => {
-      const result = await categoriaRepository.deletaCategoria(1);
-      expect(result).toBeUndefined();
-      expect(categoryModel.findOneOrFail).toHaveBeenCalledTimes(1);
-      expect(categoryModel.softDelete).toHaveBeenCalledTimes(1);
-    });
+  it('deve listar todas categorias sem produtos', async () => {
+    const listaCategorias = [categoriaModel, categoriaModel, categoriaModel];
+    mockCategoriaModel.find.mockResolvedValue(Promise.resolve(listaCategorias));
 
-    it('Deve lançar uma not found exception se a categoria não existir', async () => {
-      jest
-        .spyOn(categoryModel, 'findOneOrFail')
-        .mockRejectedValueOnce(new NotFoundException());
-      expect(categoriaRepository.deletaCategoria(1)).rejects.toThrowError(
-        NotFoundException,
-      );
-    });
+    const resultado = await categoriaRepository.listarCategorias();
 
-    it('Deve lançar uma exception se retornar um erro ao tentar remover a categoria', async () => {
-      jest
-        .spyOn(categoryModel, 'softDelete')
-        .mockRejectedValueOnce(new Error());
-      expect(categoriaRepository.deletaCategoria(1)).rejects.toThrowError();
-    });
+    expect(mockCategoriaModel.find).toHaveBeenCalledWith({});
+    expect(resultado).toBe(listaCategorias);
   });
 });
