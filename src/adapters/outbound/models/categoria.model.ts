@@ -21,13 +21,6 @@ export class CategoriaModel {
   @Column({ name: 'descricao', length: 255, nullable: true })
   descricao: string;
 
-  @OneToMany(() => ProdutoModel, (produtoModel) => produtoModel.categoria, {
-    cascade: true,
-    eager: false,
-  })
-  @JoinColumn({ name: 'categoriaId' })
-  produtos: ProdutoModel[];
-
   @Column({ name: 'ativo', nullable: false, default: true })
   ativo: boolean;
 
@@ -39,4 +32,11 @@ export class CategoriaModel {
 
   @DeleteDateColumn({ name: 'excluido_em' })
   excluidoEm: string;
+
+  @OneToMany(() => ProdutoModel, (produtoModel) => produtoModel.categoria, {
+    cascade: true,
+    eager: false,
+  })
+  @JoinColumn({ name: 'categoria_id' })
+  produtos: ProdutoModel[];
 }

@@ -7,6 +7,7 @@ import {
   Min,
   IsUrl,
 } from 'class-validator';
+import { CategoriaDTO } from './categoria.dto';
 
 export class CriaProdutoDTO {
   @IsString()
@@ -64,5 +65,5 @@ export class ProdutoDTO {
   descricao: string;
   valorUnitario: number;
   imagemUrl: string;
-  categoriaId: string;
+  categoria: CategoriaDTO;
 }

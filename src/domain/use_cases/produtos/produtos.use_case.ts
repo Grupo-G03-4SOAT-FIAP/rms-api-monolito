@@ -45,7 +45,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-    produtoDTO.categoriaId = result.categoria.id;
+    produtoDTO.categoria = result.categoria;
 
     return {
       mensagem: 'Produto criado com sucesso',
@@ -88,7 +88,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-    produtoDTO.categoriaId = result.categoria.id;
+    produtoDTO.categoria = result.categoria;
 
     return {
       mensagem: 'Produto criado com sucesso',
@@ -120,7 +120,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-    produtoDTO.categoriaId = result.categoria.id;
+    produtoDTO.categoria = result.categoria;
 
     return produtoDTO;
   }
@@ -134,7 +134,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
       produtoDTO.descricao = produto.descricao;
       produtoDTO.valorUnitario = produto.valorUnitario;
       produtoDTO.imagemUrl = produto.imagemUrl;
-      produtoDTO.categoriaId = produto.categoria.id;
+      produtoDTO.categoria = produto.categoria;
       return produtoDTO;
     });
 
@@ -153,7 +153,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
       produtoDTO.descricao = produto.descricao;
       produtoDTO.valorUnitario = produto.valorUnitario;
       produtoDTO.imagemUrl = produto.imagemUrl;
-      produtoDTO.categoriaId = produto.categoria.id;
+      produtoDTO.categoria = produto.categoria;
       return produtoDTO;
     });
 
