@@ -8,43 +8,44 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-
-import { AtualizaCategoriaDTO } from '../../presenters/dto/categoria/AtualizaCategoria.dto';
-import { CriaCategoriaDTO } from '../../presenters/dto/categoria/CriaCategoria.dto';
-import { ICategoriaUseCase } from '../../../../../../domain/ports/categoria/ICategoriaUseCase';
+import { ICategoriaUseCase } from 'src/domain/ports/categoria/categoria.use_case.port';
+import {
+  AtualizaCategoriaDTO,
+  CriaCategoriaDTO,
+} from '../../presenters/categoria.dto';
 
 @Controller('categoria')
 export class CategoriaController {
   constructor(
     @Inject(ICategoriaUseCase)
-    private readonly CategoriaUseCase: ICategoriaUseCase,
+    private readonly categoriaUseCase: ICategoriaUseCase,
   ) {}
 
   @Post()
-  async criaNovo(@Body() dadosCategoria: CriaCategoriaDTO) {
-    return await this.CategoriaUseCase.criaNova(dadosCategoria);
-  }
-
-  @Get()
-  async listaTodos() {
-    return await this.CategoriaUseCase.listaTodas();
-  }
-
-  @Get(':id')
-  async listaUma(@Param('id') id: number) {
-    return await this.CategoriaUseCase.listaUma(id);
+  async criar(@Body() categoria: CriaCategoriaDTO) {
+    return await this.categoriaUseCase.criarCategoria(categoria);
   }
 
   @Put('/:id')
-  async atualiza(
-    @Param('id') id: number,
-    @Body() dadosCategoria: AtualizaCategoriaDTO,
+  async atualizar(
+    @Param('id') id: string,
+    @Body() categoria: AtualizaCategoriaDTO,
   ) {
-    return await this.CategoriaUseCase.atualiza(id, dadosCategoria);
+    return await this.categoriaUseCase.editarCategoria(id, categoria);
   }
 
   @Delete('/:id')
-  async remove(@Param('id') id: number) {
-    return await this.CategoriaUseCase.remove(id);
+  async remover(@Param('id') id: string) {
+    return await this.categoriaUseCase.excluirCategoria(id);
+  }
+
+  @Get('/:id')
+  async buscar(@Param('id') id: string) {
+    return await this.categoriaUseCase.buscarCategoria(id);
+  }
+
+  @Get()
+  async listar() {
+    return await this.categoriaUseCase.listarCategorias();
   }
 }

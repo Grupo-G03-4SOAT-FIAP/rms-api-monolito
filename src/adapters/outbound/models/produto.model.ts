@@ -24,8 +24,19 @@ export class ProdutoModel {
   @Column({ name: 'valor_unitario', nullable: false })
   valorUnitario: number;
 
-  @Column({ name: 'imagem_url', length: 2048, nullable: true })
+  @Column({ name: 'imagem_url', length: 2048, nullable: false })
   imagemUrl: string;
+
+  @ManyToOne(() => CategoriaModel, (categoria) => categoria.produtos, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'categoria_id' })
+  categoria: CategoriaModel;
+
+  @Column({ name: 'ativo', nullable: false, default: true })
+  ativo: boolean;
 
   @CreateDateColumn({ name: 'criado_em' })
   criadoEm: string;
@@ -35,16 +46,4 @@ export class ProdutoModel {
 
   @DeleteDateColumn({ name: 'excluido_em' })
   excluidoEm: string;
-
-  @Column({ name: 'ativo', nullable: false, default: true })
-  ativo: boolean;
-
-  @ManyToOne(() => CategoriaModel, (categoria) => categoria.produtos, {
-    orphanedRowAction: 'delete',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-    nullable: true,
-  })
-  @JoinColumn({ name: 'id_categoria' })
-  categoria: CategoriaModel;
 }

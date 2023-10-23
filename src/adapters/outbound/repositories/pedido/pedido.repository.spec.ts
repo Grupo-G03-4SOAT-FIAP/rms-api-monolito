@@ -17,8 +17,8 @@ const clienteEntity = new ClienteEntity(
 
 const categoriaEntity = new CategoriaEntity(
   'Lanche',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
   'Lanche x tudo',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 const produtoEntity = new ProdutoEntity(
@@ -26,16 +26,16 @@ const produtoEntity = new ProdutoEntity(
   categoriaEntity,
   5.0,
   'http://',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
   'Teste produto x',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 const pedidoEntity = new PedidoEntity(
   [produtoEntity],
   'Aprovado',
   'Recebido',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
   clienteEntity,
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 const pedidoModel = new PedidoModel();

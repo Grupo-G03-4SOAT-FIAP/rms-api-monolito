@@ -7,7 +7,7 @@ export interface IProdutoRepository {
     produtoId: string,
     produto: ProdutoEntity,
   ): Promise<ProdutoModel>;
-  deletarProduto(produtoId: string): Promise<void>;
+  excluirProduto(produtoId: string): Promise<void>;
   buscarProduto(produtoId: string): Promise<ProdutoModel | null>;
   listarProdutos(): Promise<ProdutoModel[] | []>;
   listarProdutosPorCategoria(categoriaId: string): Promise<ProdutoModel[] | []>;

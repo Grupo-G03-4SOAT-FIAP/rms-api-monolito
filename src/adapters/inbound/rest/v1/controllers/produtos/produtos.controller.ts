@@ -8,10 +8,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-
-import { AtualizaProdutoDTO } from '../../presenters/produto/AtualizaProduto.dto';
-import { CriaProdutoDTO } from '../../presenters/produto/CriaProduto.dto';
-import { IProdutoUseCase } from 'src/domain/ports/produto/IProdutoUseCase';
+import { IProdutoUseCase } from 'src/domain/ports/produto/produto.use_case.port';
+import {
+  AtualizaProdutoDTO,
+  CriaProdutoDTO,
+} from '../../presenters/produto.dto';
 
 @Controller('produto')
 export class ProdutoController {
@@ -21,47 +22,35 @@ export class ProdutoController {
   ) {}
 
   @Post()
-  async criaNovo(@Body() dadosProduto: CriaProdutoDTO) {
-    const produtoCriado = this.produtoUseCase.criaNovo(dadosProduto);
-    return {
-      mensagem: 'produto criado com sucesso',
-      produto: produtoCriado,
-    };
-  }
-
-  @Get()
-  async listaTodos() {
-    return await this.produtoUseCase.listaTodos();
-  }
-
-  @Get('/categoria/:id')
-  async listaTodosPorCategoria(@Param('id') id_categoria: number) {
-    return await this.produtoUseCase.listaPorCategoria(id_categoria);
+  async criar(@Body() produto: CriaProdutoDTO) {
+    return await this.produtoUseCase.criarProduto(produto);
   }
 
   @Put('/:id')
-  async atualiza(
+  async atualizar(
     @Param('id') id: string,
-    @Body() dadosProduto: AtualizaProdutoDTO,
+    @Body() produto: AtualizaProdutoDTO,
   ) {
-    const produtoAlterado = await this.produtoUseCase.atualiza(
-      id,
-      dadosProduto,
-    );
-
-    return {
-      mensagem: 'produto atualizado com sucesso',
-      produto: produtoAlterado,
-    };
+    return await this.produtoUseCase.editarProduto(id, produto);
   }
 
   @Delete('/:id')
-  async remove(@Param('id') id: string) {
-    const produtoRemovido = await this.produtoUseCase.remove(id);
+  async remover(@Param('id') id: string) {
+    return await this.produtoUseCase.excluirProduto(id);
+  }
 
-    return {
-      mensagem: 'produto removido com sucesso',
-      produto: produtoRemovido,
-    };
+  @Get('/:id')
+  async buscar(@Param('id') id: string) {
+    return await this.produtoUseCase.buscarProduto(id);
+  }
+
+  @Get()
+  async listar() {
+    return await this.produtoUseCase.listarProdutos();
+  }
+
+  @Get('/categoria/:id')
+  async listarPorCategoria(@Param('id') id: string) {
+    return await this.produtoUseCase.listarProdutosPorCategoria(id);
   }
 }

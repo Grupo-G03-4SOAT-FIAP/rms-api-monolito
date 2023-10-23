@@ -1,8 +1,8 @@
 export class ClienteEntity {
-  id: string;
   nome: string;
   email: string;
   cpf: string;
+  id?: string;
 
   constructor(nome: string, email: string, cpf: string, id?: string) {
     this.id = id;

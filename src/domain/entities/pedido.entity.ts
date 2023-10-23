@@ -2,18 +2,18 @@ import { ProdutoEntity } from './produto.entity';
 import { ClienteEntity } from './cliente.entity';
 
 export class PedidoEntity {
-  id: string;
   itemsPedido: ProdutoEntity[];
-  cliente: ClienteEntity;
   statusPagamento: string;
   statusPedido: string;
+  cliente?: ClienteEntity;
+  id?: string;
 
   constructor(
     itemsPedido: ProdutoEntity[],
     statusPagamento: string,
     statusPedido: string,
-    id?: string,
     cliente?: ClienteEntity,
+    id?: string,
   ) {
     this.id = id;
     this.itemsPedido = itemsPedido;

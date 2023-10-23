@@ -1,57 +1,162 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IProdutoUseCase } from 'src/domain/ports/produto/produto.use_case.port';
+import { IProdutoRepository } from 'src/domain/ports/produto/produto.repository.port';
+import {
+  CriaProdutoDTO,
+  ProdutoDTO,
+  AtualizaProdutoDTO,
+} from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
+import { ProdutoEntity } from 'src/domain/entities/produto.entity';
+import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
-import { CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/CriaProduto.dto';
-import { AtualizaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto/AtualizaProduto.dto';
-import { IProdutoUseCase } from 'src/domain/ports/produto/IProdutoUseCase';
-import { IProdutoRepository } from 'src/domain/ports/produto/IProdutoRepository';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {
   constructor(
     @Inject(IProdutoRepository)
     private readonly produtoRepository: IProdutoRepository,
+    @Inject(ICategoriaRepository)
+    private readonly categoriaRepository: ICategoriaRepository,
   ) {}
 
-  async criaNovo(dadosProduto: CriaProdutoDTO) {
-    const produto = new ProdutoModel();
+  async criarProduto(
+    produto: CriaProdutoDTO,
+  ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
+    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
 
-    produto.nome = dadosProduto.nome;
-    produto.descricao = dadosProduto.descricao;
-    produto.valorUnitario = dadosProduto.valorUnitario;
-    produto.imagemUrl = dadosProduto.imagemUrl;
-    produto.categoria = <any>{ id: dadosProduto.idCategoria };
-    produto.ativo = dadosProduto.ativo;
+    const buscaCategoria =
+      await this.categoriaRepository.buscarCategoria(categoriaId);
+    if (!buscaCategoria) {
+      throw new Error('Categoria não localizada');
+    }
 
-    const produtoCadastrado = this.produtoRepository.criaProduto(produto);
-    return produtoCadastrado;
+    const produtoEntity = new ProdutoEntity(
+      nome,
+      buscaCategoria,
+      valorUnitario,
+      imagemUrl,
+      descricao,
+    );
+    const result = await this.produtoRepository.criarProduto(produtoEntity);
+
+    const produtoDTO = new ProdutoDTO();
+    produtoDTO.id = result.id;
+    produtoDTO.nome = result.nome;
+    produtoDTO.descricao = result.descricao;
+    produtoDTO.valorUnitario = result.valorUnitario;
+    produtoDTO.imagemUrl = result.imagemUrl;
+    produtoDTO.categoriaId = result.categoria.id;
+
+    return {
+      mensagem: 'Produto criado com sucesso',
+      produto: produtoDTO,
+    };
   }
 
-  async listaTodos() {
-    return this.produtoRepository.listaProdutos();
-  }
+  async editarProduto(
+    produtoId: string,
+    produto: AtualizaProdutoDTO,
+  ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
+    const buscaProduto = await this.produtoRepository.buscarProduto(produtoId);
+    if (!buscaProduto) {
+      throw new Error('Produto não localizado');
+    }
 
-  async listaPorCategoria(categoriaId: number) {
-    return await this.produtoRepository.listaProdutosPorCategoria(categoriaId);
-  }
+    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
 
-  async atualiza(id: string, dadosProduto: AtualizaProdutoDTO) {
-    const produtoAlterado = await this.produtoRepository.atualizaProduto(
-      id,
-      dadosProduto,
+    const buscaCategoria =
+      await this.categoriaRepository.buscarCategoria(categoriaId);
+    if (!buscaCategoria) {
+      throw new Error('Categoria não localizada');
+    }
+
+    const produtoEntity = new ProdutoEntity(
+      nome,
+      buscaCategoria,
+      valorUnitario,
+      imagemUrl,
+      descricao,
+    );
+    const result = await this.produtoRepository.editarProduto(
+      produtoId,
+      produtoEntity,
     );
 
+    const produtoDTO = new ProdutoDTO();
+    produtoDTO.id = result.id;
+    produtoDTO.nome = result.nome;
+    produtoDTO.descricao = result.descricao;
+    produtoDTO.valorUnitario = result.valorUnitario;
+    produtoDTO.imagemUrl = result.imagemUrl;
+    produtoDTO.categoriaId = result.categoria.id;
+
     return {
-      mensagem: 'produto atualizado com sucesso',
-      produto: produtoAlterado,
+      mensagem: 'Produto criado com sucesso',
+      produto: produtoDTO,
     };
   }
 
-  async remove(id: string) {
-    const produtoRemovido = await this.produtoRepository.deletaProduto(id);
+  async excluirProduto(produtoId: string): Promise<{ mensagem: string }> {
+    const buscaProduto = await this.produtoRepository.buscarProduto(produtoId);
+    if (!buscaProduto) {
+      throw new Error('Produto não localizado');
+    }
 
+    await this.produtoRepository.excluirProduto(produtoId);
     return {
-      mensagem: 'produto removido com sucesso',
-      produto: produtoRemovido,
+      mensagem: 'Produto excluido com sucesso',
     };
+  }
+
+  async buscarProduto(produtoId: string): Promise<ProdutoDTO> {
+    const result = await this.produtoRepository.buscarProduto(produtoId);
+    if (!result) {
+      throw new Error('Produto não localizado');
+    }
+
+    const produtoDTO = new ProdutoDTO();
+    produtoDTO.id = result.id;
+    produtoDTO.nome = result.nome;
+    produtoDTO.descricao = result.descricao;
+    produtoDTO.valorUnitario = result.valorUnitario;
+    produtoDTO.imagemUrl = result.imagemUrl;
+    produtoDTO.categoriaId = result.categoria.id;
+
+    return produtoDTO;
+  }
+
+  async listarProdutos(): Promise<ProdutoDTO[] | []> {
+    const result = await this.produtoRepository.listarProdutos();
+    const listaProdutosDTO = result.map((produto: ProdutoModel) => {
+      const produtoDTO = new ProdutoDTO();
+      produtoDTO.id = produto.id;
+      produtoDTO.nome = produto.nome;
+      produtoDTO.descricao = produto.descricao;
+      produtoDTO.valorUnitario = produto.valorUnitario;
+      produtoDTO.imagemUrl = produto.imagemUrl;
+      produtoDTO.categoriaId = produto.categoria.id;
+      return produtoDTO;
+    });
+
+    return listaProdutosDTO;
+  }
+
+  async listarProdutosPorCategoria(
+    categoriaId: string,
+  ): Promise<ProdutoDTO[] | []> {
+    const result =
+      await this.produtoRepository.listarProdutosPorCategoria(categoriaId);
+    const listaProdutosDTO = result.map((produto: ProdutoModel) => {
+      const produtoDTO = new ProdutoDTO();
+      produtoDTO.id = produto.id;
+      produtoDTO.nome = produto.nome;
+      produtoDTO.descricao = produto.descricao;
+      produtoDTO.valorUnitario = produto.valorUnitario;
+      produtoDTO.imagemUrl = produto.imagemUrl;
+      produtoDTO.categoriaId = produto.categoria.id;
+      return produtoDTO;
+    });
+
+    return listaProdutosDTO;
   }
 }

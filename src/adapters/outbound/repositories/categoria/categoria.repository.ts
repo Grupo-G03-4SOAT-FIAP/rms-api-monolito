@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoriaModel } from '../../models/categoria.model';
 import { Repository } from 'typeorm';
-import { ICategoriaRepository } from 'src/domain/ports/categoria/ICategoriaRepository';
+import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
 import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     });
   }
 
-  async deletarCategoria(categoriaId: string): Promise<void> {
+  async excluirCategoria(categoriaId: string): Promise<void> {
     await this.categoriaRepository.delete({ id: categoriaId });
   }
 

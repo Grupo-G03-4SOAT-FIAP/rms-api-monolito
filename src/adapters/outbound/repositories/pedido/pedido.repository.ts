@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PedidoEntity } from 'src/domain/entities/pedido.entity';
-import { IPedidoRepository } from 'src/domain/ports/pedido/IPedidoRepository';
+import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { PedidoModel } from '../../models/pedido.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';

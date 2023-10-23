@@ -1,22 +1,20 @@
 import { CategoriaEntity } from './categoria.entity';
 
 export class ProdutoEntity {
-  id: string;
   nome: string;
-  descricao: string;
   categoria: CategoriaEntity;
   valorUnitario: number;
   imagemUrl: string;
-  ativo: boolean;
+  descricao?: string;
+  id?: string;
 
   constructor(
     nome: string,
     categoria: CategoriaEntity,
     valorUnitario: number,
     imagemUrl: string,
-    id?: string,
     descricao?: string,
-    ativo?: boolean,
+    id?: string,
   ) {
     this.id = id;
     this.nome = nome;
@@ -24,6 +22,5 @@ export class ProdutoEntity {
     this.categoria = categoria;
     this.valorUnitario = valorUnitario;
     this.imagemUrl = imagemUrl;
-    this.ativo = ativo;
   }
 }

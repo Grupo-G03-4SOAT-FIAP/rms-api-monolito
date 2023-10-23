@@ -7,7 +7,7 @@ export interface ICategoriaRepository {
     categoriaId: string,
     categoria: CategoriaEntity,
   ): Promise<CategoriaModel>;
-  deletarCategoria(categoriaId: string): Promise<void>;
+  excluirCategoria(categoriaId: string): Promise<void>;
   buscarCategoria(categoriaId: string): Promise<CategoriaModel | null>;
   listarCategorias(): Promise<CategoriaModel[] | []>;
 }

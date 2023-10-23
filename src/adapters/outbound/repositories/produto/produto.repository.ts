@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProdutoModel } from '../../models/produto.model';
 import { Repository } from 'typeorm';
-import { IProdutoRepository } from 'src/domain/ports/produto/IProdutoRepository';
+import { IProdutoRepository } from 'src/domain/ports/produto/produto.repository.port';
 import { ProdutoEntity } from 'src/domain/entities/produto.entity';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class ProdutoRepository implements IProdutoRepository {
     });
   }
 
-  async deletarProduto(produtoId: string): Promise<void> {
+  async excluirProduto(produtoId: string): Promise<void> {
     await this.produtoRepository.delete({ id: produtoId });
   }
 

@@ -9,24 +9,30 @@ import { AppUseCase } from './domain/use_cases/app/app.use_case';
 
 import { ProdutoModel } from './adapters/outbound/models/produto.model';
 import { ProdutoController } from './adapters/inbound/rest/v1/controllers/produtos/produtos.controller';
-import { IProdutoUseCase } from './domain/ports/produto/IProdutoUseCase';
+import { IProdutoUseCase } from './domain/ports/produto/produto.use_case.port';
 import { ProdutoUseCase } from './domain/use_cases/produtos/produtos.use_case';
-import { IProdutoRepository } from './domain/ports/produto/IProdutoRepository';
+import { IProdutoRepository } from './domain/ports/produto/produto.repository.port';
 import { ProdutoRepository } from './adapters/outbound/repositories/produto/produto.repository';
 
 import { CategoriaModel } from './adapters/outbound/models/categoria.model';
 import { CategoriaController } from './adapters/inbound/rest/v1/controllers/categorias/categorias.controller';
-import { ICategoriaUseCase } from './domain/ports/categoria/ICategoriaUseCase';
+import { ICategoriaUseCase } from './domain/ports/categoria/categoria.use_case.port';
 import { CategoriaUseCase } from './domain/use_cases/categorias/categorias.use_case';
-import { ICategoriaRepository } from './domain/ports/categoria/ICategoriaRepository';
+import { ICategoriaRepository } from './domain/ports/categoria/categoria.repository.port';
 import { CategoriaRepository } from './adapters/outbound/repositories/categoria/categoria.repository';
 import { PedidoModel } from './adapters/outbound/models/pedido.model';
 import { PedidoRepository } from './adapters/outbound/repositories/pedido/pedido.repository';
-import { IPedidoRepository } from './domain/ports/pedido/IPedidoRepository';
+import { IPedidoRepository } from './domain/ports/pedido/pedido.repository.port';
+import { ClienteModel } from './adapters/outbound/models/cliente.model';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ProdutoModel, CategoriaModel, PedidoModel]),
+    TypeOrmModule.forFeature([
+      ProdutoModel,
+      CategoriaModel,
+      PedidoModel,
+      ClienteModel,
+    ]),
     ConfigModule.forRoot({
       isGlobal: true,
     }),

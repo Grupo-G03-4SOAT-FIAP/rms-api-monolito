@@ -7,8 +7,8 @@ import { CategoriaRepository } from './categoria.repository';
 
 const categoriaEntity = new CategoriaEntity(
   'Lanche',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
   'Lanche x tudo',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 const categoriaModel = new CategoriaModel();
@@ -90,7 +90,7 @@ describe('CategoriaRepository', () => {
   it('deve excluir uma categoria', async () => {
     const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 
-    await categoriaRepository.deletarCategoria(categoriaId);
+    await categoriaRepository.excluirCategoria(categoriaId);
 
     expect(mockCategoriaModel.delete).toHaveBeenCalledWith({
       id: categoriaId,
