@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Inject,
   NotFoundException,
   Param,
@@ -24,6 +25,7 @@ export class ProdutoController {
   ) {}
 
   @Post()
+  @HttpCode(201)
   async criar(@Body() produto: CriaProdutoDTO) {
     try {
       return await this.produtoUseCase.criarProduto(produto);
