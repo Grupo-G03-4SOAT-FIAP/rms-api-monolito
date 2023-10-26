@@ -1,37 +1,31 @@
-import { IsString, IsNotEmpty, MaxLength, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { ProdutoDTO } from './produto.dto';
 import { ClienteDTO } from './cliente.dto';
+import { StatusPedido } from 'src/utils/pedido.enum';
 
 export class CriaPedidoDTO {
+  @IsUUID(4, { each: true })
+  @IsNotEmpty({ message: 'Lista de uuid dos produtos não pode ser vazio' })
+  itemsPedido: string[];
+
   @IsString()
-  @IsNotEmpty({ message: 'Nome da categoria não pode ser vazio' })
-  nome: string;
+  @IsNotEmpty({ message: 'Status do pedido não pode ser vazio' })
+  statusPedido: StatusPedido;
 
   @IsString()
   @IsOptional()
-  @MaxLength(1000, {
-    message: 'Descrição não pode ter mais que 1000 caracteres',
-  })
-  descricao?: string;
+  cpfCliente: string;
 }
 
 export class AtualizaPedidoDTO {
   @IsString()
   @IsOptional()
-  nome?: string;
-
-  @IsString()
-  @IsOptional()
-  @MaxLength(1000, {
-    message: 'Descrição não pode ter mais que 1000 caracteres',
-  })
-  descricao?: string;
+  statusPedido: StatusPedido;
 }
 
 export class PedidoDTO {
   id: string;
   itemsPedido: ProdutoDTO[];
-  statusPagamento: string;
   statusPedido: string;
   cliente: ClienteDTO;
 }

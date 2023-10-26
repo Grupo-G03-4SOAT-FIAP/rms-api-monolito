@@ -21,9 +21,6 @@ export class PedidoModel {
   @JoinColumn({ name: 'id_cliente' }) // A chave estrangeira
   cliente: ClienteModel | null;
 
-  @Column({ name: 'status_pagamento', length: 10, nullable: false })
-  statusPagamento: string;
-
   @Column({ name: 'status_pedido', length: 20, nullable: false })
   statusPedido: string;
 

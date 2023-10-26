@@ -1,15 +1,16 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEmail } from 'class-validator';
 
 export class CriaClienteDTO {
   @IsString()
   @IsNotEmpty({ message: 'Nome do Cliente não pode ser vazio' })
   nome: string;
 
-  @IsString()
+  @IsEmail()
   @IsNotEmpty({
     message: 'Email não pode ser vazio',
   })
   email: string;
+
   @IsString()
   @IsNotEmpty({
     message: 'CPF não pode ser vazio',
@@ -22,7 +23,7 @@ export class AtualizaClienteDTO {
   @IsOptional()
   nome?: string;
 
-  @IsString()
+  @IsEmail()
   @IsOptional()
   email?: string;
 

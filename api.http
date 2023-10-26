@@ -3,11 +3,11 @@ GET http://localhost:3000/
 
 
 ### Listar categorias
-GET http://localhost:3000/categorias
+GET http://localhost:3000/categoria
 
 
 ### Criar categoria
-POST http://localhost:3000/categorias
+POST http://localhost:3000/categoria
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 
 ### Editar categoria
-PUT http://localhost:3000/categorias/1
+PUT http://localhost:3000/categoria/1
 Content-Type: application/json
 
 {
@@ -28,15 +28,15 @@ Content-Type: application/json
 
 
 ### Deletar categoria
-DELETE http://localhost:3000/categorias/1
+DELETE http://localhost:3000/categoria/1
 
 
 ### Listar produtos
-GET http://localhost:3000/produtos
+GET http://localhost:3000/produto
 
 
 ### Criar produto
-POST http://localhost:3000/produtos
+POST http://localhost:3000/produto
 Content-Type: application/json
 
 {
@@ -48,7 +48,7 @@ Content-Type: application/json
 }
 
 ### Editar produto
-PUT http://localhost:3000/produtos/894a2d09-c7e0-4615-ae38-476663108207
+PUT http://localhost:3000/produto/894a2d09-c7e0-4615-ae38-476663108207
 Content-Type: application/json
 
 {
@@ -62,4 +62,4 @@ Content-Type: application/json
 
 
 ### Remover produto
-DELETE http://localhost:3000/produtos/f64fdf7d-2233-4164-a37d-818d07e6e6c6
+DELETE http://localhost:3000/produto/f64fdf7d-2233-4164-a37d-818d07e6e6c6
