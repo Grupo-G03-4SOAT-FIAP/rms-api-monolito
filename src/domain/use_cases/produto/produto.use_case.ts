@@ -122,7 +122,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.categoria = categoriaDTO;
 
     return {
-      mensagem: 'Produto criado com sucesso',
+      mensagem: 'Produto editado com sucesso',
       produto: produtoDTO,
     };
   }

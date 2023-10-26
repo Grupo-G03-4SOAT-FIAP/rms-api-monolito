@@ -1,10 +1,8 @@
 ### Healthcheck
 GET http://localhost:3000/
 
-
 ### Listar categorias
 GET http://localhost:3000/categoria
-
 
 ### Criar categoria
 POST http://localhost:3000/categoria
@@ -15,9 +13,8 @@ Content-Type: application/json
     "descricao": "Lanches para todos os gostos!"
 }
 
-
 ### Editar categoria
-PUT http://localhost:3000/categoria/ec633019-6a5e-4a27-a6cd-c12cb09d7738
+PUT http://localhost:3000/categoria/928e511c-2bae-4d0e-9fcf-b91239f1fcd2
 Content-Type: application/json
 
 {
@@ -26,10 +23,10 @@ Content-Type: application/json
     "ativo": true
 }
 
-
 ### Deletar categoria
-DELETE http://localhost:3000/categoria/ec633019-6a5e-4a27-a6cd-c12cb09d7738
+DELETE http://localhost:3000/categoria/928e511c-2bae-4d0e-9fcf-b91239f1fcd2
 
+###
 
 ### Listar produtos
 GET http://localhost:3000/produto
@@ -44,11 +41,11 @@ Content-Type: application/json
     "valorUnitario": 12,
     "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
     "imagemUrl": "https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg",
-    "idCategoria": "928e511c-2bae-4d0e-9fcf-b91239f1fcd2"
+    "idCategoria": "cab4629b-4f00-4d8a-85ed-cbe6bfab5112"
 }
 
 ### Editar produto
-PUT http://localhost:3000/produto/894a2d09-c7e0-4615-ae38-476663108207
+PUT http://localhost:3000/produto/5ce7c504-21e3-426f-abaf-4a8c7b8d6325
 Content-Type: application/json
 
 {
@@ -60,6 +57,34 @@ Content-Type: application/json
     "ativo": true
 }
 
-
 ### Remover produto
-DELETE http://localhost:3000/produto/f64fdf7d-2233-4164-a37d-818d07e6e6c6
+DELETE http://localhost:3000/produto/293d568d-2e3a-4e55-98d2-bc97f946f6ac
+
+###
+
+### Listar clientes
+GET http://localhost:3000/cliente
+
+
+### Criar cliente
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+    "cpf": "44470640735",
+    "nome": "Fulano da Silva Santos",
+    "email": "fulano@gmail.com"
+}
+
+### Editar cliente
+PUT http://localhost:3000/cliente/22e34eeb-599d-47ca-b234-dbb781752935
+Content-Type: application/json
+
+{
+    "cpf": "44470640735",
+    "nome": "Fulano da Silva Santos",
+    "email": "fulano.1998@gmail.com"
+}
+
+### Remover cliente
+DELETE http://localhost:3000/cliente/293d568d-2e3a-4e55-98d2-bc97f946f6ac
