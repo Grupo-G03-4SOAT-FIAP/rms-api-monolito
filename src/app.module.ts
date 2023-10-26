@@ -24,6 +24,12 @@ import { PedidoModel } from './adapters/outbound/models/pedido.model';
 import { PedidoRepository } from './adapters/outbound/repositories/pedido/pedido.repository';
 import { IPedidoRepository } from './domain/ports/pedido/pedido.repository.port';
 import { ClienteModel } from './adapters/outbound/models/cliente.model';
+import { ClienteRepository } from './adapters/outbound/repositories/cliente/cliente.repository';
+import { IClienteRepository } from './domain/ports/cliente/cliente.repository.port';
+import { ClienteController } from './adapters/inbound/rest/v1/controllers/cliente/cliente.controller';
+import { ClienteUseCase } from './domain/use_cases/cliente/cliente.use_case';
+import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
+
 
 @Module({
   imports: [
@@ -41,7 +47,7 @@ import { ClienteModel } from './adapters/outbound/models/cliente.model';
       inject: [PostgresConfigService],
     }),
   ],
-  controllers: [AppController, ProdutoController, CategoriaController],
+  controllers: [AppController, ProdutoController, CategoriaController, ClienteController],
   providers: [
     AppUseCase,
     ProdutoUseCase,
@@ -49,6 +55,8 @@ import { ClienteModel } from './adapters/outbound/models/cliente.model';
     CategoriaUseCase,
     CategoriaRepository,
     PedidoRepository,
+    ClienteRepository,
+    ClienteUseCase,
     {
       provide: IProdutoUseCase,
       useClass: ProdutoUseCase,
@@ -68,6 +76,14 @@ import { ClienteModel } from './adapters/outbound/models/cliente.model';
     {
       provide: IPedidoRepository,
       useClass: PedidoRepository,
+    },
+    {
+      provide: IClienteRepository,
+      useClass: ClienteRepository,
+    },,
+    {
+      provide: IClienteUseCase,
+      useClass: ClienteUseCase,
     },
   ],
 })
