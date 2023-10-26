@@ -7,12 +7,12 @@ import {
 import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
 import { ClienteEntity } from 'src/domain/entities/cliente.entity';
 import {
-  ClienteNaoLocalizadaErro,
+  ClienteNaoLocalizadoErro,
   NomeClienteDuplicadoErro,
 } from 'src/domain/exceptions/cliente.exception';
 import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
 import { IClienteUseCase } from 'src/domain/ports/cliente/cliente.use_case.port';
-import { HTTPResponse } from 'src/domain/ports/types/HTTPResponse';
+import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 @Injectable()
 export class ClienteUseCase implements IClienteUseCase {
@@ -48,7 +48,7 @@ export class ClienteUseCase implements IClienteUseCase {
 
   async listarClientes(): Promise<ClienteDTO[] | []> {
     const result = await this.clienteRepository.listarClientes();
-    const listaClienteDTO = result.map((cliente: ClienteModel) => {
+    const listaClientesDTO = result.map((cliente: ClienteModel) => {
       const clienteDTO = new ClienteDTO();
       clienteDTO.id = cliente.id;
       clienteDTO.nome = cliente.nome;
@@ -56,13 +56,13 @@ export class ClienteUseCase implements IClienteUseCase {
       clienteDTO.cpf = cliente.cpf;
       return clienteDTO;
     });
-    return listaClienteDTO;
+    return listaClientesDTO;
   }
 
   async buscarCliente(clienteId: string): Promise<ClienteDTO> {
     const result = await this.clienteRepository.buscarClientePorId(clienteId);
     if (!result) {
-      throw new ClienteNaoLocalizadaErro('Cliente informado não existe');
+      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
     const clienteDTO = new ClienteDTO();
@@ -89,7 +89,7 @@ export class ClienteUseCase implements IClienteUseCase {
     const buscaClientePorId =
       await this.clienteRepository.buscarClientePorId(clienteId);
     if (!buscaClientePorId) {
-      throw new ClienteNaoLocalizadaErro('Clite informado não existe');
+      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
     const clienteEntity = new ClienteEntity(nome, email, cpf);
@@ -109,13 +109,14 @@ export class ClienteUseCase implements IClienteUseCase {
       body: clienteDTO,
     };
   }
+
   async excluirCliente(
     clienteId: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
     const buscarCliente =
       await this.clienteRepository.buscarClientePorId(clienteId);
     if (!buscarCliente) {
-      throw new ClienteNaoLocalizadaErro('Cliente informado não existe');
+      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
     await this.clienteRepository.deletarCliente(clienteId);

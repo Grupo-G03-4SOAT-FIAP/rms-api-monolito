@@ -90,7 +90,7 @@ describe('CategoriaRepository', () => {
     const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     await categoriaRepository.excluirCategoria(categoriaId);
 
-    expect(mockCategoriaModel.delete).toHaveBeenCalledWith({
+    expect(mockCategoriaModel.softDelete).toHaveBeenCalledWith({
       id: categoriaId,
     });
   });

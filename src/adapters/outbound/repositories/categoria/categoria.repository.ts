@@ -30,7 +30,7 @@ export class CategoriaRepository implements ICategoriaRepository {
   }
 
   async excluirCategoria(categoriaId: string): Promise<void> {
-    await this.categoriaRepository.delete({ id: categoriaId });
+    await this.categoriaRepository.softDelete({ id: categoriaId });
   }
 
   async buscarCategoriaPorId(

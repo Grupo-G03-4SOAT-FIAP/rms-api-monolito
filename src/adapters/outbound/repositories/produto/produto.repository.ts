@@ -31,7 +31,7 @@ export class ProdutoRepository implements IProdutoRepository {
   }
 
   async excluirProduto(produtoId: string): Promise<void> {
-    await this.produtoRepository.delete({ id: produtoId });
+    await this.produtoRepository.softDelete({ id: produtoId });
   }
 
   async buscarProdutoPorId(produtoId: string): Promise<ProdutoModel | null> {

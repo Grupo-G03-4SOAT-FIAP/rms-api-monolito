@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ClienteModel } from './cliente.model';
+import { ProdutoModel } from './produto.model';
 
 @Entity('pedidos')
 export class PedidoModel {
@@ -15,7 +16,7 @@ export class PedidoModel {
   id: string;
 
   @Column({ name: 'items_pedido', type: 'json', nullable: false }) // tipo 'json' para armazenar uma lista de produtos
-  itemsPedido: object[];
+  itemsPedido: ProdutoModel[];
 
   @ManyToOne(() => ClienteModel, { nullable: true })
   @JoinColumn({ name: 'id_cliente' }) // A chave estrangeira

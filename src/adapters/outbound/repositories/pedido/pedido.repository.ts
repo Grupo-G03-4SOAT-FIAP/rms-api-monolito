@@ -4,6 +4,7 @@ import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.por
 import { PedidoModel } from '../../models/pedido.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import { StatusPedido } from 'src/utils/pedido.enum';
 
 @Injectable()
 export class PedidoRepository implements IPedidoRepository {
@@ -41,14 +42,13 @@ export class PedidoRepository implements IPedidoRepository {
 
   async listarPedidos(): Promise<PedidoModel[] | []> {
     const statusPedidoOrder = {
-      Pronto: 1,
-      'Em preparação': 2,
-      Recebido: 3,
+      pronto: 1,
+      em_preparacao: 2,
     };
 
     const pedidos = await this.pedidoRepository.find({
       where: {
-        statusPedido: In(['Pronto', 'Em preparação', 'Recebido']),
+        statusPedido: In([StatusPedido.PRONTO, StatusPedido.EM_PREPARACAO]),
       },
       relations: ['cliente'],
     });
@@ -59,6 +59,20 @@ export class PedidoRepository implements IPedidoRepository {
           statusPedidoOrder[a.statusPedido] - statusPedidoOrder[b.statusPedido],
       );
     }
+
+    return pedidos;
+  }
+
+  async listarPedidosRecebido(): Promise<PedidoModel[] | []> {
+    const pedidos = await this.pedidoRepository.find({
+      where: {
+        statusPedido: StatusPedido.RECEBIDO,
+      },
+      order: {
+        criadoEm: 'ASC', // Ordene por criadoEm em ordem crescente (do mais antigo ao mais recente)
+      },
+      relations: ['cliente'],
+    });
 
     return pedidos;
   }

@@ -9,6 +9,7 @@ export interface IPedidoRepository {
   ): Promise<PedidoModel | null>;
   buscarPedido(pedidoId: string): Promise<PedidoModel | null>;
   listarPedidos(): Promise<PedidoModel[] | []>;
+  listarPedidosRecebido(): Promise<PedidoModel[] | []>;
 }
 
 export const IPedidoRepository = Symbol('IPedidoRepository');

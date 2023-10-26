@@ -15,6 +15,7 @@ import {
   ProdutoNaoLocalizadoErro,
 } from 'src/domain/exceptions/produto.exception';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
+import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {
@@ -27,7 +28,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
   async criarProduto(
     produto: CriaProdutoDTO,
-  ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
+  ): Promise<HTTPResponse<ProdutoDTO>> {
     const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
 
     const buscaProduto =
@@ -67,14 +68,14 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
     return {
       mensagem: 'Produto criado com sucesso',
-      produto: produtoDTO,
+      body: produtoDTO,
     };
   }
 
   async editarProduto(
     produtoId: string,
     produto: AtualizaProdutoDTO,
-  ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
+  ): Promise<HTTPResponse<ProdutoDTO>> {
     const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
 
     const buscaProdutoPorNome =
@@ -123,11 +124,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
     return {
       mensagem: 'Produto criado com sucesso',
-      produto: produtoDTO,
+      body: produtoDTO,
     };
   }
 
-  async excluirProduto(produtoId: string): Promise<{ mensagem: string }> {
+  async excluirProduto(
+    produtoId: string,
+  ): Promise<Omit<HTTPResponse<void>, 'body'>> {
     const buscaProduto =
       await this.produtoRepository.buscarProdutoPorId(produtoId);
     if (!buscaProduto) {

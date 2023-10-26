@@ -9,10 +9,6 @@ export class CriaPedidoDTO {
   itemsPedido: string[];
 
   @IsString()
-  @IsNotEmpty({ message: 'Status do pedido não pode ser vazio' })
-  statusPedido: StatusPedido;
-
-  @IsString()
   @IsOptional()
   cpfCliente: string;
 }

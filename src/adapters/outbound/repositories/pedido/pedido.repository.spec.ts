@@ -7,6 +7,7 @@ import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 import { ClienteEntity } from 'src/domain/entities/cliente.entity';
 import { PedidoModel } from '../../models/pedido.model';
 import { In, Repository } from 'typeorm';
+import { StatusPedido } from 'src/utils/pedido.enum';
 
 const clienteEntity = new ClienteEntity(
   'Cliente A',
@@ -32,7 +33,7 @@ const produtoEntity = new ProdutoEntity(
 
 const pedidoEntity = new PedidoEntity(
   [produtoEntity],
-  'Recebido',
+  StatusPedido.RECEBIDO,
   clienteEntity,
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );

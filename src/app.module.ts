@@ -29,6 +29,9 @@ import { IClienteRepository } from './domain/ports/cliente/cliente.repository.po
 import { ClienteController } from './adapters/inbound/rest/v1/controllers/cliente/cliente.controller';
 import { ClienteUseCase } from './domain/use_cases/cliente/cliente.use_case';
 import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
+import { PedidoController } from './adapters/inbound/rest/v1/controllers/pedido/pedido.controller';
+import { PedidoUseCase } from './domain/use_cases/pedido/pedido_use_case';
+import { IPedidoUseCase } from './domain/ports/pedido/pedito.use_case.port';
 
 @Module({
   imports: [
@@ -51,6 +54,7 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
     ProdutoController,
     CategoriaController,
     ClienteController,
+    PedidoController,
   ],
   providers: [
     AppUseCase,
@@ -58,9 +62,10 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
     ProdutoRepository,
     CategoriaUseCase,
     CategoriaRepository,
-    PedidoRepository,
-    ClienteRepository,
     ClienteUseCase,
+    ClienteRepository,
+    PedidoUseCase,
+    PedidoRepository,
     {
       provide: IProdutoUseCase,
       useClass: ProdutoUseCase,
@@ -78,16 +83,20 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
       useClass: CategoriaRepository,
     },
     {
-      provide: IPedidoRepository,
-      useClass: PedidoRepository,
+      provide: IClienteUseCase,
+      useClass: ClienteUseCase,
     },
     {
       provide: IClienteRepository,
       useClass: ClienteRepository,
     },
     {
-      provide: IClienteUseCase,
-      useClass: ClienteUseCase,
+      provide: IPedidoUseCase,
+      useClass: PedidoUseCase,
+    },
+    {
+      provide: IPedidoRepository,
+      useClass: PedidoRepository,
     },
   ],
 })

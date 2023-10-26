@@ -10,8 +10,9 @@ import {
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
 import {
   CategoriaNaoLocalizadaErro,
-  NomeCategoriaDuplicadoErro,
+  NomeCategoriaDuplicadaErro,
 } from 'src/domain/exceptions/categoria.exception';
+import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
@@ -22,13 +23,13 @@ export class CategoriaUseCase implements ICategoriaUseCase {
 
   async criarCategoria(
     categoria: CriaCategoriaDTO,
-  ): Promise<{ mensagem: string; categoria: CategoriaDTO }> {
+  ): Promise<HTTPResponse<CategoriaDTO>> {
     const { nome, descricao } = categoria; // Desempacotando os valores do DTO
 
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorNome(nome);
     if (buscaCategoria) {
-      throw new NomeCategoriaDuplicadoErro(
+      throw new NomeCategoriaDuplicadaErro(
         'Existe uma categoria com esse nome',
       );
     }
@@ -44,20 +45,20 @@ export class CategoriaUseCase implements ICategoriaUseCase {
 
     return {
       mensagem: 'Categoria criada com sucesso',
-      categoria: categoriaDTO,
+      body: categoriaDTO,
     };
   }
 
   async editarCategoria(
     categoriaId: string,
     categoria: AtualizaCategoriaDTO,
-  ): Promise<{ mensagem: string; categoria: CategoriaDTO }> {
+  ): Promise<HTTPResponse<CategoriaDTO>> {
     const { nome, descricao } = categoria; // Desempacotando os valores do DTO
 
     const buscaCategoriaPorNome =
       await this.categoriaRepository.buscarCategoriaPorNome(nome);
     if (buscaCategoriaPorNome) {
-      throw new NomeCategoriaDuplicadoErro(
+      throw new NomeCategoriaDuplicadaErro(
         'Existe uma categoria com esse nome',
       );
     }
@@ -81,11 +82,13 @@ export class CategoriaUseCase implements ICategoriaUseCase {
 
     return {
       mensagem: 'Categoria atualizada com sucesso',
-      categoria: categoriaDTO,
+      body: categoriaDTO,
     };
   }
 
-  async excluirCategoria(categoriaId: string): Promise<{ mensagem: string }> {
+  async excluirCategoria(
+    categoriaId: string,
+  ): Promise<Omit<HTTPResponse<void>, 'body'>> {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoria) {

@@ -1,10 +1,9 @@
-import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
-import { HTTPResponse } from '../types/HTTPResponse';
 import {
   AtualizaClienteDTO,
   ClienteDTO,
   CriaClienteDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
+import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 export interface IClienteUseCase {
   criarCliente(cliente: CriaClienteDTO): Promise<HTTPResponse<ClienteDTO>>;

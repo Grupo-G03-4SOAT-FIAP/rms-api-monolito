@@ -26,9 +26,9 @@ export class ClienteController {
 
   @Post()
   @HttpCode(201)
-  async criar(@Body() clinte: CriaClienteDTO) {
+  async criar(@Body() cliente: CriaClienteDTO) {
     try {
-      return await this.clienteUseCase.criarCliente(clinte);
+      return await this.clienteUseCase.criarCliente(cliente);
     } catch (error) {
       if (error instanceof ConflictException) {
         throw new ConflictException(error.message);
