@@ -16,11 +16,12 @@ import {
   AtualizaClienteDTO,
   CriaClienteDTO,
 } from '../../presenters/cliente.dto';
+import { CPFInvalidoErro } from 'src/domain/exceptions/cliente.exception';
 
 @Controller('cliente')
 export class ClienteController {
   constructor(
-    @Inject()
+    @Inject(IClienteUseCase)
     private readonly clienteUseCase: IClienteUseCase,
   ) {}
 
@@ -51,11 +52,14 @@ export class ClienteController {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
       }
+      if (error instanceof CPFInvalidoErro){
+        throw new NotFoundException(error.message);
+      }
       throw error;
     }
   }
 
-  @Delete()
+  @Delete('/:id')
   async remover(@Param('id') id: string) {
     try {
         return await this.clienteUseCase.excluirCliente(id)

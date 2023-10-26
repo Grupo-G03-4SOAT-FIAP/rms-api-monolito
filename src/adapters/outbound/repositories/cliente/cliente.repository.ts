@@ -36,6 +36,6 @@ export class ClienteRepository implements IClienteRepository {
     return await this.clienteRepository.findOne({ where: { id: clienteId } });
   }
   async deletarCliente(clienteId: string): Promise<void> {
-    await this.clienteRepository.delete({ id: clienteId });
+    await this.clienteRepository.softDelete({ id: clienteId });
   }
 }
