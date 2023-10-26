@@ -2,33 +2,31 @@
 GET http://localhost:3000/
 
 
-### Listar categorias
-GET http://localhost:3000/categoria
-
-
 ### Criar categoria
 POST http://localhost:3000/categoria
 Content-Type: application/json
 
 {
-    "nome": "Lanches",
-    "descricao": "Lanches para todos os gostos!"
+    "nome": "Bebidas",
+    "descricao": "Refrigerantes, sucos e bebidas alcoolicas"
 }
 
 
 ### Editar categoria
-PUT http://localhost:3000/categoria/1
+PUT http://localhost:3000/categoria/a3df944e-8478-46d8-acbc-fb9cd71c084d
 Content-Type: application/json
 
 {
-    "nome": "Bebidas",
-    "descricao": "Refrigerantes, sucos e bebidas alcoolicas",
-    "ativo": true
+    "descricao": "Refrigerantes, sucos"
 }
 
 
+### Listar categorias
+GET http://localhost:3000/categoria
+
+
 ### Deletar categoria
-DELETE http://localhost:3000/categoria/1
+DELETE http://localhost:3000/categoria/a3df944e-8478-46d8-acbc-fb9cd71c084d
 
 
 ### Listar produtos

@@ -27,9 +27,6 @@ export class ProdutoModel {
   @Column({ name: 'imagem_url', length: 2048, nullable: false })
   imagemUrl: string;
 
-  @Column({ name: 'ativo', nullable: false, default: true })
-  ativo: boolean;
-
   @CreateDateColumn({ name: 'criado_em' })
   criadoEm: string;
 

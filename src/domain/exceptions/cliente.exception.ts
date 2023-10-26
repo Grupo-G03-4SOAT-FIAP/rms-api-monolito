@@ -11,3 +11,9 @@ export class NomeClienteDuplicadoErro extends HttpException {
     super(message, HttpStatus.CONFLICT);
   }
 }
+
+export class CPFInvalidoErro extends HttpException {
+  constructor(message: string) {
+    super(message, HttpStatus.BAD_REQUEST);
+  }
+}

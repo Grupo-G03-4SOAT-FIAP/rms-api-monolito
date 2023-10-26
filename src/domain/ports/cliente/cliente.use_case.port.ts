@@ -7,13 +7,13 @@ import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 export interface IClienteUseCase {
   criarCliente(cliente: CriaClienteDTO): Promise<HTTPResponse<ClienteDTO>>;
-  listarClientes(): Promise<ClienteDTO[] | []>;
-  buscarCliente(clienteId: string): Promise<ClienteDTO>;
   editarCliente(
     clienteId: string,
     cliente: AtualizaClienteDTO,
   ): Promise<HTTPResponse<ClienteDTO>>;
   excluirCliente(clienteId: string): Promise<Omit<HTTPResponse<void>, 'body'>>;
+  buscarCliente(clienteId: string): Promise<ClienteDTO>;
+  listarClientes(): Promise<ClienteDTO[] | []>;
 }
 
 export const IClienteUseCase = Symbol('IClienteUseCase');

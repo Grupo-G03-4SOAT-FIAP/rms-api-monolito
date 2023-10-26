@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -50,6 +51,9 @@ export class ClienteController {
       }
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
+      }
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException(error.message);
       }
       throw error;
     }

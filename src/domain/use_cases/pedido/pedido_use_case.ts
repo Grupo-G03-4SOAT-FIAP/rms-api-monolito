@@ -18,25 +18,25 @@ export class PedidoUseCase implements IPedidoUseCase {
     private readonly pedidoRepository: IPedidoRepository,
   ) {}
 
-  async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-    const { itemsPedido, cpfCliente } = pedido;
+  // async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
+  //   const { itemsPedido, cpfCliente } = pedido;
 
-    // criar a factory para criar a entidade pedido
-    const pedidoEntity = new PedidoEntity(itemsPedido, cpfCliente);
+  //   // criar a factory para criar a entidade pedido
+  //   const pedidoEntity = new PedidoEntity(itemsPedido, cpfCliente);
 
-    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
+  //   const result = await this.pedidoRepository.criarPedido(pedidoEntity);
 
-    const peditoDTO = new PedidoDTO();
-    peditoDTO.id = result.id;
-    peditoDTO.itemsPedido = result.itemsPedido;
-    peditoDTO.statusPedido = result.statusPedido;
-    peditoDTO.cliente = result.cliente;
+  //   const peditoDTO = new PedidoDTO();
+  //   peditoDTO.id = result.id;
+  //   peditoDTO.itemsPedido = result.itemsPedido;
+  //   peditoDTO.statusPedido = result.statusPedido;
+  //   peditoDTO.cliente = result.cliente;
 
-    return {
-      mensagem: 'Pedido criado com sucesso',
-      body: peditoDTO,
-    };
-  }
+  //   return {
+  //     mensagem: 'Pedido criado com sucesso',
+  //     body: peditoDTO,
+  //   };
+  // }
 
   async editarPedido(
     pedidoId: string,

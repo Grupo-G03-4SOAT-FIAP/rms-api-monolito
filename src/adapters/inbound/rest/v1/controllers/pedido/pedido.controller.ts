@@ -19,11 +19,11 @@ export class PedidoController {
     private readonly pedidoUseCase: IPedidoUseCase,
   ) {}
 
-  @Post()
-  @HttpCode(201)
-  async checkout(@Body() pedido: CriaPedidoDTO) {
-    return await this.pedidoUseCase.criarPedido(pedido);
-  }
+  // @Post()
+  // @HttpCode(201)
+  // async checkout(@Body() pedido: CriaPedidoDTO) {
+  //   return await this.pedidoUseCase.criarPedido(pedido);
+  // }
 
   @Put('/:id')
   async atualizar(@Param('id') id: string, @Body() pedido: AtualizaPedidoDTO) {

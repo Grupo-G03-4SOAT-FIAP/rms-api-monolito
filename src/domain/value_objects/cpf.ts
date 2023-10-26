@@ -1,11 +1,15 @@
+import { CPFInvalidoErro } from '../exceptions/cliente.exception';
+
 export class CPF {
   private readonly value: string;
 
-  constructor(value: string) {
-    if (!this.isValidCPF(value)) {
-      throw new Error('CPF inválido');
+  constructor(valor: string) {
+    if (valor) {
+      if (!this.isValidCPF(valor)) {
+        throw new CPFInvalidoErro('CPF inválido');
+      }
     }
-    this.value = value;
+    this.value = valor;
   }
 
   public getValue(): string {
@@ -13,18 +17,38 @@ export class CPF {
   }
 
   private isValidCPF(cpf: string): boolean {
-    // Implemente a lógica de validação do CPF aqui
-    // Retorne true se o CPF for válido e false caso contrário
-    // Você pode usar uma biblioteca de validação de CPF existente ou implementar sua própria validação.
-    // Aqui, vou fornecer um exemplo simples de validação de CPF:
-
-    // Verifica se o CPF tem 11 dígitos
-    if (cpf.length !== 11) {
-      return false;
+    function isValidLength(cpf: string) {
+      return cpf.length !== 11;
     }
 
-    // Outras verificações de validade do CPF podem ser adicionadas aqui
+    function allDigitsTheSame(cpf: string) {
+      return cpf.split('').every((c) => c === cpf[0]);
+    }
 
-    return true;
+    function removeNonDigits(cpf: string) {
+      return cpf.replace(/\D/g, '');
+    }
+
+    function calculateDigit(cpf: string, factor: number) {
+      let total = 0;
+      for (const digit of cpf) {
+        if (factor > 1) total += parseInt(digit) * factor--;
+      }
+      const rest = total % 11;
+      return rest < 2 ? 0 : 11 - rest;
+    }
+
+    function validate(cpf: string) {
+      cpf = removeNonDigits(cpf);
+      if (isValidLength(cpf)) return false;
+      if (allDigitsTheSame(cpf)) return false;
+      const dg1 = calculateDigit(cpf, 10);
+      const dg2 = calculateDigit(cpf, 11);
+      const actualCheckDigit = cpf.slice(9);
+      const calculatedCheckDigit = `${dg1}${dg2}`;
+      return actualCheckDigit === calculatedCheckDigit;
+    }
+
+    return validate(cpf);
   }
 }

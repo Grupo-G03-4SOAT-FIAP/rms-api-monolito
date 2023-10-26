@@ -18,8 +18,16 @@ export class ClienteRepository implements IClienteRepository {
     return novoCliente;
   }
 
-  async listarClientes(): Promise<[] | ClienteModel[]> {
-    return await this.clienteRepository.find();
+  async editarCliente(
+    clienteId: string,
+    cliente: ClienteEntity,
+  ): Promise<ClienteModel> {
+    await this.clienteRepository.update(clienteId, cliente);
+    return await this.clienteRepository.findOne({ where: { id: clienteId } });
+  }
+
+  async deletarCliente(clienteId: string): Promise<void> {
+    await this.clienteRepository.softDelete({ id: clienteId });
   }
 
   async buscarClientePorId(clienteId: string): Promise<ClienteModel> {
@@ -32,15 +40,7 @@ export class ClienteRepository implements IClienteRepository {
     });
   }
 
-  async editarCliente(
-    clienteId: string,
-    cliente: ClienteEntity,
-  ): Promise<ClienteModel> {
-    await this.clienteRepository.update(clienteId, cliente);
-    return await this.clienteRepository.findOne({ where: { id: clienteId } });
-  }
-
-  async deletarCliente(clienteId: string): Promise<void> {
-    await this.clienteRepository.softDelete({ id: clienteId });
+  async listarClientes(): Promise<[] | ClienteModel[]> {
+    return await this.clienteRepository.find();
   }
 }

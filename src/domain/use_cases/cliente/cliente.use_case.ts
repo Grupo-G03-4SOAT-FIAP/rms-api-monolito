@@ -29,7 +29,7 @@ export class ClienteUseCase implements IClienteUseCase {
     const buscaCliente =
       await this.clienteRepository.buscarClientePorNome(nome);
     if (buscaCliente) {
-      throw new NomeClienteDuplicadoErro('Existe um cliente com esse nome');
+      throw new NomeClienteDuplicadoErro('Existe um Cliente com esse nome');
     }
 
     const clienteEntity = new ClienteEntity(nome, email, cpf);
@@ -46,34 +46,6 @@ export class ClienteUseCase implements IClienteUseCase {
     };
   }
 
-  async listarClientes(): Promise<ClienteDTO[] | []> {
-    const result = await this.clienteRepository.listarClientes();
-    const listaClientesDTO = result.map((cliente: ClienteModel) => {
-      const clienteDTO = new ClienteDTO();
-      clienteDTO.id = cliente.id;
-      clienteDTO.nome = cliente.nome;
-      clienteDTO.email = cliente.email;
-      clienteDTO.cpf = cliente.cpf;
-      return clienteDTO;
-    });
-    return listaClientesDTO;
-  }
-
-  async buscarCliente(clienteId: string): Promise<ClienteDTO> {
-    const result = await this.clienteRepository.buscarClientePorId(clienteId);
-    if (!result) {
-      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
-    }
-
-    const clienteDTO = new ClienteDTO();
-    clienteDTO.id = result.id;
-    clienteDTO.nome = result.nome;
-    clienteDTO.email = result.email;
-    clienteDTO.cpf = result.cpf;
-
-    return clienteDTO;
-  }
-
   async editarCliente(
     clienteId: string,
     cliente: AtualizaClienteDTO,
@@ -86,9 +58,9 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new NomeClienteDuplicadoErro('Existe uma cliente com esse nome');
     }
 
-    const buscaClientePorId =
+    const buscarClientePorId =
       await this.clienteRepository.buscarClientePorId(clienteId);
-    if (!buscaClientePorId) {
+    if (!buscarClientePorId) {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
@@ -113,9 +85,9 @@ export class ClienteUseCase implements IClienteUseCase {
   async excluirCliente(
     clienteId: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
-    const buscarCliente =
+    const buscaCliente =
       await this.clienteRepository.buscarClientePorId(clienteId);
-    if (!buscarCliente) {
+    if (!buscaCliente) {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
@@ -123,5 +95,33 @@ export class ClienteUseCase implements IClienteUseCase {
     return {
       mensagem: 'Cliente excluido com sucesso',
     };
+  }
+
+  async buscarCliente(clienteId: string): Promise<ClienteDTO> {
+    const result = await this.clienteRepository.buscarClientePorId(clienteId);
+    if (!result) {
+      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
+    }
+
+    const clienteDTO = new ClienteDTO();
+    clienteDTO.id = result.id;
+    clienteDTO.nome = result.nome;
+    clienteDTO.email = result.email;
+    clienteDTO.cpf = result.cpf;
+
+    return clienteDTO;
+  }
+
+  async listarClientes(): Promise<ClienteDTO[] | []> {
+    const result = await this.clienteRepository.listarClientes();
+    const listaClienteDTO = result.map((cliente: ClienteModel) => {
+      const clienteDTO = new ClienteDTO();
+      clienteDTO.id = cliente.id;
+      clienteDTO.nome = cliente.nome;
+      clienteDTO.email = cliente.email;
+      clienteDTO.cpf = cliente.cpf;
+      return clienteDTO;
+    });
+    return listaClienteDTO;
   }
 }
