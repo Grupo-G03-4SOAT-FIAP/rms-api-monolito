@@ -10,7 +10,7 @@ import {
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
 import {
   CategoriaNaoLocalizadaErro,
-  NomeCategoriaDuplicadaErro,
+  CategoriaDuplicadaErro,
 } from 'src/domain/exceptions/categoria.exception';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 
@@ -29,7 +29,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorNome(nome);
     if (buscaCategoria) {
-      throw new NomeCategoriaDuplicadaErro(
+      throw new CategoriaDuplicadaErro(
         'Existe uma categoria com esse nome',
       );
     }
@@ -58,7 +58,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     const buscaCategoriaPorNome =
       await this.categoriaRepository.buscarCategoriaPorNome(nome);
     if (buscaCategoriaPorNome) {
-      throw new NomeCategoriaDuplicadaErro(
+      throw new CategoriaDuplicadaErro(
         'Existe uma categoria com esse nome',
       );
     }

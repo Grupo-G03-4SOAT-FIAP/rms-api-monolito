@@ -11,7 +11,7 @@ import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repos
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
 import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 import {
-  NomeProdutoDuplicadoErro,
+  ProdutoDuplicadoErro,
   ProdutoNaoLocalizadoErro,
 } from 'src/domain/exceptions/produto.exception';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
@@ -34,7 +34,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     const buscaProduto =
       await this.produtoRepository.buscarProdutoPorNome(nome);
     if (buscaProduto) {
-      throw new NomeProdutoDuplicadoErro('Existe um produto com esse nome');
+      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
 
     const buscaCategoria =
@@ -81,7 +81,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     const buscaProdutoPorNome =
       await this.produtoRepository.buscarProdutoPorNome(nome);
     if (buscaProdutoPorNome) {
-      throw new NomeProdutoDuplicadoErro('Existe um produto com esse nome');
+      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
 
     const buscaProdutoPorId =

@@ -34,9 +34,9 @@ export class ClienteRepository implements IClienteRepository {
     return await this.clienteRepository.findOne({ where: { id: clienteId } });
   }
 
-  async buscarClientePorNome(clienteNome: string): Promise<ClienteModel> {
+  async buscarClientePorCPF(cpfCliente: string): Promise<ClienteModel> {
     return await this.clienteRepository.findOne({
-      where: { nome: clienteNome },
+      where: { cpf: cpfCliente },
     });
   }
 

@@ -9,7 +9,7 @@ export interface IClienteRepository {
   ): Promise<ClienteModel | null>;
   deletarCliente(clienteId: string): Promise<void>;
   buscarClientePorId(clienteId: string): Promise<ClienteModel | null>;
-  buscarClientePorNome(clienteNome: string): Promise<ClienteModel | null>;
+  buscarClientePorCPF(cpfCliente: string): Promise<ClienteModel | null>;
   listarClientes(): Promise<ClienteModel[] | []>;
 }
 

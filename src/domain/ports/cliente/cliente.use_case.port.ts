@@ -12,7 +12,8 @@ export interface IClienteUseCase {
     cliente: AtualizaClienteDTO,
   ): Promise<HTTPResponse<ClienteDTO>>;
   excluirCliente(clienteId: string): Promise<Omit<HTTPResponse<void>, 'body'>>;
-  buscarCliente(clienteId: string): Promise<ClienteDTO>;
+  buscarClientePorId(clienteId: string): Promise<ClienteDTO>;
+  buscarClientePorCPF(cpfCliente: string): Promise<ClienteDTO>;
   listarClientes(): Promise<ClienteDTO[] | []>;
 }
 

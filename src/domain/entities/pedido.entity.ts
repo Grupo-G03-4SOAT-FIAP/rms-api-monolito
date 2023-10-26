@@ -17,6 +17,6 @@ export class PedidoEntity {
     this.id = id;
     this.itemsPedido = itemsPedido;
     this.cliente = cliente;
-    this.statusPedido = statusPedido || StatusPedido.RECEBIDO;
+    this.statusPedido = statusPedido;
   }
 }
