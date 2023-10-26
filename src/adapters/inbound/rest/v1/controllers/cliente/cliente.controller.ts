@@ -20,7 +20,7 @@ import {
 @Controller('cliente')
 export class ClienteController {
   constructor(
-    @Inject()
+    @Inject(IClienteUseCase)
     private readonly clienteUseCase: IClienteUseCase,
   ) {}
 
@@ -55,33 +55,32 @@ export class ClienteController {
     }
   }
 
-  @Delete()
+  @Delete('/:id')
   async remover(@Param('id') id: string) {
     try {
-        return await this.clienteUseCase.excluirCliente(id)
+      return await this.clienteUseCase.excluirCliente(id);
     } catch (error) {
-        if(error instanceof NotFoundException) {
-            throw new NotFoundException(error.message)
-        }
-        throw error
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
     }
   }
 
   @Get('/:id')
-  async buscar(@Param('id') id: string){
+  async buscar(@Param('id') id: string) {
     try {
-        return await this.clienteUseCase.buscarCliente(id)
+      return await this.clienteUseCase.buscarCliente(id);
     } catch (error) {
-        if(error instanceof NotFoundException) {
-            throw new NotFoundException(error.message)
-        }
-        throw error        
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
     }
   }
 
   @Get()
-  async listar(){
-    return await this.clienteUseCase.listarClientes()
+  async listar() {
+    return await this.clienteUseCase.listarClientes();
   }
-
 }

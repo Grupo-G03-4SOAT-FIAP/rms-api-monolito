@@ -30,7 +30,6 @@ import { ClienteController } from './adapters/inbound/rest/v1/controllers/client
 import { ClienteUseCase } from './domain/use_cases/cliente/cliente.use_case';
 import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -47,7 +46,12 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
       inject: [PostgresConfigService],
     }),
   ],
-  controllers: [AppController, ProdutoController, CategoriaController, ClienteController],
+  controllers: [
+    AppController,
+    ProdutoController,
+    CategoriaController,
+    ClienteController,
+  ],
   providers: [
     AppUseCase,
     ProdutoUseCase,
@@ -80,7 +84,7 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
     {
       provide: IClienteRepository,
       useClass: ClienteRepository,
-    },,
+    },
     {
       provide: IClienteUseCase,
       useClass: ClienteUseCase,

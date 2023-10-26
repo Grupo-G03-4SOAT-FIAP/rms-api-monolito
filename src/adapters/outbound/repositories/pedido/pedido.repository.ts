@@ -18,20 +18,6 @@ export class PedidoRepository implements IPedidoRepository {
     return novoPedido;
   }
 
-  async editarStatusPagamento(
-    pedidoId: string,
-    statusPagamento: string,
-  ): Promise<PedidoModel> {
-    await this.pedidoRepository.update(pedidoId, {
-      statusPagamento: statusPagamento,
-    });
-
-    return await this.pedidoRepository.findOne({
-      where: { id: pedidoId },
-      relations: ['cliente'],
-    });
-  }
-
   async editarStatusPedido(
     pedidoId: string,
     statusPedido: string,
@@ -62,7 +48,6 @@ export class PedidoRepository implements IPedidoRepository {
 
     const pedidos = await this.pedidoRepository.find({
       where: {
-        statusPagamento: 'Aprovado',
         statusPedido: In(['Pronto', 'Em preparação', 'Recebido']),
       },
       relations: ['cliente'],

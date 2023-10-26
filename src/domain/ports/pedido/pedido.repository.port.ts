@@ -3,10 +3,6 @@ import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 
 export interface IPedidoRepository {
   criarPedido(pedido: PedidoEntity): Promise<PedidoModel>;
-  editarStatusPagamento(
-    pedidoId: string,
-    statusPagamento: string,
-  ): Promise<PedidoModel>;
   editarStatusPedido(
     pedidoId: string,
     statusPedido: string,

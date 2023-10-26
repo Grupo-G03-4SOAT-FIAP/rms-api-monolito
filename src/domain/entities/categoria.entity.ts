@@ -3,14 +3,14 @@ import { ProdutoEntity } from './produto.entity';
 export class CategoriaEntity {
   nome: string;
   descricao?: string;
-  produtos?: ProdutoEntity[];
   id?: string;
+  produtos?: ProdutoEntity[];
 
   constructor(
     nome: string,
     descricao?: string,
-    produtos?: ProdutoEntity[],
     id?: string,
+    produtos?: ProdutoEntity[],
   ) {
     this.id = id;
     this.nome = nome;
