@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,4 +26,7 @@ export class ClienteModel {
 
   @UpdateDateColumn({ name: 'atualizado_em' })
   atualizadoEm: string;
+
+  @DeleteDateColumn({ name: 'excluido_em' })
+  excluidoEm: string;
 }

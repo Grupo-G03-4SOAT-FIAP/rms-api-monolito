@@ -1,23 +1,23 @@
 import { CPF } from '../value_objects/cpf';
 export class ClienteEntity {
-  private _nome: string;
+  nome: string;
   email: string;
-  private _cpf: string;
+  cpf?: string;
   id?: string;
 
-  constructor(nome: string, email: string, cpf: string, id?: string) {
+  constructor(nome: string, email: string, cpf?: string, id?: string) {
     this.id = id;
-    this._nome = nome;
+    this.nome = nome;
     this.email = email;
     const cpfIntancia = new CPF(cpf);
-    this._cpf = cpfIntancia.getValue();
+    this.cpf = cpfIntancia.getValue();
   }
 
-  get nome(): string {
-    return this._nome;
+  get getNome(): string {
+    return this.nome;
   }
-  set nome(nome: string) {
-    this._nome = this.toCapitalize(nome);
+  set setNome(nome: string) {
+    this.nome = this.toCapitalize(nome);
   }
 
   private toCapitalize(input: string): string {
@@ -27,10 +27,10 @@ export class ClienteEntity {
       .join(' ');
   }
 
-  get cpf(): string {
-    return this._cpf;
+  get getCpf(): string {
+    return this.cpf;
   }
-  set cpf(cpf: string) {
-    this._cpf = cpf;
+  set setCpf(cpf: string) {
+    this.cpf = cpf;
   }
 }

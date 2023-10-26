@@ -37,7 +37,7 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
       ProdutoModel,
       CategoriaModel,
       PedidoModel,
-      ClienteModel,
+      ClienteModel
     ]),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -80,7 +80,7 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
     {
       provide: IClienteRepository,
       useClass: ClienteRepository,
-    },,
+    },
     {
       provide: IClienteUseCase,
       useClass: ClienteUseCase,
