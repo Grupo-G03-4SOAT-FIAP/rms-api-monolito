@@ -3,11 +3,11 @@ GET http://localhost:3000/
 
 
 ### Listar categorias
-GET http://localhost:3000/categorias
+GET http://localhost:3000/categoria
 
 
 ### Criar categoria
-POST http://localhost:3000/categorias
+POST http://localhost:3000/categoria
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 
 ### Editar categoria
-PUT http://localhost:3000/categorias/1
+PUT http://localhost:3000/categoria/ec633019-6a5e-4a27-a6cd-c12cb09d7738
 Content-Type: application/json
 
 {
@@ -28,15 +28,15 @@ Content-Type: application/json
 
 
 ### Deletar categoria
-DELETE http://localhost:3000/categorias/1
+DELETE http://localhost:3000/categoria/ec633019-6a5e-4a27-a6cd-c12cb09d7738
 
 
 ### Listar produtos
-GET http://localhost:3000/produtos
+GET http://localhost:3000/produto
 
 
 ### Criar produto
-POST http://localhost:3000/produtos
+POST http://localhost:3000/produto
 Content-Type: application/json
 
 {
@@ -44,11 +44,11 @@ Content-Type: application/json
     "valorUnitario": 12,
     "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
     "imagemUrl": "https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg",
-    "idCategoria": null
+    "idCategoria": "928e511c-2bae-4d0e-9fcf-b91239f1fcd2"
 }
 
 ### Editar produto
-PUT http://localhost:3000/produtos/894a2d09-c7e0-4615-ae38-476663108207
+PUT http://localhost:3000/produto/894a2d09-c7e0-4615-ae38-476663108207
 Content-Type: application/json
 
 {
@@ -62,4 +62,4 @@ Content-Type: application/json
 
 
 ### Remover produto
-DELETE http://localhost:3000/produtos/f64fdf7d-2233-4164-a37d-818d07e6e6c6
+DELETE http://localhost:3000/produto/f64fdf7d-2233-4164-a37d-818d07e6e6c6

@@ -30,7 +30,7 @@ export class CriaProdutoDTO {
 
   @IsString()
   @IsNotEmpty({ message: 'Id categoria não pode ser vazia' })
-  categoriaId: string;
+  idCategoria: string;
 }
 
 export class AtualizaProdutoDTO {
@@ -56,7 +56,7 @@ export class AtualizaProdutoDTO {
 
   @IsString()
   @IsOptional()
-  categoriaId: string;
+  idCategoria: string;
 }
 
 export class ProdutoDTO {

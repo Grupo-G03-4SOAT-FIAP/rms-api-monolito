@@ -28,7 +28,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
   async criarProduto(
     produto: CriaProdutoDTO,
   ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
-    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
+    const { nome, descricao, valorUnitario, imagemUrl, idCategoria } = produto; // Desempacotando os valores do DTO
 
     const buscaProduto =
       await this.produtoRepository.buscarProdutoPorNome(nome);
@@ -37,7 +37,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     }
 
     const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+      await this.categoriaRepository.buscarCategoriaPorId(idCategoria);
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
@@ -75,7 +75,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoId: string,
     produto: AtualizaProdutoDTO,
   ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
-    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
+    const { nome, descricao, valorUnitario, imagemUrl, idCategoria } = produto; // Desempacotando os valores do DTO
 
     const buscaProdutoPorNome =
       await this.produtoRepository.buscarProdutoPorNome(nome);
@@ -90,7 +90,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     }
 
     const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+      await this.categoriaRepository.buscarCategoriaPorId(idCategoria);
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
