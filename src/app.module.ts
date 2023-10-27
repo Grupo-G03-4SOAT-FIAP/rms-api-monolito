@@ -32,6 +32,8 @@ import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
 import { PedidoController } from './adapters/inbound/rest/v1/controllers/pedido/pedido.controller';
 import { PedidoUseCase } from './domain/use_cases/pedido/pedido_use_case';
 import { IPedidoUseCase } from './domain/ports/pedido/pedito.use_case.port';
+import { PedidoFactory } from './domain/factories/pedido_factory';
+import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 
 @Module({
   imports: [
@@ -66,6 +68,7 @@ import { IPedidoUseCase } from './domain/ports/pedido/pedito.use_case.port';
     ClienteRepository,
     PedidoUseCase,
     PedidoRepository,
+    PedidoFactory,
     {
       provide: IProdutoUseCase,
       useClass: ProdutoUseCase,
@@ -97,6 +100,10 @@ import { IPedidoUseCase } from './domain/ports/pedido/pedito.use_case.port';
     {
       provide: IPedidoRepository,
       useClass: PedidoRepository,
+    },
+    {
+      provide: IPedidoFactory,
+      useClass: PedidoFactory,
     },
   ],
 })

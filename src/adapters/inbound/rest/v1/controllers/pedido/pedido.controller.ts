@@ -19,11 +19,18 @@ export class PedidoController {
     private readonly pedidoUseCase: IPedidoUseCase,
   ) {}
 
-  // @Post()
-  // @HttpCode(201)
-  // async checkout(@Body() pedido: CriaPedidoDTO) {
-  //   return await this.pedidoUseCase.criarPedido(pedido);
-  // }
+  @Post()
+  @HttpCode(201)
+  async checkout(@Body() pedido: CriaPedidoDTO) {
+    try {
+      return await this.pedidoUseCase.criarPedido(pedido);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
+  }
 
   @Put('/:id')
   async atualizar(@Param('id') id: string, @Body() pedido: AtualizaPedidoDTO) {

@@ -15,7 +15,6 @@ export class CriaPedidoDTO {
 
 export class AtualizaPedidoDTO {
   @IsString()
-  @IsOptional()
   statusPedido: StatusPedido;
 }
 

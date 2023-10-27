@@ -6,7 +6,7 @@ import {
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 export interface IPedidoUseCase {
-  // criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>>;
+  criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>>;
   editarPedido(
     pedidoId: string,
     pedido: AtualizaPedidoDTO,

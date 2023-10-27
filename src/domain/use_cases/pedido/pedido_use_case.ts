@@ -5,8 +5,8 @@ import {
   AtualizaPedidoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
 import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
-import { PedidoEntity } from 'src/domain/entities/pedido.entity';
 import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
+import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedito.use_case.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
@@ -16,27 +16,26 @@ export class PedidoUseCase implements IPedidoUseCase {
   constructor(
     @Inject(IPedidoRepository)
     private readonly pedidoRepository: IPedidoRepository,
+    @Inject(IPedidoFactory)
+    private readonly pedidoFactory: IPedidoFactory,
   ) {}
 
-  // async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-  //   const { itemsPedido, cpfCliente } = pedido;
+  async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
+    // factory para criar a entidade pedido
+    const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
+    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
 
-  //   // criar a factory para criar a entidade pedido
-  //   const pedidoEntity = new PedidoEntity(itemsPedido, cpfCliente);
+    const peditoDTO = new PedidoDTO();
+    peditoDTO.id = result.id;
+    peditoDTO.itemsPedido = result.itemsPedido;
+    peditoDTO.statusPedido = result.statusPedido;
+    peditoDTO.cliente = result.cliente;
 
-  //   const result = await this.pedidoRepository.criarPedido(pedidoEntity);
-
-  //   const peditoDTO = new PedidoDTO();
-  //   peditoDTO.id = result.id;
-  //   peditoDTO.itemsPedido = result.itemsPedido;
-  //   peditoDTO.statusPedido = result.statusPedido;
-  //   peditoDTO.cliente = result.cliente;
-
-  //   return {
-  //     mensagem: 'Pedido criado com sucesso',
-  //     body: peditoDTO,
-  //   };
-  // }
+    return {
+      mensagem: 'Pedido criado com sucesso',
+      body: peditoDTO,
+    };
+  }
 
   async editarPedido(
     pedidoId: string,

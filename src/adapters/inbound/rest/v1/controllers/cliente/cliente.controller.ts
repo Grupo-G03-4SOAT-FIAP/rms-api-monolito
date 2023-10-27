@@ -74,7 +74,19 @@ export class ClienteController {
   @Get('/:id')
   async buscar(@Param('id') id: string) {
     try {
-      return await this.clienteUseCase.buscarCliente(id);
+      return await this.clienteUseCase.buscarClientePorId(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
+  }
+
+  @Get('/:cpf')
+  async buscarCPF(@Param('cpf') cpf: string) {
+    try {
+      return await this.clienteUseCase.buscarClientePorCPF(cpf);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);

@@ -26,9 +26,12 @@ export class ClienteUseCase implements IClienteUseCase {
   ): Promise<HTTPResponse<ClienteDTO>> {
     const { nome, email, cpf } = cliente;
 
-    const buscaCliente = await this.clienteRepository.buscarClientePorCPF(cpf);
-    if (buscaCliente) {
-      throw new ClienteDuplicadoErro('Existe um Cliente com esse cpf');
+    if (cpf) {
+      const buscaCliente =
+        await this.clienteRepository.buscarClientePorCPF(cpf);
+      if (buscaCliente) {
+        throw new ClienteDuplicadoErro('Existe um cliente com esse cpf');
+      }
     }
 
     const clienteEntity = new ClienteEntity(nome, email, cpf);
@@ -49,13 +52,7 @@ export class ClienteUseCase implements IClienteUseCase {
     clienteId: string,
     cliente: AtualizaClienteDTO,
   ): Promise<HTTPResponse<ClienteDTO>> {
-    const { nome, email, cpf } = cliente;
-
-    const buscaClientePorCPF =
-      await this.clienteRepository.buscarClientePorCPF(cpf);
-    if (buscaClientePorCPF) {
-      throw new ClienteDuplicadoErro('Existe uma cliente com esse cpf');
-    }
+    const { nome, email } = cliente;
 
     const buscarClientePorId =
       await this.clienteRepository.buscarClientePorId(clienteId);
@@ -63,7 +60,7 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
-    const clienteEntity = new ClienteEntity(nome, email, cpf);
+    const clienteEntity = new ClienteEntity(nome, email);
     const result = await this.clienteRepository.editarCliente(
       clienteId,
       clienteEntity,

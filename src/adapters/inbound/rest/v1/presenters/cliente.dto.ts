@@ -26,10 +26,6 @@ export class AtualizaClienteDTO {
   @IsEmail()
   @IsOptional()
   email?: string;
-
-  @IsString()
-  @IsOptional()
-  cpf?: string;
 }
 
 export class ClienteDTO {

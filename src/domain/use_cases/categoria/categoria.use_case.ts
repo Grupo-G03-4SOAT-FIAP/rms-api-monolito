@@ -29,9 +29,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorNome(nome);
     if (buscaCategoria) {
-      throw new CategoriaDuplicadaErro(
-        'Existe uma categoria com esse nome',
-      );
+      throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
     }
 
     const categoriaEntity = new CategoriaEntity(nome, descricao);
@@ -55,18 +53,18 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   ): Promise<HTTPResponse<CategoriaDTO>> {
     const { nome, descricao } = categoria; // Desempacotando os valores do DTO
 
-    const buscaCategoriaPorNome =
-      await this.categoriaRepository.buscarCategoriaPorNome(nome);
-    if (buscaCategoriaPorNome) {
-      throw new CategoriaDuplicadaErro(
-        'Existe uma categoria com esse nome',
-      );
-    }
-
     const buscaCategoriaPorId =
       await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoriaPorId) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+    }
+
+    if (nome) {
+      const buscaCategoriaPorNome =
+        await this.categoriaRepository.buscarCategoriaPorNome(nome);
+      if (buscaCategoriaPorNome) {
+        throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
+      }
     }
 
     const categoriaEntity = new CategoriaEntity(nome, descricao);

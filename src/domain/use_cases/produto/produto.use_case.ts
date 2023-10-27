@@ -16,6 +16,7 @@ import {
 } from 'src/domain/exceptions/produto.exception';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
+import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {
@@ -78,27 +79,36 @@ export class ProdutoUseCase implements IProdutoUseCase {
   ): Promise<HTTPResponse<ProdutoDTO>> {
     const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
 
-    const buscaProdutoPorNome =
-      await this.produtoRepository.buscarProdutoPorNome(nome);
-    if (buscaProdutoPorNome) {
-      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-    }
-
     const buscaProdutoPorId =
       await this.produtoRepository.buscarProdutoPorId(produtoId);
     if (!buscaProdutoPorId) {
       throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
     }
 
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-    if (!buscaCategoria) {
-      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+    if (nome) {
+      const buscaProdutoPorNome =
+        await this.produtoRepository.buscarProdutoPorNome(nome);
+      if (buscaProdutoPorNome) {
+        throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
+      }
+    }
+
+    let categoriaEntity: CategoriaEntity | null = null;
+    if (categoriaId) {
+      const buscaCategoria =
+        await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+      if (!buscaCategoria) {
+        throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+      }
+      categoriaEntity = new CategoriaEntity(
+        buscaCategoria.nome,
+        buscaCategoria.descricao,
+      );
     }
 
     const produtoEntity = new ProdutoEntity(
       nome,
-      buscaCategoria,
+      categoriaEntity,
       valorUnitario,
       imagemUrl,
       descricao,
