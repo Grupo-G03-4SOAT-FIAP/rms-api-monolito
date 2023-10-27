@@ -40,9 +40,9 @@ export class PedidoFactory implements IPedidoFactory {
   }
 
   async criarEntidadePedido(pedido: CriaPedidoDTO): Promise<PedidoEntity> {
-    const itemsPedido = await this.criarItemPedido(pedido.itemsPedido);
+    const itensPedido = await this.criarItemPedido(pedido.itensPedido);
     const clienteEntity = await this.criarEntidadeCliente(pedido.cpfCliente);
 
-    return new PedidoEntity(itemsPedido, StatusPedido.RECEBIDO, clienteEntity);
+    return new PedidoEntity(itensPedido, StatusPedido.RECEBIDO, clienteEntity);
   }
 }

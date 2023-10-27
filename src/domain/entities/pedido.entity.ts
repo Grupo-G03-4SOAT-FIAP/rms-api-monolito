@@ -3,19 +3,19 @@ import { ClienteEntity } from './cliente.entity';
 import { StatusPedido } from 'src/utils/pedido.enum';
 
 export class PedidoEntity {
-  itemsPedido: ProdutoEntity[];
+  itensPedido: ProdutoEntity[];
   statusPedido?: StatusPedido;
   cliente?: ClienteEntity;
   id?: string;
 
   constructor(
-    itemsPedido: ProdutoEntity[],
+    itensPedido: ProdutoEntity[],
     statusPedido?: StatusPedido,
     cliente?: ClienteEntity,
     id?: string,
   ) {
     this.id = id;
-    this.itemsPedido = itemsPedido;
+    this.itensPedido = itensPedido;
     this.cliente = cliente;
     this.statusPedido = statusPedido;
   }

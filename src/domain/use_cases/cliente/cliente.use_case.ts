@@ -89,7 +89,7 @@ export class ClienteUseCase implements IClienteUseCase {
 
     await this.clienteRepository.deletarCliente(clienteId);
     return {
-      mensagem: 'Cliente excluido com sucesso',
+      mensagem: 'Cliente excluído com sucesso',
     };
   }
 

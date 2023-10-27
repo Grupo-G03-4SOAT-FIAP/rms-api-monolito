@@ -27,7 +27,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const peditoDTO = new PedidoDTO();
     peditoDTO.id = result.id;
-    peditoDTO.itemsPedido = result.itemsPedido;
+    peditoDTO.itensPedido = result.itensPedido;
     peditoDTO.statusPedido = result.statusPedido;
     peditoDTO.cliente = result.cliente;
 
@@ -55,7 +55,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const peditoDTO = new PedidoDTO();
     peditoDTO.id = result.id;
-    peditoDTO.itemsPedido = result.itemsPedido;
+    peditoDTO.itensPedido = result.itensPedido;
     peditoDTO.statusPedido = result.statusPedido;
     peditoDTO.cliente = result.cliente;
 
@@ -73,7 +73,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const peditoDTO = new PedidoDTO();
     peditoDTO.id = result.id;
-    peditoDTO.itemsPedido = result.itemsPedido;
+    peditoDTO.itensPedido = result.itensPedido;
     peditoDTO.statusPedido = result.statusPedido;
     peditoDTO.cliente = result.cliente;
 
@@ -85,7 +85,7 @@ export class PedidoUseCase implements IPedidoUseCase {
     const listaPedidosDTO = result.map((pedido: PedidoModel) => {
       const peditoDTO = new PedidoDTO();
       peditoDTO.id = pedido.id;
-      peditoDTO.itemsPedido = pedido.itemsPedido;
+      peditoDTO.itensPedido = pedido.itensPedido;
       peditoDTO.statusPedido = pedido.statusPedido;
       peditoDTO.cliente = pedido.cliente;
       return peditoDTO;
@@ -98,7 +98,7 @@ export class PedidoUseCase implements IPedidoUseCase {
     const listaPedidosDTO = result.map((pedido: PedidoModel) => {
       const peditoDTO = new PedidoDTO();
       peditoDTO.id = pedido.id;
-      peditoDTO.itemsPedido = pedido.itemsPedido;
+      peditoDTO.itensPedido = pedido.itensPedido;
       peditoDTO.statusPedido = pedido.statusPedido;
       peditoDTO.cliente = pedido.cliente;
       return peditoDTO;

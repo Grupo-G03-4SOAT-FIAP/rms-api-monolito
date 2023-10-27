@@ -1,6 +1,38 @@
 ### Healthcheck
 GET http://localhost:3000/
 
+##################################################
+
+### Listar clientes
+GET http://localhost:3000/cliente
+
+### Criar cliente
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+    "cpf": "44470640735",
+    "nome": "Fulano da Silva Santos",
+    "email": "fulano@gmail.com"
+}
+
+### Editar cliente
+PUT http://localhost:3000/cliente/9c75bf78-f3ab-4c28-800b-3ca11ffb1958
+Content-Type: application/json
+
+{
+    "cpf": "44470640735",
+    "nome": "Fulano da Silva Santos",
+    "email": "fulano.1998@gmail.com"
+}
+
+### Remover cliente
+DELETE http://localhost:3000/cliente/9c75bf78-f3ab-4c28-800b-3ca11ffb1958
+
+##################################################
+
+### Listar categorias
+GET http://localhost:3000/categoria
 
 ### Criar categoria
 POST http://localhost:3000/categoria
@@ -11,27 +43,21 @@ Content-Type: application/json
     "descricao": "Refrigerantes, sucos e bebidas alcoolicas"
 }
 
-
 ### Editar categoria
-PUT http://localhost:3000/categoria/a3df944e-8478-46d8-acbc-fb9cd71c084d
+PUT http://localhost:3000/categoria/8022521d-312f-424a-9748-6bcdf76f36e5
 Content-Type: application/json
 
 {
     "descricao": "Refrigerantes, sucos"
 }
 
+### Remover categoria
+DELETE http://localhost:3000/categoria/8022521d-312f-424a-9748-6bcdf76f36e5
 
-### Listar categorias
-GET http://localhost:3000/categoria
-
-
-### Deletar categoria
-DELETE http://localhost:3000/categoria/a3df944e-8478-46d8-acbc-fb9cd71c084d
-
+##################################################
 
 ### Listar produtos
 GET http://localhost:3000/produto
-
 
 ### Criar produto
 POST http://localhost:3000/produto
@@ -42,11 +68,11 @@ Content-Type: application/json
     "valorUnitario": 12,
     "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
     "imagemUrl": "https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg",
-    "idCategoria": null
+    "categoriaId": "e5f99bae-0a90-4ca0-b6f8-ab9efb41e721"
 }
 
 ### Editar produto
-PUT http://localhost:3000/produto/894a2d09-c7e0-4615-ae38-476663108207
+PUT http://localhost:3000/produto/323c401e-523e-42c2-859c-457c623f1b5f
 Content-Type: application/json
 
 {
@@ -54,10 +80,38 @@ Content-Type: application/json
     "valorUnitario": 15,
     "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
     "imagemUrl": "https://anamariabraga.globo.com/wp-content/uploads/2016/11/x-salada-classico.jpg",
-    "idCategoria": null,
+    "categoriaId": "e5f99bae-0a90-4ca0-b6f8-ab9efb41e721",
     "ativo": true
 }
 
-
 ### Remover produto
-DELETE http://localhost:3000/produto/f64fdf7d-2233-4164-a37d-818d07e6e6c6
+DELETE http://localhost:3000/produto/2055024b-51ef-4b15-906d-b1e825658421
+
+##################################################
+
+### Listar pedidos
+GET http://localhost:3000/pedido/
+
+### Fila de pedidos
+GET http://localhost:3000/pedido/fila
+
+### Detalhes de um pedido
+GET http://localhost:3000/pedido/c7e86741-4e46-4019-a88e-6617c9c37db8
+
+### Criar pedido
+POST http://localhost:3000/pedido
+Content-Type: application/json
+
+{
+    "cpfCliente": "44470640735",
+    "itensPedido": [ "d19cfc5c-42c3-4faf-a297-c424b0515202" ]
+}
+
+### Editar pedido
+PUT http://localhost:3000/pedido/c7e86741-4e46-4019-a88e-6617c9c37db8
+Content-Type: application/json
+
+{
+    "itensPedido": [ "e5f99bae-0a90-4ca0-b6f8-ab9efb41e721" ],
+    "statusPedido": "em_preparacao"
+}

@@ -12,7 +12,7 @@ import { StatusPedido } from 'src/utils/pedido.enum';
 export class CriaPedidoDTO {
   @IsUUID(4, { each: true })
   @IsNotEmpty({ message: 'Lista de uuid dos produtos não pode ser vazio' })
-  itemsPedido: string[];
+  itensPedido: string[];
 
   @IsString()
   @IsOptional()
@@ -27,7 +27,7 @@ export class AtualizaPedidoDTO {
 
 export class PedidoDTO {
   id: string;
-  itemsPedido: ProdutoDTO[];
+  itensPedido: ProdutoDTO[];
   statusPedido: string;
   cliente: ClienteDTO;
 }
