@@ -40,7 +40,7 @@ export class ProdutoModel {
     orphanedRowAction: 'delete',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'categoria_id' })
   categoria: CategoriaModel;

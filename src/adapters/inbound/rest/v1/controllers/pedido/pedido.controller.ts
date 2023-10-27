@@ -32,6 +32,11 @@ export class PedidoController {
     }
   }
 
+  @Get('/fila')
+  async fila() {
+    return await this.pedidoUseCase.listarPedidosRecebido();
+  }
+
   @Put('/:id')
   async atualizar(@Param('id') id: string, @Body() pedido: AtualizaPedidoDTO) {
     try {
@@ -59,10 +64,5 @@ export class PedidoController {
   @Get()
   async listar() {
     return await this.pedidoUseCase.listarPedidos();
-  }
-
-  @Get()
-  async fila() {
-    return await this.pedidoUseCase.listarPedidosRecebido();
   }
 }

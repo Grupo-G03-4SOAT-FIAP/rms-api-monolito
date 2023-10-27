@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+  IsEnum,
+} from 'class-validator';
 import { ProdutoDTO } from './produto.dto';
 import { ClienteDTO } from './cliente.dto';
 import { StatusPedido } from 'src/utils/pedido.enum';
@@ -15,6 +21,7 @@ export class CriaPedidoDTO {
 
 export class AtualizaPedidoDTO {
   @IsString()
+  @IsEnum(StatusPedido)
   statusPedido: StatusPedido;
 }
 

@@ -93,18 +93,21 @@ export class ProdutoUseCase implements IProdutoUseCase {
       }
     }
 
-    let categoriaEntity: CategoriaEntity | null = null;
+    let categoriaModel = buscaProdutoPorId.categoria;
     if (categoriaId) {
       const buscaCategoria =
         await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
       if (!buscaCategoria) {
         throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
       }
-      categoriaEntity = new CategoriaEntity(
-        buscaCategoria.nome,
-        buscaCategoria.descricao,
-      );
+      categoriaModel = buscaCategoria;
     }
+
+    const categoriaEntity = new CategoriaEntity(
+      categoriaModel.nome,
+      categoriaModel.descricao,
+      categoriaModel.id,
+    );
 
     const produtoEntity = new ProdutoEntity(
       nome,
@@ -118,18 +121,17 @@ export class ProdutoUseCase implements IProdutoUseCase {
       produtoEntity,
     );
 
+    const categoriaDTO = new CategoriaDTO();
+    categoriaDTO.id = result.categoria.id;
+    categoriaDTO.nome = result.categoria.nome;
+    categoriaDTO.descricao = result.categoria.descricao;
+
     const produtoDTO = new ProdutoDTO();
     produtoDTO.id = result.id;
     produtoDTO.nome = result.nome;
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.categoria.id;
-    categoriaDTO.nome = result.categoria.nome;
-    categoriaDTO.descricao = result.categoria.descricao;
-
     produtoDTO.categoria = categoriaDTO;
 
     return {

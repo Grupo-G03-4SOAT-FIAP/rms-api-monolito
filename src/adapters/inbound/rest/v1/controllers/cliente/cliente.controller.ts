@@ -83,7 +83,7 @@ export class ClienteController {
     }
   }
 
-  @Get('/:cpf')
+  @Get('/cpf/:cpf')
   async buscarCPF(@Param('cpf') cpf: string) {
     try {
       return await this.clienteUseCase.buscarClientePorCPF(cpf);

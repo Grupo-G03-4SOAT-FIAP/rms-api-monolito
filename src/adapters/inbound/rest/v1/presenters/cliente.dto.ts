@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsOptional, IsEmail } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsEmail,
+  MaxLength,
+} from 'class-validator';
 
 export class CriaClienteDTO {
   @IsString()
@@ -14,6 +20,9 @@ export class CriaClienteDTO {
   @IsString()
   @IsNotEmpty({
     message: 'CPF não pode ser vazio',
+  })
+  @MaxLength(11, {
+    message: 'CPF precisa ter 11 digitos',
   })
   cpf: string;
 }
