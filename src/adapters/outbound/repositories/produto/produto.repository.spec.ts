@@ -112,7 +112,7 @@ describe('ProdutoRepository', () => {
     const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     await produtoRepository.excluirProduto(produtoId);
 
-    expect(mockProdutoModel.delete).toHaveBeenCalledWith({
+    expect(mockProdutoModel.softDelete).toHaveBeenCalledWith({
       id: produtoId,
     });
   });

@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Inject,
   NotFoundException,
   Param,
@@ -24,6 +25,7 @@ export class CategoriaController {
   ) {}
 
   @Post()
+  @HttpCode(201)
   async criar(@Body() categoria: CriaCategoriaDTO) {
     try {
       return await this.categoriaUseCase.criarCategoria(categoria);

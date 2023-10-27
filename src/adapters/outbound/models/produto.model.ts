@@ -27,9 +27,6 @@ export class ProdutoModel {
   @Column({ name: 'imagem_url', length: 2048, nullable: false })
   imagemUrl: string;
 
-  @Column({ name: 'ativo', nullable: false, default: true })
-  ativo: boolean;
-
   @CreateDateColumn({ name: 'criado_em' })
   criadoEm: string;
 
@@ -43,7 +40,7 @@ export class ProdutoModel {
     orphanedRowAction: 'delete',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'categoria_id' })
   categoria: CategoriaModel;

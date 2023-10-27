@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-export class ClienteNaoLocalizadaErro extends HttpException {
+export class ClienteNaoLocalizadoErro extends HttpException {
   constructor(message: string) {
     super(message, HttpStatus.NOT_FOUND);
   }
 }
 
-export class NomeClienteDuplicadoErro extends HttpException {
+export class ClienteDuplicadoErro extends HttpException {
   constructor(message: string) {
     super(message, HttpStatus.CONFLICT);
   }

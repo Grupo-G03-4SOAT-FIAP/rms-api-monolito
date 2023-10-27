@@ -44,12 +44,10 @@ export class CPF {
       if (allDigitsTheSame(cpf)) return false;
       const dg1 = calculateDigit(cpf, 10);
       const dg2 = calculateDigit(cpf, 11);
-      let actualCheckDigit = cpf.slice(9);
+      const actualCheckDigit = cpf.slice(9);
       const calculatedCheckDigit = `${dg1}${dg2}`;
       return actualCheckDigit === calculatedCheckDigit;
     }
-
-    // Outras verificações de validade do CPF podem ser adicionadas aqui
 
     return validate(cpf);
   }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -16,7 +17,6 @@ import {
   AtualizaClienteDTO,
   CriaClienteDTO,
 } from '../../presenters/cliente.dto';
-import { CPFInvalidoErro } from 'src/domain/exceptions/cliente.exception';
 
 @Controller('cliente')
 export class ClienteController {
@@ -27,9 +27,9 @@ export class ClienteController {
 
   @Post()
   @HttpCode(201)
-  async criar(@Body() clinte: CriaClienteDTO) {
+  async criar(@Body() cliente: CriaClienteDTO) {
     try {
-      return await this.clienteUseCase.criarCliente(clinte);
+      return await this.clienteUseCase.criarCliente(cliente);
     } catch (error) {
       if (error instanceof ConflictException) {
         throw new ConflictException(error.message);
@@ -52,8 +52,8 @@ export class ClienteController {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
       }
-      if (error instanceof CPFInvalidoErro){
-        throw new NotFoundException(error.message);
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException(error.message);
       }
       throw error;
     }
@@ -62,30 +62,41 @@ export class ClienteController {
   @Delete('/:id')
   async remover(@Param('id') id: string) {
     try {
-        return await this.clienteUseCase.excluirCliente(id)
+      return await this.clienteUseCase.excluirCliente(id);
     } catch (error) {
-        if(error instanceof NotFoundException) {
-            throw new NotFoundException(error.message)
-        }
-        throw error
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
     }
   }
 
   @Get('/:id')
-  async buscar(@Param('id') id: string){
+  async buscar(@Param('id') id: string) {
     try {
-        return await this.clienteUseCase.buscarCliente(id)
+      return await this.clienteUseCase.buscarClientePorId(id);
     } catch (error) {
-        if(error instanceof NotFoundException) {
-            throw new NotFoundException(error.message)
-        }
-        throw error        
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
+  }
+
+  @Get('/cpf/:cpf')
+  async buscarCPF(@Param('cpf') cpf: string) {
+    try {
+      return await this.clienteUseCase.buscarClientePorCPF(cpf);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
     }
   }
 
   @Get()
-  async listar(){
-    return await this.clienteUseCase.listarClientes()
+  async listar() {
+    return await this.clienteUseCase.listarClientes();
   }
-
 }

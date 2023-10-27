@@ -7,6 +7,7 @@ import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 import { ClienteEntity } from 'src/domain/entities/cliente.entity';
 import { PedidoModel } from '../../models/pedido.model';
 import { In, Repository } from 'typeorm';
+import { StatusPedido } from 'src/utils/pedido.enum';
 
 const clienteEntity = new ClienteEntity(
   'Cliente A',
@@ -32,8 +33,7 @@ const produtoEntity = new ProdutoEntity(
 
 const pedidoEntity = new PedidoEntity(
   [produtoEntity],
-  'Aprovado',
-  'Recebido',
+  StatusPedido.RECEBIDO,
   clienteEntity,
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
@@ -42,7 +42,6 @@ const pedidoModel = new PedidoModel();
 pedidoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 pedidoModel.itemsPedido = [{ item: 'Produto X' }];
 pedidoModel.cliente = null;
-pedidoModel.statusPagamento = 'Aprovado';
 pedidoModel.statusPedido = 'Recebido';
 pedidoModel.criadoEm = new Date().toISOString();
 pedidoModel.atualizadoEm = new Date().toISOString();
@@ -87,25 +86,6 @@ describe('PedidoRepository', () => {
 
     expect(mockPedidoModel.create).toHaveBeenCalledWith(pedidoEntity);
     expect(mockPedidoModel.save).toHaveBeenCalledWith(pedidoModel);
-    expect(resultado).toBe(pedidoModel);
-  });
-
-  it('deve editar o status de pagamento de um pedido', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    const novoStatusPagamento = 'Pendente';
-    mockPedidoModel.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
-
-    const resultado = await pedidoRepository.editarStatusPagamento(
-      pedidoId,
-      novoStatusPagamento,
-    );
-
-    expect(mockPedidoModel.update).toHaveBeenCalledWith(pedidoId, {
-      statusPagamento: novoStatusPagamento,
-    });
-    expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
-      where: { id: pedidoId },
-    });
     expect(resultado).toBe(pedidoModel);
   });
 

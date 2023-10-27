@@ -2,41 +2,39 @@
 GET http://localhost:3000/
 
 
-### Listar categorias
-GET http://localhost:3000/categorias
-
-
 ### Criar categoria
-POST http://localhost:3000/categorias
-Content-Type: application/json
-
-{
-    "nome": "Lanches",
-    "descricao": "Lanches para todos os gostos!"
-}
-
-
-### Editar categoria
-PUT http://localhost:3000/categorias/1
+POST http://localhost:3000/categoria
 Content-Type: application/json
 
 {
     "nome": "Bebidas",
-    "descricao": "Refrigerantes, sucos e bebidas alcoolicas",
-    "ativo": true
+    "descricao": "Refrigerantes, sucos e bebidas alcoolicas"
 }
 
 
+### Editar categoria
+PUT http://localhost:3000/categoria/a3df944e-8478-46d8-acbc-fb9cd71c084d
+Content-Type: application/json
+
+{
+    "descricao": "Refrigerantes, sucos"
+}
+
+
+### Listar categorias
+GET http://localhost:3000/categoria
+
+
 ### Deletar categoria
-DELETE http://localhost:3000/categorias/1
+DELETE http://localhost:3000/categoria/a3df944e-8478-46d8-acbc-fb9cd71c084d
 
 
 ### Listar produtos
-GET http://localhost:3000/produtos
+GET http://localhost:3000/produto
 
 
 ### Criar produto
-POST http://localhost:3000/produtos
+POST http://localhost:3000/produto
 Content-Type: application/json
 
 {
@@ -48,7 +46,7 @@ Content-Type: application/json
 }
 
 ### Editar produto
-PUT http://localhost:3000/produtos/894a2d09-c7e0-4615-ae38-476663108207
+PUT http://localhost:3000/produto/894a2d09-c7e0-4615-ae38-476663108207
 Content-Type: application/json
 
 {
@@ -62,4 +60,4 @@ Content-Type: application/json
 
 
 ### Remover produto
-DELETE http://localhost:3000/produtos/f64fdf7d-2233-4164-a37d-818d07e6e6c6
+DELETE http://localhost:3000/produto/f64fdf7d-2233-4164-a37d-818d07e6e6c6

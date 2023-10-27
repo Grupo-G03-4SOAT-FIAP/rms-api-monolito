@@ -21,9 +21,6 @@ export class CategoriaModel {
   @Column({ name: 'descricao', length: 255, nullable: true })
   descricao: string;
 
-  @Column({ name: 'ativo', nullable: false, default: true })
-  ativo: boolean;
-
   @CreateDateColumn({ name: 'criado_em' })
   criadoEm: string;
 

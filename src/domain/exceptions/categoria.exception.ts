@@ -6,7 +6,7 @@ export class CategoriaNaoLocalizadaErro extends HttpException {
   }
 }
 
-export class NomeCategoriaDuplicadoErro extends HttpException {
+export class CategoriaDuplicadaErro extends HttpException {
   constructor(message: string) {
     super(message, HttpStatus.CONFLICT);
   }

@@ -11,10 +11,12 @@ import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repos
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
 import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 import {
-  NomeProdutoDuplicadoErro,
+  ProdutoDuplicadoErro,
   ProdutoNaoLocalizadoErro,
 } from 'src/domain/exceptions/produto.exception';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
+import { HTTPResponse } from 'src/utils/HTTPResponse';
+import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {
@@ -27,13 +29,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
   async criarProduto(
     produto: CriaProdutoDTO,
-  ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
+  ): Promise<HTTPResponse<ProdutoDTO>> {
     const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
 
     const buscaProduto =
       await this.produtoRepository.buscarProdutoPorNome(nome);
     if (buscaProduto) {
-      throw new NomeProdutoDuplicadoErro('Existe um produto com esse nome');
+      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
 
     const buscaCategoria =
@@ -67,21 +69,15 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
     return {
       mensagem: 'Produto criado com sucesso',
-      produto: produtoDTO,
+      body: produtoDTO,
     };
   }
 
   async editarProduto(
     produtoId: string,
     produto: AtualizaProdutoDTO,
-  ): Promise<{ mensagem: string; produto: ProdutoDTO }> {
+  ): Promise<HTTPResponse<ProdutoDTO>> {
     const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
-
-    const buscaProdutoPorNome =
-      await this.produtoRepository.buscarProdutoPorNome(nome);
-    if (buscaProdutoPorNome) {
-      throw new NomeProdutoDuplicadoErro('Existe um produto com esse nome');
-    }
 
     const buscaProdutoPorId =
       await this.produtoRepository.buscarProdutoPorId(produtoId);
@@ -89,15 +85,33 @@ export class ProdutoUseCase implements IProdutoUseCase {
       throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
     }
 
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-    if (!buscaCategoria) {
-      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+    if (nome) {
+      const buscaProdutoPorNome =
+        await this.produtoRepository.buscarProdutoPorNome(nome);
+      if (buscaProdutoPorNome) {
+        throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
+      }
     }
+
+    let categoriaModel = buscaProdutoPorId.categoria;
+    if (categoriaId) {
+      const buscaCategoria =
+        await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+      if (!buscaCategoria) {
+        throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+      }
+      categoriaModel = buscaCategoria;
+    }
+
+    const categoriaEntity = new CategoriaEntity(
+      categoriaModel.nome,
+      categoriaModel.descricao,
+      categoriaModel.id,
+    );
 
     const produtoEntity = new ProdutoEntity(
       nome,
-      buscaCategoria,
+      categoriaEntity,
       valorUnitario,
       imagemUrl,
       descricao,
@@ -107,27 +121,28 @@ export class ProdutoUseCase implements IProdutoUseCase {
       produtoEntity,
     );
 
+    const categoriaDTO = new CategoriaDTO();
+    categoriaDTO.id = result.categoria.id;
+    categoriaDTO.nome = result.categoria.nome;
+    categoriaDTO.descricao = result.categoria.descricao;
+
     const produtoDTO = new ProdutoDTO();
     produtoDTO.id = result.id;
     produtoDTO.nome = result.nome;
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.categoria.id;
-    categoriaDTO.nome = result.categoria.nome;
-    categoriaDTO.descricao = result.categoria.descricao;
-
     produtoDTO.categoria = categoriaDTO;
 
     return {
       mensagem: 'Produto criado com sucesso',
-      produto: produtoDTO,
+      body: produtoDTO,
     };
   }
 
-  async excluirProduto(produtoId: string): Promise<{ mensagem: string }> {
+  async excluirProduto(
+    produtoId: string,
+  ): Promise<Omit<HTTPResponse<void>, 'body'>> {
     const buscaProduto =
       await this.produtoRepository.buscarProdutoPorId(produtoId);
     if (!buscaProduto) {
