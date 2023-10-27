@@ -40,7 +40,7 @@ const pedidoEntity = new PedidoEntity(
 
 const pedidoModel = new PedidoModel();
 pedidoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-pedidoModel.itemsPedido = [{ item: 'Produto X' }];
+pedidoModel.itensPedido = [{ item: 'Produto X' }];
 pedidoModel.cliente = null;
 pedidoModel.statusPedido = 'Recebido';
 pedidoModel.criadoEm = new Date().toISOString();

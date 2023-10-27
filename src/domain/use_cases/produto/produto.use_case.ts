@@ -135,7 +135,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoDTO.categoria = categoriaDTO;
 
     return {
-      mensagem: 'Produto criado com sucesso',
+      mensagem: 'Produto atualizado com sucesso',
       body: produtoDTO,
     };
   }
@@ -151,7 +151,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
     await this.produtoRepository.excluirProduto(produtoId);
     return {
-      mensagem: 'Produto excluido com sucesso',
+      mensagem: 'Produto excluído com sucesso',
     };
   }
 

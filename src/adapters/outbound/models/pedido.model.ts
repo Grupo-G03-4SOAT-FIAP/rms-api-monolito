@@ -15,8 +15,8 @@ export class PedidoModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'items_pedido', type: 'json', nullable: false }) // tipo 'json' para armazenar uma lista de produtos
-  itemsPedido: ProdutoModel[];
+  @Column({ name: 'itens_pedido', type: 'json', nullable: false }) // tipo 'json' para armazenar uma lista de produtos
+  itensPedido: ProdutoModel[];
 
   @ManyToOne(() => ClienteModel, { nullable: true })
   @JoinColumn({ name: 'id_cliente' }) // A chave estrangeira
