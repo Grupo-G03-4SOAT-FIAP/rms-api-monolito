@@ -29,7 +29,7 @@
 					"response": []
 				},
 				{
-					"name": "Criar cliente",
+					"name": "Criar cliente (Cadastro)",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -71,7 +71,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/cliente/9c75bf78-f3ab-4c28-800b-3ca11ffb1958",
+							"raw": "http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -79,7 +79,7 @@
 							"port": "3000",
 							"path": [
 								"cliente",
-								"9c75bf78-f3ab-4c28-800b-3ca11ffb1958"
+								"6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f"
 							]
 						}
 					},
@@ -91,7 +91,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/cliente/9c75bf78-f3ab-4c28-800b-3ca11ffb1958",
+							"raw": "http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -99,7 +99,48 @@
 							"port": "3000",
 							"path": [
 								"cliente",
-								"9c75bf78-f3ab-4c28-800b-3ca11ffb1958"
+								"6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar pelo CPF (Login)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cliente/cpf/44470640735",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"cpf",
+								"44470640735"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de um cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f"
 							]
 						}
 					},
@@ -135,7 +176,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/categoria/016ca56c-1b8c-4d27-99fb-11213910f2e7",
+							"raw": "http://localhost:3000/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +184,7 @@
 							"port": "3000",
 							"path": [
 								"categoria",
-								"016ca56c-1b8c-4d27-99fb-11213910f2e7"
+								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
 							]
 						}
 					},
@@ -193,7 +234,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/categoria/7464f9bf-205b-4943-91c1-139a7ed8380c",
+							"raw": "http://localhost:3000/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -201,7 +242,7 @@
 							"port": "3000",
 							"path": [
 								"categoria",
-								"7464f9bf-205b-4943-91c1-139a7ed8380c"
+								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
 							]
 						}
 					},
@@ -232,12 +273,12 @@
 					"response": []
 				},
 				{
-					"name": "Remover produto",
+					"name": "Listar produtos por Categoria",
 					"request": {
-						"method": "DELETE",
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/produto/f4c6b2da-d391-43e4-bdb7-6a4035ca8b5c",
+							"raw": "http://localhost:3000/produto/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -245,7 +286,28 @@
 							"port": "3000",
 							"path": [
 								"produto",
-								"f4c6b2da-d391-43e4-bdb7-6a4035ca8b5c"
+								"categoria",
+								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover produto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"6a1f1007-b48a-458b-8009-9f2701eae8f3"
 							]
 						}
 					},
@@ -258,7 +320,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"X-Tudo\",\r\n    \"valorUnitario\": 12,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg\",\r\n    \"categoriaId\": \"e5f99bae-0a90-4ca0-b6f8-ab9efb41e721\" // Colocar o UUID da categoria aqui\r\n}",
+							"raw": "{\r\n    \"nome\": \"X-Tudo\",\r\n    \"valorUnitario\": 12,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg\",\r\n    \"categoriaId\": \"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4\" // Colocar o UUID da categoria aqui\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -294,7 +356,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/produto/f4c6b2da-d391-43e4-bdb7-6a4035ca8b5c",
+							"raw": "http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -302,7 +364,7 @@
 							"port": "3000",
 							"path": [
 								"produto",
-								"f4c6b2da-d391-43e4-bdb7-6a4035ca8b5c"
+								"6a1f1007-b48a-458b-8009-9f2701eae8f3"
 							]
 						}
 					},
@@ -314,7 +376,7 @@
 			"name": "Pedidos",
 			"item": [
 				{
-					"name": "Fila de pedidos",
+					"name": "Fila de pedidos (todos os pedidos)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -360,7 +422,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cpfCliente\": \"44470640735\",\r\n    \"itensPedido\": [ // Deve conter uma lista com um ou mais UUIDs de produtos\r\n        \"d19cfc5c-42c3-4faf-a297-c424b0515202\"\r\n    ]\r\n}",
+							"raw": "{\r\n    \"cpfCliente\": \"44470640735\", // Aqui o CPF pode ser null caso o Cliente opte por não se identificar\r\n    \"itensPedido\": [ // Deve conter uma lista com um ou mais UUIDs de produtos\r\n        \"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -382,13 +444,13 @@
 					"response": []
 				},
 				{
-					"name": "Editar pedido",
+					"name": "Editar pedido (e alterar status)",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"itensPedido\": [\r\n        \"e5f99bae-0a90-4ca0-b6f8-ab9efb41e721\"\r\n    ],\r\n    \"statusPedido\": \"em_preparacao\"\r\n}",
+							"raw": "{\r\n    \"itensPedido\": [\r\n        \"e5f99bae-0a90-4ca0-b6f8-ab9efb41e721\"\r\n    ],\r\n    \"statusPedido\": \"em_preparacao\" // O status pode ser: \"recebido\", \"em_preparacao\", \"pronto\" ou \"finalizado\".\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -396,7 +458,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/pedido/c7e86741-4e46-4019-a88e-6617c9c37db8",
+							"raw": "http://localhost:3000/pedido/ffb5ea00-5e1c-40d1-b9b9-bce8b4baf3dc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -404,7 +466,26 @@
 							"port": "3000",
 							"path": [
 								"pedido",
-								"c7e86741-4e46-4019-a88e-6617c9c37db8"
+								"ffb5ea00-5e1c-40d1-b9b9-bce8b4baf3dc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar pedidos (com status \"Pronto\" e \"Em Preparação\")",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pedido"
 							]
 						}
 					},
