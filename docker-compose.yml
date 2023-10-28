@@ -53,20 +53,6 @@ services:
     depends_on:
       - db
 
-  sonarqube:
-    container_name: sonarqube
-    hostname: sonarqube
-    image: sonarqube
-    ports:
-      - "9000:9000"
-      - "9092:9092"
-    expose:
-      - 9000
-    networks:
-      - default
-    depends_on:
-      - db
-
 networks:
   default:
     driver: bridge
