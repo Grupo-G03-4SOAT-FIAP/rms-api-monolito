@@ -444,7 +444,7 @@
 					"response": []
 				},
 				{
-					"name": "Editar pedido (alterar status)",
+					"name": "Editar pedido (e alterar status)",
 					"request": {
 						"method": "PUT",
 						"header": [],
