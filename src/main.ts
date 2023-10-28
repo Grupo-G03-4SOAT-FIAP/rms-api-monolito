@@ -7,6 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
     .setTitle('RMS API')
+    .setDescription('[ Base URL: http://localhost:3000/ ]')
     .setVersion('0.0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);

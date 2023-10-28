@@ -18,7 +18,7 @@ import {
   CriaClienteDTO,
 } from '../../presenters/cliente.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CategoriasSwagger } from '../helpers/swagger/categoria/categoria.swagger';
+import { ClienteSwagger } from '../helpers/swagger/cliente/cliente.swagger';
 import { BadRequestSwagger } from '../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundSwagger } from '../helpers/swagger/status-codes/not_found.swagger';
 import { ConflictSwagger } from '../helpers/swagger/status-codes/conflict.swagger';
@@ -37,7 +37,7 @@ export class ClienteController {
   @ApiResponse({
     status: 201,
     description: 'Cliente criado com sucesso',
-    type: CategoriasSwagger,
+    type: ClienteSwagger,
   })
   @ApiResponse({
     status: 400,
@@ -60,7 +60,7 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Cliente atualizado com sucesso',
-    type: CategoriasSwagger,
+    type: ClienteSwagger,
   })
   @ApiResponse({
     status: 400,
@@ -124,7 +124,7 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Cliente retornado com sucesso',
-    type: CategoriasSwagger,
+    type: ClienteSwagger,
   })
   @ApiResponse({
     status: 404,
@@ -147,7 +147,7 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Cliente retornado com sucesso',
-    type: CategoriasSwagger,
+    type: ClienteSwagger,
   })
   @ApiResponse({
     status: 404,
@@ -170,7 +170,7 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Lista de clientes retornada com sucesso',
-    type: CategoriasSwagger,
+    type: ClienteSwagger,
     isArray: true,
   })
   async listar() {
