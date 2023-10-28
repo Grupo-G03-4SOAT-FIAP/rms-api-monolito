@@ -6,7 +6,10 @@ GET http://localhost:3000/
 ### Listar clientes
 GET http://localhost:3000/cliente
 
-### Criar cliente
+### Buscar cliente pelo CPF (Login)
+GET http://localhost:3000/cliente/cpf/44470640735
+
+### Criar cliente (Cadastro)
 POST http://localhost:3000/cliente
 Content-Type: application/json
 
@@ -17,7 +20,7 @@ Content-Type: application/json
 }
 
 ### Editar cliente
-PUT http://localhost:3000/cliente/9c75bf78-f3ab-4c28-800b-3ca11ffb1958
+PUT http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f
 Content-Type: application/json
 
 {
@@ -27,12 +30,15 @@ Content-Type: application/json
 }
 
 ### Remover cliente
-DELETE http://localhost:3000/cliente/9c75bf78-f3ab-4c28-800b-3ca11ffb1958
+DELETE http://localhost:3000/cliente/96a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f
 
 ##################################################
 
 ### Listar categorias
 GET http://localhost:3000/categoria
+
+### Detalhes de uma categoria
+GET http://localhost:3000/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4
 
 ### Criar categoria
 POST http://localhost:3000/categoria
@@ -44,7 +50,7 @@ Content-Type: application/json
 }
 
 ### Editar categoria
-PUT http://localhost:3000/categoria/8022521d-312f-424a-9748-6bcdf76f36e5
+PUT http://localhost:3000/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4
 Content-Type: application/json
 
 {
@@ -52,12 +58,18 @@ Content-Type: application/json
 }
 
 ### Remover categoria
-DELETE http://localhost:3000/categoria/8022521d-312f-424a-9748-6bcdf76f36e5
+DELETE http://localhost:3000/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4
 
 ##################################################
 
 ### Listar produtos
 GET http://localhost:3000/produto
+
+### Listar produtos por categoria
+GET http://localhost:3000/produto/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4
+
+### Detalhes de um produto
+GET http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3
 
 ### Criar produto
 POST http://localhost:3000/produto
@@ -68,11 +80,11 @@ Content-Type: application/json
     "valorUnitario": 12,
     "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
     "imagemUrl": "https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg",
-    "categoriaId": "e5f99bae-0a90-4ca0-b6f8-ab9efb41e721"
+    "categoriaId": "9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
 }
 
 ### Editar produto
-PUT http://localhost:3000/produto/323c401e-523e-42c2-859c-457c623f1b5f
+PUT http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3
 Content-Type: application/json
 
 {
@@ -80,19 +92,22 @@ Content-Type: application/json
     "valorUnitario": 15,
     "descricao": "Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)",
     "imagemUrl": "https://anamariabraga.globo.com/wp-content/uploads/2016/11/x-salada-classico.jpg",
-    "categoriaId": "e5f99bae-0a90-4ca0-b6f8-ab9efb41e721"
+    "categoriaId": "9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
 }
 
 ### Remover produto
-DELETE http://localhost:3000/produto/2055024b-51ef-4b15-906d-b1e825658421
+DELETE http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3
 
 ##################################################
 
-### Fila de pedidos
+### Fila de pedidos (todos os pedidos)
 GET http://localhost:3000/pedido/fila
 
+### Listar pedidos (com status "Pronto" e "Em Preparação")
+GET http://localhost:3000/pedido
+
 ### Detalhes de um pedido
-GET http://localhost:3000/pedido/c7e86741-4e46-4019-a88e-6617c9c37db8
+GET http://localhost:3000/pedido/ffb5ea00-5e1c-40d1-b9b9-bce8b4baf3dc
 
 ### Criar pedido
 POST http://localhost:3000/pedido
@@ -103,8 +118,8 @@ Content-Type: application/json
     "itensPedido": [ "d19cfc5c-42c3-4faf-a297-c424b0515202" ]
 }
 
-### Editar pedido
-PUT http://localhost:3000/pedido/c7e86741-4e46-4019-a88e-6617c9c37db8
+### Editar pedido (atualizar status)
+PUT http://localhost:3000/pedido/ffb5ea00-5e1c-40d1-b9b9-bce8b4baf3dc
 Content-Type: application/json
 
 {
