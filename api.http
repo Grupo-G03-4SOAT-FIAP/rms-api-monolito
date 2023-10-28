@@ -115,14 +115,18 @@ Content-Type: application/json
 
 {
     "cpfCliente": "44470640735",
-    "itensPedido": [ "d19cfc5c-42c3-4faf-a297-c424b0515202" ]
+    "itensPedido": [ 
+        "1757323b-8256-4a2b-a906-7ccce7a0d9e4"
+    ]
 }
 
-### Editar pedido (atualizar status)
-PUT http://localhost:3000/pedido/ffb5ea00-5e1c-40d1-b9b9-bce8b4baf3dc
+### Editar pedido (e atualizar status)
+PUT http://localhost:3000/pedido/10cc2240-cc07-4a02-bb75-e292faef49e3
 Content-Type: application/json
 
 {
-    "itensPedido": [ "e5f99bae-0a90-4ca0-b6f8-ab9efb41e721" ],
+    "itensPedido": [ 
+        "1757323b-8256-4a2b-a906-7ccce7a0d9e4"
+    ],
     "statusPedido": "em_preparacao"
 }
