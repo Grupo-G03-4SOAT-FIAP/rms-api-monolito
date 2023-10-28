@@ -16,7 +16,6 @@ categoriaModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 categoriaModel.nome = 'Lanche';
 categoriaModel.descricao = 'Lanche x tudo';
 categoriaModel.produtos = null;
-categoriaModel.ativo = true;
 categoriaModel.criadoEm = new Date().toISOString();
 categoriaModel.atualizadoEm = new Date().toISOString();
 categoriaModel.excluidoEm = new Date().toISOString();

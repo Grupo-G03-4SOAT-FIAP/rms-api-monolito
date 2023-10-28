@@ -8,6 +8,7 @@ import { ClienteEntity } from 'src/domain/entities/cliente.entity';
 import { PedidoModel } from '../../models/pedido.model';
 import { In, Repository } from 'typeorm';
 import { StatusPedido } from 'src/utils/pedido.enum';
+import { ProdutoModel } from '../../models/produto.model';
 
 const clienteEntity = new ClienteEntity(
   'Cliente A',
@@ -38,9 +39,17 @@ const pedidoEntity = new PedidoEntity(
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
+const produtoModel = new ProdutoModel();
+produtoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+produtoModel.nome = 'Produto X';
+produtoModel.descricao = 'Lanche x tudo';
+produtoModel.criadoEm = new Date().toISOString();
+produtoModel.atualizadoEm = new Date().toISOString();
+produtoModel.excluidoEm = new Date().toISOString();
+
 const pedidoModel = new PedidoModel();
 pedidoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-pedidoModel.itensPedido = [{ item: 'Produto X' }];
+pedidoModel.itensPedido = [produtoModel];
 pedidoModel.cliente = null;
 pedidoModel.statusPedido = 'Recebido';
 pedidoModel.criadoEm = new Date().toISOString();
