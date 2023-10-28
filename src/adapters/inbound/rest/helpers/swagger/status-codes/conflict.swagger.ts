@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class BadRequestSwagger {
+export class ConflictError {
   @ApiProperty()
-  message: string[];
+  message: string;
 
   @ApiProperty()
   error: string;
