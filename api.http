@@ -89,9 +89,6 @@ DELETE http://localhost:3000/produto/2055024b-51ef-4b15-906d-b1e825658421
 
 ##################################################
 
-### Listar pedidos
-GET http://localhost:3000/pedido/
-
 ### Fila de pedidos
 GET http://localhost:3000/pedido/fila
 
