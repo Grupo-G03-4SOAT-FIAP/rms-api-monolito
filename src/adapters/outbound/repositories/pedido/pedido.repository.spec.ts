@@ -8,11 +8,13 @@ import { ClienteEntity } from 'src/domain/entities/cliente.entity';
 import { PedidoModel } from '../../models/pedido.model';
 import { In, Repository } from 'typeorm';
 import { StatusPedido } from 'src/utils/pedido.enum';
+import { ProdutoModel } from '../../models/produto.model';
+import { CategoriaModel } from '../../models/categoria.model';
 
 const clienteEntity = new ClienteEntity(
-  'Cliente A',
-  'clientea@teste.com.br',
-  '00000000000',
+  'Jhon',
+  'jhon@teste.com.br',
+  '83904665030',
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
@@ -38,11 +40,31 @@ const pedidoEntity = new PedidoEntity(
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
+const categoriaModel = new CategoriaModel();
+categoriaModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+categoriaModel.nome = 'Lanche';
+categoriaModel.descricao = 'Lanche x tudo';
+categoriaModel.produtos = null;
+categoriaModel.criadoEm = new Date().toISOString();
+categoriaModel.atualizadoEm = new Date().toISOString();
+categoriaModel.excluidoEm = new Date().toISOString();
+
+const produtoModel = new ProdutoModel();
+produtoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+produtoModel.nome = 'Produto X';
+produtoModel.descricao = 'Teste produto x';
+produtoModel.valorUnitario = 5.0;
+produtoModel.imagemUrl = 'http://';
+produtoModel.categoria = categoriaModel;
+produtoModel.criadoEm = new Date().toISOString();
+produtoModel.atualizadoEm = new Date().toISOString();
+produtoModel.excluidoEm = new Date().toISOString();
+
 const pedidoModel = new PedidoModel();
 pedidoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-pedidoModel.itensPedido = [{ item: 'Produto X' }];
+pedidoModel.itensPedido = [produtoModel];
 pedidoModel.cliente = null;
-pedidoModel.statusPedido = 'Recebido';
+pedidoModel.statusPedido = 'recebido';
 pedidoModel.criadoEm = new Date().toISOString();
 pedidoModel.atualizadoEm = new Date().toISOString();
 
@@ -105,6 +127,7 @@ describe('PedidoRepository', () => {
     });
     expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
+      relations: ['cliente'],
     });
     expect(resultado).toBe(pedidoModel);
   });
@@ -118,11 +141,12 @@ describe('PedidoRepository', () => {
 
     expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
+      relations: ['cliente'],
     });
     expect(resultado).toBe(pedidoModel);
   });
 
-  it('deve listar pedidos com statusPagamento aprovado e ordenado por statusPedido', async () => {
+  it('deve listar pedidos', async () => {
     const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
     mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
@@ -130,9 +154,24 @@ describe('PedidoRepository', () => {
 
     expect(mockPedidoModel.find).toHaveBeenCalledWith({
       where: {
-        statusPagamento: 'Aprovado',
-        statusPedido: In(['Pronto', 'Em preparação', 'Recebido']),
+        statusPedido: In([StatusPedido.PRONTO, StatusPedido.EM_PREPARACAO]),
       },
+      relations: ['cliente'],
+    });
+    expect(resultado).toBe(listaPedidos);
+  });
+
+  it('deve listar fila de pedidos recebidos', async () => {
+    const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
+    mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
+
+    const resultado = await pedidoRepository.listarPedidosRecebido();
+
+    expect(mockPedidoModel.find).toHaveBeenCalledWith({
+      where: {
+        statusPedido: StatusPedido.RECEBIDO,
+      },
+      relations: ['cliente'],
     });
     expect(resultado).toBe(listaPedidos);
   });
