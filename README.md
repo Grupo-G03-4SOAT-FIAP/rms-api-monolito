@@ -48,6 +48,16 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo "BOPE" G03 da t
 
 > DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
 
+### Banco de Dados
+
+Você pode conectar-se a instância de banco de dados PostgreSQL em localhost:5432
+
+> Host: localhost\
+> Porta: 5432 (padrão)\
+> Usuário: pguser\
+> Senha: pgpwd\
+> DB name: rms
+
 #### Requisitos
 
 *Node.js versão 18.18.0 e Docker Engine 24.0.0 ou mais recente.*
