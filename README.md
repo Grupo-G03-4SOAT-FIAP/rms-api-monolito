@@ -58,6 +58,16 @@ Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdm
 > Senha: pgpwd\
 > DB name: rms
 
+## Arquitetura
+
+Architectural Pattern: *Arquitetura Hexagonal / Ports and Adapters*.
+
+<br>
+
+![Ports and Adapters](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/assets/5115895/5a7d9588-a222-4e8b-acdf-3cb71076e65b)
+
+<br>
+
 ## Documentação
 
 A documentação do projeto está disponível no [GitHub Wiki](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/wiki).
