@@ -16,6 +16,8 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo "BOPE" G03 da t
 
 #### SonarCloud
 
+https://sonarcloud.io/project/overview?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01
+
 <!---
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 -->
@@ -36,8 +38,6 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo "BOPE" G03 da t
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
-
-https://sonarcloud.io/project/overview?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01
 
 ## Como executar a aplicação
 
