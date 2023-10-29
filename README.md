@@ -6,7 +6,7 @@
 
 Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da turma 4SOAT para o Tech Challenge da [Pós Tech em Software Architecture da FIAP](https://postech.fiap.com.br/curso/software-architecture/).
 
-<details><summary>Clique aqui para obter mais detalhes sobre o projeto.</summary>
+<details><summary>Clique aqui para mais detalhes sobre o projeto.</summary>
 <p>
 
 > *O PROBLEMA*
