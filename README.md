@@ -16,8 +16,6 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo "BOPE" G03 da t
 
 #### SonarCloud
 
-https://sonarcloud.io/project/overview?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01
-
 <!---
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 -->
