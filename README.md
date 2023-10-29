@@ -23,7 +23,7 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo "BOPE" G03 da t
 
 > Se preferir você também pode executar o projeto através do [Makefile](Makefile).
 
-> DICA: Não se esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto.
+> DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
 
 #### Requisitos
 
