@@ -55,14 +55,14 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 
-## Como executar a aplicação
+## Executar o projeto usando o Docker Compose
 
 1. Clonar este repositório;
 2. Navegar até a pasta raiz do projeto;
 3. Usar o comando `docker-compose up`
 4. Acessar o Swagger em http://localhost:3000/swagger/
 
-> Se preferir você também pode executar o projeto através do [Makefile](Makefile).
+> Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
 
 > DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
 
