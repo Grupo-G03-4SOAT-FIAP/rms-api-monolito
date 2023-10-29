@@ -52,7 +52,7 @@ https://sonarcloud.io/project/overview?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase0
 
 #### Requisitos
 
-Node.js versão 18.18.0 e Docker Engine 24.0.0 ou mais recente.
+*Node.js versão 18.18.0 e Docker Engine 24.0.0 ou mais recente.*
 
 ## Documentação
 
