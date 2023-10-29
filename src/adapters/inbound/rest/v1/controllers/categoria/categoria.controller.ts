@@ -14,13 +14,13 @@ import {
 import { ICategoriaUseCase } from 'src/domain/ports/categoria/categoria.use_case.port';
 import {
   AtualizaCategoriaDTO,
+  CategoriaDTO,
   CriaCategoriaDTO,
 } from '../../presenters/categoria.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CategoriasSwagger } from '../helpers/swagger/categoria/categoria.swagger';
-import { BadRequestSwagger } from '../helpers/swagger/status-codes/bad_requests.swagger';
-import { NotFoundSwagger } from '../helpers/swagger/status-codes/not_found.swagger';
-import { ConflictSwagger } from '../helpers/swagger/status-codes/conflict.swagger';
+import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_requests.swagger';
+import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
+import { ConflictError } from '../../../helpers/swagger/status-codes/conflict.swagger';
 
 @Controller('categoria')
 @ApiTags('Categoria')
@@ -36,12 +36,17 @@ export class CategoriaController {
   @ApiResponse({
     status: 201,
     description: 'Categoria criada com sucesso',
-    type: CategoriasSwagger,
+    type: CategoriaDTO,
   })
   @ApiResponse({
     status: 400,
     description: 'Dados inválidos',
-    type: BadRequestSwagger,
+    type: BadRequestError,
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Existe uma categoria com esse dado',
+    type: ConflictError,
   })
   async criar(@Body() categoria: CriaCategoriaDTO) {
     try {
@@ -59,22 +64,22 @@ export class CategoriaController {
   @ApiResponse({
     status: 200,
     description: 'Categoria atualizada com sucesso',
-    type: CategoriasSwagger,
+    type: CategoriaDTO,
   })
   @ApiResponse({
     status: 400,
     description: 'Dados inválidos',
-    type: BadRequestSwagger,
+    type: BadRequestError,
   })
   @ApiResponse({
     status: 404,
     description: 'Categoria informada não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   @ApiResponse({
     status: 409,
     description: 'Existe uma categoria com esse dado',
-    type: ConflictSwagger,
+    type: ConflictError,
   })
   async atualizar(
     @Param('id') id: string,
@@ -96,13 +101,13 @@ export class CategoriaController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Remover uma categoria' })
   @ApiResponse({
-    status: 204,
+    status: 200,
     description: 'Categoria excluida com sucesso',
   })
   @ApiResponse({
     status: 404,
     description: 'Categoria informada não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async remover(@Param('id') id: string) {
     try {
@@ -120,12 +125,12 @@ export class CategoriaController {
   @ApiResponse({
     status: 200,
     description: 'Categoria retornada com sucesso',
-    type: CategoriasSwagger,
+    type: CategoriaDTO,
   })
   @ApiResponse({
     status: 404,
     description: 'Categoria informada não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async buscar(@Param('id') id: string) {
     try {
@@ -143,7 +148,7 @@ export class CategoriaController {
   @ApiResponse({
     status: 200,
     description: 'Lista de categorias retornada com sucesso',
-    type: CategoriasSwagger,
+    type: CategoriaDTO,
     isArray: true,
   })
   async listar() {
