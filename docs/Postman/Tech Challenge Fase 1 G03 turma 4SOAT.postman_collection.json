@@ -132,7 +132,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f",
+							"raw": "http://localhost:3000/cliente/597b4e37-d22e-4fcd-ac1e-de0fed96177f",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -140,7 +140,7 @@
 							"port": "3000",
 							"path": [
 								"cliente",
-								"6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f"
+								"597b4e37-d22e-4fcd-ac1e-de0fed96177f"
 							]
 						}
 					},
@@ -243,6 +243,26 @@
 							"path": [
 								"categoria",
 								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de uma categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/categoria/895c6ff3-c5a7-468e-9895-af61523fbac4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"categoria",
+								"895c6ff3-c5a7-468e-9895-af61523fbac4"
 							]
 						}
 					},
@@ -365,6 +385,26 @@
 							"path": [
 								"produto",
 								"6a1f1007-b48a-458b-8009-9f2701eae8f3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de um produto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/d8349d11-9356-448d-8bb8-a8e73d8dc255",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"d8349d11-9356-448d-8bb8-a8e73d8dc255"
 							]
 						}
 					},
