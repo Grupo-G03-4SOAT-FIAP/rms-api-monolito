@@ -15,13 +15,13 @@ import {
 import { IClienteUseCase } from 'src/domain/ports/cliente/cliente.use_case.port';
 import {
   AtualizaClienteDTO,
+  ClienteDTO,
   CriaClienteDTO,
 } from '../../presenters/cliente.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ClienteSwagger } from '../helpers/swagger/cliente/cliente.swagger';
-import { BadRequestSwagger } from '../helpers/swagger/status-codes/bad_requests.swagger';
-import { NotFoundSwagger } from '../helpers/swagger/status-codes/not_found.swagger';
-import { ConflictSwagger } from '../helpers/swagger/status-codes/conflict.swagger';
+import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_requests.swagger';
+import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
+import { ConflictError } from '../../../helpers/swagger/status-codes/conflict.swagger';
 
 @Controller('cliente')
 @ApiTags('Cliente')
@@ -37,12 +37,17 @@ export class ClienteController {
   @ApiResponse({
     status: 201,
     description: 'Cliente criado com sucesso',
-    type: ClienteSwagger,
+    type: ClienteDTO,
   })
   @ApiResponse({
     status: 400,
     description: 'Dados inválidos',
-    type: BadRequestSwagger,
+    type: BadRequestError,
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Existe um cliente com esse dado',
+    type: ConflictError,
   })
   async criar(@Body() cliente: CriaClienteDTO) {
     try {
@@ -60,22 +65,22 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Cliente atualizado com sucesso',
-    type: ClienteSwagger,
+    type: ClienteDTO,
   })
   @ApiResponse({
     status: 400,
     description: 'Dados inválidos',
-    type: BadRequestSwagger,
+    type: BadRequestError,
   })
   @ApiResponse({
     status: 404,
     description: 'Cliente informado não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   @ApiResponse({
     status: 409,
     description: 'Existe um cliente com esse dado',
-    type: ConflictSwagger,
+    type: ConflictError,
   })
   async atualizar(
     @Param('id') id: string,
@@ -100,13 +105,13 @@ export class ClienteController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Remover um cliente' })
   @ApiResponse({
-    status: 204,
+    status: 200,
     description: 'Cliente excluído com sucesso',
   })
   @ApiResponse({
     status: 404,
     description: 'Cliente informado não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async remover(@Param('id') id: string) {
     try {
@@ -124,12 +129,12 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Cliente retornado com sucesso',
-    type: ClienteSwagger,
+    type: ClienteDTO,
   })
   @ApiResponse({
     status: 404,
     description: 'Cliente informado não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async buscar(@Param('id') id: string) {
     try {
@@ -147,12 +152,12 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Cliente retornado com sucesso',
-    type: ClienteSwagger,
+    type: ClienteDTO,
   })
   @ApiResponse({
     status: 404,
     description: 'Cliente informado não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async buscarCPF(@Param('cpf') cpf: string) {
     try {
@@ -170,7 +175,7 @@ export class ClienteController {
   @ApiResponse({
     status: 200,
     description: 'Lista de clientes retornada com sucesso',
-    type: ClienteSwagger,
+    type: ClienteDTO,
     isArray: true,
   })
   async listar() {

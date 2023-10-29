@@ -11,16 +11,16 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IProdutoUseCase } from 'src/domain/ports/produto/produto.use_case.port';
+import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_requests.swagger';
+import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
+import { ConflictError } from '../../../helpers/swagger/status-codes/conflict.swagger';
 import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,
+  ProdutoDTO,
 } from '../../presenters/produto.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ProdutoSwagger } from '../helpers/swagger/produto/produto.swagger';
-import { BadRequestSwagger } from '../helpers/swagger/status-codes/bad_requests.swagger';
-import { NotFoundSwagger } from '../helpers/swagger/status-codes/not_found.swagger';
-import { ConflictSwagger } from '../helpers/swagger/status-codes/conflict.swagger';
 
 @Controller('produto')
 @ApiTags('Produto')
@@ -36,22 +36,22 @@ export class ProdutoController {
   @ApiResponse({
     status: 201,
     description: 'Produto criado com sucesso',
-    type: ProdutoSwagger,
+    type: ProdutoDTO,
   })
   @ApiResponse({
     status: 400,
     description: 'Dados inválidos',
-    type: BadRequestSwagger,
+    type: BadRequestError,
   })
   @ApiResponse({
     status: 404,
     description: 'Categoria informada não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   @ApiResponse({
     status: 409,
     description: 'Existe um produto com esse nome',
-    type: ConflictSwagger,
+    type: ConflictError,
   })
   async criar(@Body() produto: CriaProdutoDTO) {
     try {
@@ -68,27 +68,27 @@ export class ProdutoController {
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Atualizar produto' })
+  @ApiOperation({ summary: 'Atualizar um produto' })
   @ApiResponse({
     status: 200,
     description: 'Produto atualizado com sucesso',
-    type: ProdutoSwagger,
+    type: ProdutoDTO,
   })
   @ApiResponse({
     status: 400,
     description: 'Dados inválidos',
-    type: BadRequestSwagger,
+    type: BadRequestError,
   })
   @ApiResponse({
     status: 404,
     description:
       'Produto informado não existe <br/>' + 'Categoria informada não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   @ApiResponse({
     status: 409,
     description: 'Existe um produto com esse nome',
-    type: ConflictSwagger,
+    type: ConflictError,
   })
   async atualizar(
     @Param('id') id: string,
@@ -110,13 +110,13 @@ export class ProdutoController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Remover um produto' })
   @ApiResponse({
-    status: 204,
+    status: 200,
     description: 'Produto excluído com sucesso',
   })
   @ApiResponse({
     status: 404,
     description: 'Produto informado não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async remover(@Param('id') id: string) {
     try {
@@ -134,12 +134,12 @@ export class ProdutoController {
   @ApiResponse({
     status: 200,
     description: 'Produto retornado com sucesso',
-    type: ProdutoSwagger,
+    type: ProdutoDTO,
   })
   @ApiResponse({
     status: 404,
     description: 'Produto informado não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async buscar(@Param('id') id: string) {
     try {
@@ -157,7 +157,7 @@ export class ProdutoController {
   @ApiResponse({
     status: 200,
     description: 'Lista de produtos retornada com sucesso',
-    type: ProdutoSwagger,
+    type: ProdutoDTO,
     isArray: true,
   })
   async listar() {
@@ -169,12 +169,12 @@ export class ProdutoController {
   @ApiResponse({
     status: 200,
     description: 'Produtos retornados com sucesso',
-    type: ProdutoSwagger,
+    type: ProdutoDTO,
   })
   @ApiResponse({
     status: 404,
     description: 'Categoria informada não existe',
-    type: NotFoundSwagger,
+    type: NotFoundError,
   })
   async listarPorCategoria(@Param('id') id: string) {
     try {
