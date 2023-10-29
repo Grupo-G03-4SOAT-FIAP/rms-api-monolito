@@ -27,7 +27,7 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo "BOPE" G03 da t
 
 #### Requisitos
 
-Node.js versão 18.18.0 e Docker Engine 24.0.6 ou mais recente.
+Node.js versão 18.18.0 e Docker Engine 24.0.0 ou mais recente.
 
 ## Documentação
 
