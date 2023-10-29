@@ -100,10 +100,10 @@ DELETE http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3
 
 ##################################################
 
-### Fila de pedidos (todos os pedidos)
+### Fila de pedidos (com o status "Recebido")
 GET http://localhost:3000/pedido/fila
 
-### Listar pedidos (com status "Pronto" e "Em Preparação")
+### Listar pedidos (todos)
 GET http://localhost:3000/pedido
 
 ### Detalhes de um pedido
@@ -116,8 +116,9 @@ Content-Type: application/json
 {
     "cpfCliente": "44470640735",
     "itensPedido": [ 
-        "1757323b-8256-4a2b-a906-7ccce7a0d9e4"
-    ]
+        "3ecd5148-c71f-412b-9a3a-0c1896375bf2",
+        "9d013e80-b21c-486b-9175-38756f69c6f7"
+    ],
 }
 
 ### Editar pedido (e atualizar status)
@@ -126,7 +127,8 @@ Content-Type: application/json
 
 {
     "itensPedido": [ 
-        "1757323b-8256-4a2b-a906-7ccce7a0d9e4"
+        "3ecd5148-c71f-412b-9a3a-0c1896375bf2",
+        "9d013e80-b21c-486b-9175-38756f69c6f7"
     ],
-    "statusPedido": "em_preparacao"
+    "statusPedido": "em preparacao"
 }

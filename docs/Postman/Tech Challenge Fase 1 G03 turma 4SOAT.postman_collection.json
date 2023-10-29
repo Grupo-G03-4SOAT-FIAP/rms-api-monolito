@@ -132,7 +132,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f",
+							"raw": "http://localhost:3000/cliente/597b4e37-d22e-4fcd-ac1e-de0fed96177f",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -140,7 +140,7 @@
 							"port": "3000",
 							"path": [
 								"cliente",
-								"6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f"
+								"597b4e37-d22e-4fcd-ac1e-de0fed96177f"
 							]
 						}
 					},
@@ -243,6 +243,26 @@
 							"path": [
 								"categoria",
 								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de uma categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/categoria/895c6ff3-c5a7-468e-9895-af61523fbac4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"categoria",
+								"895c6ff3-c5a7-468e-9895-af61523fbac4"
 							]
 						}
 					},
@@ -369,6 +389,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Detalhes de um produto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/d8349d11-9356-448d-8bb8-a8e73d8dc255",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"d8349d11-9356-448d-8bb8-a8e73d8dc255"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -376,7 +416,7 @@
 			"name": "Pedidos",
 			"item": [
 				{
-					"name": "Fila de pedidos (todos os pedidos)",
+					"name": "Fila de pedidos (com o status \"Recebido\")",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -450,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"itensPedido\": [\r\n        \"e5f99bae-0a90-4ca0-b6f8-ab9efb41e721\"\r\n    ],\r\n    \"statusPedido\": \"em_preparacao\" // O status pode ser: \"recebido\", \"em_preparacao\", \"pronto\" ou \"finalizado\".\r\n}",
+							"raw": "{\r\n    \"itensPedido\": [ // Deve conter uma lista com um ou mais UUIDs de produtos\r\n        \"3ecd5148-c71f-412b-9a3a-0c1896375bf2\",\r\n        \"9d013e80-b21c-486b-9175-38756f69c6f7\"\r\n    ],\r\n    \"statusPedido\": \"em preparacao\" // O status pode ser: \"recebido\", \"em preparacao\", \"pronto\", \"finalizado\" ou \"cancelado\".\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -458,7 +498,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/pedido/ffb5ea00-5e1c-40d1-b9b9-bce8b4baf3dc",
+							"raw": "http://localhost:3000/pedido/26f1d105-6005-4d04-8d49-411994241442",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -466,14 +506,14 @@
 							"port": "3000",
 							"path": [
 								"pedido",
-								"ffb5ea00-5e1c-40d1-b9b9-bce8b4baf3dc"
+								"26f1d105-6005-4d04-8d49-411994241442"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Listar pedidos (com status \"Pronto\" e \"Em Preparação\")",
+					"name": "Listar pedidos (todos)",
 					"request": {
 						"method": "GET",
 						"header": [],
