@@ -171,6 +171,9 @@ describe('PedidoRepository', () => {
       where: {
         statusPedido: StatusPedido.RECEBIDO,
       },
+      order: {
+        criadoEm: 'ASC',
+      },
       relations: ['cliente'],
     });
     expect(resultado).toBe(listaPedidos);
