@@ -55,18 +55,18 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 
-## Como executar a aplicação
+## Executar a aplicação usando o Docker Compose
 
 1. Clonar este repositório;
 2. Navegar até a pasta raiz do projeto;
 3. Usar o comando `docker-compose up`
 4. Acessar o Swagger em http://localhost:3000/swagger/
 
-> Se preferir você também pode executar o projeto através do [Makefile](Makefile).
+> Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
 
 > DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
 
-### Banco de Dados
+## Banco de Dados
 
 Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdmin](https://www.pgadmin.org/download/).
 
@@ -75,10 +75,6 @@ Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdm
 > Usuário: pguser\
 > Senha: pgpwd\
 > DB name: rms
-
-#### Requisitos
-
-*Node.js versão 18.18.0 e Docker Engine 24.0.0 ou mais recente.*
 
 ## Documentação
 
@@ -119,6 +115,10 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Requisitos
+
+*Node.js versão 18.18.0 e Docker Engine 24.0.0 ou mais recente.*
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 
