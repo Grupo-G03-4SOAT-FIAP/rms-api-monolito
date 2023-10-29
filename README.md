@@ -50,7 +50,7 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo "BOPE" G03 da t
 
 ### Banco de Dados
 
-Você pode conectar-se a instância de banco de dados PostgreSQL em localhost:5432
+Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdmin](https://www.pgadmin.org/download/).
 
 > Host: localhost\
 > Porta: 5432 (padrão)\
