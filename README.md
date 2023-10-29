@@ -52,7 +52,7 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 
 Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdmin](https://www.pgadmin.org/download/).
 
-> Host: localhost\
+> Host: localhost ou 127.0.0.1\
 > Porta: 5432 (padrão)\
 > Usuário: pguser\
 > Senha: pgpwd\
@@ -61,6 +61,16 @@ Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdm
 ## Documentação
 
 A documentação do projeto está disponível no [GitHub Wiki](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/wiki).
+
+## Arquitetura
+
+Architectural Pattern: *Arquitetura Hexagonal / Ports and Adapters*.
+
+<br>
+
+![Ports and Adapters](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/assets/5115895/5a7d9588-a222-4e8b-acdf-3cb71076e65b)
+
+<br>
 
 ## Como contribuir
 
@@ -100,7 +110,7 @@ $ npm run test:cov
 
 ## Requisitos
 
-*Node.js versão 18.18.0 e Docker Engine 24.0.0 ou mais recente.*
+*Node.js v18.18.0 (LTS) e Docker Engine 24.0.6*
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 
