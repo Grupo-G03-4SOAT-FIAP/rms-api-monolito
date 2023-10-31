@@ -490,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"itensPedido\": [ // Deve conter uma lista com um ou mais UUIDs de produtos\r\n        \"3ecd5148-c71f-412b-9a3a-0c1896375bf2\",\r\n        \"9d013e80-b21c-486b-9175-38756f69c6f7\"\r\n    ],\r\n    \"statusPedido\": \"em preparacao\" // O status pode ser: \"recebido\", \"em preparacao\", \"pronto\", \"finalizado\" ou \"cancelado\".\r\n}",
+							"raw": "{\r\n    \"statusPedido\": \"em preparacao\" // O status pode ser: \"recebido\", \"em preparacao\", \"pronto\", \"finalizado\" ou \"cancelado\".\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -513,7 +513,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar pedidos (todos)",
+					"name": "Listar pedidos (com o status \"Pronto\" ou \"Em preparação\")",
 					"request": {
 						"method": "GET",
 						"header": [],
