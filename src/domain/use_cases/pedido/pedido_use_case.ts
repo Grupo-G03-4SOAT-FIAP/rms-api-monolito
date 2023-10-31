@@ -6,15 +6,23 @@ import {
   AtualizaPedidoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
 import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
+import { ClienteNaoLocalizadoErro } from 'src/domain/exceptions/cliente.exception';
 import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
+import { ProdutoNaoLocalizadoErro } from 'src/domain/exceptions/produto.exception';
+import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
 import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedito.use_case.port';
+import { IProdutoRepository } from 'src/domain/ports/produto/produto.repository.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 @Injectable()
 export class PedidoUseCase implements IPedidoUseCase {
   constructor(
+    @Inject(IClienteRepository)
+    private readonly clienteRepository: IClienteRepository,
+    @Inject(IProdutoRepository)
+    private readonly produtoRepository: IProdutoRepository,
     @Inject(IPedidoRepository)
     private readonly pedidoRepository: IPedidoRepository,
     @Inject(IPedidoFactory)
@@ -22,6 +30,23 @@ export class PedidoUseCase implements IPedidoUseCase {
   ) {}
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
+    if (pedido.cpfCliente) {
+      const cliente = await this.clienteRepository.buscarClientePorCPF(
+        pedido.cpfCliente,
+      );
+      if (!cliente) {
+        throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
+      }
+    }
+
+    for (const itemPedido of pedido.itensPedido) {
+      const produto =
+        await this.produtoRepository.buscarProdutoPorId(itemPedido);
+      if (!produto) {
+        throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
+      }
+    }
+
     // factory para criar a entidade pedido
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
     const result = await this.pedidoRepository.criarPedido(pedidoEntity);
