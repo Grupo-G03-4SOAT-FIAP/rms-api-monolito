@@ -179,18 +179,21 @@ export class ProdutoUseCase implements IProdutoUseCase {
   async listarProdutos(): Promise<ProdutoDTO[] | []> {
     const result = await this.produtoRepository.listarProdutos();
     const listaProdutosDTO = result.map((produto: ProdutoModel) => {
-      const categoriaDTO = new CategoriaDTO();
-      categoriaDTO.id = produto.categoria.id;
-      categoriaDTO.nome = produto.categoria.nome;
-      categoriaDTO.descricao = produto.categoria.descricao;
-
       const produtoDTO = new ProdutoDTO();
       produtoDTO.id = produto.id;
       produtoDTO.nome = produto.nome;
       produtoDTO.descricao = produto.descricao;
       produtoDTO.valorUnitario = produto.valorUnitario;
       produtoDTO.imagemUrl = produto.imagemUrl;
-      produtoDTO.categoria = categoriaDTO;
+      produtoDTO.categoria = null;
+
+      if (produto.categoria) {
+        const categoriaDTO = new CategoriaDTO();
+        categoriaDTO.id = produto.categoria.id;
+        categoriaDTO.nome = produto.categoria.nome;
+        categoriaDTO.descricao = produto.categoria.descricao;
+        produtoDTO.categoria = categoriaDTO;
+      }
 
       return produtoDTO;
     });
