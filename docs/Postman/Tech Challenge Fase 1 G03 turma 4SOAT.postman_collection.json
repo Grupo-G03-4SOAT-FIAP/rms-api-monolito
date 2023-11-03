@@ -1,0 +1,537 @@
+{
+	"info": {
+		"_postman_id": "e5551e96-e647-4a60-8675-a84602476a95",
+		"name": "Tech Challenge Fase 1 G03 turma 4SOAT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4241772"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Listar clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar cliente (Cadastro)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"44470640735\", // Você pode gerar um número de CPF sem pontuação em https://www.4devs.com.br/gerador_de_cpf\r\n    \"nome\": \"Fulano da Silva Santos\",\r\n    \"email\": \"fulano@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cliente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"44470640735\",\r\n    \"nome\": \"Fulano da Silva Santos\",\r\n    \"email\": \"fulano.1998@gmail.com\" // Novo e-mail\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cliente/6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"6a9d3e75-06e2-4066-aa4a-9c2a5f44ba3f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar pelo CPF (Login)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cliente/cpf/44470640735",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"cpf",
+								"44470640735"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de um cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/cliente/597b4e37-d22e-4fcd-ac1e-de0fed96177f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"597b4e37-d22e-4fcd-ac1e-de0fed96177f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categorias",
+			"item": [
+				{
+					"name": "Listar categorias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/categoria",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover categoria",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"categoria",
+								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar categoria",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Lanches\",\r\n    \"descricao\": \"Lanches para todos os gostos!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/categoria/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"categoria",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar categoria",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Bebidas\",\r\n    \"descricao\": \"Refrigerantes, sucos e bebidas alcoolicas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"categoria",
+								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de uma categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/categoria/895c6ff3-c5a7-468e-9895-af61523fbac4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"categoria",
+								"895c6ff3-c5a7-468e-9895-af61523fbac4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produtos",
+			"item": [
+				{
+					"name": "Listar produtos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar produtos por Categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/categoria/9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"categoria",
+								"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover produto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"6a1f1007-b48a-458b-8009-9f2701eae8f3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar produto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"X-Tudo\",\r\n    \"valorUnitario\": 12,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg\",\r\n    \"categoriaId\": \"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4\" // Colocar o UUID da categoria aqui\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/produto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar produto",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"X-Salada\",\r\n    \"valorUnitario\": 15,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://anamariabraga.globo.com/wp-content/uploads/2016/11/x-salada-classico.jpg\",\r\n    \"categoriaId\": \"e5f99bae-0a90-4ca0-b6f8-ab9efb41e721\" // Colocar o UUID da categoria aqui\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/produto/6a1f1007-b48a-458b-8009-9f2701eae8f3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"6a1f1007-b48a-458b-8009-9f2701eae8f3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de um produto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/d8349d11-9356-448d-8bb8-a8e73d8dc255",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"d8349d11-9356-448d-8bb8-a8e73d8dc255"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "Fila de pedidos (com o status \"Recebido\")",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pedido/fila",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pedido",
+								"fila"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes de um pedido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pedido/c7e86741-4e46-4019-a88e-6617c9c37db8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pedido",
+								"c7e86741-4e46-4019-a88e-6617c9c37db8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpfCliente\": \"44470640735\", // Aqui o CPF pode ser null caso o Cliente opte por não se identificar\r\n    \"itensPedido\": [ // Deve conter uma lista com um ou mais UUIDs de produtos\r\n        \"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar pedido (e alterar status)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"statusPedido\": \"em preparacao\" // O status pode ser: \"recebido\", \"em preparacao\", \"pronto\", \"finalizado\" ou \"cancelado\".\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pedido/26f1d105-6005-4d04-8d49-411994241442",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pedido",
+								"26f1d105-6005-4d04-8d49-411994241442"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar pedidos (com o status \"Pronto\" ou \"Em preparação\")",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pedido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pedido"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -53,18 +53,17 @@ export class ProdutoUseCase implements IProdutoUseCase {
     );
     const result = await this.produtoRepository.criarProduto(produtoEntity);
 
+    const categoriaDTO = new CategoriaDTO();
+    categoriaDTO.id = result.categoria.id;
+    categoriaDTO.nome = result.categoria.nome;
+    categoriaDTO.descricao = result.categoria.descricao;
+
     const produtoDTO = new ProdutoDTO();
     produtoDTO.id = result.id;
     produtoDTO.nome = result.nome;
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.categoria.id;
-    categoriaDTO.nome = result.categoria.nome;
-    categoriaDTO.descricao = result.categoria.descricao;
-
     produtoDTO.categoria = categoriaDTO;
 
     return {
@@ -161,18 +160,17 @@ export class ProdutoUseCase implements IProdutoUseCase {
       throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
     }
 
+    const categoriaDTO = new CategoriaDTO();
+    categoriaDTO.id = result.categoria.id;
+    categoriaDTO.nome = result.categoria.nome;
+    categoriaDTO.descricao = result.categoria.descricao;
+
     const produtoDTO = new ProdutoDTO();
     produtoDTO.id = result.id;
     produtoDTO.nome = result.nome;
     produtoDTO.descricao = result.descricao;
     produtoDTO.valorUnitario = result.valorUnitario;
     produtoDTO.imagemUrl = result.imagemUrl;
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.categoria.id;
-    categoriaDTO.nome = result.categoria.nome;
-    categoriaDTO.descricao = result.categoria.descricao;
-
     produtoDTO.categoria = categoriaDTO;
 
     return produtoDTO;
@@ -187,13 +185,16 @@ export class ProdutoUseCase implements IProdutoUseCase {
       produtoDTO.descricao = produto.descricao;
       produtoDTO.valorUnitario = produto.valorUnitario;
       produtoDTO.imagemUrl = produto.imagemUrl;
+      produtoDTO.categoria = null;
 
-      const categoriaDTO = new CategoriaDTO();
-      categoriaDTO.id = produto.categoria.id;
-      categoriaDTO.nome = produto.categoria.nome;
-      categoriaDTO.descricao = produto.categoria.descricao;
+      if (produto.categoria) {
+        const categoriaDTO = new CategoriaDTO();
+        categoriaDTO.id = produto.categoria.id;
+        categoriaDTO.nome = produto.categoria.nome;
+        categoriaDTO.descricao = produto.categoria.descricao;
+        produtoDTO.categoria = categoriaDTO;
+      }
 
-      produtoDTO.categoria = categoriaDTO;
       return produtoDTO;
     });
 
@@ -212,19 +213,19 @@ export class ProdutoUseCase implements IProdutoUseCase {
     const result =
       await this.produtoRepository.listarProdutosPorCategoria(categoriaId);
     const listaProdutosDTO = result.map((produto: ProdutoModel) => {
+      const categoriaDTO = new CategoriaDTO();
+      categoriaDTO.id = produto.categoria.id;
+      categoriaDTO.nome = produto.categoria.nome;
+      categoriaDTO.descricao = produto.categoria.descricao;
+
       const produtoDTO = new ProdutoDTO();
       produtoDTO.id = produto.id;
       produtoDTO.nome = produto.nome;
       produtoDTO.descricao = produto.descricao;
       produtoDTO.valorUnitario = produto.valorUnitario;
       produtoDTO.imagemUrl = produto.imagemUrl;
-
-      const categoriaDTO = new CategoriaDTO();
-      categoriaDTO.id = produto.categoria.id;
-      categoriaDTO.nome = produto.categoria.nome;
-      categoriaDTO.descricao = produto.categoria.descricao;
-
       produtoDTO.categoria = categoriaDTO;
+
       return produtoDTO;
     });
 

@@ -2,6 +2,11 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class PedidoNaoLocalizadoErro extends HttpException {
   constructor(message: string) {
-    super(message, HttpStatus.NOT_FOUND);
+    const errorResponse = {
+      message: message,
+      error: 'Not found',
+      statusCode: HttpStatus.NOT_FOUND,
+    };
+    super(errorResponse, HttpStatus.NOT_FOUND);
   }
 }

@@ -7,6 +7,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IClienteRepository } from '../ports/cliente/cliente.repository.port';
 import { IProdutoRepository } from '../ports/produto/produto.repository.port';
 import { StatusPedido } from 'src/utils/pedido.enum';
+import { ClienteNaoLocalizadoErro } from '../exceptions/cliente.exception';
+import { ProdutoNaoLocalizadoErro } from '../exceptions/produto.exception';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
@@ -20,7 +22,12 @@ export class PedidoFactory implements IPedidoFactory {
   async criarItemPedido(itens: string[]): Promise<ProdutoEntity[]> {
     const itemPedido = await Promise.all(
       itens.map(async (item) => {
-        return this.produtoRepository.buscarProdutoPorId(item);
+        const buscaProduto =
+          await this.produtoRepository.buscarProdutoPorId(item);
+        if (!buscaProduto) {
+          throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
+        }
+        return buscaProduto;
       }),
     );
     return itemPedido;
@@ -32,6 +39,9 @@ export class PedidoFactory implements IPedidoFactory {
     if (cpfCliente) {
       const buscaCliente =
         await this.clienteRepository.buscarClientePorCPF(cpfCliente);
+      if (!buscaCliente) {
+        throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
+      }
       const { nome, email, cpf, id } = buscaCliente;
       const clientEntity = new ClienteEntity(nome, email, cpf, id);
       return clientEntity;

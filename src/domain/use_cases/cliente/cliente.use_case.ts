@@ -73,7 +73,7 @@ export class ClienteUseCase implements IClienteUseCase {
     clienteDTO.cpf = result.cpf;
 
     return {
-      mensagem: 'Cliente atualizada com sucesso',
+      mensagem: 'Cliente atualizado com sucesso',
       body: clienteDTO,
     };
   }
