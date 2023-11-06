@@ -26,7 +26,7 @@ export class ClienteRepository implements IClienteRepository {
     return await this.clienteRepository.findOne({ where: { id: clienteId } });
   }
 
-  async deletarCliente(clienteId: string): Promise<void> {
+  async excluirCliente(clienteId: string): Promise<void> {
     await this.clienteRepository.softDelete({ id: clienteId });
   }
 
@@ -41,6 +41,6 @@ export class ClienteRepository implements IClienteRepository {
   }
 
   async listarClientes(): Promise<[] | ClienteModel[]> {
-    return await this.clienteRepository.find();
+    return await this.clienteRepository.find({});
   }
 }

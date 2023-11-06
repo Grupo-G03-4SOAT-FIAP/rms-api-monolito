@@ -42,6 +42,12 @@ produtoModel.criadoEm = new Date().toISOString();
 produtoModel.atualizadoEm = new Date().toISOString();
 produtoModel.excluidoEm = new Date().toISOString();
 
+class ProdutoRepositoryMock {
+  softDelete: jest.Mock = jest.fn();
+}
+
+const produtoRepositoryMock = new ProdutoRepositoryMock();
+
 describe('ProdutoRepository', () => {
   let produtoRepository: ProdutoRepository;
   let mockProdutoModel: jest.Mocked<Repository<ProdutoModel>>;
@@ -108,9 +114,13 @@ describe('ProdutoRepository', () => {
 
   it('deve excluir uma categoria', async () => {
     const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    await produtoRepository.excluirProduto(produtoId);
+    produtoRepositoryMock.softDelete.mockResolvedValue({ affected: 1 });
 
-    expect(mockProdutoModel.softDelete).toHaveBeenCalledWith({
+    const produtoService = new ProdutoRepository(produtoRepositoryMock as any); // Usar "any" para evitar problemas de tipo
+
+    await produtoService.excluirProduto(produtoId);
+
+    expect(produtoRepositoryMock.softDelete).toHaveBeenCalledWith({
       id: produtoId,
     });
   });
