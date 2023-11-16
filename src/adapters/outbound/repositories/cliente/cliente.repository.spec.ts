@@ -117,6 +117,18 @@ describe('ClienteRepository', () => {
     expect(resultado).toBe(clienteModel);
   });
 
+  it('deve buscar um cliente por id e retornar nulo', async () => {
+    mockClienteModel.findOne.mockResolvedValue(null);
+
+    const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado = await clienteRepository.buscarClientePorId(clienteId);
+
+    expect(mockClienteModel.findOne).toHaveBeenCalledWith({
+      where: { id: clienteId },
+    });
+    expect(resultado).toBe(null);
+  });
+
   it('deve buscar um cliente por cpf', async () => {
     mockClienteModel.findOne.mockResolvedValue(Promise.resolve(clienteModel));
 
@@ -129,6 +141,18 @@ describe('ClienteRepository', () => {
     expect(resultado).toBe(clienteModel);
   });
 
+  it('deve buscar um cliente por cpf e retornar nulo', async () => {
+    mockClienteModel.findOne.mockResolvedValue(null);
+
+    const cpfCliente = '83904665030';
+    const resultado = await clienteRepository.buscarClientePorCPF(cpfCliente);
+
+    expect(mockClienteModel.findOne).toHaveBeenCalledWith({
+      where: { cpf: cpfCliente },
+    });
+    expect(resultado).toBe(null);
+  });
+
   it('deve listar todos clientes', async () => {
     const listaClientes = [clienteModel, clienteModel, clienteModel];
     mockClienteModel.find.mockResolvedValue(Promise.resolve(listaClientes));
@@ -137,5 +161,15 @@ describe('ClienteRepository', () => {
 
     expect(mockClienteModel.find).toHaveBeenCalledWith({});
     expect(resultado).toBe(listaClientes);
+  });
+
+  it('deve retornar uma lista vazia de clientes', async () => {
+    const listaClientes = [];
+    mockClienteModel.find.mockResolvedValue(Promise.resolve(listaClientes));
+
+    const resultado = await clienteRepository.listarClientes();
+
+    expect(mockClienteModel.find).toHaveBeenCalledWith({});
+    expect(resultado).toEqual(listaClientes);
   });
 });
