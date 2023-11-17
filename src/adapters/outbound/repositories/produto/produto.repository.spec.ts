@@ -42,6 +42,12 @@ produtoModel.criadoEm = new Date().toISOString();
 produtoModel.atualizadoEm = new Date().toISOString();
 produtoModel.excluidoEm = new Date().toISOString();
 
+class ProdutoRepositoryMock {
+  softDelete: jest.Mock = jest.fn();
+}
+
+const produtoRepositoryMock = new ProdutoRepositoryMock();
+
 describe('ProdutoRepository', () => {
   let produtoRepository: ProdutoRepository;
   let mockProdutoModel: jest.Mocked<Repository<ProdutoModel>>;
@@ -108,9 +114,13 @@ describe('ProdutoRepository', () => {
 
   it('deve excluir uma categoria', async () => {
     const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    await produtoRepository.excluirProduto(produtoId);
+    produtoRepositoryMock.softDelete.mockResolvedValue({ affected: 1 });
 
-    expect(mockProdutoModel.softDelete).toHaveBeenCalledWith({
+    const produtoService = new ProdutoRepository(produtoRepositoryMock as any); // Usar "any" para evitar problemas de tipo
+
+    await produtoService.excluirProduto(produtoId);
+
+    expect(produtoRepositoryMock.softDelete).toHaveBeenCalledWith({
       id: produtoId,
     });
   });
@@ -128,6 +138,19 @@ describe('ProdutoRepository', () => {
     expect(resultado).toBe(produtoModel);
   });
 
+  it('deve buscar um produto por id e retornar nulo', async () => {
+    mockProdutoModel.findOne.mockResolvedValue(null);
+
+    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado = await produtoRepository.buscarProdutoPorId(produtoId);
+
+    expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
+      where: { id: produtoId },
+      relations: ['categoria'],
+    });
+    expect(resultado).toBe(null);
+  });
+
   it('deve buscar um produto por nome', async () => {
     mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
 
@@ -139,6 +162,19 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(resultado).toBe(produtoModel);
+  });
+
+  it('deve buscar um produto por nome e retornar nulo', async () => {
+    mockProdutoModel.findOne.mockResolvedValue(null);
+
+    const nomeProduto = 'Produto X';
+    const resultado = await produtoRepository.buscarProdutoPorNome(nomeProduto);
+
+    expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
+      where: { nome: nomeProduto },
+      relations: ['categoria'],
+    });
+    expect(resultado).toBe(null);
   });
 
   it('deve listar todos produtos', async () => {
@@ -153,8 +189,35 @@ describe('ProdutoRepository', () => {
     expect(resultado).toBe(listaProdutos);
   });
 
+  it('deve retornar uma lista vazia de produtos', async () => {
+    const listaProdutos = [];
+    mockProdutoModel.find.mockResolvedValue(Promise.resolve(listaProdutos));
+
+    const resultado = await produtoRepository.listarProdutos();
+
+    expect(mockProdutoModel.find).toHaveBeenCalledWith({
+      relations: ['categoria'],
+    });
+    expect(resultado).toBe(listaProdutos);
+  });
+
   it('deve listar produtos por categoria', async () => {
     const listaProdutos = [produtoModel, produtoModel, produtoModel];
+    mockProdutoModel.find.mockResolvedValue(Promise.resolve(listaProdutos));
+
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado =
+      await produtoRepository.listarProdutosPorCategoria(categoriaId);
+
+    expect(mockProdutoModel.find).toHaveBeenCalledWith({
+      where: { categoria: { id: categoriaId } },
+      relations: ['categoria'],
+    });
+    expect(resultado).toBe(listaProdutos);
+  });
+
+  it('deve retornar uma lista vazia de produtos por categoria', async () => {
+    const listaProdutos = [];
     mockProdutoModel.find.mockResolvedValue(Promise.resolve(listaProdutos));
 
     const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';

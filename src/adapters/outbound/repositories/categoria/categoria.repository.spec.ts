@@ -20,6 +20,12 @@ categoriaModel.criadoEm = new Date().toISOString();
 categoriaModel.atualizadoEm = new Date().toISOString();
 categoriaModel.excluidoEm = new Date().toISOString();
 
+class CategoriaRepositoryMock {
+  softDelete: jest.Mock = jest.fn();
+}
+
+const categoriaRepositoryMock = new CategoriaRepositoryMock();
+
 describe('CategoriaRepository', () => {
   let categoriaRepository: CategoriaRepository;
   let mockCategoriaModel: jest.Mocked<Repository<CategoriaModel>>;
@@ -85,11 +91,19 @@ describe('CategoriaRepository', () => {
     expect(resultado).toBe(categoriaModel);
   });
 
-  it('deve excluir uma categoria', async () => {
+  it('deve excluir uma categoria no formato softdelete', async () => {
     const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    await categoriaRepository.excluirCategoria(categoriaId);
 
-    expect(mockCategoriaModel.softDelete).toHaveBeenCalledWith({
+    // Configurar o mock da função softDelete
+    categoriaRepositoryMock.softDelete.mockResolvedValue({ affected: 1 });
+
+    const categoriaService = new CategoriaRepository(
+      categoriaRepositoryMock as any,
+    ); // Usar "any" para evitar problemas de tipo
+
+    await categoriaService.excluirCategoria(categoriaId);
+
+    expect(categoriaRepositoryMock.softDelete).toHaveBeenCalledWith({
       id: categoriaId,
     });
   });
@@ -109,6 +123,19 @@ describe('CategoriaRepository', () => {
     expect(resultado).toBe(categoriaModel);
   });
 
+  it('deve buscar uma categoria por id e retornar nulo', async () => {
+    mockCategoriaModel.findOne.mockResolvedValue(null);
+
+    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    const resultado =
+      await categoriaRepository.buscarCategoriaPorId(categoriaId);
+
+    expect(mockCategoriaModel.findOne).toHaveBeenCalledWith({
+      where: { id: categoriaId },
+    });
+    expect(resultado).toBe(null);
+  });
+
   it('deve buscar uma categoria por nome', async () => {
     mockCategoriaModel.findOne.mockResolvedValue(
       Promise.resolve(categoriaModel),
@@ -124,7 +151,20 @@ describe('CategoriaRepository', () => {
     expect(resultado).toBe(categoriaModel);
   });
 
-  it('deve listar todas categorias sem produtos', async () => {
+  it('deve buscar uma categoria por nome e retornar nulo', async () => {
+    mockCategoriaModel.findOne.mockResolvedValue(null);
+
+    const nomeCategoria = 'Lanche';
+    const resultado =
+      await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
+
+    expect(mockCategoriaModel.findOne).toHaveBeenCalledWith({
+      where: { nome: nomeCategoria },
+    });
+    expect(resultado).toBe(null);
+  });
+
+  it('deve listar todas categorias', async () => {
     const listaCategorias = [categoriaModel, categoriaModel, categoriaModel];
     mockCategoriaModel.find.mockResolvedValue(Promise.resolve(listaCategorias));
 
@@ -132,5 +172,15 @@ describe('CategoriaRepository', () => {
 
     expect(mockCategoriaModel.find).toHaveBeenCalledWith({});
     expect(resultado).toBe(listaCategorias);
+  });
+
+  it('deve retornar uma lista vazia de categorias', async () => {
+    const listaCategorias = [];
+    mockCategoriaModel.find.mockResolvedValue(Promise.resolve(listaCategorias));
+
+    const resultado = await categoriaRepository.listarCategorias();
+
+    expect(mockCategoriaModel.find).toHaveBeenCalledWith({});
+    expect(resultado).toEqual(listaCategorias);
   });
 });

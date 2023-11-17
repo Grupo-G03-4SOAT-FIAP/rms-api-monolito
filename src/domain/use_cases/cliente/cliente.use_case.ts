@@ -87,7 +87,7 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
-    await this.clienteRepository.deletarCliente(clienteId);
+    await this.clienteRepository.excluirCliente(clienteId);
     return {
       mensagem: 'Cliente excluído com sucesso',
     };
