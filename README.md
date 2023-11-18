@@ -62,13 +62,11 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 
 ## Arquitetura
 
-Architectural Pattern: *Arquitetura Hexagonal / Ports and Adapters*.
+Architectural Pattern: *Clean Architecture*.
 
 <br>
 
-![Ports and Adapters](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/assets/5115895/5a7d9588-a222-4e8b-acdf-3cb71076e65b)
-
-<br>
+![image](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend/assets/5115895/cb6d9afd-6bb4-4e81-9b48-a944e9bf3de4)
 
 ## Como contribuir
 
