@@ -31,7 +31,7 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 
 1. Clonar este repositório;
 2. Navegar até a pasta raiz do projeto;
-3. Usar o comando `docker-compose up`
+3. Usar o comando `docker-compose up --build --force-recreate --renew-anon-volumes`
 4. Acessar o Swagger em http://localhost:3000/swagger/
 
 > Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
