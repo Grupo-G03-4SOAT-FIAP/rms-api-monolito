@@ -1,6 +1,4 @@
-<a href="https://dot.net/architecture">
-   <img src="https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/raw/main/docs/bope-faca-na-carveira-knife-skull-logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
-</a>
+<img src="https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/raw/main/docs/img/bope-faca-na-carveira-knife-skull-logo.png" alt="BOPE" title="BOPE" align="right" height="60" />
 
 # Restaurant Management System
 
