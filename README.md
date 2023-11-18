@@ -55,10 +55,7 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 ## Arquitetura
 
 Architectural Pattern: *Clean Architecture*.
-
-<br>
-
-![image](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend/assets/5115895/cb6d9afd-6bb4-4e81-9b48-a944e9bf3de4)
+[![image](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend/assets/5115895/b076df14-2369-4653-b4e4-2f7cdf67aff9)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
 ## Como contribuir
 
