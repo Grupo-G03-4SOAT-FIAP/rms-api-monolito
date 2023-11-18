@@ -2,30 +2,22 @@
 
 # Restaurant Management System
 
-<!---
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_RMS-backend-fase01)
--->
 
 Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da turma 4SOAT para o Tech Challenge da [Pós Tech em Software Architecture da FIAP](https://postech.fiap.com.br/curso/software-architecture/).
 
-<details><summary>Clique aqui para mais detalhes sobre o projeto.</summary>
-<p>
+### O PROBLEMA
 
-> *O PROBLEMA*
-> 
-> *Há uma lanchonete de bairro que está expandindo devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso. Por exemplo, imagine que um cliente faça um pedido complexo, como um hambúrguer personalizado com ingredientes específicos, acompanhado de batatas fritas e uma bebida. O atendente pode anotar o pedido em um papel e entregá-lo à cozinha, mas não há garantia de que o pedido será preparado corretamente.*
-> 
-> *Sem um sistema de controle de pedidos, pode haver confusão entre os atendentes e a cozinha, resultando em atrasos na preparação e entrega dos pedidos. Os pedidos podem ser perdidos, mal interpretados ou esquecidos, levando à insatisfação dos clientes e a perda de negócios.*
-> 
-> *Em resumo, um sistema de controle de pedidos é essencial para garantir que a lanchonete possa atender os clientes de maneira eficiente, gerenciando seus pedidos e estoques de forma adequada. Sem ele, expandir a lanchonete pode acabar não dando certo, resultando em clientes insatisfeitos e impactando os negócios de forma negativa.*
-> 
-> *Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente.*
->
-> *— Fonte: [FIAP](https://www.fiap.com.br/)*
+*Há uma lanchonete de bairro que está expandindo devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso. Por exemplo, imagine que um cliente faça um pedido complexo, como um hambúrguer personalizado com ingredientes específicos, acompanhado de batatas fritas e uma bebida. O atendente pode anotar o pedido em um papel e entregá-lo à cozinha, mas não há garantia de que o pedido será preparado corretamente.*
 
-</p>
-</details> 
+*Sem um sistema de controle de pedidos, pode haver confusão entre os atendentes e a cozinha, resultando em atrasos na preparação e entrega dos pedidos. Os pedidos podem ser perdidos, mal interpretados ou esquecidos, levando à insatisfação dos clientes e a perda de negócios.*
+
+*Em resumo, um sistema de controle de pedidos é essencial para garantir que a lanchonete possa atender os clientes de maneira eficiente, gerenciando seus pedidos e estoques de forma adequada. Sem ele, expandir a lanchonete pode acabar não dando certo, resultando em clientes insatisfeitos e impactando os negócios de forma negativa.*
+
+*Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente.*
+
+*— Fonte: [FIAP](https://www.fiap.com.br/)*
 
 #### Stack
 
@@ -39,7 +31,7 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 
 1. Clonar este repositório;
 2. Navegar até a pasta raiz do projeto;
-3. Usar o comando `docker-compose up`
+3. Usar o comando `docker-compose up --build --force-recreate --renew-anon-volumes`
 4. Acessar o Swagger em http://localhost:3000/swagger/
 
 > Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
@@ -62,13 +54,11 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 
 ## Arquitetura
 
-Architectural Pattern: *Arquitetura Hexagonal / Ports and Adapters*.
+Architectural Pattern: *Clean Architecture*.
 
 <br>
 
-![Ports and Adapters](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/assets/5115895/5a7d9588-a222-4e8b-acdf-3cb71076e65b)
-
-<br>
+![image](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend/assets/5115895/cb6d9afd-6bb4-4e81-9b48-a944e9bf3de4)
 
 ## Como contribuir
 
