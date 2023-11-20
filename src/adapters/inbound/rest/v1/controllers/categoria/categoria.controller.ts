@@ -8,6 +8,7 @@ import {
   Inject,
   NotFoundException,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -82,7 +83,7 @@ export class CategoriaController {
     type: ConflictError,
   })
   async atualizar(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() categoria: AtualizaCategoriaDTO,
   ) {
     try {
@@ -109,7 +110,7 @@ export class CategoriaController {
     description: 'Categoria informada não existe',
     type: NotFoundError,
   })
-  async remover(@Param('id') id: string) {
+  async remover(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await this.categoriaUseCase.excluirCategoria(id);
     } catch (error) {
@@ -132,7 +133,7 @@ export class CategoriaController {
     description: 'Categoria informada não existe',
     type: NotFoundError,
   })
-  async buscar(@Param('id') id: string) {
+  async buscar(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await this.categoriaUseCase.buscarCategoria(id);
     } catch (error) {
