@@ -8,12 +8,12 @@ export class CriaCategoriaDTO {
   nome: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty({ message: 'Descrição da categoria não pode ser vazio' })
   @MaxLength(1000, {
     message: 'Descrição não pode ter mais que 1000 caracteres',
   })
-  @ApiProperty({ description: 'Descrição da categoria', required: false })
-  descricao?: string;
+  @ApiProperty({ description: 'Descrição da categoria' })
+  descricao: string;
 }
 
 export class AtualizaCategoriaDTO {
