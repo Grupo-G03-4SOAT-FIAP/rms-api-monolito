@@ -8,8 +8,7 @@ export class ClienteEntity {
 
   constructor(nome: string, email: string, cpf?: string, id?: string) {
     this.id = id;
-    const capitalizedNome = new ToCapitalizeString(nome);
-    this.nome = capitalizedNome.input;
+    this.setNome = nome;
     this.email = email;
     const cpfIntancia = new CPF(cpf);
     this.cpf = cpfIntancia.getValue();
