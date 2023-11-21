@@ -8,7 +8,7 @@ export class CriaCategoriaDTO {
   nome: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Descrição da categoria não pode ser vazio' })
+  @IsOptional()
   @MaxLength(1000, {
     message: 'Descrição não pode ter mais que 1000 caracteres',
   })

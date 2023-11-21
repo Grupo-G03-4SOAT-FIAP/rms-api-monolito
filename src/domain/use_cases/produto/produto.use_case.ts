@@ -44,9 +44,15 @@ export class ProdutoUseCase implements IProdutoUseCase {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
 
+    const categoriaEntity = new CategoriaEntity(
+      buscaCategoria.nome,
+      buscaCategoria.descricao,
+      buscaCategoria.id,
+    );
+
     const produtoEntity = new ProdutoEntity(
       nome,
-      buscaCategoria,
+      categoriaEntity,
       valorUnitario,
       imagemUrl,
       descricao,

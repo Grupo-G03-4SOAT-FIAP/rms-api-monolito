@@ -4,10 +4,15 @@ export class ToCapitalizeString {
   }
 
   private toCapitalize = (input: string): string => {
-    const capitalized: string = input
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
+    let capitalized: string;
+    if (input) {
+      capitalized = input
+        .split(' ')
+        .map(
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+        )
+        .join(' ');
+    }
     return capitalized;
   };
 }

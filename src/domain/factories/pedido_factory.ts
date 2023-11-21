@@ -9,6 +9,7 @@ import { IProdutoRepository } from '../ports/produto/produto.repository.port';
 import { StatusPedido } from 'src/utils/pedido.enum';
 import { ClienteNaoLocalizadoErro } from '../exceptions/cliente.exception';
 import { ProdutoNaoLocalizadoErro } from '../exceptions/produto.exception';
+import { CategoriaEntity } from '../entities/categoria.entity';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
@@ -27,7 +28,20 @@ export class PedidoFactory implements IPedidoFactory {
         if (!buscaProduto) {
           throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
         }
-        return buscaProduto;
+        const categoriaEntity = new CategoriaEntity(
+          buscaProduto.categoria.nome,
+          buscaProduto.categoria.descricao,
+          buscaProduto.categoria.id,
+        );
+        const produtoEntity = new ProdutoEntity(
+          buscaProduto.nome,
+          categoriaEntity,
+          buscaProduto.valorUnitario,
+          buscaProduto.imagemUrl,
+          buscaProduto.descricao,
+          buscaProduto.id,
+        );
+        return produtoEntity;
       }),
     );
     return itemPedido;
