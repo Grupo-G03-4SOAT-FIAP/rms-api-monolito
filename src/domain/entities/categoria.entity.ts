@@ -7,8 +7,10 @@ export class CategoriaEntity {
 
   constructor(nome: string, descricao?: string, id?: string) {
     this.id = id;
-    const capitalizedNome = new ToCapitalizeString(nome);
-    this.nome = capitalizedNome.input;
+    if (nome) {
+      const capitalizedNome = new ToCapitalizeString(nome);
+      this.nome = capitalizedNome.input;
+    }
     if (descricao) {
       const capitalizedDescricao = new ToCapitalizeString(descricao);
       this.descricao = capitalizedDescricao.input;
