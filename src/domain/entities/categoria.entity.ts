@@ -7,13 +7,25 @@ export class CategoriaEntity {
 
   constructor(nome: string, descricao?: string, id?: string) {
     this.id = id;
-    if (nome) {
-      const capitalizedNome = new ToCapitalizeString(nome);
-      this.nome = capitalizedNome.input;
-    }
-    if (descricao) {
-      const capitalizedDescricao = new ToCapitalizeString(descricao);
-      this.descricao = capitalizedDescricao.input;
-    }
+    this.setNome = nome;
+    this.setDescricao = descricao;
+  }
+
+  get getNome(): string {
+    return this.nome;
+  }
+
+  set setNome(nome: string) {
+    const capitalizedNome = new ToCapitalizeString(nome);
+    this.nome = capitalizedNome.input;
+  }
+
+  get getDescricao(): string {
+    return this.descricao;
+  }
+
+  set setDescricao(descricao: string) {
+    const capitalizedDescricao = new ToCapitalizeString(descricao);
+    this.descricao = capitalizedDescricao.input;
   }
 }
