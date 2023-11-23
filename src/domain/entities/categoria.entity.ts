@@ -1,4 +1,4 @@
-import { ToCapitalizeString } from '../value_objects/capitalize_string';
+import { ToCapitalizeString } from '../helpers/capitalize_string';
 
 export class CategoriaEntity {
   nome: string;
