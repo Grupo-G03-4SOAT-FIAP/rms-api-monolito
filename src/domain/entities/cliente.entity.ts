@@ -1,3 +1,4 @@
+import { ToCapitalizeString } from '../../utils/capitalize_string';
 import { CPF } from '../value_objects/cpf';
 export class ClienteEntity {
   nome: string;
@@ -7,7 +8,7 @@ export class ClienteEntity {
 
   constructor(nome: string, email: string, cpf?: string, id?: string) {
     this.id = id;
-    this.nome = nome;
+    this.setNome = nome;
     this.email = email;
     const cpfIntancia = new CPF(cpf);
     this.cpf = cpfIntancia.getValue();
@@ -17,14 +18,8 @@ export class ClienteEntity {
     return this.nome;
   }
   set setNome(nome: string) {
-    this.nome = this.toCapitalize(nome);
-  }
-
-  private toCapitalize(input: string): string {
-    return input
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
+    const capitalizedNome = new ToCapitalizeString(nome);
+    this.nome = capitalizedNome.input;
   }
 
   get getCpf(): string {

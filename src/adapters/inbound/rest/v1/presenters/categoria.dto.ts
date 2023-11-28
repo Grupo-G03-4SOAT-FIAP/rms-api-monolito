@@ -12,8 +12,8 @@ export class CriaCategoriaDTO {
   @MaxLength(1000, {
     message: 'Descrição não pode ter mais que 1000 caracteres',
   })
-  @ApiProperty({ description: 'Descrição da categoria', required: false })
-  descricao?: string;
+  @ApiProperty({ description: 'Descrição da categoria' })
+  descricao: string;
 }
 
 export class AtualizaCategoriaDTO {
