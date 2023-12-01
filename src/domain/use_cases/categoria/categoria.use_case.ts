@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ICategoriaUseCase } from 'src/domain/ports/categoria/categoria.use_case.port';
-import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
-import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
+import { ICategoriaUseCase } from '../../../domain/ports/categoria/categoria.use_case.port';
+import { ICategoriaRepository } from '../../../domain/ports/categoria/categoria.repository.port';
+import { CategoriaEntity } from '../../../domain/entities/categoria.entity';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
   CriaCategoriaDTO,
-} from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
-import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
+} from '../../../adapters/inbound/rest/v1/presenters/categoria.dto';
+import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
 import {
   CategoriaNaoLocalizadaErro,
   CategoriaDuplicadaErro,
-} from 'src/domain/exceptions/categoria.exception';
-import { HTTPResponse } from 'src/utils/HTTPResponse';
+} from '../../../domain/exceptions/categoria.exception';
+import { HTTPResponse } from '../../../utils/HTTPResponse';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
