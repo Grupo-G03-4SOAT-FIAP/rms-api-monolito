@@ -3,10 +3,14 @@ import { ICategoriaRepository } from '../../../domain/ports/categoria/categoria.
 import { CategoriaUseCase } from './categoria.use_case';
 import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
 import {
+  AtualizaCategoriaDTO,
   CategoriaDTO,
   CriaCategoriaDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
-import { CategoriaDuplicadaErro } from '../../../domain/exceptions/categoria.exception';
+import {
+  CategoriaDuplicadaErro,
+  CategoriaNaoLocalizadaErro,
+} from '../../../domain/exceptions/categoria.exception';
 
 const categoriaModelMock = new CategoriaModel();
 categoriaModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -39,7 +43,8 @@ describe('Categoria Use case', () => {
         {
           provide: ICategoriaRepository,
           useValue: {
-            buscarCategoriaPorNome: jest.fn().mockReturnValue(null),
+            buscarCategoriaPorNome: jest.fn(),
+            buscarCategoriaPorId: jest.fn(),
             criarCategoria: jest.fn().mockReturnValue(novaCategoriaModelMock),
           },
         },
@@ -88,6 +93,23 @@ describe('Categoria Use case', () => {
         1,
       );
       expect(categoriaRepository.criarCategoria).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Editar categoria', () => {
+    it('Deve ser lançado um erro se a categoria informada para edição não existe', async () => {
+      const categoriaDto = new AtualizaCategoriaDTO();
+      categoriaDto.nome = 'Categoria atualizada';
+      categoriaDto.descricao = 'Descrição atualizada';
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
+        .mockReturnValue(Promise.resolve(null));
+      expect(
+        categoriaUseCase.editarCategoria(categoriaModelMock.id, categoriaDto),
+      ).rejects.toThrow(
+        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+      );
+      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
     });
   });
 });
