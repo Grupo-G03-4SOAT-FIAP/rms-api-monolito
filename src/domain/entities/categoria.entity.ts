@@ -1,7 +1,7 @@
 import { ToCapitalizeString } from '../../utils/capitalize_string';
 
 export class CategoriaEntity {
-  nome?: string;
+  nome: string;
   descricao?: string;
   id?: string;
 
