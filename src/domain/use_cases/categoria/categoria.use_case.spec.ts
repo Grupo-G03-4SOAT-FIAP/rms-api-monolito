@@ -197,6 +197,37 @@ describe('Categoria Use case', () => {
       ).toEqual({
         mensagem: 'Categoria excluida com sucesso',
       });
+      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
+      expect(categoriaRepository.excluirCategoria).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Buscar Categoria', () => {
+    it('Deve deve retornado um erro ao tentar buscar uma categoria que o ID não esteja cadastrado no banco de dados', async () => {
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
+        .mockReturnValue(Promise.resolve(null));
+      expect(
+        categoriaUseCase.buscarCategoria(
+          '0a14aa4e-7587-405f-8601-81f60646c93d',
+        ),
+      ).rejects.toThrow(
+        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+      );
+      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve ser possível buscar uma categoria via ID', async () => {
+      const result = new CategoriaDTO();
+      result.id = categoriaAtualizadaModelMock.id;
+      result.nome = categoriaAtualizadaModelMock.nome;
+      result.descricao = categoriaAtualizadaModelMock.descricao;
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
+        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
+      expect(
+        await categoriaUseCase.buscarCategoria(categoriaAtualizadaModelMock.id),
+      ).toEqual(result);
     });
   });
 });
