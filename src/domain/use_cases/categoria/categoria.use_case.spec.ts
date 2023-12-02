@@ -28,6 +28,14 @@ novaCategoriaModelMock.produtos = null;
 novaCategoriaModelMock.criadoEm = new Date().toISOString();
 novaCategoriaModelMock.atualizadoEm = new Date().toISOString();
 
+const categoriaAtualizadaModelMock = new CategoriaModel();
+categoriaAtualizadaModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93c';
+categoriaAtualizadaModelMock.nome = 'Novo Nome';
+categoriaAtualizadaModelMock.descricao = 'Nova Descrição';
+categoriaAtualizadaModelMock.produtos = null;
+categoriaAtualizadaModelMock.criadoEm = new Date().toISOString();
+categoriaAtualizadaModelMock.atualizadoEm = new Date().toISOString();
+
 const novaCategoriaDto = new CriaCategoriaDTO();
 novaCategoriaDto.nome = novaCategoriaModelMock.nome;
 novaCategoriaDto.descricao = novaCategoriaModelMock.descricao;
@@ -46,6 +54,7 @@ describe('Categoria Use case', () => {
             buscarCategoriaPorNome: jest.fn(),
             buscarCategoriaPorId: jest.fn(),
             criarCategoria: jest.fn().mockReturnValue(novaCategoriaModelMock),
+            editarCategoria: jest.fn(),
           },
         },
       ],
@@ -105,11 +114,59 @@ describe('Categoria Use case', () => {
         .spyOn(categoriaRepository, 'buscarCategoriaPorId')
         .mockReturnValue(Promise.resolve(null));
       expect(
-        categoriaUseCase.editarCategoria(categoriaModelMock.id, categoriaDto),
+        categoriaUseCase.editarCategoria(
+          '0a14aa4e-75e7-405f-8601-81f60646c93d',
+          categoriaDto,
+        ),
       ).rejects.toThrow(
         new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
       );
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve ser lançado um erro se a categoria informada para edição tiver o mesmo nome de uma categoria já registrada', async () => {
+      const atualizaCategoriaDto = new AtualizaCategoriaDTO();
+      atualizaCategoriaDto.nome = novaCategoriaDto.nome;
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
+        .mockReturnValue(Promise.resolve(categoriaModelMock));
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
+        .mockReturnValue(Promise.resolve(novaCategoriaModelMock));
+      expect(
+        categoriaUseCase.editarCategoria(
+          categoriaModelMock.id,
+          atualizaCategoriaDto,
+        ),
+      ).rejects.toThrow(
+        new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
+      );
+      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve ser possível editar uma categoria', async () => {
+      const atualizaCategoriaDto = new AtualizaCategoriaDTO();
+      const result = new CategoriaDTO();
+      result.id = categoriaAtualizadaModelMock.id;
+      result.nome = categoriaAtualizadaModelMock.nome;
+      result.descricao = categoriaAtualizadaModelMock.descricao;
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
+        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
+      jest
+        .spyOn(categoriaRepository, 'editarCategoria')
+        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
+      expect(
+        await categoriaUseCase.editarCategoria(
+          categoriaAtualizadaModelMock.id,
+          atualizaCategoriaDto,
+        ),
+      ).toEqual({
+        mensagem: 'Categoria atualizada com sucesso',
+        body: result,
+      });
+      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
+      expect(categoriaRepository.editarCategoria).toHaveBeenCalledTimes(1);
     });
   });
 });
