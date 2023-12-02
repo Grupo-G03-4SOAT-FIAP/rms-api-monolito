@@ -12,38 +12,73 @@ import {
   CategoriaNaoLocalizadaErro,
 } from '../../../domain/exceptions/categoria.exception';
 
-const categoriaModelMock = new CategoriaModel();
-categoriaModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-categoriaModelMock.nome = 'Lanche';
-categoriaModelMock.descricao = 'Lanche x tudo';
-categoriaModelMock.produtos = null;
-categoriaModelMock.criadoEm = new Date().toISOString();
-categoriaModelMock.atualizadoEm = new Date().toISOString();
+const makeCategoriaModel = (
+  id: string,
+  nome: string,
+  descricao: string,
+  produtos = null,
+  criadoEm = new Date().toISOString(),
+  atualizadoEm = new Date().toISOString(),
+): CategoriaModel => {
+  const categoriaModel = new CategoriaModel();
+  categoriaModel.id = id;
+  categoriaModel.nome = nome;
+  categoriaModel.descricao = descricao;
+  categoriaModel.produtos = produtos;
+  categoriaModel.criadoEm = criadoEm;
+  categoriaModel.atualizadoEm = atualizadoEm;
+  return categoriaModel;
+};
 
-const novaCategoriaModelMock = new CategoriaModel();
-novaCategoriaModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93c';
-novaCategoriaModelMock.nome = 'Nova Categoria';
-novaCategoriaModelMock.descricao = 'Nova Descrição';
-novaCategoriaModelMock.produtos = null;
-novaCategoriaModelMock.criadoEm = new Date().toISOString();
-novaCategoriaModelMock.atualizadoEm = new Date().toISOString();
+const categoriaModelMock = makeCategoriaModel(
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+  'Lanche',
+  'Lanche x tudo',
+);
 
-const categoriaAtualizadaModelMock = new CategoriaModel();
-categoriaAtualizadaModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93c';
-categoriaAtualizadaModelMock.nome = 'Novo Nome';
-categoriaAtualizadaModelMock.descricao = 'Nova Descrição';
-categoriaAtualizadaModelMock.produtos = null;
-categoriaAtualizadaModelMock.criadoEm = new Date().toISOString();
-categoriaAtualizadaModelMock.atualizadoEm = new Date().toISOString();
+const novaCategoriaModelMock = makeCategoriaModel(
+  '0a14aa4e-75e7-405f-8301-81f60646c93c',
+  'Nova Categoria',
+  'Nova Descrição',
+);
 
-const novaCategoriaDto = new CriaCategoriaDTO();
-novaCategoriaDto.nome = novaCategoriaModelMock.nome;
-novaCategoriaDto.descricao = novaCategoriaModelMock.descricao;
+const categoriaAtualizadaModelMock = makeCategoriaModel(
+  '0a14aa4e-75e7-405f-8301-81f60646c93c',
+  'Novo Nome',
+  'Nova Descrição',
+);
 
 const listaCategoriasModel: CategoriaModel[] = [];
 listaCategoriasModel.push(categoriaAtualizadaModelMock);
 listaCategoriasModel.push(novaCategoriaModelMock);
 listaCategoriasModel.push(categoriaModelMock);
+
+const makeCriaCategoriaDTO = (
+  nome: string,
+  descricao: string,
+): CriaCategoriaDTO => {
+  const categoriaDTO = new CriaCategoriaDTO();
+  categoriaDTO.nome = nome;
+  categoriaDTO.descricao = descricao;
+  return categoriaDTO;
+};
+
+const novaCategoriaDto = makeCriaCategoriaDTO(
+  novaCategoriaModelMock.nome,
+  novaCategoriaModelMock.descricao,
+);
+
+const makeCategoriaDTO = (
+  id: string,
+  nome: string,
+  descricao: string,
+): CategoriaDTO => {
+  const categoriaDTO = new CategoriaDTO();
+  categoriaDTO.id = id;
+  categoriaDTO.nome = nome;
+  categoriaDTO.descricao = descricao;
+  return categoriaDTO;
+};
 
 describe('Categoria Use case', () => {
   let categoriaUseCase: CategoriaUseCase;
@@ -58,7 +93,7 @@ describe('Categoria Use case', () => {
           useValue: {
             buscarCategoriaPorNome: jest.fn(),
             buscarCategoriaPorId: jest.fn(),
-            criarCategoria: jest.fn().mockReturnValue(novaCategoriaModelMock),
+            criarCategoria: jest.fn(),
             editarCategoria: jest.fn(),
             excluirCategoria: jest.fn(),
             listarCategorias: jest.fn(),
@@ -82,9 +117,7 @@ describe('Categoria Use case', () => {
 
   describe('Criar categoria', () => {
     it('Deve ser lançado um erro ao tentar criar uma categoria com um nome já registrado no sistema', async () => {
-      const categoriaDto = new CriaCategoriaDTO();
-      categoriaDto.nome = 'Categoria 1';
-      categoriaDto.descricao = 'Descrição 1';
+      const categoriaDto = makeCriaCategoriaDTO('Categoria 1', 'Descrição 1');
       jest
         .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
         .mockReturnValue(Promise.resolve(categoriaModelMock));
@@ -97,10 +130,14 @@ describe('Categoria Use case', () => {
     });
 
     it('Deve ser possível criar uma nova categoria', async () => {
-      const result = new CategoriaDTO();
-      result.nome = novaCategoriaModelMock.nome;
-      result.descricao = novaCategoriaModelMock.descricao;
-      result.id = novaCategoriaModelMock.id;
+      const result = makeCategoriaDTO(
+        novaCategoriaModelMock.id,
+        novaCategoriaModelMock.nome,
+        novaCategoriaModelMock.descricao,
+      );
+      jest
+        .spyOn(categoriaRepository, 'criarCategoria')
+        .mockReturnValue(Promise.resolve(novaCategoriaModelMock));
       expect(await categoriaUseCase.criarCategoria(novaCategoriaDto)).toEqual({
         mensagem: 'Categoria criada com sucesso',
         body: result,
@@ -153,10 +190,11 @@ describe('Categoria Use case', () => {
 
     it('Deve ser possível editar uma categoria', async () => {
       const atualizaCategoriaDto = new AtualizaCategoriaDTO();
-      const result = new CategoriaDTO();
-      result.id = categoriaAtualizadaModelMock.id;
-      result.nome = categoriaAtualizadaModelMock.nome;
-      result.descricao = categoriaAtualizadaModelMock.descricao;
+      const result = makeCategoriaDTO(
+        categoriaAtualizadaModelMock.id,
+        categoriaAtualizadaModelMock.nome,
+        categoriaAtualizadaModelMock.descricao,
+      );
       jest
         .spyOn(categoriaRepository, 'buscarCategoriaPorId')
         .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
@@ -224,10 +262,11 @@ describe('Categoria Use case', () => {
     });
 
     it('Deve ser possível buscar uma categoria via ID', async () => {
-      const result = new CategoriaDTO();
-      result.id = categoriaAtualizadaModelMock.id;
-      result.nome = categoriaAtualizadaModelMock.nome;
-      result.descricao = categoriaAtualizadaModelMock.descricao;
+      const result = makeCategoriaDTO(
+        categoriaAtualizadaModelMock.id,
+        categoriaAtualizadaModelMock.nome,
+        categoriaAtualizadaModelMock.descricao,
+      );
       jest
         .spyOn(categoriaRepository, 'buscarCategoriaPorId')
         .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
@@ -239,20 +278,23 @@ describe('Categoria Use case', () => {
 
   describe('Listar Categorias', () => {
     it('Deve ser possível retornar uma lista com todas as categorias cadastradas', async () => {
-      const categoria1DTO = new CategoriaDTO();
-      categoria1DTO.id = categoriaAtualizadaModelMock.id;
-      categoria1DTO.nome = categoriaAtualizadaModelMock.nome;
-      categoria1DTO.descricao = categoriaAtualizadaModelMock.descricao;
+      const categoria1DTO = makeCategoriaDTO(
+        categoriaAtualizadaModelMock.id,
+        categoriaAtualizadaModelMock.nome,
+        categoriaAtualizadaModelMock.descricao,
+      );
 
-      const categoria2DTO = new CategoriaDTO();
-      categoria2DTO.id = novaCategoriaModelMock.id;
-      categoria2DTO.nome = novaCategoriaModelMock.nome;
-      categoria2DTO.descricao = novaCategoriaModelMock.descricao;
+      const categoria2DTO = makeCategoriaDTO(
+        novaCategoriaModelMock.id,
+        novaCategoriaModelMock.nome,
+        novaCategoriaModelMock.descricao,
+      );
 
-      const categoria3DTO = new CategoriaDTO();
-      categoria3DTO.id = categoriaModelMock.id;
-      categoria3DTO.nome = categoriaModelMock.nome;
-      categoria3DTO.descricao = categoriaModelMock.descricao;
+      const categoria3DTO = makeCategoriaDTO(
+        categoriaModelMock.id,
+        categoriaModelMock.nome,
+        categoriaModelMock.descricao,
+      );
 
       const expectedResult: CategoriaDTO[] = [
         categoria1DTO,
