@@ -40,6 +40,11 @@ const novaCategoriaDto = new CriaCategoriaDTO();
 novaCategoriaDto.nome = novaCategoriaModelMock.nome;
 novaCategoriaDto.descricao = novaCategoriaModelMock.descricao;
 
+const listaCategoriasModel: CategoriaModel[] = [];
+listaCategoriasModel.push(categoriaAtualizadaModelMock);
+listaCategoriasModel.push(novaCategoriaModelMock);
+listaCategoriasModel.push(categoriaModelMock);
+
 describe('Categoria Use case', () => {
   let categoriaUseCase: CategoriaUseCase;
   let categoriaRepository: ICategoriaRepository;
@@ -56,6 +61,7 @@ describe('Categoria Use case', () => {
             criarCategoria: jest.fn().mockReturnValue(novaCategoriaModelMock),
             editarCategoria: jest.fn(),
             excluirCategoria: jest.fn(),
+            listarCategorias: jest.fn(),
           },
         },
       ],
@@ -228,6 +234,36 @@ describe('Categoria Use case', () => {
       expect(
         await categoriaUseCase.buscarCategoria(categoriaAtualizadaModelMock.id),
       ).toEqual(result);
+    });
+  });
+
+  describe('Listar Categorias', () => {
+    it('Deve ser possível retornar uma lista com todas as categorias cadastradas', async () => {
+      const categoria1DTO = new CategoriaDTO();
+      categoria1DTO.id = categoriaAtualizadaModelMock.id;
+      categoria1DTO.nome = categoriaAtualizadaModelMock.nome;
+      categoria1DTO.descricao = categoriaAtualizadaModelMock.descricao;
+
+      const categoria2DTO = new CategoriaDTO();
+      categoria2DTO.id = novaCategoriaModelMock.id;
+      categoria2DTO.nome = novaCategoriaModelMock.nome;
+      categoria2DTO.descricao = novaCategoriaModelMock.descricao;
+
+      const categoria3DTO = new CategoriaDTO();
+      categoria3DTO.id = categoriaModelMock.id;
+      categoria3DTO.nome = categoriaModelMock.nome;
+      categoria3DTO.descricao = categoriaModelMock.descricao;
+
+      const result: CategoriaDTO[] = [
+        categoria1DTO,
+        categoria2DTO,
+        categoria3DTO,
+      ];
+      jest
+        .spyOn(categoriaRepository, 'listarCategorias')
+        .mockReturnValue(Promise.resolve(listaCategoriasModel));
+      const listResult = await categoriaUseCase.listarCategorias();
+      expect(listResult).toEqual(result);
     });
   });
 });
