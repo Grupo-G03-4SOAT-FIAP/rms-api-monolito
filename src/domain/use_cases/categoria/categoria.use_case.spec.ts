@@ -55,6 +55,7 @@ describe('Categoria Use case', () => {
             buscarCategoriaPorId: jest.fn(),
             criarCategoria: jest.fn().mockReturnValue(novaCategoriaModelMock),
             editarCategoria: jest.fn(),
+            excluirCategoria: jest.fn(),
           },
         },
       ],
@@ -167,6 +168,35 @@ describe('Categoria Use case', () => {
       });
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
       expect(categoriaRepository.editarCategoria).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Excluir categoria', () => {
+    it('Deve ser retornado um erro se o id da categoria informada para exclusão não existir na base de dados', async () => {
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
+        .mockReturnValue(Promise.resolve(null));
+      expect(
+        categoriaUseCase.excluirCategoria(
+          '0a14aa4e-75e7-405f-8601-81f60646c93d',
+        ),
+      ).rejects.toThrow(
+        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+      );
+      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Deve ser possível excluir uma categoria', async () => {
+      jest
+        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
+        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
+      expect(
+        await categoriaUseCase.excluirCategoria(
+          categoriaAtualizadaModelMock.id,
+        ),
+      ).toEqual({
+        mensagem: 'Categoria excluida com sucesso',
+      });
     });
   });
 });
