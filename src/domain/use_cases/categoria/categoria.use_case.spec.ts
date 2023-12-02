@@ -254,7 +254,7 @@ describe('Categoria Use case', () => {
       categoria3DTO.nome = categoriaModelMock.nome;
       categoria3DTO.descricao = categoriaModelMock.descricao;
 
-      const result: CategoriaDTO[] = [
+      const expectedResult: CategoriaDTO[] = [
         categoria1DTO,
         categoria2DTO,
         categoria3DTO,
@@ -263,7 +263,15 @@ describe('Categoria Use case', () => {
         .spyOn(categoriaRepository, 'listarCategorias')
         .mockReturnValue(Promise.resolve(listaCategoriasModel));
       const listResult = await categoriaUseCase.listarCategorias();
-      expect(listResult).toEqual(result);
+      expect(listResult).toEqual(expectedResult);
+    });
+
+    it('Deve ser retornada uma lista vazia em casos onde não tem categorias criadas', async () => {
+      jest
+        .spyOn(categoriaRepository, 'listarCategorias')
+        .mockReturnValue(Promise.resolve([]));
+      const listResult = await categoriaUseCase.listarCategorias();
+      expect(listResult).toEqual([]);
     });
   });
 });
