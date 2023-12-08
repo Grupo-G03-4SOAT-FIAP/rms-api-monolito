@@ -6,6 +6,7 @@ import {
   IsNumber,
   Min,
   IsUrl,
+  IsUUID,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CategoriaDTO } from './categoria.dto';
@@ -33,7 +34,7 @@ export class CriaProdutoDTO {
   @ApiProperty({ description: 'URL da imagem do produto' })
   imagemUrl: string;
 
-  @IsString()
+  @IsUUID()
   @IsNotEmpty({ message: 'ID da categoria não pode ser vazio' })
   @ApiProperty({ description: 'ID da categoria' })
   categoriaId: string;
