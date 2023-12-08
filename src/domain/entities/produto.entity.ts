@@ -1,11 +1,12 @@
+import { ToCapitalizeString } from 'src/utils/capitalize_string';
 import { CategoriaEntity } from './categoria.entity';
 
 export class ProdutoEntity {
-  nome: string;
+  private _nome: string;
   categoria: CategoriaEntity;
   valorUnitario: number;
   imagemUrl: string;
-  descricao?: string;
+  private _descricao?: string;
   id?: string;
 
   constructor(
@@ -22,5 +23,23 @@ export class ProdutoEntity {
     this.categoria = categoria;
     this.valorUnitario = valorUnitario;
     this.imagemUrl = imagemUrl;
+  }
+
+  get nome(): string {
+    return this._nome;
+  }
+
+  set nome(nome: string) {
+    const capitalizedNome = new ToCapitalizeString(nome);
+    this._nome = capitalizedNome.input;
+  }
+
+  get descricao(): string {
+    return this._descricao;
+  }
+  
+  set descricao(descricao: string) {
+    const capitalizedDescricao = new ToCapitalizeString(descricao);
+    this._descricao = capitalizedDescricao.input;
   }
 }
