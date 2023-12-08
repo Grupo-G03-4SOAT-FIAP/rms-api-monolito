@@ -22,7 +22,8 @@ export class ProdutoRepository implements IProdutoRepository {
     produtoId: string,
     produto: ProdutoEntity,
   ): Promise<ProdutoModel> {
-    await this.produtoRepository.update(produtoId, produto);
+    const novoProduto = this.produtoRepository.create(produto);
+    await this.produtoRepository.update(produtoId, novoProduto);
 
     return await this.produtoRepository.findOne({
       where: { id: produtoId },
