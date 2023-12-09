@@ -26,7 +26,6 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 
 ## Executar a aplicação usando o Docker Compose
 
@@ -55,8 +54,13 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 
 ## Arquitetura
 
-Architectural Pattern: *Clean Architecture*.
-[![image](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend/assets/5115895/df69d5c3-d57c-45dc-aea7-072ae478999e)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+Architectural Pattern: *Arquitetura Hexagonal / Ports and Adapters*.
+
+<br>
+
+![Ports and Adapters](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/assets/5115895/5a7d9588-a222-4e8b-acdf-3cb71076e65b)
+
+<br>
 
 ## Como contribuir
 

@@ -9,7 +9,7 @@ import { ProdutoRepository } from './produto.repository';
 
 const categoriaEntity = new CategoriaEntity(
   'Lanche',
-  'Lanche x tudo',
+  'Lanche X Tudo',
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
@@ -18,14 +18,14 @@ const produtoEntity = new ProdutoEntity(
   categoriaEntity,
   5.0,
   'http://',
-  'Teste produto x',
+  'Teste Produto X',
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 const categoriaModel = new CategoriaModel();
 categoriaModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 categoriaModel.nome = 'Lanche';
-categoriaModel.descricao = 'Lanche x tudo';
+categoriaModel.descricao = 'Lanche X Tudo';
 categoriaModel.produtos = null;
 categoriaModel.criadoEm = new Date().toISOString();
 categoriaModel.atualizadoEm = new Date().toISOString();
@@ -34,7 +34,7 @@ categoriaModel.excluidoEm = new Date().toISOString();
 const produtoModel = new ProdutoModel();
 produtoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 produtoModel.nome = 'Produto X';
-produtoModel.descricao = 'Teste produto x';
+produtoModel.descricao = 'Teste Produto X';
 produtoModel.valorUnitario = 5.0;
 produtoModel.imagemUrl = 'http://';
 produtoModel.categoria = categoriaModel;
@@ -93,6 +93,8 @@ describe('ProdutoRepository', () => {
   });
 
   it('deve editar um produto', async () => {
+    mockProdutoModel.create.mockReturnValue(produtoModel);
+    mockProdutoModel.save.mockResolvedValue(Promise.resolve(produtoModel));
     mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
 
     const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -101,9 +103,10 @@ describe('ProdutoRepository', () => {
       produtoEntity,
     );
 
+    expect(mockProdutoModel.create).toHaveBeenCalledWith(produtoEntity);
     expect(mockProdutoModel.update).toHaveBeenCalledWith(
       produtoId,
-      produtoEntity,
+      produtoModel,
     );
     expect(mockProdutoModel.findOne).toHaveBeenCalledWith({
       where: { id: produtoId },
