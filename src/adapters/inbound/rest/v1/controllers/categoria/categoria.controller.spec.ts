@@ -155,4 +155,43 @@ describe('Categoria', () => {
       );
     });
   });
+
+  describe('Remover Categoria', () => {
+    it('Deve ser retornada uma exception se tentar remover uma categoria que não existe', async () => {
+      jest
+        .spyOn(categoriaUserCase, 'excluirCategoria')
+        .mockRejectedValue(
+          new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+        );
+      expect(
+        categoriaController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c'),
+      ).rejects.toThrow(
+        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+      );
+    });
+
+    it('Deve ser retornada uma exception em caso de erros para remover uma categoria', async () => {
+      jest
+        .spyOn(categoriaUserCase, 'excluirCategoria')
+        .mockRejectedValue(new Error());
+      expect(
+        categoriaController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c'),
+      ).rejects.toThrow(new Error());
+    });
+
+    it('Deve ser possível remover uma categoria', async () => {
+      jest.spyOn(categoriaUserCase, 'excluirCategoria').mockReturnValue(
+        Promise.resolve({
+          mensagem: 'Categoria excluida com sucesso',
+        }),
+      );
+      expect(
+        await categoriaController.remover(
+          '0a14aa4e-75e7-405f-8301-81f60646c93c',
+        ),
+      ).toEqual({
+        mensagem: 'Categoria excluida com sucesso',
+      });
+    });
+  });
 });
