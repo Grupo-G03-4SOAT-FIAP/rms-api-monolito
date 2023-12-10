@@ -10,7 +10,6 @@ import {
   CategoriaDuplicadaErro,
   CategoriaNaoLocalizadaErro,
 } from '../../../../../../domain/exceptions/categoria.exception';
-import { ConflictException, NotFoundException } from '@nestjs/common';
 
 const novaCategoriaDTO = new CriaCategoriaDTO();
 novaCategoriaDTO.nome = 'Nova categoria';
@@ -64,7 +63,7 @@ describe('Categoria', () => {
           new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
         );
       expect(categoriaController.criar(novaCategoriaDTO)).rejects.toThrow(
-        new ConflictException('Existe uma categoria com esse nome'),
+        new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
       );
     });
 
@@ -100,7 +99,7 @@ describe('Categoria', () => {
           novaCategoriaDTO,
         ),
       ).rejects.toThrow(
-        new ConflictException('Existe uma categoria com esse nome'),
+        new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
       );
     });
 
@@ -116,7 +115,7 @@ describe('Categoria', () => {
           novaCategoriaDTO,
         ),
       ).rejects.toThrow(
-        new NotFoundException('Categoria informada não existe'),
+        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
       );
     });
 
@@ -167,7 +166,7 @@ describe('Categoria', () => {
       expect(
         categoriaController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c'),
       ).rejects.toThrow(
-        new NotFoundException('Categoria informada não existe'),
+        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
       );
     });
 
@@ -206,7 +205,7 @@ describe('Categoria', () => {
       expect(
         categoriaController.buscar('0a14aa4e-75e7-405f-8301-81f60646c93c'),
       ).rejects.toThrow(
-        new NotFoundException('Categoria informada não existe'),
+        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
       );
     });
 

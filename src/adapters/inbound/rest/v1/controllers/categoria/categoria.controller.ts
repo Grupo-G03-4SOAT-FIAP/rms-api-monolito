@@ -1,12 +1,10 @@
 import {
   Body,
-  ConflictException,
   Controller,
   Delete,
   Get,
   HttpCode,
   Inject,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -22,6 +20,10 @@ import {
 import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
 import { ConflictError } from '../../../helpers/swagger/status-codes/conflict.swagger';
+import {
+  CategoriaDuplicadaErro,
+  CategoriaNaoLocalizadaErro,
+} from '../../../../../../domain/exceptions/categoria.exception';
 
 @Controller('categoria')
 @ApiTags('Categoria')
@@ -53,8 +55,8 @@ export class CategoriaController {
     try {
       return await this.categoriaUseCase.criarCategoria(categoria);
     } catch (error) {
-      if (error instanceof ConflictException) {
-        throw new ConflictException(error.message);
+      if (error instanceof CategoriaDuplicadaErro) {
+        throw new CategoriaDuplicadaErro(error.message);
       }
       throw error;
     }
@@ -89,11 +91,11 @@ export class CategoriaController {
     try {
       return await this.categoriaUseCase.editarCategoria(id, categoria);
     } catch (error) {
-      if (error instanceof ConflictException) {
-        throw new ConflictException(error.message);
+      if (error instanceof CategoriaDuplicadaErro) {
+        throw new CategoriaDuplicadaErro(error.message);
       }
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
+      if (error instanceof CategoriaNaoLocalizadaErro) {
+        throw new CategoriaNaoLocalizadaErro(error.message);
       }
       throw error;
     }
@@ -114,8 +116,8 @@ export class CategoriaController {
     try {
       return await this.categoriaUseCase.excluirCategoria(id);
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
+      if (error instanceof CategoriaNaoLocalizadaErro) {
+        throw new CategoriaNaoLocalizadaErro(error.message);
       }
       throw error;
     }
@@ -137,8 +139,8 @@ export class CategoriaController {
     try {
       return await this.categoriaUseCase.buscarCategoria(id);
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
+      if (error instanceof CategoriaNaoLocalizadaErro) {
+        throw new CategoriaNaoLocalizadaErro(error.message);
       }
       throw error;
     }
