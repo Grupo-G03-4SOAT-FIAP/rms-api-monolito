@@ -12,13 +12,13 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ICategoriaUseCase } from 'src/domain/ports/categoria/categoria.use_case.port';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ICategoriaUseCase } from '../../../../../../domain/ports/categoria/categoria.use_case.port';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
   CriaCategoriaDTO,
 } from '../../presenters/categoria.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
 import { ConflictError } from '../../../helpers/swagger/status-codes/conflict.swagger';
