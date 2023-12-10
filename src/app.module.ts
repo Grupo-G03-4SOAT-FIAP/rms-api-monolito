@@ -34,6 +34,8 @@ import { PedidoUseCase } from './domain/use_cases/pedido/pedido_use_case';
 import { IPedidoUseCase } from './domain/ports/pedido/pedito.use_case.port';
 import { PedidoFactory } from './domain/factories/pedido_factory';
 import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
+import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
+import { ProdutoFactory } from './domain/factories/produto_factory';
 
 @Module({
   imports: [
@@ -105,6 +107,10 @@ import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
       provide: IPedidoFactory,
       useClass: PedidoFactory,
     },
+    {
+      provide: IProdutoFactory,
+      useClass: ProdutoFactory,
+    }
   ],
 })
 export class AppModule {}

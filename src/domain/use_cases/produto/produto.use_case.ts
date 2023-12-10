@@ -17,6 +17,7 @@ import {
 import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
+import { IProdutoFactory } from 'src/domain/ports/produto/produto.factory.port';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {
@@ -25,38 +26,13 @@ export class ProdutoUseCase implements IProdutoUseCase {
     private readonly produtoRepository: IProdutoRepository,
     @Inject(ICategoriaRepository)
     private readonly categoriaRepository: ICategoriaRepository,
+    @Inject(IProdutoFactory)
+    private readonly produtoFactory: IProdutoFactory,
   ) {}
 
-  async criarProduto(
-    produto: CriaProdutoDTO,
-  ): Promise<HTTPResponse<ProdutoDTO>> {
-    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
-
-    const buscaProduto =
-      await this.produtoRepository.buscarProdutoPorNome(nome);
-    if (buscaProduto) {
-      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-    }
-
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-    if (!buscaCategoria) {
-      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
-    }
-
-    const categoriaEntity = new CategoriaEntity(
-      buscaCategoria.nome,
-      buscaCategoria.descricao,
-      buscaCategoria.id,
-    );
-
-    const produtoEntity = new ProdutoEntity(
-      nome,
-      categoriaEntity,
-      valorUnitario,
-      imagemUrl,
-      descricao,
-    );
+  async criarProduto(produto: CriaProdutoDTO): Promise<HTTPResponse<ProdutoDTO>> {
+    // factory para criar a entidade produto
+    const produtoEntity = await this.produtoFactory.criarEntidadeProduto(produto);
     const result = await this.produtoRepository.criarProduto(produtoEntity);
 
     const categoriaDTO = new CategoriaDTO();
