@@ -10,6 +10,7 @@ import {
   CategoriaDuplicadaErro,
   CategoriaNaoLocalizadaErro,
 } from '../../../../../../domain/exceptions/categoria.exception';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 const novaCategoriaDTO = new CriaCategoriaDTO();
 novaCategoriaDTO.nome = 'Nova categoria';
@@ -63,7 +64,7 @@ describe('Categoria', () => {
           new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
         );
       expect(categoriaController.criar(novaCategoriaDTO)).rejects.toThrow(
-        new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
+        new ConflictException('Existe uma categoria com esse nome'),
       );
     });
 
@@ -99,7 +100,7 @@ describe('Categoria', () => {
           novaCategoriaDTO,
         ),
       ).rejects.toThrow(
-        new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
+        new ConflictException('Existe uma categoria com esse nome'),
       );
     });
 
@@ -115,7 +116,7 @@ describe('Categoria', () => {
           novaCategoriaDTO,
         ),
       ).rejects.toThrow(
-        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+        new NotFoundException('Categoria informada não existe'),
       );
     });
 
@@ -166,7 +167,7 @@ describe('Categoria', () => {
       expect(
         categoriaController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c'),
       ).rejects.toThrow(
-        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+        new NotFoundException('Categoria informada não existe'),
       );
     });
 
@@ -192,6 +193,79 @@ describe('Categoria', () => {
       ).toEqual({
         mensagem: 'Categoria excluida com sucesso',
       });
+    });
+  });
+
+  describe('Buscar Categoria por ID', () => {
+    it('Deve ser retornada uma exception se buscar uma categoria com id que não existe', async () => {
+      jest
+        .spyOn(categoriaUserCase, 'buscarCategoria')
+        .mockRejectedValue(
+          new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+        );
+      expect(
+        categoriaController.buscar('0a14aa4e-75e7-405f-8301-81f60646c93c'),
+      ).rejects.toThrow(
+        new NotFoundException('Categoria informada não existe'),
+      );
+    });
+
+    it('Deve ser retornada uma exception se ocorrer um erro ao tentar buscar uma categoria', async () => {
+      jest
+        .spyOn(categoriaUserCase, 'buscarCategoria')
+        .mockRejectedValue(new Error());
+      expect(
+        categoriaController.buscar('0a14aa4e-75e7-405f-8301-81f60646c93c'),
+      ).rejects.toThrow(new Error());
+    });
+
+    it('Deve ser possível buscar uma categoria pelo seu ID', async () => {
+      const categoria = new CategoriaDTO();
+      categoria.nome = 'Nome categoria';
+      categoria.descricao = 'Descrição categoria';
+      jest
+        .spyOn(categoriaUserCase, 'buscarCategoria')
+        .mockReturnValue(Promise.resolve(categoria));
+      expect(
+        await categoriaController.buscar(
+          '0a14aa4e-75e7-405f-8301-81f60646c93c',
+        ),
+      ).toEqual(categoria);
+    });
+  });
+
+  describe('Listar todas as categorias', () => {
+    it('Deve ser retornado um array vazio caso não tenham categorias cadastradas', async () => {
+      jest
+        .spyOn(categoriaUserCase, 'listarCategorias')
+        .mockReturnValue(Promise.resolve([]));
+      expect(await categoriaController.listar()).toEqual([]);
+    });
+
+    it('Deve ser possível retornar todas as categorias cadastradas', async () => {
+      const categoriaDTO1 = new CategoriaDTO();
+      categoriaDTO1.id = '1a14aa4e-75e7-405f-8301-81f60646c93c';
+      categoriaDTO1.nome = 'Nome Categoria 1';
+      categoriaDTO1.descricao = 'Descrição 1';
+
+      const categoriaDTO2 = new CategoriaDTO();
+      categoriaDTO2.id = '2a14aa4e-75e7-405f-8301-81f60646c93c';
+      categoriaDTO2.nome = 'Nome Categoria 2';
+      categoriaDTO2.descricao = 'Descrição 2';
+
+      const categoriaDTO3 = new CategoriaDTO();
+      categoriaDTO3.id = '3a14aa4e-75e7-405f-8301-81f60646c93c';
+      categoriaDTO3.nome = 'Nome Categoria 3';
+      categoriaDTO3.descricao = 'Descrição 3';
+      const listaCategorias: CategoriaDTO[] = [
+        categoriaDTO1,
+        categoriaDTO2,
+        categoriaDTO3,
+      ];
+      jest
+        .spyOn(categoriaUserCase, 'listarCategorias')
+        .mockReturnValue(Promise.resolve(listaCategorias));
+      expect(await categoriaController.listar()).toEqual(listaCategorias);
     });
   });
 });
