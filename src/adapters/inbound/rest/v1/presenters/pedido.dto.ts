@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsUUID,
   IsEnum,
+  MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProdutoDTO } from './produto.dto';
@@ -18,6 +19,9 @@ export class CriaPedidoDTO {
 
   @IsString()
   @IsOptional()
+  @MaxLength(11, {
+    message: 'CPF precisa ter 11 dígitos',
+  })
   @ApiProperty({ description: 'CPF do cliente', required: false })
   cpfCliente?: string;
 }

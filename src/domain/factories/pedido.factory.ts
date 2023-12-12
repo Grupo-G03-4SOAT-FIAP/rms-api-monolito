@@ -26,7 +26,9 @@ export class PedidoFactory implements IPedidoFactory {
         const buscaProduto =
           await this.produtoRepository.buscarProdutoPorId(item);
         if (!buscaProduto) {
-          throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
+          throw new ProdutoNaoLocalizadoErro(
+            `Produto informado não existe ${item}`,
+          );
         }
         const categoriaEntity = new CategoriaEntity(
           buscaProduto.categoria.nome,

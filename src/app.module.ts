@@ -30,12 +30,12 @@ import { ClienteController } from './adapters/inbound/rest/v1/controllers/client
 import { ClienteUseCase } from './domain/use_cases/cliente/cliente.use_case';
 import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
 import { PedidoController } from './adapters/inbound/rest/v1/controllers/pedido/pedido.controller';
-import { PedidoUseCase } from './domain/use_cases/pedido/pedido_use_case';
+import { PedidoUseCase } from './domain/use_cases/pedido/pedido.use_case';
 import { IPedidoUseCase } from './domain/ports/pedido/pedito.use_case.port';
-import { PedidoFactory } from './domain/factories/pedido_factory';
+import { PedidoFactory } from './domain/factories/pedido.factory';
 import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
-import { ProdutoFactory } from './domain/factories/produto_factory';
+import { ProdutoFactory } from './domain/factories/produto.factory';
 
 @Module({
   imports: [
@@ -110,7 +110,7 @@ import { ProdutoFactory } from './domain/factories/produto_factory';
     {
       provide: IProdutoFactory,
       useClass: ProdutoFactory,
-    }
+    },
   ],
 })
 export class AppModule {}
