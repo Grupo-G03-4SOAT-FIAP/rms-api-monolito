@@ -7,6 +7,7 @@ import { ProdutoEntity } from '../entities/produto.entity';
 import { ICategoriaRepository } from '../ports/categoria/categoria.repository.port';
 import { IProdutoFactory } from '../ports/produto/produto.factory.port';
 import { AtualizaProdutoDTO, CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
+import { ToCapitalizeString } from 'src/utils/capitalize_string';
 
 @Injectable()
 export class ProdutoFactory implements IProdutoFactory {
@@ -18,8 +19,9 @@ export class ProdutoFactory implements IProdutoFactory {
   ) {}
 
   async criarEntidadeProdutoFromCriaProdutoDTO(criaProdutoDTO: CriaProdutoDTO): Promise<ProdutoEntity> {
+    const nomeProduto = new ToCapitalizeString(criaProdutoDTO.nome).input
     const buscaProduto =
-      await this.produtoRepository.buscarProdutoPorNome(criaProdutoDTO.nome);
+      await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
     if (buscaProduto) {
       throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
@@ -55,8 +57,9 @@ export class ProdutoFactory implements IProdutoFactory {
     }
 
     if (atualizaProdutoDTO.nome) {
+      const nomeProduto = new ToCapitalizeString(atualizaProdutoDTO.nome).input
       const buscaProdutoPorNome =
-        await this.produtoRepository.buscarProdutoPorNome(atualizaProdutoDTO.nome);
+        await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
       if (buscaProdutoPorNome) {
         throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
       }
