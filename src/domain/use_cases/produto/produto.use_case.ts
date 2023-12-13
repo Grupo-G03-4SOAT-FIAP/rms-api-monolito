@@ -32,7 +32,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
   async criarProduto(produto: CriaProdutoDTO): Promise<HTTPResponse<ProdutoDTO>> {
     // factory para criar a entidade produto
-    const produtoEntity = await this.produtoFactory.criarEntidadeProduto(produto);
+    const produtoEntity = await this.produtoFactory.criarEntidadeProdutoFromCriaProdutoDTO(produto);
     const result = await this.produtoRepository.criarProduto(produtoEntity);
 
     const categoriaDTO = new CategoriaDTO();
@@ -58,45 +58,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoId: string,
     produto: AtualizaProdutoDTO,
   ): Promise<HTTPResponse<ProdutoDTO>> {
-    const { nome, descricao, valorUnitario, imagemUrl, categoriaId } = produto; // Desempacotando os valores do DTO
-
-    const buscaProdutoPorId =
-      await this.produtoRepository.buscarProdutoPorId(produtoId);
-    if (!buscaProdutoPorId) {
-      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
-    }
-
-    if (nome) {
-      const buscaProdutoPorNome =
-        await this.produtoRepository.buscarProdutoPorNome(nome);
-      if (buscaProdutoPorNome) {
-        throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-      }
-    }
-
-    let categoriaModel = buscaProdutoPorId.categoria;
-    if (categoriaId) {
-      const buscaCategoria =
-        await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-      if (!buscaCategoria) {
-        throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
-      }
-      categoriaModel = buscaCategoria;
-    }
-
-    const categoriaEntity = new CategoriaEntity(
-      categoriaModel.nome,
-      categoriaModel.descricao,
-      categoriaModel.id,
-    );
-
-    const produtoEntity = new ProdutoEntity(
-      nome,
-      categoriaEntity,
-      valorUnitario,
-      imagemUrl,
-      descricao,
-    );
+    const produtoEntity = await this.produtoFactory.criarEntidadeProdutoFromAtualizaProdutoDTO(produtoId, produto);
     const result = await this.produtoRepository.editarProduto(
       produtoId,
       produtoEntity,

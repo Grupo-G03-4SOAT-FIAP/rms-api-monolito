@@ -6,7 +6,7 @@ import { CategoriaNaoLocalizadaErro } from '../exceptions/categoria.exception';
 import { ProdutoEntity } from '../entities/produto.entity';
 import { ICategoriaRepository } from '../ports/categoria/categoria.repository.port';
 import { IProdutoFactory } from '../ports/produto/produto.factory.port';
-import { CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
+import { AtualizaProdutoDTO, CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
 
 @Injectable()
 export class ProdutoFactory implements IProdutoFactory {
@@ -17,15 +17,15 @@ export class ProdutoFactory implements IProdutoFactory {
     private readonly produtoRepository: IProdutoRepository,
   ) {}
 
-  async criarEntidadeProduto(produto: CriaProdutoDTO): Promise<ProdutoEntity> {
+  async criarEntidadeProdutoFromCriaProdutoDTO(criaProdutoDTO: CriaProdutoDTO): Promise<ProdutoEntity> {
     const buscaProduto =
-      await this.produtoRepository.buscarProdutoPorNome(produto.nome);
+      await this.produtoRepository.buscarProdutoPorNome(criaProdutoDTO.nome);
     if (buscaProduto) {
       throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
 
     const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(produto.categoriaId);
+      await this.categoriaRepository.buscarCategoriaPorId(criaProdutoDTO.categoriaId);
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
@@ -37,11 +37,53 @@ export class ProdutoFactory implements IProdutoFactory {
     );
 
     const produtoEntity = new ProdutoEntity(
-      produto.nome,
+      criaProdutoDTO.nome,
       categoriaEntity,
-      produto.valorUnitario,
-      produto.imagemUrl,
-      produto.descricao,
+      criaProdutoDTO.valorUnitario,
+      criaProdutoDTO.imagemUrl,
+      criaProdutoDTO.descricao,
+    );
+
+    return produtoEntity;
+  }
+
+  async criarEntidadeProdutoFromAtualizaProdutoDTO(produtoId: string, atualizaProdutoDTO: AtualizaProdutoDTO): Promise<ProdutoEntity> {
+    const buscaProdutoPorId =
+      await this.produtoRepository.buscarProdutoPorId(produtoId);
+    if (!buscaProdutoPorId) {
+      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
+    }
+
+    if (atualizaProdutoDTO.nome) {
+      const buscaProdutoPorNome =
+        await this.produtoRepository.buscarProdutoPorNome(atualizaProdutoDTO.nome);
+      if (buscaProdutoPorNome) {
+        throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
+      }
+    }
+
+    let categoriaModel = buscaProdutoPorId.categoria;
+    if (atualizaProdutoDTO.categoriaId) {
+      const buscaCategoria =
+        await this.categoriaRepository.buscarCategoriaPorId(atualizaProdutoDTO.categoriaId);
+      if (!buscaCategoria) {
+        throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+      }
+      categoriaModel = buscaCategoria;
+    }
+
+    const categoriaEntity = new CategoriaEntity(
+      categoriaModel.nome,
+      categoriaModel.descricao,
+      categoriaModel.id,
+    );
+
+    const produtoEntity = new ProdutoEntity(
+      atualizaProdutoDTO.nome,
+      categoriaEntity,
+      atualizaProdutoDTO.valorUnitario,
+      atualizaProdutoDTO.imagemUrl,
+      atualizaProdutoDTO.descricao,
     );
 
     return produtoEntity;
