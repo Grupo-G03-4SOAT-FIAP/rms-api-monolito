@@ -44,6 +44,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const peditoDTO = new PedidoDTO();
     peditoDTO.id = result.id;
+    peditoDTO.numeroPedido = result.numeroPedido;
     peditoDTO.itensPedido = result.itensPedido;
     peditoDTO.statusPedido = result.statusPedido;
     peditoDTO.cliente = clienteResult;
@@ -82,6 +83,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const peditoDTO = new PedidoDTO();
     peditoDTO.id = result.id;
+    peditoDTO.numeroPedido = result.numeroPedido;
     peditoDTO.itensPedido = result.itensPedido;
     peditoDTO.statusPedido = result.statusPedido;
     peditoDTO.cliente = clienteResult;
@@ -110,6 +112,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const peditoDTO = new PedidoDTO();
     peditoDTO.id = result.id;
+    peditoDTO.numeroPedido = result.numeroPedido;
     peditoDTO.itensPedido = result.itensPedido;
     peditoDTO.statusPedido = result.statusPedido;
     peditoDTO.cliente = clienteResult;
@@ -132,6 +135,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
       const peditoDTO = new PedidoDTO();
       peditoDTO.id = pedido.id;
+      peditoDTO.numeroPedido = pedido.numeroPedido;
       peditoDTO.itensPedido = pedido.itensPedido;
       peditoDTO.statusPedido = pedido.statusPedido;
       peditoDTO.cliente = clienteResult;
@@ -155,6 +159,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
       const peditoDTO = new PedidoDTO();
       peditoDTO.id = pedido.id;
+      peditoDTO.numeroPedido = pedido.numeroPedido;
       peditoDTO.itensPedido = pedido.itensPedido;
       peditoDTO.statusPedido = pedido.statusPedido;
       peditoDTO.cliente = clienteResult;

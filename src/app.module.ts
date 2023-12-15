@@ -36,6 +36,7 @@ import { PedidoFactory } from './domain/factories/pedido.factory';
 import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
 import { ProdutoFactory } from './domain/factories/produto.factory';
+import { PedidoService } from './domain/services/pedido.service';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { ProdutoFactory } from './domain/factories/produto.factory';
     PedidoUseCase,
     PedidoRepository,
     PedidoFactory,
+    PedidoService,
     {
       provide: IProdutoUseCase,
       useClass: ProdutoUseCase,

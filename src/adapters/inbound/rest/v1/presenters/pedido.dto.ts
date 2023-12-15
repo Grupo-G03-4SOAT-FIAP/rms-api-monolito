@@ -37,6 +37,9 @@ export class PedidoDTO {
   @ApiProperty({ description: 'ID do pedido' })
   id: string;
 
+  @ApiProperty({ description: 'Numero do pedido' })
+  numeroPedido: string;
+
   @ApiProperty({ description: 'Itens do pedido' })
   itensPedido: ProdutoDTO[];
 

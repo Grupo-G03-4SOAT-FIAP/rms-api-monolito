@@ -10,10 +10,12 @@ import { StatusPedido } from 'src/utils/pedido.enum';
 import { ClienteNaoLocalizadoErro } from '../exceptions/cliente.exception';
 import { ProdutoNaoLocalizadoErro } from '../exceptions/produto.exception';
 import { CategoriaEntity } from '../entities/categoria.entity';
+import { PedidoService } from '../services/pedido.service';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
   constructor(
+    private readonly pedidoService: PedidoService,
     @Inject(IClienteRepository)
     private readonly clienteRepository: IClienteRepository,
     @Inject(IProdutoRepository)
@@ -66,9 +68,15 @@ export class PedidoFactory implements IPedidoFactory {
   }
 
   async criarEntidadePedido(pedido: CriaPedidoDTO): Promise<PedidoEntity> {
+    const numeroPedido = this.pedidoService.gerarNumeroPedido();
     const itensPedido = await this.criarItemPedido(pedido.itensPedido);
     const clienteEntity = await this.criarEntidadeCliente(pedido.cpfCliente);
 
-    return new PedidoEntity(itensPedido, StatusPedido.RECEBIDO, clienteEntity);
+    return new PedidoEntity(
+      itensPedido,
+      StatusPedido.RECEBIDO,
+      clienteEntity,
+      numeroPedido,
+    );
   }
 }

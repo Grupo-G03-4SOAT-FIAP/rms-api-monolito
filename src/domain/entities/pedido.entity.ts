@@ -6,15 +6,18 @@ export class PedidoEntity {
   itensPedido: ProdutoEntity[];
   statusPedido?: StatusPedido;
   cliente?: ClienteEntity;
+  numeroPedido?: string;
   id?: string;
 
   constructor(
     itensPedido: ProdutoEntity[],
     statusPedido?: StatusPedido,
     cliente?: ClienteEntity,
+    numeroPedido?: string,
     id?: string,
   ) {
     this.id = id;
+    this.numeroPedido = numeroPedido;
     this.itensPedido = itensPedido;
     this.cliente = cliente;
     this.statusPedido = statusPedido;

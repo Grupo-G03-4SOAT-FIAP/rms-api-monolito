@@ -18,7 +18,7 @@ export class ClienteModel {
   @Column({ name: 'email', length: 100, nullable: false })
   email: string;
 
-  @Column({ name: 'cpf', length: 100, nullable: false })
+  @Column({ name: 'cpf', length: 100, nullable: false, unique: true })
   cpf: string;
 
   @CreateDateColumn({ name: 'criado_em' })

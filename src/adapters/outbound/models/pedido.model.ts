@@ -15,6 +15,9 @@ export class PedidoModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ name: 'numero_pedido', nullable: false, unique: true })
+  numeroPedido: string;
+
   @Column({ name: 'itens_pedido', type: 'json', nullable: false }) // tipo 'json' para armazenar uma lista de produtos
   itensPedido: ProdutoModel[];
 

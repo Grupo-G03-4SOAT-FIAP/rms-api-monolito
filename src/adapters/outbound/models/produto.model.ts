@@ -15,7 +15,7 @@ export class ProdutoModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'nome', length: 100, nullable: false })
+  @Column({ name: 'nome', length: 100, nullable: false, unique: true })
   nome: string;
 
   @Column({ name: 'descricao', length: 255, nullable: true })
