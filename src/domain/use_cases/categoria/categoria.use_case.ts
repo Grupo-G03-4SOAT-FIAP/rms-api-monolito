@@ -24,15 +24,18 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   async criarCategoria(
     categoria: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const { nome, descricao } = categoria; // Desempacotando os valores do DTO
-
+    const categoriaEntity = new CategoriaEntity(
+      categoria.nome,
+      categoria.descricao,
+    );
     const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorNome(nome);
+      await this.categoriaRepository.buscarCategoriaPorNome(
+        categoriaEntity.getNome,
+      );
     if (buscaCategoria) {
       throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
     }
 
-    const categoriaEntity = new CategoriaEntity(nome, descricao);
     const result =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
 
@@ -51,23 +54,26 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoriaId: string,
     categoria: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const { nome, descricao } = categoria; // Desempacotando os valores do DTO
-
+    const categoriaEntity = new CategoriaEntity(
+      categoria.nome,
+      categoria.descricao,
+    );
     const buscaCategoriaPorId =
       await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoriaPorId) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
 
-    if (nome) {
+    if (categoriaEntity.getNome) {
       const buscaCategoriaPorNome =
-        await this.categoriaRepository.buscarCategoriaPorNome(nome);
+        await this.categoriaRepository.buscarCategoriaPorNome(
+          categoriaEntity.getNome,
+        );
       if (buscaCategoriaPorNome) {
         throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
       }
     }
 
-    const categoriaEntity = new CategoriaEntity(nome, descricao);
     const result = await this.categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntity,
