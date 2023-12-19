@@ -36,6 +36,7 @@ const produtoEntity = new ProdutoEntity(
 const pedidoEntity = new PedidoEntity(
   [produtoEntity],
   StatusPedido.RECEBIDO,
+  '123456',
   clienteEntity,
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
@@ -62,6 +63,7 @@ produtoModel.excluidoEm = new Date().toISOString();
 
 const pedidoModel = new PedidoModel();
 pedidoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+pedidoModel.numeroPedido = '123456';
 pedidoModel.itensPedido = [produtoModel];
 pedidoModel.cliente = null;
 pedidoModel.statusPedido = 'recebido';

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IProdutoRepository } from '../ports/produto/produto.repository.port';
-import { ProdutoDuplicadoErro, ProdutoNaoLocalizadoErro } from '../exceptions/produto.exception';
+import { ProdutoDuplicadoErro } from '../exceptions/produto.exception';
 import { CategoriaEntity } from '../entities/categoria.entity';
 import { CategoriaNaoLocalizadaErro } from '../exceptions/categoria.exception';
 import { ProdutoEntity } from '../entities/produto.entity';
@@ -18,14 +18,16 @@ export class ProdutoFactory implements IProdutoFactory {
   ) {}
 
   async criarEntidadeProduto(produto: CriaProdutoDTO): Promise<ProdutoEntity> {
-    const buscaProduto =
-      await this.produtoRepository.buscarProdutoPorNome(produto.nome);
+    const buscaProduto = await this.produtoRepository.buscarProdutoPorNome(
+      produto.nome,
+    );
     if (buscaProduto) {
       throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
 
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(produto.categoriaId);
+    const buscaCategoria = await this.categoriaRepository.buscarCategoriaPorId(
+      produto.categoriaId,
+    );
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
