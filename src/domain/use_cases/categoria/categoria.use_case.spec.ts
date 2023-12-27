@@ -117,7 +117,7 @@ describe('Categoria Use case', () => {
 
   describe('Criar categoria', () => {
     it('Deve ser lançado um erro ao tentar criar uma categoria com um nome já registrado no sistema', async () => {
-      const categoriaDto = makeCriaCategoriaDTO('Categoria 1', 'Descrição 1');
+      const categoriaDto = makeCriaCategoriaDTO('lanche', 'lanche x tudo');
       jest
         .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
         .mockReturnValue(Promise.resolve(categoriaModelMock));

@@ -6,6 +6,7 @@ import {
   Inject,
   NotFoundException,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -80,7 +81,10 @@ export class PedidoController {
     description: 'Pedido informado não existe',
     type: NotFoundError,
   })
-  async atualizar(@Param('id') id: string, @Body() pedido: AtualizaPedidoDTO) {
+  async atualizar(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() pedido: AtualizaPedidoDTO,
+  ) {
     try {
       return await this.pedidoUseCase.editarPedido(id, pedido);
     } catch (error) {
@@ -103,7 +107,7 @@ export class PedidoController {
     description: 'Pedido informado não existe',
     type: NotFoundError,
   })
-  async buscar(@Param('id') id: string) {
+  async buscar(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await this.pedidoUseCase.buscarPedido(id);
     } catch (error) {
