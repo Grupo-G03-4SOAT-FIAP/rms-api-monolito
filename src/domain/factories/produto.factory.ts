@@ -1,13 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IProdutoRepository } from '../ports/produto/produto.repository.port';
-import { ProdutoDuplicadoErro, ProdutoNaoLocalizadoErro } from '../exceptions/produto.exception';
 import { CategoriaEntity } from '../entities/categoria.entity';
-import { CategoriaNaoLocalizadaErro } from '../exceptions/categoria.exception';
 import { ProdutoEntity } from '../entities/produto.entity';
 import { ICategoriaRepository } from '../ports/categoria/categoria.repository.port';
 import { IProdutoFactory } from '../ports/produto/produto.factory.port';
 import { AtualizaProdutoDTO, CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
-import { ToCapitalizeString } from 'src/utils/capitalize_string';
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
 
 @Injectable()
