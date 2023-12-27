@@ -8,6 +8,7 @@ import { ICategoriaRepository } from '../ports/categoria/categoria.repository.po
 import { IProdutoFactory } from '../ports/produto/produto.factory.port';
 import { AtualizaProdutoDTO, CriaProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
 import { ToCapitalizeString } from 'src/utils/capitalize_string';
+import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
 
 @Injectable()
 export class ProdutoFactory implements IProdutoFactory {
@@ -16,26 +17,13 @@ export class ProdutoFactory implements IProdutoFactory {
     private readonly categoriaRepository: ICategoriaRepository,
     @Inject(IProdutoRepository)
     private readonly produtoRepository: IProdutoRepository,
-  ) {}
+  ) { }
 
-  async criarEntidadeProdutoFromCriaProdutoDTO(criaProdutoDTO: CriaProdutoDTO): Promise<ProdutoEntity> {
-    const nomeProduto = new ToCapitalizeString(criaProdutoDTO.nome).input
-    const buscaProduto =
-      await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
-    if (buscaProduto) {
-      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-    }
-
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(criaProdutoDTO.categoriaId);
-    if (!buscaCategoria) {
-      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
-    }
-
+  async criarEntidadeProdutoFromCriaProdutoDTO(categoria: CategoriaModel, criaProdutoDTO: CriaProdutoDTO): Promise<ProdutoEntity> {
     const categoriaEntity = new CategoriaEntity(
-      buscaCategoria.nome,
-      buscaCategoria.descricao,
-      buscaCategoria.id,
+      categoria.nome,
+      categoria.descricao,
+      categoria.id,
     );
 
     const produtoEntity = new ProdutoEntity(
@@ -49,36 +37,11 @@ export class ProdutoFactory implements IProdutoFactory {
     return produtoEntity;
   }
 
-  async criarEntidadeProdutoFromAtualizaProdutoDTO(produtoId: string, atualizaProdutoDTO: AtualizaProdutoDTO): Promise<ProdutoEntity> {
-    const buscaProdutoPorId =
-      await this.produtoRepository.buscarProdutoPorId(produtoId);
-    if (!buscaProdutoPorId) {
-      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
-    }
-
-    if (atualizaProdutoDTO.nome) {
-      const nomeProduto = new ToCapitalizeString(atualizaProdutoDTO.nome).input
-      const buscaProdutoPorNome =
-        await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
-      if (buscaProdutoPorNome) {
-        throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-      }
-    }
-
-    let categoriaModel = buscaProdutoPorId.categoria;
-    if (atualizaProdutoDTO.categoriaId) {
-      const buscaCategoria =
-        await this.categoriaRepository.buscarCategoriaPorId(atualizaProdutoDTO.categoriaId);
-      if (!buscaCategoria) {
-        throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
-      }
-      categoriaModel = buscaCategoria;
-    }
-
+  async criarEntidadeProdutoFromAtualizaProdutoDTO(categoria: CategoriaModel, atualizaProdutoDTO: AtualizaProdutoDTO): Promise<ProdutoEntity> {
     const categoriaEntity = new CategoriaEntity(
-      categoriaModel.nome,
-      categoriaModel.descricao,
-      categoriaModel.id,
+      categoria.nome,
+      categoria.descricao,
+      categoria.id,
     );
 
     const produtoEntity = new ProdutoEntity(
