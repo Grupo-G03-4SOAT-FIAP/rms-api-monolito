@@ -8,7 +8,7 @@ describe('Produto Entity', () => {
       'Lanche x tudo',
       '0a14aa4e-75e7-405f-8301-81f60646c93d',
     );
-    
+
     const produtoEntity = new ProdutoEntity(
       'produto X',
       categoriaEntity,
@@ -17,7 +17,7 @@ describe('Produto Entity', () => {
       'teste produto x',
       '0a14aa4e-75e7-405f-8301-81f60646c93d',
     );
-    
+
     expect(produtoEntity.nome).toBe('Produto X');
     expect(produtoEntity.descricao).toBe('Teste Produto X');
   });

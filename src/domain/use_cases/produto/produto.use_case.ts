@@ -30,9 +30,12 @@ export class ProdutoUseCase implements IProdutoUseCase {
     private readonly produtoFactory: IProdutoFactory,
   ) {}
 
-  async criarProduto(produto: CriaProdutoDTO): Promise<HTTPResponse<ProdutoDTO>> {
+  async criarProduto(
+    produto: CriaProdutoDTO,
+  ): Promise<HTTPResponse<ProdutoDTO>> {
     // factory para criar a entidade produto
-    const produtoEntity = await this.produtoFactory.criarEntidadeProduto(produto);
+    const produtoEntity =
+      await this.produtoFactory.criarEntidadeProduto(produto);
     const result = await this.produtoRepository.criarProduto(produtoEntity);
 
     const categoriaDTO = new CategoriaDTO();

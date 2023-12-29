@@ -37,7 +37,7 @@ export class ProdutoEntity {
   get descricao(): string {
     return this._descricao;
   }
-  
+
   set descricao(descricao: string) {
     const capitalizedDescricao = new ToCapitalizeString(descricao);
     this._descricao = capitalizedDescricao.input;
