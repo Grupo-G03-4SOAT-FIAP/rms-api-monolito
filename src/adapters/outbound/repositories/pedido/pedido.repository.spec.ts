@@ -103,26 +103,38 @@ describe('PedidoRepository', () => {
   });
 
   it('deve criar um pedido', async () => {
+
+    // Arrange
+
     mockPedidoModel.create.mockReturnValue(pedidoModel);
     mockPedidoModel.save.mockResolvedValue(Promise.resolve(pedidoModel));
 
-    const resultado = await pedidoRepository.criarPedido(pedidoEntity);
+    // Act
+
+    const result = await pedidoRepository.criarPedido(pedidoEntity);
+
+    // Assert
 
     expect(mockPedidoModel.create).toHaveBeenCalledWith(pedidoEntity);
     expect(mockPedidoModel.save).toHaveBeenCalledWith(pedidoModel);
-    expect(resultado).toBe(pedidoModel);
+    expect(result).toBe(pedidoModel);
+
   });
 
   it('deve editar o status de um pedido', async () => {
+
+    // Arrange
+
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const novoStatusPedido = 'Recebido';
 
     mockPedidoModel.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
 
-    const resultado = await pedidoRepository.editarStatusPedido(
-      pedidoId,
-      novoStatusPedido,
-    );
+    // Act
+
+    const result = await pedidoRepository.editarStatusPedido(pedidoId, novoStatusPedido);
+
+    // Assert
 
     expect(mockPedidoModel.update).toHaveBeenCalledWith(pedidoId, {
       statusPedido: novoStatusPedido,
@@ -131,40 +143,66 @@ describe('PedidoRepository', () => {
       where: { id: pedidoId },
       relations: ['cliente'],
     });
-    expect(resultado).toBe(pedidoModel);
+    expect(result).toBe(pedidoModel);
+
   });
 
   it('deve buscar um pedido por id', async () => {
+
+    // Arrange
+
     mockPedidoModel.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
 
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    const resultado = await pedidoRepository.buscarPedido(pedidoId);
+
+    // Act
+
+    const result = await pedidoRepository.buscarPedido(pedidoId);
+
+    // Assert
 
     expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
-    expect(resultado).toBe(pedidoModel);
+    expect(result).toBe(pedidoModel);
+
   });
 
   it('deve buscar um pedido por id e retornar nulo', async () => {
+
+    // Arrange
+
     mockPedidoModel.findOne.mockResolvedValue(null);
 
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    const resultado = await pedidoRepository.buscarPedido(pedidoId);
+
+    // Act
+
+    const result = await pedidoRepository.buscarPedido(pedidoId);
+
+    // Assert
 
     expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
-    expect(resultado).toBe(null);
+    expect(result).toBe(null);
+
   });
 
   it('deve listar pedidos prontos e em preparação', async () => {
+
+    // Arrange
+
     const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
     mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
-    const resultado = await pedidoRepository.listarPedidos();
+    // Act
+
+    const result = await pedidoRepository.listarPedidos();
+
+    // Assert
 
     expect(mockPedidoModel.find).toHaveBeenCalledWith({
       where: {
@@ -172,14 +210,22 @@ describe('PedidoRepository', () => {
       },
       relations: ['cliente'],
     });
-    expect(resultado).toBe(listaPedidos);
+    expect(result).toBe(listaPedidos);
+
   });
 
   it('deve retornar uma lista vazia de pedidos prontos e em preparação', async () => {
+
+    // Arrange
+
     const listaPedidos = [];
     mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
-    const resultado = await pedidoRepository.listarPedidos();
+    // Act
+
+    const result = await pedidoRepository.listarPedidos();
+
+    // Assert
 
     expect(mockPedidoModel.find).toHaveBeenCalledWith({
       where: {
@@ -187,14 +233,22 @@ describe('PedidoRepository', () => {
       },
       relations: ['cliente'],
     });
-    expect(resultado).toBe(listaPedidos);
+    expect(result).toBe(listaPedidos);
+
   });
 
   it('deve listar fila de pedidos recebidos', async () => {
+
+    // Arrange
+
     const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
     mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
-    const resultado = await pedidoRepository.listarPedidosRecebido();
+    // Act
+
+    const result = await pedidoRepository.listarPedidosRecebido();
+
+    // Assert
 
     expect(mockPedidoModel.find).toHaveBeenCalledWith({
       where: {
@@ -205,14 +259,22 @@ describe('PedidoRepository', () => {
       },
       relations: ['cliente'],
     });
-    expect(resultado).toBe(listaPedidos);
+    expect(result).toBe(listaPedidos);
+
   });
 
   it('deve retornar uma lista vazia de pedidos recebidos', async () => {
+
+    // Arrange
+
     const listaPedidos = [];
     mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
-    const resultado = await pedidoRepository.listarPedidosRecebido();
+    // Act
+
+    const result = await pedidoRepository.listarPedidosRecebido();
+
+    // Assert
 
     expect(mockPedidoModel.find).toHaveBeenCalledWith({
       where: {
@@ -223,6 +285,8 @@ describe('PedidoRepository', () => {
       },
       relations: ['cliente'],
     });
-    expect(resultado).toBe(listaPedidos);
+    expect(result).toBe(listaPedidos);
+
   });
+
 });
