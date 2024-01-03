@@ -8,7 +8,7 @@ import {
   pedidoRepositoryMock,
   pedidoModel,
   pedidoEntity,
-} from 'src/mocks/pedido/pedido.repository.mock';
+} from 'src/mocks/pedido.repository.mock';
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
