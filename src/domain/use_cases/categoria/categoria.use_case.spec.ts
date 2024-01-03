@@ -57,10 +57,10 @@ const makeCriaCategoriaDTO = (
   nome: string,
   descricao: string,
 ): CriaCategoriaDTO => {
-  const categoriaDTO = new CriaCategoriaDTO();
-  categoriaDTO.nome = nome;
-  categoriaDTO.descricao = descricao;
-  return categoriaDTO;
+  const criaCategoriaDTO = new CriaCategoriaDTO();
+  criaCategoriaDTO.nome = nome;
+  criaCategoriaDTO.descricao = descricao;
+  return criaCategoriaDTO;
 };
 
 const novaCategoriaDTO = makeCriaCategoriaDTO(
