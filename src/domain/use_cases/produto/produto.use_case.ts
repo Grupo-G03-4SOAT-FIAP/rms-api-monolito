@@ -85,7 +85,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     }
 
     if (atualizaProdutoDTO.nome) {
-      const nomeProduto = new ToCapitalizeString(atualizaProdutoDTO.nome).input
+      const nomeProduto = new ToCapitalizeString(atualizaProdutoDTO.nome).input;
       const buscaProdutoPorNome =
         await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
       if (buscaProdutoPorNome) {

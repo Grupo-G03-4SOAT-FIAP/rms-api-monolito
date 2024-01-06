@@ -49,7 +49,6 @@ class ProdutoRepositoryMock {
 const produtoRepositoryMock = new ProdutoRepositoryMock();
 
 describe('ProdutoRepository', () => {
-
   let produtoRepository: ProdutoRepository;
   let mockProdutoModel: jest.Mocked<Repository<ProdutoModel>>;
 
@@ -74,7 +73,7 @@ describe('ProdutoRepository', () => {
         },
       ],
     }).compile();
-    
+
     produtoRepository = module.get<ProdutoRepository>(ProdutoRepository);
   });
 
@@ -83,7 +82,6 @@ describe('ProdutoRepository', () => {
   });
 
   it('deve criar um produto', async () => {
-
     // Arrange
 
     mockProdutoModel.create.mockReturnValue(produtoModel);
@@ -98,11 +96,9 @@ describe('ProdutoRepository', () => {
     expect(mockProdutoModel.create).toHaveBeenCalledWith(produtoEntity);
     expect(mockProdutoModel.save).toHaveBeenCalledWith(produtoModel);
     expect(result).toBe(produtoModel);
-
   });
 
   it('deve editar um produto', async () => {
-
     // Arrange
 
     mockProdutoModel.create.mockReturnValue(produtoModel);
@@ -130,11 +126,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(produtoModel);
-
   });
 
   it('deve excluir uma categoria', async () => {
-
     // Arrange
 
     const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -151,11 +145,9 @@ describe('ProdutoRepository', () => {
     expect(produtoRepositoryMock.softDelete).toHaveBeenCalledWith({
       id: produtoId,
     });
-
   });
 
   it('deve buscar um produto por id', async () => {
-
     // Arrange
 
     mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
@@ -173,11 +165,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(produtoModel);
-
   });
 
   it('deve buscar um produto por id e retornar nulo', async () => {
-
     // Arrange
 
     mockProdutoModel.findOne.mockResolvedValue(null);
@@ -195,11 +185,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(null);
-
   });
 
   it('deve buscar um produto por nome', async () => {
-
     // Arrange
 
     mockProdutoModel.findOne.mockResolvedValue(Promise.resolve(produtoModel));
@@ -217,11 +205,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(produtoModel);
-
   });
 
   it('deve buscar um produto por nome e retornar nulo', async () => {
-
     // Arrange
 
     mockProdutoModel.findOne.mockResolvedValue(null);
@@ -239,11 +225,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(null);
-
   });
 
   it('deve listar todos produtos', async () => {
-
     // Arrange
 
     const listaProdutos = [produtoModel, produtoModel, produtoModel];
@@ -259,11 +243,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(listaProdutos);
-
   });
 
   it('deve retornar uma lista vazia de produtos', async () => {
-
     // Arrange
 
     const listaProdutos = [];
@@ -279,11 +261,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(resultado).toBe(listaProdutos);
-
   });
 
   it('deve listar produtos por categoria', async () => {
-
     // Arrange
 
     const listaProdutos = [produtoModel, produtoModel, produtoModel];
@@ -293,7 +273,8 @@ describe('ProdutoRepository', () => {
 
     // Act
 
-    const result = await produtoRepository.listarProdutosPorCategoria(categoriaId);
+    const result =
+      await produtoRepository.listarProdutosPorCategoria(categoriaId);
 
     // Assert
 
@@ -302,11 +283,9 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(listaProdutos);
-
   });
 
   it('deve retornar uma lista vazia de produtos por categoria', async () => {
-
     // Arrange
 
     const listaProdutos = [];
@@ -316,7 +295,8 @@ describe('ProdutoRepository', () => {
 
     // Act
 
-    const result = await produtoRepository.listarProdutosPorCategoria(categoriaId);
+    const result =
+      await produtoRepository.listarProdutosPorCategoria(categoriaId);
 
     // Assert
 
@@ -325,7 +305,5 @@ describe('ProdutoRepository', () => {
       relations: ['categoria'],
     });
     expect(result).toBe(listaProdutos);
-
   });
-
 });

@@ -44,11 +44,16 @@ export class PedidoRepository implements IPedidoRepository {
     const statusPedidoOrder = {
       pronto: 1,
       em_preparacao: 2,
+      recebido: 3,
     };
 
     const pedidos = await this.pedidoRepository.find({
       where: {
-        statusPedido: In([StatusPedido.PRONTO, StatusPedido.EM_PREPARACAO]),
+        statusPedido: In([
+          StatusPedido.PRONTO,
+          StatusPedido.EM_PREPARACAO,
+          StatusPedido.RECEBIDO,
+        ]),
       },
       relations: ['cliente'],
     });
