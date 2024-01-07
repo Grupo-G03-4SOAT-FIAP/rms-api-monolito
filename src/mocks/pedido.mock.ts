@@ -2,8 +2,8 @@ import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { Repository } from 'typeorm';
 import { StatusPedido } from '../utils/pedido.enum';
-import { produtoEntity, produtoModel } from './produto.mock';
-import { clienteModel, clienteEntity } from './cliente.mock';
+import { produtoEntityMock, produtoModelMock } from './produto.mock';
+import { clienteModelMock, clienteEntityMock } from './cliente.mock';
 import {
   AtualizaPedidoDTO,
   CriaPedidoDTO,
@@ -12,20 +12,20 @@ import {
 import { ClienteDTO } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
 import { ProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
 
-const pedidoModel = new PedidoModel();
-pedidoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-pedidoModel.numeroPedido = '05012024';
-pedidoModel.itensPedido = [produtoModel];
-pedidoModel.cliente = clienteModel;
-pedidoModel.statusPedido = 'recebido';
-pedidoModel.criadoEm = new Date().toISOString();
-pedidoModel.atualizadoEm = new Date().toISOString();
+const pedidoModelMock = new PedidoModel();
+pedidoModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+pedidoModelMock.numeroPedido = '05012024';
+pedidoModelMock.itensPedido = [produtoModelMock];
+pedidoModelMock.cliente = clienteModelMock;
+pedidoModelMock.statusPedido = 'recebido';
+pedidoModelMock.criadoEm = new Date().toISOString();
+pedidoModelMock.atualizadoEm = new Date().toISOString();
 
-const pedidoEntity = new PedidoEntity(
-  [produtoEntity],
+const pedidoEntityMock = new PedidoEntity(
+  [produtoEntityMock],
   StatusPedido.RECEBIDO,
   '05012024',
-  clienteEntity,
+  clienteEntityMock,
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
@@ -39,7 +39,7 @@ const makeCriaPedidoDTO = (
   return criaPedidoDTO;
 };
 
-const criaPedidoDTO = makeCriaPedidoDTO(
+const criaPedidoDTOMock = makeCriaPedidoDTO(
   ['0a14aa4e-75e7-405f-8301-81f60646c93d'],
   '83904665030',
 );
@@ -52,7 +52,7 @@ const makeAtualizaPedidoDTO = (
   return atualizaPedidoDTO;
 };
 
-const atualizaPedidoDTO = makeAtualizaPedidoDTO(StatusPedido.RECEBIDO);
+const atualizaPedidoDTOMock = makeAtualizaPedidoDTO(StatusPedido.RECEBIDO);
 
 const makePedidoDTO = (
   id: string,
@@ -70,15 +70,15 @@ const makePedidoDTO = (
   return pedidoDTO;
 };
 
-const pedidoDTO = makePedidoDTO(
-  pedidoModel.id,
-  pedidoModel.numeroPedido,
-  pedidoModel.itensPedido,
-  pedidoModel.statusPedido,
-  pedidoModel.cliente,
+const pedidoDTOMock = makePedidoDTO(
+  pedidoModelMock.id,
+  pedidoModelMock.numeroPedido,
+  pedidoModelMock.itensPedido,
+  pedidoModelMock.statusPedido,
+  pedidoModelMock.cliente,
 );
 
-const pedidoModelMock: jest.Mocked<Repository<PedidoModel>> = {
+const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
   create: jest.fn(),
   save: jest.fn(),
   update: jest.fn(),
@@ -103,12 +103,12 @@ const pedidoFactoryMock = {
 };
 
 export {
-  pedidoModel,
-  pedidoEntity,
-  criaPedidoDTO,
-  atualizaPedidoDTO,
-  pedidoDTO,
   pedidoModelMock,
+  pedidoEntityMock,
+  criaPedidoDTOMock,
+  atualizaPedidoDTOMock,
+  pedidoDTOMock,
+  pedidoTypeORMMock,
   pedidoRepositoryMock,
   pedidoFactoryMock,
 };
