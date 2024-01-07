@@ -16,7 +16,6 @@ novaProdutoDTO.nome = 'Nova produto';
 novaProdutoDTO.descricao = 'Nova descrição';
 
 describe('Produto', () => {
-
   let produtoController: ProdutoController;
   let produtoUserCase: IProdutoUseCase;
 
@@ -50,9 +49,7 @@ describe('Produto', () => {
   });
 
   describe('Criar produto', () => {
-
     it('Deve ser retornado uma exception se ocorrer um erro para criar um produto', async () => {
-
       // Arrange
 
       jest
@@ -63,11 +60,9 @@ describe('Produto', () => {
       // Assert
 
       expect(produtoController.criar(novaProdutoDTO)).rejects.toThrow();
-
     });
 
     it('Deve ser retornado uma exception ao tentar criar um produto duplicado', async () => {
-
       // Arrange
 
       jest
@@ -79,16 +74,12 @@ describe('Produto', () => {
       // Act
       // Assert
 
-      expect(
-        produtoController.criar(novaProdutoDTO)
-      ).rejects.toThrow(
+      expect(produtoController.criar(novaProdutoDTO)).rejects.toThrow(
         new ProdutoDuplicadoErro('Existe um produto com esse nome'),
       );
-
     });
 
     it('Deve ser possível criar um novo produto', async () => {
-
       // Arrange
 
       const produtoDTO = new ProdutoDTO();
@@ -113,15 +104,11 @@ describe('Produto', () => {
         mensagem: 'Produto criada com sucesso',
         body: produtoDTO,
       });
-
     });
-
   });
 
   describe('Atualizar Produto', () => {
-
     it('Deve ser retornada uma exception ao tentar atualizar o nome do produto com o mesmo de um produto já existente', async () => {
-
       // Arrange
 
       jest
@@ -141,11 +128,9 @@ describe('Produto', () => {
       ).rejects.toThrow(
         new ProdutoDuplicadoErro('Existe um produto com esse nome'),
       );
-
     });
 
     it('Deve ser retornada uma exception ao tentar atualizar um produto não existente', async () => {
-
       // Arrange
 
       jest
@@ -165,11 +150,9 @@ describe('Produto', () => {
       ).rejects.toThrow(
         new ProdutoNaoLocalizadoErro('Produto informado não existe'),
       );
-
     });
 
     it('Deve ser retornada uma exception em caso de erros para atualizar um produto', async () => {
-
       // Arrange
 
       jest
@@ -185,11 +168,9 @@ describe('Produto', () => {
           novaProdutoDTO,
         ),
       ).rejects.toThrow(new Error());
-
     });
 
     it('Deve ser possível atualizar um produto', async () => {
-
       // Arrange
 
       const produtoEditada = new ProdutoDTO();
@@ -220,15 +201,11 @@ describe('Produto', () => {
           body: produtoEditada,
         }),
       );
-
     });
-
   });
 
   describe('Remover Produto', () => {
-
     it('Deve ser retornada uma exception se tentar remover um produto que não existe', async () => {
-
       // Arrange
 
       jest
@@ -245,11 +222,9 @@ describe('Produto', () => {
       ).rejects.toThrow(
         new ProdutoNaoLocalizadoErro('Produto informado não existe'),
       );
-
     });
 
     it('Deve ser retornada uma exception em caso de erros para remover um produto', async () => {
-
       // Arrange
 
       jest
@@ -262,11 +237,9 @@ describe('Produto', () => {
       expect(
         produtoController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c'),
       ).rejects.toThrow(new Error());
-
     });
 
     it('Deve ser possível remover um produto', async () => {
-
       // Arrange
 
       jest.spyOn(produtoUserCase, 'excluirProduto').mockReturnValue(
@@ -277,22 +250,20 @@ describe('Produto', () => {
 
       // Act
 
-      const result = await produtoController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c');
+      const result = await produtoController.remover(
+        '0a14aa4e-75e7-405f-8301-81f60646c93c',
+      );
 
       // Assert
 
       expect(result).toEqual({
         mensagem: 'Produto excluida com sucesso',
       });
-
     });
-
   });
 
   describe('Buscar Produto por ID', () => {
-
     it('Deve ser retornada uma exception se buscar um produto com id que não existe', async () => {
-
       // Arrange
 
       jest
@@ -309,11 +280,9 @@ describe('Produto', () => {
       ).rejects.toThrow(
         new ProdutoNaoLocalizadoErro('Produto informado não existe'),
       );
-
     });
 
     it('Deve ser retornada uma exception se ocorrer um erro ao tentar buscar um produto', async () => {
-
       // Arrange
 
       jest
@@ -326,11 +295,9 @@ describe('Produto', () => {
       expect(
         produtoController.buscar('0a14aa4e-75e7-405f-8301-81f60646c93c'),
       ).rejects.toThrow(new Error());
-
     });
 
     it('Deve ser possível buscar um produto pelo seu ID', async () => {
-
       // Arrange
 
       const produto = new ProdutoDTO();
@@ -343,20 +310,18 @@ describe('Produto', () => {
 
       // Act
 
-      const result = await produtoController.buscar('0a14aa4e-75e7-405f-8301-81f60646c93c');
+      const result = await produtoController.buscar(
+        '0a14aa4e-75e7-405f-8301-81f60646c93c',
+      );
 
       // Assert
 
       expect(result).toEqual(produto);
-
     });
-
   });
 
   describe('Listar todas as produtos', () => {
-
     it('Deve ser retornado um array vazio caso não tenham produtos cadastrados', async () => {
-
       // Arrange
 
       jest
@@ -370,11 +335,9 @@ describe('Produto', () => {
       // Assert
 
       expect(result).toEqual([]);
-
     });
 
     it('Deve ser possível retornar todas os produtos cadastrados', async () => {
-
       // Arrange
 
       const produtoDTO1 = new ProdutoDTO();
@@ -409,9 +372,6 @@ describe('Produto', () => {
       // Assert
 
       expect(result).toEqual(listaProdutos);
-
     });
-
   });
-
 });

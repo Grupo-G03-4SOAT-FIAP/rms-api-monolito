@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CategoriaModel } from '../../models/categoria.model';
 import { Repository } from 'typeorm';
 import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
-import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
+import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {

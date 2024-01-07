@@ -1,5 +1,5 @@
 import { ToCapitalizeString } from 'src/utils/capitalize_string';
-import { CategoriaEntity } from './categoria.entity';
+import { CategoriaEntity } from '../categoria/categoria.entity';
 
 export class ProdutoEntity {
   private _nome: string;
@@ -37,7 +37,7 @@ export class ProdutoEntity {
   get descricao(): string {
     return this._descricao;
   }
-  
+
   set descricao(descricao: string) {
     const capitalizedDescricao = new ToCapitalizeString(descricao);
     this._descricao = capitalizedDescricao.input;

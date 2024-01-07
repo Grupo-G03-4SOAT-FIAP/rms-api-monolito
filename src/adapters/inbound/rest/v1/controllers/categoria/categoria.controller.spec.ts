@@ -16,7 +16,6 @@ novaCategoriaDTO.nome = 'Nova categoria';
 novaCategoriaDTO.descricao = 'Nova descrição';
 
 describe('Categoria', () => {
-
   let categoriaController: CategoriaController;
   let categoriaUserCase: ICategoriaUseCase;
 
@@ -50,9 +49,7 @@ describe('Categoria', () => {
   });
 
   describe('Criar categoria', () => {
-
     it('Deve ser retornado uma exception se ocorrer um erro para criar uma categoria', async () => {
-
       // Arrange
 
       jest
@@ -63,11 +60,9 @@ describe('Categoria', () => {
       // Assert
 
       expect(categoriaController.criar(novaCategoriaDTO)).rejects.toThrow();
-
     });
 
     it('Deve ser retornado uma exception ao tentar criar uma categoria duplicada', async () => {
-
       // Arrange
 
       jest
@@ -79,16 +74,12 @@ describe('Categoria', () => {
       // Act
       // Assert
 
-      expect(
-        categoriaController.criar(novaCategoriaDTO)
-      ).rejects.toThrow(
+      expect(categoriaController.criar(novaCategoriaDTO)).rejects.toThrow(
         new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
       );
-
     });
 
     it('Deve ser possível criar uma nova categoria', async () => {
-
       // Arrange
 
       const categoriaDTO = new CategoriaDTO();
@@ -113,15 +104,11 @@ describe('Categoria', () => {
         mensagem: 'Categoria criada com sucesso',
         body: categoriaDTO,
       });
-
     });
-
   });
 
   describe('Atualizar Categoria', () => {
-
     it('Deve ser retornada uma exception ao tentar atualizar o nome da categoria com o mesmo de uma categoria já existente', async () => {
-
       // Arrange
 
       jest
@@ -141,11 +128,9 @@ describe('Categoria', () => {
       ).rejects.toThrow(
         new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
       );
-
     });
 
     it('Deve ser retornada uma exception ao tentar atualizar uma categoria não existente', async () => {
-
       // Arrange
 
       jest
@@ -165,11 +150,9 @@ describe('Categoria', () => {
       ).rejects.toThrow(
         new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
       );
-
     });
 
     it('Deve ser retornada uma exception em caso de erros para atualizar uma categoria', async () => {
-
       // Arrange
 
       jest
@@ -185,11 +168,9 @@ describe('Categoria', () => {
           novaCategoriaDTO,
         ),
       ).rejects.toThrow(new Error());
-
     });
 
     it('Deve ser possível atualizar uma categoria', async () => {
-
       // Arrange
 
       const categoriaEditada = new CategoriaDTO();
@@ -220,15 +201,11 @@ describe('Categoria', () => {
           body: categoriaEditada,
         }),
       );
-
     });
-
   });
 
   describe('Remover Categoria', () => {
-
     it('Deve ser retornada uma exception se tentar remover uma categoria que não existe', async () => {
-
       // Arrange
 
       jest
@@ -245,11 +222,9 @@ describe('Categoria', () => {
       ).rejects.toThrow(
         new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
       );
-
     });
 
     it('Deve ser retornada uma exception em caso de erros para remover uma categoria', async () => {
-
       // Arrange
 
       jest
@@ -262,11 +237,9 @@ describe('Categoria', () => {
       expect(
         categoriaController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c'),
       ).rejects.toThrow(new Error());
-
     });
 
     it('Deve ser possível remover uma categoria', async () => {
-
       // Arrange
 
       jest.spyOn(categoriaUserCase, 'excluirCategoria').mockReturnValue(
@@ -277,22 +250,20 @@ describe('Categoria', () => {
 
       // Act
 
-      const result = await categoriaController.remover('0a14aa4e-75e7-405f-8301-81f60646c93c');
+      const result = await categoriaController.remover(
+        '0a14aa4e-75e7-405f-8301-81f60646c93c',
+      );
 
       // Assert
 
       expect(result).toEqual({
         mensagem: 'Categoria excluida com sucesso',
       });
-
     });
-
   });
 
   describe('Buscar Categoria por ID', () => {
-
     it('Deve ser retornada uma exception se buscar uma categoria com id que não existe', async () => {
-
       // Arrange
 
       jest
@@ -309,11 +280,9 @@ describe('Categoria', () => {
       ).rejects.toThrow(
         new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
       );
-
     });
 
     it('Deve ser retornada uma exception se ocorrer um erro ao tentar buscar uma categoria', async () => {
-
       // Arrange
 
       jest
@@ -326,11 +295,9 @@ describe('Categoria', () => {
       expect(
         categoriaController.buscar('0a14aa4e-75e7-405f-8301-81f60646c93c'),
       ).rejects.toThrow(new Error());
-
     });
 
     it('Deve ser possível buscar uma categoria pelo seu ID', async () => {
-
       // Arrange
 
       const categoria = new CategoriaDTO();
@@ -343,20 +310,18 @@ describe('Categoria', () => {
 
       // Act
 
-      const result = await categoriaController.buscar('0a14aa4e-75e7-405f-8301-81f60646c93c');
+      const result = await categoriaController.buscar(
+        '0a14aa4e-75e7-405f-8301-81f60646c93c',
+      );
 
       // Assert
 
       expect(result).toEqual(categoria);
-
     });
-
   });
 
   describe('Listar todas as categorias', () => {
-
     it('Deve ser retornado um array vazio caso não tenham categorias cadastradas', async () => {
-
       // Arrange
 
       jest
@@ -370,11 +335,9 @@ describe('Categoria', () => {
       // Assert
 
       expect(result).toEqual([]);
-
     });
 
     it('Deve ser possível retornar todas as categorias cadastradas', async () => {
-
       // Arrange
 
       const categoriaDTO1 = new CategoriaDTO();
@@ -409,9 +372,6 @@ describe('Categoria', () => {
       // Assert
 
       expect(result).toEqual(listaCategorias);
-
     });
-
   });
-
 });

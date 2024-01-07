@@ -1,5 +1,5 @@
-import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
-import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
+import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
+import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 
 export interface ICategoriaRepository {
   criarCategoria(categoria: CategoriaEntity): Promise<CategoriaModel>;

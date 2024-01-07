@@ -10,7 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { IPedidoUseCase } from 'src/domain/ports/pedido/pedito.use_case.port';
+import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
 import {
   AtualizaPedidoDTO,
   CriaPedidoDTO,
@@ -119,7 +119,7 @@ export class PedidoController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar pedidos com status pronto e em preparação' })
+  @ApiOperation({ summary: 'Listar pedidos' })
   @ApiResponse({
     status: 200,
     description: 'Lista de pedidos retornada com sucesso',

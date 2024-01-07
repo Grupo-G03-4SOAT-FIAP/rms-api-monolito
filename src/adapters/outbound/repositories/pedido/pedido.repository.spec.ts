@@ -1,96 +1,25 @@
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { PedidoRepository } from './pedido.repository';
-import { PedidoEntity } from 'src/domain/entities/pedido.entity';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProdutoEntity } from 'src/domain/entities/produto.entity';
-import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
-import { ClienteEntity } from 'src/domain/entities/cliente.entity';
 import { PedidoModel } from '../../models/pedido.model';
-import { In, Repository } from 'typeorm';
+import { In } from 'typeorm';
 import { StatusPedido } from 'src/utils/pedido.enum';
-import { ProdutoModel } from '../../models/produto.model';
-import { CategoriaModel } from '../../models/categoria.model';
-
-const clienteEntity = new ClienteEntity(
-  'Jhon',
-  'jhon@teste.com.br',
-  '83904665030',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-);
-
-const categoriaEntity = new CategoriaEntity(
-  'Lanche',
-  'Lanche x tudo',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-);
-
-const produtoEntity = new ProdutoEntity(
-  'Produto X',
-  categoriaEntity,
-  5.0,
-  'http://',
-  'Teste produto x',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-);
-
-const pedidoEntity = new PedidoEntity(
-  [produtoEntity],
-  StatusPedido.RECEBIDO,
-  '123456',
-  clienteEntity,
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-);
-
-const categoriaModel = new CategoriaModel();
-categoriaModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-categoriaModel.nome = 'Lanche';
-categoriaModel.descricao = 'Lanche x tudo';
-categoriaModel.produtos = null;
-categoriaModel.criadoEm = new Date().toISOString();
-categoriaModel.atualizadoEm = new Date().toISOString();
-categoriaModel.excluidoEm = new Date().toISOString();
-
-const produtoModel = new ProdutoModel();
-produtoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-produtoModel.nome = 'Produto X';
-produtoModel.descricao = 'Teste produto x';
-produtoModel.valorUnitario = 5.0;
-produtoModel.imagemUrl = 'http://';
-produtoModel.categoria = categoriaModel;
-produtoModel.criadoEm = new Date().toISOString();
-produtoModel.atualizadoEm = new Date().toISOString();
-produtoModel.excluidoEm = new Date().toISOString();
-
-const pedidoModel = new PedidoModel();
-pedidoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-pedidoModel.numeroPedido = '123456';
-pedidoModel.itensPedido = [produtoModel];
-pedidoModel.cliente = null;
-pedidoModel.statusPedido = 'recebido';
-pedidoModel.criadoEm = new Date().toISOString();
-pedidoModel.atualizadoEm = new Date().toISOString();
+import {
+  pedidoModel,
+  pedidoEntity,
+  pedidoModelMock,
+} from 'src/mocks/pedido.mock';
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
-  let mockPedidoModel: jest.Mocked<Repository<PedidoModel>>;
 
   beforeEach(async () => {
-    mockPedidoModel = {
-      create: jest.fn(),
-      save: jest.fn(),
-      update: jest.fn(),
-      findOne: jest.fn(),
-      find: jest.fn(),
-    } as Partial<Repository<PedidoModel>> as jest.Mocked<
-      Repository<PedidoModel>
-    >;
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PedidoRepository,
         {
           provide: getRepositoryToken(PedidoModel),
-          useValue: mockPedidoModel,
+          useValue: pedidoModelMock,
         },
       ],
     }).compile();
@@ -103,154 +32,116 @@ describe('PedidoRepository', () => {
   });
 
   it('deve criar um pedido', async () => {
-
-    // Arrange
-
-    mockPedidoModel.create.mockReturnValue(pedidoModel);
-    mockPedidoModel.save.mockResolvedValue(Promise.resolve(pedidoModel));
-
-    // Act
+    pedidoModelMock.create.mockReturnValue(pedidoModel);
+    pedidoModelMock.save.mockResolvedValue(Promise.resolve(pedidoModel));
 
     const result = await pedidoRepository.criarPedido(pedidoEntity);
 
-    // Assert
-
-    expect(mockPedidoModel.create).toHaveBeenCalledWith(pedidoEntity);
-    expect(mockPedidoModel.save).toHaveBeenCalledWith(pedidoModel);
+    expect(pedidoModelMock.create).toHaveBeenCalledWith(pedidoEntity);
+    expect(pedidoModelMock.save).toHaveBeenCalledWith(pedidoModel);
     expect(result).toBe(pedidoModel);
-
   });
 
   it('deve editar o status de um pedido', async () => {
-
-    // Arrange
-
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    const novoStatusPedido = 'Recebido';
+    const novoStatusPedido = 'recebido';
 
-    mockPedidoModel.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
+    pedidoModelMock.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
 
-    // Act
+    const result = await pedidoRepository.editarStatusPedido(
+      pedidoId,
+      novoStatusPedido,
+    );
 
-    const result = await pedidoRepository.editarStatusPedido(pedidoId, novoStatusPedido);
-
-    // Assert
-
-    expect(mockPedidoModel.update).toHaveBeenCalledWith(pedidoId, {
+    expect(pedidoModelMock.update).toHaveBeenCalledWith(pedidoId, {
       statusPedido: novoStatusPedido,
     });
-    expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
+    expect(pedidoModelMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
     expect(result).toBe(pedidoModel);
-
   });
 
   it('deve buscar um pedido por id', async () => {
-
-    // Arrange
-
-    mockPedidoModel.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
+    pedidoModelMock.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
 
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
-    // Act
-
     const result = await pedidoRepository.buscarPedido(pedidoId);
 
-    // Assert
-
-    expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
+    expect(pedidoModelMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
     expect(result).toBe(pedidoModel);
-
   });
 
   it('deve buscar um pedido por id e retornar nulo', async () => {
-
-    // Arrange
-
-    mockPedidoModel.findOne.mockResolvedValue(null);
+    pedidoModelMock.findOne.mockResolvedValue(null);
 
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
-    // Act
-
     const result = await pedidoRepository.buscarPedido(pedidoId);
 
-    // Assert
-
-    expect(mockPedidoModel.findOne).toHaveBeenCalledWith({
+    expect(pedidoModelMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
     expect(result).toBe(null);
-
   });
 
-  it('deve listar pedidos prontos e em preparação', async () => {
-
-    // Arrange
-
+  it('deve listar pedidos', async () => {
     const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
-    mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
-
-    // Act
+    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidos();
 
-    // Assert
-
-    expect(mockPedidoModel.find).toHaveBeenCalledWith({
+    expect(pedidoModelMock.find).toHaveBeenCalledWith({
       where: {
-        statusPedido: In([StatusPedido.PRONTO, StatusPedido.EM_PREPARACAO]),
+        statusPedido: In([
+          StatusPedido.PRONTO,
+          StatusPedido.EM_PREPARACAO,
+          StatusPedido.RECEBIDO,
+        ]),
+      },
+      order: {
+        statusPedido: 'ASC',
+        criadoEm: 'ASC',
       },
       relations: ['cliente'],
     });
     expect(result).toBe(listaPedidos);
-
   });
 
-  it('deve retornar uma lista vazia de pedidos prontos e em preparação', async () => {
-
-    // Arrange
-
+  it('deve retornar uma lista vazia de pedidos', async () => {
     const listaPedidos = [];
-    mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
-
-    // Act
+    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidos();
 
-    // Assert
-
-    expect(mockPedidoModel.find).toHaveBeenCalledWith({
+    expect(pedidoModelMock.find).toHaveBeenCalledWith({
       where: {
-        statusPedido: In([StatusPedido.PRONTO, StatusPedido.EM_PREPARACAO]),
+        statusPedido: In([
+          StatusPedido.PRONTO,
+          StatusPedido.EM_PREPARACAO,
+          StatusPedido.RECEBIDO,
+        ]),
+      },
+      order: {
+        statusPedido: 'ASC',
+        criadoEm: 'ASC',
       },
       relations: ['cliente'],
     });
     expect(result).toBe(listaPedidos);
-
   });
 
   it('deve listar fila de pedidos recebidos', async () => {
-
-    // Arrange
-
     const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
-    mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
-
-    // Act
+    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidosRecebido();
 
-    // Assert
-
-    expect(mockPedidoModel.find).toHaveBeenCalledWith({
+    expect(pedidoModelMock.find).toHaveBeenCalledWith({
       where: {
         statusPedido: StatusPedido.RECEBIDO,
       },
@@ -260,23 +151,15 @@ describe('PedidoRepository', () => {
       relations: ['cliente'],
     });
     expect(result).toBe(listaPedidos);
-
   });
 
   it('deve retornar uma lista vazia de pedidos recebidos', async () => {
-
-    // Arrange
-
     const listaPedidos = [];
-    mockPedidoModel.find.mockResolvedValue(Promise.resolve(listaPedidos));
-
-    // Act
+    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidosRecebido();
 
-    // Assert
-
-    expect(mockPedidoModel.find).toHaveBeenCalledWith({
+    expect(pedidoModelMock.find).toHaveBeenCalledWith({
       where: {
         statusPedido: StatusPedido.RECEBIDO,
       },
@@ -286,7 +169,5 @@ describe('PedidoRepository', () => {
       relations: ['cliente'],
     });
     expect(result).toBe(listaPedidos);
-
   });
-
 });

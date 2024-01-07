@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PedidoEntity } from 'src/domain/entities/pedido.entity';
+import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { PedidoModel } from '../../models/pedido.model';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -44,11 +44,20 @@ export class PedidoRepository implements IPedidoRepository {
     const statusPedidoOrder = {
       pronto: 1,
       em_preparacao: 2,
+      recebido: 3,
     };
 
     const pedidos = await this.pedidoRepository.find({
       where: {
-        statusPedido: In([StatusPedido.PRONTO, StatusPedido.EM_PREPARACAO]),
+        statusPedido: In([
+          StatusPedido.PRONTO,
+          StatusPedido.EM_PREPARACAO,
+          StatusPedido.RECEBIDO,
+        ]),
+      },
+      order: {
+        statusPedido: 'ASC', // Ordenação alfabética para garantir consistência
+        criadoEm: 'ASC', // Ordene por criadoEm em ordem crescente (do mais antigo ao mais recente)
       },
       relations: ['cliente'],
     });

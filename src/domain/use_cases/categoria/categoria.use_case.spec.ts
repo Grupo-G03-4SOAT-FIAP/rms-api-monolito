@@ -81,7 +81,6 @@ const makeCategoriaDTO = (
 };
 
 describe('Categoria Use case', () => {
-
   let categoriaUseCase: CategoriaUseCase;
   let categoriaRepository: ICategoriaRepository;
 
@@ -117,9 +116,7 @@ describe('Categoria Use case', () => {
   });
 
   describe('Criar categoria', () => {
-
     it('Deve ser lançado um erro ao tentar criar uma categoria com um nome já registrado no sistema', async () => {
-
       // Arrange
 
       const categoriaDTO = makeCriaCategoriaDTO('lanche', 'lanche x tudo');
@@ -131,18 +128,16 @@ describe('Categoria Use case', () => {
       // Act
       // Assert
 
-      expect(
-        categoriaUseCase.criarCategoria(categoriaDTO)
-      ).rejects.toThrow(
+      expect(categoriaUseCase.criarCategoria(categoriaDTO)).rejects.toThrow(
         new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
       );
 
-      expect(categoriaRepository.buscarCategoriaPorNome).toHaveBeenCalledTimes(1);
-
+      expect(categoriaRepository.buscarCategoriaPorNome).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('Deve ser possível criar uma nova categoria', async () => {
-
       // Arrange
 
       const categoriaDTO = makeCategoriaDTO(
@@ -166,17 +161,15 @@ describe('Categoria Use case', () => {
         body: categoriaDTO,
       });
 
-      expect(categoriaRepository.buscarCategoriaPorNome).toHaveBeenCalledTimes(1);
+      expect(categoriaRepository.buscarCategoriaPorNome).toHaveBeenCalledTimes(
+        1,
+      );
       expect(categoriaRepository.criarCategoria).toHaveBeenCalledTimes(1);
-
     });
-
   });
 
   describe('Editar categoria', () => {
-
     it('Deve ser lançado um erro se a categoria informada para edição não existe', async () => {
-
       // Arrange
 
       const categoriaDTO = new AtualizaCategoriaDTO();
@@ -200,11 +193,9 @@ describe('Categoria Use case', () => {
       );
 
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-
     });
 
     it('Deve ser lançado um erro se a categoria informada para edição tiver o mesmo nome de uma categoria já registrada', async () => {
-
       // Arrange
 
       const atualizaCategoriaDTO = new AtualizaCategoriaDTO();
@@ -231,11 +222,9 @@ describe('Categoria Use case', () => {
       );
 
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-
     });
 
     it('Deve ser possível editar uma categoria', async () => {
-
       // Arrange
 
       const atualizaCategoriaDto = new AtualizaCategoriaDTO();
@@ -255,7 +244,10 @@ describe('Categoria Use case', () => {
 
       // Act
 
-      const result = await categoriaUseCase.editarCategoria(categoriaAtualizadaModelMock.id, atualizaCategoriaDto);
+      const result = await categoriaUseCase.editarCategoria(
+        categoriaAtualizadaModelMock.id,
+        atualizaCategoriaDto,
+      );
 
       // Assert
 
@@ -266,15 +258,11 @@ describe('Categoria Use case', () => {
 
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
       expect(categoriaRepository.editarCategoria).toHaveBeenCalledTimes(1);
-
     });
-
   });
 
   describe('Excluir categoria', () => {
-
     it('Deve ser retornado um erro se o id da categoria informada para exclusão não existir na base de dados', async () => {
-
       // Arrange
 
       jest
@@ -293,11 +281,9 @@ describe('Categoria Use case', () => {
       );
 
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-
     });
 
     it('Deve ser possível excluir uma categoria', async () => {
-
       // Arrange
 
       jest
@@ -306,7 +292,9 @@ describe('Categoria Use case', () => {
 
       // Act
 
-      const result = await categoriaUseCase.excluirCategoria(categoriaAtualizadaModelMock.id);
+      const result = await categoriaUseCase.excluirCategoria(
+        categoriaAtualizadaModelMock.id,
+      );
 
       // Assert
 
@@ -316,15 +304,11 @@ describe('Categoria Use case', () => {
 
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
       expect(categoriaRepository.excluirCategoria).toHaveBeenCalledTimes(1);
-
     });
-
   });
 
   describe('Buscar Categoria', () => {
-
     it('Deve deve retornado um erro ao tentar buscar uma categoria que o ID não esteja cadastrado no banco de dados', async () => {
-
       // Arrange
 
       jest
@@ -343,11 +327,9 @@ describe('Categoria Use case', () => {
       );
 
       expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-
     });
 
     it('Deve ser possível buscar uma categoria por ID', async () => {
-
       // Arrange
 
       const categoriaDTO = makeCategoriaDTO(
@@ -362,20 +344,18 @@ describe('Categoria Use case', () => {
 
       // Act
 
-      const result = await categoriaUseCase.buscarCategoria(categoriaAtualizadaModelMock.id)
+      const result = await categoriaUseCase.buscarCategoria(
+        categoriaAtualizadaModelMock.id,
+      );
 
       // Assert
 
       expect(result).toEqual(categoriaDTO);
-
     });
-
   });
 
   describe('Listar Categorias', () => {
-
     it('Deve ser possível retornar uma lista com todas as categorias cadastradas', async () => {
-
       // Arrange
 
       const categoria1DTO = makeCategoriaDTO(
@@ -413,11 +393,9 @@ describe('Categoria Use case', () => {
       // Assert
 
       expect(result).toEqual(listaCategorias);
-
     });
 
     it('Deve ser retornada uma lista vazia em casos onde não tem categorias criadas', async () => {
-
       // Arrange
 
       jest
@@ -431,9 +409,6 @@ describe('Categoria Use case', () => {
       // Assert
 
       expect(result).toEqual([]);
-
     });
-
   });
-
 });

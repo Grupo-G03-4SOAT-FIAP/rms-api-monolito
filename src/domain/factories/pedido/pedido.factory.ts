@@ -1,16 +1,16 @@
 import { CriaPedidoDTO } from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
-import { ClienteEntity } from '../entities/cliente.entity';
-import { PedidoEntity } from '../entities/pedido.entity';
-import { ProdutoEntity } from '../entities/produto.entity';
-import { IPedidoFactory } from '../ports/pedido/pedido.factory.port';
+import { ClienteEntity } from '../../entities/cliente/cliente.entity';
+import { PedidoEntity } from '../../entities/pedido/pedido.entity';
+import { ProdutoEntity } from '../../entities/produto/produto.entity';
+import { IPedidoFactory } from '../../ports/pedido/pedido.factory.port';
 import { Inject, Injectable } from '@nestjs/common';
-import { IClienteRepository } from '../ports/cliente/cliente.repository.port';
-import { IProdutoRepository } from '../ports/produto/produto.repository.port';
+import { IClienteRepository } from '../../ports/cliente/cliente.repository.port';
+import { IProdutoRepository } from '../../ports/produto/produto.repository.port';
 import { StatusPedido } from 'src/utils/pedido.enum';
-import { ClienteNaoLocalizadoErro } from '../exceptions/cliente.exception';
-import { ProdutoNaoLocalizadoErro } from '../exceptions/produto.exception';
-import { CategoriaEntity } from '../entities/categoria.entity';
-import { PedidoService } from '../services/pedido.service';
+import { ClienteNaoLocalizadoErro } from '../../exceptions/cliente.exception';
+import { ProdutoNaoLocalizadoErro } from '../../exceptions/produto.exception';
+import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
+import { PedidoService } from '../../services/pedido.service';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {

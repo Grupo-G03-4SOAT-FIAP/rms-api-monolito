@@ -31,11 +31,11 @@ import { ClienteUseCase } from './domain/use_cases/cliente/cliente.use_case';
 import { IClienteUseCase } from './domain/ports/cliente/cliente.use_case.port';
 import { PedidoController } from './adapters/inbound/rest/v1/controllers/pedido/pedido.controller';
 import { PedidoUseCase } from './domain/use_cases/pedido/pedido.use_case';
-import { IPedidoUseCase } from './domain/ports/pedido/pedito.use_case.port';
-import { PedidoFactory } from './domain/factories/pedido.factory';
+import { IPedidoUseCase } from './domain/ports/pedido/pedido.use_case.port';
+import { PedidoFactory } from './domain/factories/pedido/pedido.factory';
 import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
-import { ProdutoFactory } from './domain/factories/produto.factory';
+import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
 
 @Module({

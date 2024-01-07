@@ -5,7 +5,7 @@ import {
   AtualizaClienteDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
 import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
-import { ClienteEntity } from 'src/domain/entities/cliente.entity';
+import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import {
   ClienteNaoLocalizadoErro,
   ClienteDuplicadoErro,

@@ -8,7 +8,7 @@ import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
 import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
-import { IPedidoUseCase } from 'src/domain/ports/pedido/pedito.use_case.port';
+import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 @Injectable()
@@ -25,16 +25,16 @@ export class PedidoUseCase implements IPedidoUseCase {
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
     const result = await this.pedidoRepository.criarPedido(pedidoEntity);
 
-    const peditoDTO = new PedidoDTO();
-    peditoDTO.id = result.id;
-    peditoDTO.numeroPedido = result.numeroPedido;
-    peditoDTO.itensPedido = result.itensPedido;
-    peditoDTO.statusPedido = result.statusPedido;
-    peditoDTO.cliente = result.cliente;
+    const pedidoDTO = new PedidoDTO();
+    pedidoDTO.id = result.id;
+    pedidoDTO.numeroPedido = result.numeroPedido;
+    pedidoDTO.itensPedido = result.itensPedido;
+    pedidoDTO.statusPedido = result.statusPedido;
+    pedidoDTO.cliente = result.cliente;
 
     return {
       mensagem: 'Pedido criado com sucesso',
-      body: peditoDTO,
+      body: pedidoDTO,
     };
   }
 
@@ -54,16 +54,16 @@ export class PedidoUseCase implements IPedidoUseCase {
       statusPedido,
     );
 
-    const peditoDTO = new PedidoDTO();
-    peditoDTO.id = result.id;
-    peditoDTO.numeroPedido = result.numeroPedido;
-    peditoDTO.itensPedido = result.itensPedido;
-    peditoDTO.statusPedido = result.statusPedido;
-    peditoDTO.cliente = result.cliente;
+    const pedidoDTO = new PedidoDTO();
+    pedidoDTO.id = result.id;
+    pedidoDTO.numeroPedido = result.numeroPedido;
+    pedidoDTO.itensPedido = result.itensPedido;
+    pedidoDTO.statusPedido = result.statusPedido;
+    pedidoDTO.cliente = result.cliente;
 
     return {
       mensagem: 'Pedido atualizado com sucesso',
-      body: peditoDTO,
+      body: pedidoDTO,
     };
   }
 
@@ -73,26 +73,26 @@ export class PedidoUseCase implements IPedidoUseCase {
       throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
     }
 
-    const peditoDTO = new PedidoDTO();
-    peditoDTO.id = result.id;
-    peditoDTO.numeroPedido = result.numeroPedido;
-    peditoDTO.itensPedido = result.itensPedido;
-    peditoDTO.statusPedido = result.statusPedido;
-    peditoDTO.cliente = result.cliente;
+    const pedidoDTO = new PedidoDTO();
+    pedidoDTO.id = result.id;
+    pedidoDTO.numeroPedido = result.numeroPedido;
+    pedidoDTO.itensPedido = result.itensPedido;
+    pedidoDTO.statusPedido = result.statusPedido;
+    pedidoDTO.cliente = result.cliente;
 
-    return peditoDTO;
+    return pedidoDTO;
   }
 
   async listarPedidos(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidos();
     const listaPedidosDTO = result.map((pedido: PedidoModel) => {
-      const peditoDTO = new PedidoDTO();
-      peditoDTO.id = pedido.id;
-      peditoDTO.numeroPedido = pedido.numeroPedido;
-      peditoDTO.itensPedido = pedido.itensPedido;
-      peditoDTO.statusPedido = pedido.statusPedido;
-      peditoDTO.cliente = pedido.cliente;
-      return peditoDTO;
+      const pedidoDTO = new PedidoDTO();
+      pedidoDTO.id = pedido.id;
+      pedidoDTO.numeroPedido = pedido.numeroPedido;
+      pedidoDTO.itensPedido = pedido.itensPedido;
+      pedidoDTO.statusPedido = pedido.statusPedido;
+      pedidoDTO.cliente = pedido.cliente;
+      return pedidoDTO;
     });
     return listaPedidosDTO;
   }
@@ -100,13 +100,13 @@ export class PedidoUseCase implements IPedidoUseCase {
   async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidosRecebido();
     const listaPedidosDTO = result.map((pedido: PedidoModel) => {
-      const peditoDTO = new PedidoDTO();
-      peditoDTO.id = pedido.id;
-      peditoDTO.numeroPedido = pedido.numeroPedido;
-      peditoDTO.itensPedido = pedido.itensPedido;
-      peditoDTO.statusPedido = pedido.statusPedido;
-      peditoDTO.cliente = pedido.cliente;
-      return peditoDTO;
+      const pedidoDTO = new PedidoDTO();
+      pedidoDTO.id = pedido.id;
+      pedidoDTO.numeroPedido = pedido.numeroPedido;
+      pedidoDTO.itensPedido = pedido.itensPedido;
+      pedidoDTO.statusPedido = pedido.statusPedido;
+      pedidoDTO.cliente = pedido.cliente;
+      return pedidoDTO;
     });
     return listaPedidosDTO;
   }

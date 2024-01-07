@@ -1,5 +1,5 @@
-import { ToCapitalizeString } from '../../utils/capitalize_string';
-import { CPF } from '../value_objects/cpf';
+import { ToCapitalizeString } from '../../../utils/capitalize_string';
+import { CPF } from '../../value_objects/cpf';
 export class ClienteEntity {
   nome: string;
   email: string;

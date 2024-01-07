@@ -1,7 +1,7 @@
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Repository } from 'typeorm';
-import { ClienteEntity } from 'src/domain/entities/cliente.entity';
+import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import { ClienteModel } from '../../models/cliente.model';
 import { ClienteRepository } from './cliente.repository';
 
@@ -61,7 +61,6 @@ describe('ClienteRepository', () => {
   });
 
   it('deve criar um cliente', async () => {
-
     // Arrange
 
     mockClienteModel.create.mockReturnValue(clienteModel);
@@ -76,11 +75,9 @@ describe('ClienteRepository', () => {
     expect(mockClienteModel.create).toHaveBeenCalledWith(clienteEntity);
     expect(mockClienteModel.save).toHaveBeenCalledWith(clienteModel);
     expect(result).toBe(clienteModel);
-
   });
 
   it('deve editar um cliente', async () => {
-
     // Arrange
 
     mockClienteModel.findOne.mockResolvedValue(Promise.resolve(clienteModel));
@@ -89,7 +86,10 @@ describe('ClienteRepository', () => {
 
     // Act
 
-    const result = await clienteRepository.editarCliente(clienteId, clienteEntity);
+    const result = await clienteRepository.editarCliente(
+      clienteId,
+      clienteEntity,
+    );
 
     // Assert
 
@@ -101,11 +101,9 @@ describe('ClienteRepository', () => {
       where: { id: clienteId },
     });
     expect(result).toBe(clienteModel);
-
   });
 
   it('deve excluir um cliente no formato softdelete', async () => {
-
     // Arrange
 
     const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -124,11 +122,9 @@ describe('ClienteRepository', () => {
     expect(clienteRepositoryMock.softDelete).toHaveBeenCalledWith({
       id: clienteId,
     });
-
   });
 
   it('deve buscar um cliente por id', async () => {
-
     // Arrange
 
     mockClienteModel.findOne.mockResolvedValue(Promise.resolve(clienteModel));
@@ -145,11 +141,9 @@ describe('ClienteRepository', () => {
       where: { id: clienteId },
     });
     expect(result).toBe(clienteModel);
-
   });
 
   it('deve buscar um cliente por id e retornar nulo', async () => {
-
     // Arrange
 
     mockClienteModel.findOne.mockResolvedValue(null);
@@ -166,11 +160,9 @@ describe('ClienteRepository', () => {
       where: { id: clienteId },
     });
     expect(result).toBe(null);
-
   });
 
   it('deve buscar um cliente por cpf', async () => {
-
     // Arrange
 
     mockClienteModel.findOne.mockResolvedValue(Promise.resolve(clienteModel));
@@ -187,11 +179,9 @@ describe('ClienteRepository', () => {
       where: { cpf: cpfCliente },
     });
     expect(result).toBe(clienteModel);
-
   });
 
   it('deve buscar um cliente por cpf e retornar nulo', async () => {
-
     // Arrange
 
     mockClienteModel.findOne.mockResolvedValue(null);
@@ -208,11 +198,9 @@ describe('ClienteRepository', () => {
       where: { cpf: cpfCliente },
     });
     expect(result).toBe(null);
-
   });
 
   it('deve listar todos clientes', async () => {
-
     // Arrange
 
     const listaClientes = [clienteModel, clienteModel, clienteModel];
@@ -226,11 +214,9 @@ describe('ClienteRepository', () => {
 
     expect(mockClienteModel.find).toHaveBeenCalledWith({});
     expect(result).toBe(listaClientes);
-
   });
 
   it('deve retornar uma lista vazia de clientes', async () => {
-
     // Arrange
 
     const listaClientes = [];
@@ -244,7 +230,5 @@ describe('ClienteRepository', () => {
 
     expect(mockClienteModel.find).toHaveBeenCalledWith({});
     expect(result).toEqual(listaClientes);
-
   });
-
 });

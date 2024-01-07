@@ -1,5 +1,5 @@
-import { ProdutoEntity } from './produto.entity';
-import { ClienteEntity } from './cliente.entity';
+import { ProdutoEntity } from '../produto/produto.entity';
+import { ClienteEntity } from '../cliente/cliente.entity';
 import { StatusPedido } from 'src/utils/pedido.enum';
 
 export class PedidoEntity {

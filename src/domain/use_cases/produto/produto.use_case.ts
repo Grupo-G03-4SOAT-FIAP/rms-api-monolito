@@ -27,25 +27,31 @@ export class ProdutoUseCase implements IProdutoUseCase {
     private readonly categoriaRepository: ICategoriaRepository,
     @Inject(IProdutoFactory)
     private readonly produtoFactory: IProdutoFactory,
-  ) { }
+  ) {}
 
-  async criarProduto(criaProdutoDTO: CriaProdutoDTO): Promise<HTTPResponse<ProdutoDTO>> {
-    const nomeProduto = new ToCapitalizeString(criaProdutoDTO.nome).input
-    
+  async criarProduto(
+    criaProdutoDTO: CriaProdutoDTO,
+  ): Promise<HTTPResponse<ProdutoDTO>> {
+    const nomeProduto = new ToCapitalizeString(criaProdutoDTO.nome).input;
     const buscaProduto =
       await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
     if (buscaProduto) {
       throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
 
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(criaProdutoDTO.categoriaId);
+    const buscaCategoria = await this.categoriaRepository.buscarCategoriaPorId(
+      criaProdutoDTO.categoriaId,
+    );
     if (!buscaCategoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
 
     // factory para criar a entidade produto
-    const produtoEntity = await this.produtoFactory.criarEntidadeProdutoFromCriaProdutoDTO(buscaCategoria, criaProdutoDTO);
+    const produtoEntity =
+      await this.produtoFactory.criarEntidadeProdutoFromCriaProdutoDTO(
+        buscaCategoria,
+        criaProdutoDTO,
+      );
 
     const result = await this.produtoRepository.criarProduto(produtoEntity);
 
@@ -79,7 +85,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     }
 
     if (atualizaProdutoDTO.nome) {
-      const nomeProduto = new ToCapitalizeString(atualizaProdutoDTO.nome).input
+      const nomeProduto = new ToCapitalizeString(atualizaProdutoDTO.nome).input;
       const buscaProdutoPorNome =
         await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
       if (buscaProdutoPorNome) {
@@ -90,7 +96,9 @@ export class ProdutoUseCase implements IProdutoUseCase {
     let categoriaModel = buscaProdutoPorId.categoria;
     if (atualizaProdutoDTO.categoriaId) {
       const buscaCategoria =
-        await this.categoriaRepository.buscarCategoriaPorId(atualizaProdutoDTO.categoriaId);
+        await this.categoriaRepository.buscarCategoriaPorId(
+          atualizaProdutoDTO.categoriaId,
+        );
       if (!buscaCategoria) {
         throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
       }
@@ -98,7 +106,11 @@ export class ProdutoUseCase implements IProdutoUseCase {
     }
 
     // factory para criar a entidade produto
-    const produtoEntity = await this.produtoFactory.criarEntidadeProdutoFromAtualizaProdutoDTO(categoriaModel, atualizaProdutoDTO);
+    const produtoEntity =
+      await this.produtoFactory.criarEntidadeProdutoFromAtualizaProdutoDTO(
+        categoriaModel,
+        atualizaProdutoDTO,
+      );
 
     const result = await this.produtoRepository.editarProduto(
       produtoId,

@@ -1,9 +1,9 @@
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 import { Repository } from 'typeorm';
 import { CategoriaModel } from '../../models/categoria.model';
 import { CategoriaRepository } from './categoria.repository';
+import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 
 const categoriaEntity = new CategoriaEntity(
   'Lanche',
@@ -60,7 +60,6 @@ describe('CategoriaRepository', () => {
   });
 
   it('deve criar uma categoria', async () => {
-
     // Arrange
 
     mockCategoriaModel.create.mockReturnValue(categoriaModel);
@@ -75,11 +74,9 @@ describe('CategoriaRepository', () => {
     expect(mockCategoriaModel.create).toHaveBeenCalledWith(categoriaEntity);
     expect(mockCategoriaModel.save).toHaveBeenCalledWith(categoriaModel);
     expect(result).toBe(categoriaModel);
-
   });
 
   it('deve editar uma categoria', async () => {
-
     // Arrange
 
     mockCategoriaModel.findOne.mockResolvedValue(
@@ -105,11 +102,9 @@ describe('CategoriaRepository', () => {
       where: { id: categoriaId },
     });
     expect(result).toBe(categoriaModel);
-
   });
 
   it('deve excluir uma categoria no formato softdelete', async () => {
-
     // Arrange
 
     const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -130,11 +125,9 @@ describe('CategoriaRepository', () => {
     expect(categoriaRepositoryMock.softDelete).toHaveBeenCalledWith({
       id: categoriaId,
     });
-
   });
 
   it('deve buscar uma categoria por id', async () => {
-
     // Arrange
 
     mockCategoriaModel.findOne.mockResolvedValue(
@@ -153,11 +146,9 @@ describe('CategoriaRepository', () => {
       where: { id: categoriaId },
     });
     expect(result).toBe(categoriaModel);
-
   });
 
   it('deve buscar uma categoria por id e retornar nulo', async () => {
-
     // Arrange
 
     mockCategoriaModel.findOne.mockResolvedValue(null);
@@ -174,11 +165,9 @@ describe('CategoriaRepository', () => {
       where: { id: categoriaId },
     });
     expect(result).toBe(null);
-
   });
 
   it('deve buscar uma categoria por nome', async () => {
-
     // Arrange
 
     mockCategoriaModel.findOne.mockResolvedValue(
@@ -189,7 +178,8 @@ describe('CategoriaRepository', () => {
 
     // Act
 
-    const result = await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
+    const result =
+      await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
 
     // Assert
 
@@ -197,11 +187,9 @@ describe('CategoriaRepository', () => {
       where: { nome: nomeCategoria },
     });
     expect(result).toBe(categoriaModel);
-
   });
 
   it('deve buscar uma categoria por nome e retornar nulo', async () => {
-
     // Arrange
 
     mockCategoriaModel.findOne.mockResolvedValue(null);
@@ -210,7 +198,8 @@ describe('CategoriaRepository', () => {
 
     // Act
 
-    const result = await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
+    const result =
+      await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
 
     // Assert
 
@@ -218,11 +207,9 @@ describe('CategoriaRepository', () => {
       where: { nome: nomeCategoria },
     });
     expect(result).toBe(null);
-
   });
 
   it('deve listar todas categorias', async () => {
-
     // Arrange
 
     const listaCategorias = [categoriaModel, categoriaModel, categoriaModel];
@@ -236,11 +223,9 @@ describe('CategoriaRepository', () => {
 
     expect(mockCategoriaModel.find).toHaveBeenCalledWith({});
     expect(result).toBe(listaCategorias);
-
   });
 
   it('deve retornar uma lista vazia de categorias', async () => {
-
     // Arrange
 
     const listaCategorias = [];
@@ -254,7 +239,5 @@ describe('CategoriaRepository', () => {
 
     expect(mockCategoriaModel.find).toHaveBeenCalledWith({});
     expect(result).toEqual(listaCategorias);
-
   });
-
 });
