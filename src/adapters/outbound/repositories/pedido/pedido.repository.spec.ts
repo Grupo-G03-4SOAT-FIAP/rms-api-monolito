@@ -44,7 +44,7 @@ describe('PedidoRepository', () => {
 
   it('deve editar o status de um pedido', async () => {
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    const novoStatusPedido = 'Recebido';
+    const novoStatusPedido = 'recebido';
 
     pedidoModelMock.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
 
@@ -103,12 +103,16 @@ describe('PedidoRepository', () => {
           StatusPedido.RECEBIDO,
         ]),
       },
+      order: {
+        statusPedido: 'ASC',
+        criadoEm: 'ASC',
+      },
       relations: ['cliente'],
     });
     expect(result).toBe(listaPedidos);
   });
 
-  it('deve retornar uma lista vazia de pedidos prontos e em preparação', async () => {
+  it('deve retornar uma lista vazia de pedidos', async () => {
     const listaPedidos = [];
     pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
@@ -121,6 +125,10 @@ describe('PedidoRepository', () => {
           StatusPedido.EM_PREPARACAO,
           StatusPedido.RECEBIDO,
         ]),
+      },
+      order: {
+        statusPedido: 'ASC',
+        criadoEm: 'ASC',
       },
       relations: ['cliente'],
     });

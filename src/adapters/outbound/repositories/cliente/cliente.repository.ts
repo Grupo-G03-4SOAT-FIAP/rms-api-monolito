@@ -1,4 +1,4 @@
-import { ClienteEntity } from 'src/domain/entities/cliente.entity';
+import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
 import { ClienteModel } from '../../models/cliente.model';
 import { InjectRepository } from '@nestjs/typeorm';

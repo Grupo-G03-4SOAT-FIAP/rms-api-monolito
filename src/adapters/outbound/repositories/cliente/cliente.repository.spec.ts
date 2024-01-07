@@ -1,7 +1,7 @@
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Repository } from 'typeorm';
-import { ClienteEntity } from 'src/domain/entities/cliente.entity';
+import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import { ClienteModel } from '../../models/cliente.model';
 import { ClienteRepository } from './cliente.repository';
 

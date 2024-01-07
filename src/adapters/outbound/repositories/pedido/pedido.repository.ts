@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PedidoEntity } from 'src/domain/entities/pedido.entity';
+import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { PedidoModel } from '../../models/pedido.model';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -54,6 +54,10 @@ export class PedidoRepository implements IPedidoRepository {
           StatusPedido.EM_PREPARACAO,
           StatusPedido.RECEBIDO,
         ]),
+      },
+      order: {
+        statusPedido: 'ASC', // Ordenação alfabética para garantir consistência
+        criadoEm: 'ASC', // Ordene por criadoEm em ordem crescente (do mais antigo ao mais recente)
       },
       relations: ['cliente'],
     });

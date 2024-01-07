@@ -1,9 +1,9 @@
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
 import { Repository } from 'typeorm';
 import { CategoriaModel } from '../../models/categoria.model';
 import { CategoriaRepository } from './categoria.repository';
+import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 
 const categoriaEntity = new CategoriaEntity(
   'Lanche',

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CategoriaEntity } from '../../entities/categoria.entity';
-import { ProdutoEntity } from '../../entities/produto.entity';
+import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
+import { ProdutoEntity } from '../../entities/produto/produto.entity';
 import { IProdutoFactory } from '../../ports/produto/produto.factory.port';
 import {
   AtualizaProdutoDTO,

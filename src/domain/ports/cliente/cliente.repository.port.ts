@@ -1,5 +1,5 @@
 import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
-import { ClienteEntity } from 'src/domain/entities/cliente.entity';
+import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 
 export interface IClienteRepository {
   criarCliente(cliente: ClienteEntity): Promise<ClienteModel>;

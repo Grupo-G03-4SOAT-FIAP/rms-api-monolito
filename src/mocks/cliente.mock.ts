@@ -1,6 +1,6 @@
 import { ClienteDTO } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
 import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
-import { ClienteEntity } from 'src/domain/entities/cliente.entity';
+import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 
 const clienteModel = new ClienteModel();
 clienteModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -33,10 +33,10 @@ const makeClienteDTO = (
 };
 
 const clienteDTO = makeClienteDTO(
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-  'Jhon',
-  'jhon@teste.com.br',
-  '83904665030',
+  clienteModel.id,
+  clienteModel.nome,
+  clienteModel.email,
+  clienteModel.cpf,
 );
 
 export { clienteModel, clienteEntity, clienteDTO };

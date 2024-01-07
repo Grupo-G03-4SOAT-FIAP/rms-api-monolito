@@ -1,4 +1,4 @@
-import { CategoriaEntity } from './categoria.entity';
+import { CategoriaEntity } from '../categoria/categoria.entity';
 import { ProdutoEntity } from './produto.entity';
 
 describe('Produto Entity', () => {

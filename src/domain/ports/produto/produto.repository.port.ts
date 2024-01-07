@@ -1,5 +1,5 @@
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
-import { ProdutoEntity } from 'src/domain/entities/produto.entity';
+import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
 
 export interface IProdutoRepository {
   criarProduto(produto: ProdutoEntity): Promise<ProdutoModel>;

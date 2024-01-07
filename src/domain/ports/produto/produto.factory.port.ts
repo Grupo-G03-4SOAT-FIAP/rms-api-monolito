@@ -3,7 +3,7 @@ import {
   CriaProdutoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
-import { ProdutoEntity } from 'src/domain/entities/produto.entity';
+import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
 
 export interface IProdutoFactory {
   criarEntidadeProdutoFromCriaProdutoDTO(

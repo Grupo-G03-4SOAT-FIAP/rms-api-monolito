@@ -1,10 +1,6 @@
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
-import { ProdutoEntity } from 'src/domain/entities/produto.entity';
-import {
-  categoriaEntity,
-  categoriaModel,
-  categoriaDTO,
-} from './categoria.mock';
+import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
+import { categoriaEntity, categoriaModel } from './categoria.mock';
 import { ProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
 import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 
@@ -47,12 +43,12 @@ const makeProdutoDTO = (
 };
 
 const produtoDTO = makeProdutoDTO(
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-  'Produto X',
-  'Teste produto x',
-  5.0,
-  'http://',
-  categoriaDTO,
+  produtoModel.id,
+  produtoModel.nome,
+  produtoModel.descricao,
+  produtoModel.valorUnitario,
+  produtoModel.imagemUrl,
+  produtoModel.categoria,
 );
 
 export { produtoModel, produtoEntity, produtoDTO };

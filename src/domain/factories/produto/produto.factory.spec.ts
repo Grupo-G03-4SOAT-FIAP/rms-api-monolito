@@ -4,8 +4,8 @@ import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
-import { ProdutoEntity } from '../../entities/produto.entity';
-import { CategoriaEntity } from '../../entities/categoria.entity';
+import { ProdutoEntity } from '../../entities/produto/produto.entity';
+import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
 
 const categoriaModel = new CategoriaModel();
 categoriaModel.id = '1a14aa4e-75e7-405f-8301-81f60646c93c';

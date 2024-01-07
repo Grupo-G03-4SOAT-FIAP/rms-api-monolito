@@ -1,11 +1,11 @@
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProdutoEntity } from 'src/domain/entities/produto.entity';
-import { CategoriaEntity } from 'src/domain/entities/categoria.entity';
+import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
 import { Repository } from 'typeorm';
 import { ProdutoModel } from '../../models/produto.model';
 import { CategoriaModel } from '../../models/categoria.model';
 import { ProdutoRepository } from './produto.repository';
+import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 
 const categoriaEntity = new CategoriaEntity(
   'Lanche',

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ICategoriaUseCase } from '../../../domain/ports/categoria/categoria.use_case.port';
 import { ICategoriaRepository } from '../../../domain/ports/categoria/categoria.repository.port';
-import { CategoriaEntity } from '../../../domain/entities/categoria.entity';
+import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,

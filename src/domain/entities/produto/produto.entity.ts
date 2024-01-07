@@ -1,5 +1,5 @@
 import { ToCapitalizeString } from 'src/utils/capitalize_string';
-import { CategoriaEntity } from './categoria.entity';
+import { CategoriaEntity } from '../categoria/categoria.entity';
 
 export class ProdutoEntity {
   private _nome: string;
