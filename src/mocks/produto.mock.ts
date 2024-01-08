@@ -1,23 +1,24 @@
+import { Repository } from 'typeorm';
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
 import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
-import { categoriaEntity, categoriaModel } from './categoria.mock';
+import { categoriaEntityMock, categoriaModelMock } from './categoria.mock';
 import { ProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
 import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 
-const produtoModel = new ProdutoModel();
-produtoModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-produtoModel.nome = 'Produto X';
-produtoModel.descricao = 'Teste produto x';
-produtoModel.valorUnitario = 5.0;
-produtoModel.imagemUrl = 'http://';
-produtoModel.categoria = categoriaModel;
-produtoModel.criadoEm = new Date().toISOString();
-produtoModel.atualizadoEm = new Date().toISOString();
-produtoModel.excluidoEm = new Date().toISOString();
+const produtoModelMock = new ProdutoModel();
+produtoModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+produtoModelMock.nome = 'Produto X';
+produtoModelMock.descricao = 'Teste produto x';
+produtoModelMock.valorUnitario = 5.0;
+produtoModelMock.imagemUrl = 'http://';
+produtoModelMock.categoria = categoriaModelMock;
+produtoModelMock.criadoEm = new Date().toISOString();
+produtoModelMock.atualizadoEm = new Date().toISOString();
+produtoModelMock.excluidoEm = new Date().toISOString();
 
-const produtoEntity = new ProdutoEntity(
+const produtoEntityMock = new ProdutoEntity(
   'Produto X',
-  categoriaEntity,
+  categoriaEntityMock,
   5.0,
   'http://',
   'Teste produto x',
@@ -42,13 +43,29 @@ const makeProdutoDTO = (
   return produtoDTO;
 };
 
-const produtoDTO = makeProdutoDTO(
-  produtoModel.id,
-  produtoModel.nome,
-  produtoModel.descricao,
-  produtoModel.valorUnitario,
-  produtoModel.imagemUrl,
-  produtoModel.categoria,
+const produtoDTOMock = makeProdutoDTO(
+  produtoModelMock.id,
+  produtoModelMock.nome,
+  produtoModelMock.descricao,
+  produtoModelMock.valorUnitario,
+  produtoModelMock.imagemUrl,
+  produtoModelMock.categoria,
 );
 
-export { produtoModel, produtoEntity, produtoDTO };
+const produtoTypeORMMock: jest.Mocked<Repository<ProdutoModel>> = {
+  create: jest.fn(),
+  save: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
+  findOne: jest.fn(),
+  find: jest.fn(),
+} as Partial<jest.Mocked<Repository<ProdutoModel>>> as jest.Mocked<
+  Repository<ProdutoModel>
+>;
+
+export {
+  produtoModelMock,
+  produtoEntityMock,
+  produtoDTOMock,
+  produtoTypeORMMock,
+};

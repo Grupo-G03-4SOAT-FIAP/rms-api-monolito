@@ -5,9 +5,9 @@ import { PedidoModel } from '../../models/pedido.model';
 import { In } from 'typeorm';
 import { StatusPedido } from 'src/utils/pedido.enum';
 import {
-  pedidoModel,
-  pedidoEntity,
   pedidoModelMock,
+  pedidoEntityMock,
+  pedidoTypeORMMock,
 } from 'src/mocks/pedido.mock';
 
 describe('PedidoRepository', () => {
@@ -19,7 +19,7 @@ describe('PedidoRepository', () => {
         PedidoRepository,
         {
           provide: getRepositoryToken(PedidoModel),
-          useValue: pedidoModelMock,
+          useValue: pedidoTypeORMMock,
         },
       ],
     }).compile();
@@ -32,57 +32,61 @@ describe('PedidoRepository', () => {
   });
 
   it('deve criar um pedido', async () => {
-    pedidoModelMock.create.mockReturnValue(pedidoModel);
-    pedidoModelMock.save.mockResolvedValue(Promise.resolve(pedidoModel));
+    pedidoTypeORMMock.create.mockReturnValue(pedidoModelMock);
+    pedidoTypeORMMock.save.mockResolvedValue(Promise.resolve(pedidoModelMock));
 
-    const result = await pedidoRepository.criarPedido(pedidoEntity);
+    const result = await pedidoRepository.criarPedido(pedidoEntityMock);
 
-    expect(pedidoModelMock.create).toHaveBeenCalledWith(pedidoEntity);
-    expect(pedidoModelMock.save).toHaveBeenCalledWith(pedidoModel);
-    expect(result).toBe(pedidoModel);
+    expect(pedidoTypeORMMock.create).toHaveBeenCalledWith(pedidoEntityMock);
+    expect(pedidoTypeORMMock.save).toHaveBeenCalledWith(pedidoModelMock);
+    expect(result).toBe(pedidoModelMock);
   });
 
   it('deve editar o status de um pedido', async () => {
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const novoStatusPedido = 'recebido';
 
-    pedidoModelMock.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
+    pedidoTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(pedidoModelMock),
+    );
 
     const result = await pedidoRepository.editarStatusPedido(
       pedidoId,
       novoStatusPedido,
     );
 
-    expect(pedidoModelMock.update).toHaveBeenCalledWith(pedidoId, {
+    expect(pedidoTypeORMMock.update).toHaveBeenCalledWith(pedidoId, {
       statusPedido: novoStatusPedido,
     });
-    expect(pedidoModelMock.findOne).toHaveBeenCalledWith({
+    expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
-    expect(result).toBe(pedidoModel);
+    expect(result).toBe(pedidoModelMock);
   });
 
   it('deve buscar um pedido por id', async () => {
-    pedidoModelMock.findOne.mockResolvedValue(Promise.resolve(pedidoModel));
+    pedidoTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(pedidoModelMock),
+    );
 
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const result = await pedidoRepository.buscarPedido(pedidoId);
 
-    expect(pedidoModelMock.findOne).toHaveBeenCalledWith({
+    expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
-    expect(result).toBe(pedidoModel);
+    expect(result).toBe(pedidoModelMock);
   });
 
   it('deve buscar um pedido por id e retornar nulo', async () => {
-    pedidoModelMock.findOne.mockResolvedValue(null);
+    pedidoTypeORMMock.findOne.mockResolvedValue(null);
 
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const result = await pedidoRepository.buscarPedido(pedidoId);
 
-    expect(pedidoModelMock.findOne).toHaveBeenCalledWith({
+    expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: ['cliente'],
     });
@@ -90,12 +94,12 @@ describe('PedidoRepository', () => {
   });
 
   it('deve listar pedidos', async () => {
-    const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
-    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
+    const listaPedidos = [pedidoModelMock, pedidoModelMock, pedidoModelMock];
+    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidos();
 
-    expect(pedidoModelMock.find).toHaveBeenCalledWith({
+    expect(pedidoTypeORMMock.find).toHaveBeenCalledWith({
       where: {
         statusPedido: In([
           StatusPedido.PRONTO,
@@ -114,11 +118,11 @@ describe('PedidoRepository', () => {
 
   it('deve retornar uma lista vazia de pedidos', async () => {
     const listaPedidos = [];
-    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
+    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidos();
 
-    expect(pedidoModelMock.find).toHaveBeenCalledWith({
+    expect(pedidoTypeORMMock.find).toHaveBeenCalledWith({
       where: {
         statusPedido: In([
           StatusPedido.PRONTO,
@@ -136,12 +140,12 @@ describe('PedidoRepository', () => {
   });
 
   it('deve listar fila de pedidos recebidos', async () => {
-    const listaPedidos = [pedidoModel, pedidoModel, pedidoModel];
-    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
+    const listaPedidos = [pedidoModelMock, pedidoModelMock, pedidoModelMock];
+    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidosRecebido();
 
-    expect(pedidoModelMock.find).toHaveBeenCalledWith({
+    expect(pedidoTypeORMMock.find).toHaveBeenCalledWith({
       where: {
         statusPedido: StatusPedido.RECEBIDO,
       },
@@ -155,11 +159,11 @@ describe('PedidoRepository', () => {
 
   it('deve retornar uma lista vazia de pedidos recebidos', async () => {
     const listaPedidos = [];
-    pedidoModelMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
+    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
 
     const result = await pedidoRepository.listarPedidosRecebido();
 
-    expect(pedidoModelMock.find).toHaveBeenCalledWith({
+    expect(pedidoTypeORMMock.find).toHaveBeenCalledWith({
       where: {
         statusPedido: StatusPedido.RECEBIDO,
       },

@@ -5,11 +5,11 @@ import { PedidoUseCase } from './pedido.use_case';
 import {
   pedidoFactoryMock,
   pedidoRepositoryMock,
-  pedidoModel,
-  pedidoEntity,
-  criaPedidoDTO,
-  atualizaPedidoDTO,
-  pedidoDTO,
+  pedidoModelMock,
+  pedidoEntityMock,
+  criaPedidoDTOMock,
+  atualizaPedidoDTOMock,
+  pedidoDTOMock,
 } from 'src/mocks/pedido.mock';
 
 describe('PedidoUseCase', () => {
@@ -38,40 +38,42 @@ describe('PedidoUseCase', () => {
   });
 
   it('deve criar um pedido', async () => {
-    pedidoFactoryMock.criarEntidadePedido.mockReturnValue(pedidoEntity);
-    pedidoRepositoryMock.criarPedido.mockReturnValue(pedidoModel);
+    pedidoFactoryMock.criarEntidadePedido.mockReturnValue(pedidoEntityMock);
+    pedidoRepositoryMock.criarPedido.mockReturnValue(pedidoModelMock);
 
-    const result = await pedidoUseCase.criarPedido(criaPedidoDTO);
+    const result = await pedidoUseCase.criarPedido(criaPedidoDTOMock);
 
     expect(pedidoFactoryMock.criarEntidadePedido).toHaveBeenCalledWith(
-      criaPedidoDTO,
+      criaPedidoDTOMock,
     );
-    expect(pedidoRepositoryMock.criarPedido).toHaveBeenCalledWith(pedidoEntity);
+    expect(pedidoRepositoryMock.criarPedido).toHaveBeenCalledWith(
+      pedidoEntityMock,
+    );
     expect(result).toStrictEqual({
       mensagem: 'Pedido criado com sucesso',
-      body: pedidoDTO,
+      body: pedidoDTOMock,
     });
   });
 
   it('deve editar o status de um pedido', async () => {
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 
-    pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModel);
-    pedidoRepositoryMock.editarStatusPedido.mockReturnValue(pedidoModel);
+    pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModelMock);
+    pedidoRepositoryMock.editarStatusPedido.mockReturnValue(pedidoModelMock);
 
     const result = await pedidoUseCase.editarPedido(
       pedidoId,
-      atualizaPedidoDTO,
+      atualizaPedidoDTOMock,
     );
 
     expect(pedidoRepositoryMock.buscarPedido).toHaveBeenCalledWith(pedidoId);
     expect(pedidoRepositoryMock.editarStatusPedido).toHaveBeenCalledWith(
       pedidoId,
-      atualizaPedidoDTO.statusPedido,
+      atualizaPedidoDTOMock.statusPedido,
     );
     expect(result).toStrictEqual({
       mensagem: 'Pedido atualizado com sucesso',
-      body: pedidoDTO,
+      body: pedidoDTOMock,
     });
   });
 
@@ -81,7 +83,7 @@ describe('PedidoUseCase', () => {
     pedidoRepositoryMock.buscarPedido.mockReturnValue(null);
 
     await expect(
-      pedidoUseCase.editarPedido(pedidoId, atualizaPedidoDTO),
+      pedidoUseCase.editarPedido(pedidoId, atualizaPedidoDTOMock),
     ).rejects.toThrow('Pedido informado não existe');
     expect(pedidoRepositoryMock.buscarPedido).toHaveBeenCalledWith(pedidoId);
   });
@@ -89,12 +91,12 @@ describe('PedidoUseCase', () => {
   it('deve buscar um pedido por id', async () => {
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 
-    pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModel);
+    pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModelMock);
 
     const result = await pedidoUseCase.buscarPedido(pedidoId);
 
     expect(pedidoRepositoryMock.buscarPedido).toHaveBeenCalledWith(pedidoId);
-    expect(result).toStrictEqual(pedidoDTO);
+    expect(result).toStrictEqual(pedidoDTOMock);
   });
 
   it('deve buscar um pedido por id, pedido informado não existe', async () => {
@@ -109,12 +111,12 @@ describe('PedidoUseCase', () => {
   });
 
   it('deve listar pedidos', async () => {
-    pedidoRepositoryMock.listarPedidos.mockReturnValue([pedidoModel]);
+    pedidoRepositoryMock.listarPedidos.mockReturnValue([pedidoModelMock]);
 
     const result = await pedidoUseCase.listarPedidos();
 
     expect(pedidoRepositoryMock.listarPedidos).toHaveBeenCalledWith();
-    expect(result).toStrictEqual([pedidoDTO]);
+    expect(result).toStrictEqual([pedidoDTOMock]);
   });
 
   it('deve retornar uma lista vazia de pedidos', async () => {
@@ -127,12 +129,14 @@ describe('PedidoUseCase', () => {
   });
 
   it('deve listar fila de pedidos recebidos', async () => {
-    pedidoRepositoryMock.listarPedidosRecebido.mockReturnValue([pedidoModel]);
+    pedidoRepositoryMock.listarPedidosRecebido.mockReturnValue([
+      pedidoModelMock,
+    ]);
 
     const result = await pedidoUseCase.listarPedidosRecebido();
 
     expect(pedidoRepositoryMock.listarPedidosRecebido).toHaveBeenCalledWith();
-    expect(result).toStrictEqual([pedidoDTO]);
+    expect(result).toStrictEqual([pedidoDTOMock]);
   });
 
   it('deve retornar uma lista vazia de pedidos recebidos', async () => {

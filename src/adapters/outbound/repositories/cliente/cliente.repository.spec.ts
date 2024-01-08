@@ -1,54 +1,29 @@
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Repository } from 'typeorm';
-import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import { ClienteModel } from '../../models/cliente.model';
 import { ClienteRepository } from './cliente.repository';
+import {
+  clienteTypeORMMock,
+  clienteModelMock,
+  clienteEntityMock,
+} from 'src/mocks/cliente.mock';
 
-const clienteEntity = new ClienteEntity(
-  'Jhon',
-  'jhon@teste.com.br',
-  '83904665030',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-);
-
-const clienteModel = new ClienteModel();
-clienteModel.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-clienteModel.nome = 'Cliente A';
-clienteModel.email = 'clientea@teste.com.br';
-clienteModel.cpf = '83904665030';
-clienteModel.criadoEm = new Date().toISOString();
-clienteModel.atualizadoEm = new Date().toISOString();
-clienteModel.excluidoEm = new Date().toISOString();
-
-class ClienteRepositoryMock {
+class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
 }
 
-const clienteRepositoryMock = new ClienteRepositoryMock();
+const clienteSoftDeleteMock = new softDeleteMock();
 
 describe('ClienteRepository', () => {
   let clienteRepository: ClienteRepository;
-  let mockClienteModel: jest.Mocked<Repository<ClienteModel>>;
 
   beforeEach(async () => {
-    mockClienteModel = {
-      create: jest.fn(),
-      save: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      findOne: jest.fn(),
-      find: jest.fn(),
-    } as Partial<Repository<ClienteModel>> as jest.Mocked<
-      Repository<ClienteModel>
-    >;
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ClienteRepository,
         {
           provide: getRepositoryToken(ClienteModel),
-          useValue: mockClienteModel,
+          useValue: clienteTypeORMMock,
         },
       ],
     }).compile();
@@ -61,174 +36,125 @@ describe('ClienteRepository', () => {
   });
 
   it('deve criar um cliente', async () => {
-    // Arrange
+    clienteTypeORMMock.create.mockReturnValue(clienteModelMock);
+    clienteTypeORMMock.save.mockResolvedValue(
+      Promise.resolve(clienteModelMock),
+    );
 
-    mockClienteModel.create.mockReturnValue(clienteModel);
-    mockClienteModel.save.mockResolvedValue(Promise.resolve(clienteModel));
+    const result = await clienteRepository.criarCliente(clienteEntityMock);
 
-    // Act
-
-    const result = await clienteRepository.criarCliente(clienteEntity);
-
-    // Assert
-
-    expect(mockClienteModel.create).toHaveBeenCalledWith(clienteEntity);
-    expect(mockClienteModel.save).toHaveBeenCalledWith(clienteModel);
-    expect(result).toBe(clienteModel);
+    expect(clienteTypeORMMock.create).toHaveBeenCalledWith(clienteEntityMock);
+    expect(clienteTypeORMMock.save).toHaveBeenCalledWith(clienteModelMock);
+    expect(result).toBe(clienteModelMock);
   });
 
   it('deve editar um cliente', async () => {
-    // Arrange
-
-    mockClienteModel.findOne.mockResolvedValue(Promise.resolve(clienteModel));
+    clienteTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(clienteModelMock),
+    );
 
     const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
-    // Act
 
     const result = await clienteRepository.editarCliente(
       clienteId,
-      clienteEntity,
+      clienteEntityMock,
     );
 
-    // Assert
-
-    expect(mockClienteModel.update).toHaveBeenCalledWith(
+    expect(clienteTypeORMMock.update).toHaveBeenCalledWith(
       clienteId,
-      clienteEntity,
+      clienteEntityMock,
     );
-    expect(mockClienteModel.findOne).toHaveBeenCalledWith({
+    expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(result).toBe(clienteModel);
+    expect(result).toBe(clienteModelMock);
   });
 
   it('deve excluir um cliente no formato softdelete', async () => {
-    // Arrange
-
     const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    clienteSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
-    // Configurar o mock da função softDelete
-    clienteRepositoryMock.softDelete.mockResolvedValue({ affected: 1 });
-
-    const clienteService = new ClienteRepository(clienteRepositoryMock as any); // Usar "any" para evitar problemas de tipo
-
-    // Act
+    const clienteService = new ClienteRepository(clienteSoftDeleteMock as any); // Usar "any" para evitar problemas de tipo
 
     await clienteService.excluirCliente(clienteId);
 
-    // Assert
-
-    expect(clienteRepositoryMock.softDelete).toHaveBeenCalledWith({
+    expect(clienteSoftDeleteMock.softDelete).toHaveBeenCalledWith({
       id: clienteId,
     });
   });
 
   it('deve buscar um cliente por id', async () => {
-    // Arrange
-
-    mockClienteModel.findOne.mockResolvedValue(Promise.resolve(clienteModel));
-
+    clienteTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(clienteModelMock),
+    );
     const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
-    // Act
-
     const result = await clienteRepository.buscarClientePorId(clienteId);
 
-    // Assert
-
-    expect(mockClienteModel.findOne).toHaveBeenCalledWith({
+    expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(result).toBe(clienteModel);
+    expect(result).toBe(clienteModelMock);
   });
 
   it('deve buscar um cliente por id e retornar nulo', async () => {
-    // Arrange
-
-    mockClienteModel.findOne.mockResolvedValue(null);
+    clienteTypeORMMock.findOne.mockResolvedValue(null);
 
     const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
-    // Act
-
     const result = await clienteRepository.buscarClientePorId(clienteId);
 
-    // Assert
-
-    expect(mockClienteModel.findOne).toHaveBeenCalledWith({
+    expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
     expect(result).toBe(null);
   });
 
   it('deve buscar um cliente por cpf', async () => {
-    // Arrange
-
-    mockClienteModel.findOne.mockResolvedValue(Promise.resolve(clienteModel));
+    clienteTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(clienteModelMock),
+    );
 
     const cpfCliente = '83904665030';
-
-    // Act
-
     const result = await clienteRepository.buscarClientePorCPF(cpfCliente);
 
-    // Assert
-
-    expect(mockClienteModel.findOne).toHaveBeenCalledWith({
+    expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { cpf: cpfCliente },
     });
-    expect(result).toBe(clienteModel);
+    expect(result).toBe(clienteModelMock);
   });
 
   it('deve buscar um cliente por cpf e retornar nulo', async () => {
-    // Arrange
-
-    mockClienteModel.findOne.mockResolvedValue(null);
+    clienteTypeORMMock.findOne.mockResolvedValue(null);
 
     const cpfCliente = '83904665030';
-
-    // Act
-
     const result = await clienteRepository.buscarClientePorCPF(cpfCliente);
 
-    // Assert
-
-    expect(mockClienteModel.findOne).toHaveBeenCalledWith({
+    expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { cpf: cpfCliente },
     });
     expect(result).toBe(null);
   });
 
   it('deve listar todos clientes', async () => {
-    // Arrange
-
-    const listaClientes = [clienteModel, clienteModel, clienteModel];
-    mockClienteModel.find.mockResolvedValue(Promise.resolve(listaClientes));
-
-    // Act
+    const listaClientes = [
+      clienteModelMock,
+      clienteModelMock,
+      clienteModelMock,
+    ];
+    clienteTypeORMMock.find.mockResolvedValue(Promise.resolve(listaClientes));
 
     const result = await clienteRepository.listarClientes();
 
-    // Assert
-
-    expect(mockClienteModel.find).toHaveBeenCalledWith({});
+    expect(clienteTypeORMMock.find).toHaveBeenCalledWith({});
     expect(result).toBe(listaClientes);
   });
 
   it('deve retornar uma lista vazia de clientes', async () => {
-    // Arrange
-
     const listaClientes = [];
-    mockClienteModel.find.mockResolvedValue(Promise.resolve(listaClientes));
-
-    // Act
+    clienteTypeORMMock.find.mockResolvedValue(Promise.resolve(listaClientes));
 
     const result = await clienteRepository.listarClientes();
 
-    // Assert
-
-    expect(mockClienteModel.find).toHaveBeenCalledWith({});
+    expect(clienteTypeORMMock.find).toHaveBeenCalledWith({});
     expect(result).toEqual(listaClientes);
   });
 });
