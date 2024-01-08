@@ -63,9 +63,20 @@ const produtoTypeORMMock: jest.Mocked<Repository<ProdutoModel>> = {
   Repository<ProdutoModel>
 >;
 
+const produtoRepositoryMock = {
+  criarProduto: jest.fn(),
+  editarProduto: jest.fn(),
+  excluirProduto: jest.fn(),
+  buscarProdutoPorId: jest.fn(),
+  buscarProdutoPorNome: jest.fn(),
+  listarProdutos: jest.fn(),
+  listarProdutosPorCategoria: jest.fn(),
+};
+
 export {
   produtoModelMock,
   produtoEntityMock,
   produtoDTOMock,
   produtoTypeORMMock,
+  produtoRepositoryMock,
 };

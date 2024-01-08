@@ -51,9 +51,19 @@ const clienteTypeORMMock: jest.Mocked<Repository<ClienteModel>> = {
   Repository<ClienteModel>
 >;
 
+const clienteRepositoryMock = {
+  criarCliente: jest.fn(),
+  editarCliente: jest.fn(),
+  excluirCliente: jest.fn(),
+  buscarClientePorId: jest.fn(),
+  buscarClientePorCPF: jest.fn(),
+  listarClientes: jest.fn(),
+};
+
 export {
   clienteModelMock,
   clienteEntityMock,
   clienteDTOMock,
   clienteTypeORMMock,
+  clienteRepositoryMock,
 };
