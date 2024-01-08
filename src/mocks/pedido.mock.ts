@@ -26,7 +26,6 @@ const pedidoEntityMock = new PedidoEntity(
   StatusPedido.RECEBIDO,
   '05012024',
   clienteEntityMock,
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 const makeCriaPedidoDTO = (
@@ -102,6 +101,10 @@ const pedidoFactoryMock = {
   criarEntidadePedido: jest.fn(),
 };
 
+const pedidoServiceMock = {
+  gerarNumeroPedido: jest.fn(),
+};
+
 export {
   pedidoModelMock,
   pedidoEntityMock,
@@ -111,4 +114,5 @@ export {
   pedidoTypeORMMock,
   pedidoRepositoryMock,
   pedidoFactoryMock,
+  pedidoServiceMock,
 };
