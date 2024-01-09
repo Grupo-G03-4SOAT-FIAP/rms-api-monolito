@@ -5,7 +5,7 @@ services:
   db:
     container_name: db
     hostname: db
-    image: postgres:latest
+    image: postgres:16.1
     ports:
       - "5432:5432"
     expose:
