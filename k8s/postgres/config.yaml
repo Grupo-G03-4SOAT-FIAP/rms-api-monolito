@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: rms
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: rms
+  POSTGRES_USER: pguser
+  POSTGRES_PASSWORD: pgpwd
