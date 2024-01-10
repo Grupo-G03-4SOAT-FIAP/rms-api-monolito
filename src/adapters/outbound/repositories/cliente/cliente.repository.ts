@@ -40,6 +40,12 @@ export class ClienteRepository implements IClienteRepository {
     });
   }
 
+  async buscarClientePorEmail(emailCliente: string): Promise<ClienteModel> {
+    return await this.clienteRepository.findOne({
+      where: { email: emailCliente },
+    });
+  }
+
   async listarClientes(): Promise<[] | ClienteModel[]> {
     return await this.clienteRepository.find({});
   }

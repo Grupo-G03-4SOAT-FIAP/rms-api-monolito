@@ -5,6 +5,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  
 } from 'typeorm';
 
 @Entity('clientes')
@@ -15,7 +16,7 @@ export class ClienteModel {
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;
 
-  @Column({ name: 'email', length: 100, nullable: false })
+  @Column({ name: 'email', length: 100, nullable: false, unique: true })
   email: string;
 
   @Column({ name: 'cpf', length: 100, nullable: false, unique: true })

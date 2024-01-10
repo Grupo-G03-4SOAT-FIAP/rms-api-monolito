@@ -28,6 +28,14 @@ export class ClienteUseCase implements IClienteUseCase {
 
     if (cpf) {
       const buscaCliente =
+        await this.clienteRepository.buscarClientePorEmail(email);
+      if (buscaCliente) {
+        throw new ClienteDuplicadoErro('Existe um cliente com esse email');
+      }
+    }
+
+    if (email) {
+      const buscaCliente =
         await this.clienteRepository.buscarClientePorCPF(cpf);
       if (buscaCliente) {
         throw new ClienteDuplicadoErro('Existe um cliente com esse cpf');
