@@ -68,7 +68,7 @@ describe('PedidoFactory', () => {
     expect(result).toStrictEqual([produtoEntityMock]);
   });
 
-  it('deve criar itens do pedido, produto informado não existe', async () => {
+  it('deve criar itens do pedido e retornar ProdutoNaoLocalizadoErro', async () => {
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(null);
 
     await expect(
@@ -91,7 +91,7 @@ describe('PedidoFactory', () => {
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
-  it('deve criar a entidade cliente, cliente undefined', async () => {
+  it('deve criar a entidade cliente com cliente undefined', async () => {
     clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(clienteModelMock);
 
     const result = await pedidoFactory.criarEntidadeCliente();
@@ -99,7 +99,7 @@ describe('PedidoFactory', () => {
     expect(result).toStrictEqual(null);
   });
 
-  it('deve criar a entidade cliente, cliente informado não existe', async () => {
+  it('deve criar a entidade cliente e retornar ClienteNaoLocalizadoErro', async () => {
     clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(null);
 
     await expect(

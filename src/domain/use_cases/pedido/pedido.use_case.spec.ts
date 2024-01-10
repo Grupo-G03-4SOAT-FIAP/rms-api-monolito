@@ -37,7 +37,7 @@ describe('PedidoUseCase', () => {
     jest.clearAllMocks();
   });
 
-  it('deve criar um pedido', async () => {
+  it('deve criar um pedido com sucesso', async () => {
     pedidoFactoryMock.criarEntidadePedido.mockReturnValue(pedidoEntityMock);
     pedidoRepositoryMock.criarPedido.mockReturnValue(pedidoModelMock);
 
@@ -55,7 +55,7 @@ describe('PedidoUseCase', () => {
     });
   });
 
-  it('deve editar o status de um pedido', async () => {
+  it('deve editar o status de um pedido com sucesso', async () => {
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 
     pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModelMock);
@@ -77,7 +77,7 @@ describe('PedidoUseCase', () => {
     });
   });
 
-  it('deve editar o status de um pedido, pedido informado não existe', async () => {
+  it('deve editar o status de um pedido e retornar PedidoNaoLocalizadoErro', async () => {
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93c';
 
     pedidoRepositoryMock.buscarPedido.mockReturnValue(null);
@@ -99,7 +99,7 @@ describe('PedidoUseCase', () => {
     expect(result).toStrictEqual(pedidoDTOMock);
   });
 
-  it('deve buscar um pedido por id, pedido informado não existe', async () => {
+  it('deve buscar um pedido por id e retornar PedidoNaoLocalizadoErro', async () => {
     const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93c';
 
     pedidoRepositoryMock.buscarPedido.mockReturnValue(null);
