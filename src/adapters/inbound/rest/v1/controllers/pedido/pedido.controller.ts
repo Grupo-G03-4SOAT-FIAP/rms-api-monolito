@@ -41,6 +41,11 @@ export class PedidoController {
     description: 'Dados inválidos',
     type: BadRequestError,
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Dados inválidos',
+    type: BadRequestError,
+  })
   async checkout(@Body() pedido: CriaPedidoDTO) {
     try {
       return await this.pedidoUseCase.criarPedido(pedido);
