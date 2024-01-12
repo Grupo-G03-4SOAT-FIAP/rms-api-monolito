@@ -6,8 +6,8 @@ import {
   pedidoDTOMock,
   pedidoUseCaseMock,
 } from 'src/mocks/pedido.mock';
-import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
 import { NotFoundException } from '@nestjs/common';
+import { ClienteNaoLocalizadoErro } from 'src/domain/exceptions/cliente.exception';
 
 describe('PedidoController', () => {
   let pedidoController: PedidoController;
@@ -40,12 +40,15 @@ describe('PedidoController', () => {
 
     const result = await pedidoController.checkout(criaPedidoDTOMock);
 
+    expect(pedidoUseCaseMock.criarPedido).toHaveBeenCalledWith(
+      criaPedidoDTOMock,
+    );
     expect(result).toBe(HTTPResponse);
   });
 
-  it('deve fazer checkout de pedido e retornar NotFoundException', async () => {
-    pedidoUseCaseMock.criarPedido.mockReturnValue(
-      new PedidoNaoLocalizadoErro('Cliente informado não existe'),
+  it('deve fazer checkout de pedido e retornar NotFoundError', async () => {
+    pedidoUseCaseMock.criarPedido.mockRejectedValue(
+      new ClienteNaoLocalizadoErro('Cliente informado não existe'),
     );
 
     await expect(pedidoController.checkout(criaPedidoDTOMock)).rejects.toThrow(
@@ -54,5 +57,14 @@ describe('PedidoController', () => {
     expect(pedidoUseCaseMock.criarPedido).toHaveBeenCalledWith(
       criaPedidoDTOMock,
     );
+  });
+
+  it('deve listar todos os pedidos recebidos', async () => {
+    pedidoUseCaseMock.listarPedidosRecebido.mockResolvedValue([pedidoDTOMock]);
+
+    const result = await pedidoController.fila();
+
+    expect(result).toStrictEqual([pedidoDTOMock]);
+    expect(pedidoUseCaseMock.listarPedidosRecebido).toHaveBeenCalled();
   });
 });

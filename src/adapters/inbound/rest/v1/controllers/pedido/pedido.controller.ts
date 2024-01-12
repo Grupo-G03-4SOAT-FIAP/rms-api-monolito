@@ -30,7 +30,7 @@ export class PedidoController {
 
   @Post()
   @HttpCode(201)
-  @ApiOperation({ summary: 'Adicionar um novo pedido ' })
+  @ApiOperation({ summary: 'Checkout de pedido' })
   @ApiResponse({
     status: 201,
     description: 'Pedido criado com sucesso',
@@ -42,9 +42,9 @@ export class PedidoController {
     type: BadRequestError,
   })
   @ApiResponse({
-    status: 400,
-    description: 'Dados inválidos',
-    type: BadRequestError,
+    status: 404,
+    description: 'Pedido informado não existe',
+    type: NotFoundError,
   })
   async checkout(@Body() pedido: CriaPedidoDTO) {
     try {
