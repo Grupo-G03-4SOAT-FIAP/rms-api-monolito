@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
+import { IGatewayPagamentoService } from 'src/domain/services/gatewaypag.service.port';
 import { PedidoUseCase } from './pedido.use_case';
 import {
   pedidoFactoryMock,
   pedidoRepositoryMock,
+  gatewayPagamentoService,
   pedidoModelMock,
   pedidoEntityMock,
   criaPedidoDTOMock,
@@ -27,6 +29,10 @@ describe('PedidoUseCase', () => {
           provide: IPedidoFactory,
           useValue: pedidoFactoryMock,
         },
+        {
+          provide: IGatewayPagamentoService,
+          useValue: gatewayPagamentoService,
+        },
       ],
     }).compile();
 
@@ -40,6 +46,7 @@ describe('PedidoUseCase', () => {
   it('deve criar um pedido', async () => {
     pedidoFactoryMock.criarEntidadePedido.mockReturnValue(pedidoEntityMock);
     pedidoRepositoryMock.criarPedido.mockReturnValue(pedidoModelMock);
+    gatewayPagamentoService.criarPedido.mockReturnValue(null);
 
     const result = await pedidoUseCase.criarPedido(criaPedidoDTOMock);
 

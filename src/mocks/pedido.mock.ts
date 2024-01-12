@@ -59,6 +59,7 @@ const makePedidoDTO = (
   itensPedido: ProdutoDTO[],
   statusPedido: string,
   cliente: ClienteDTO,
+  qrCode: string,
 ): PedidoDTO => {
   const pedidoDTO = new PedidoDTO();
   pedidoDTO.id = id;
@@ -66,6 +67,7 @@ const makePedidoDTO = (
   pedidoDTO.itensPedido = itensPedido;
   pedidoDTO.statusPedido = statusPedido;
   pedidoDTO.cliente = cliente;
+  pedidoDTO.qrCode = qrCode;
   return pedidoDTO;
 };
 
@@ -75,6 +77,7 @@ const pedidoDTOMock = makePedidoDTO(
   pedidoModelMock.itensPedido,
   pedidoModelMock.statusPedido,
   pedidoModelMock.cliente,
+  null
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
@@ -95,6 +98,11 @@ const pedidoRepositoryMock = {
   listarPedidosRecebido: jest.fn(),
 };
 
+const gatewayPagamentoService = {
+  criarPedido: jest.fn(),
+  consultarPedido: jest.fn(),
+};
+
 const pedidoFactoryMock = {
   criarItemPedido: jest.fn(),
   criarEntidadeCliente: jest.fn(),
@@ -113,6 +121,7 @@ export {
   pedidoDTOMock,
   pedidoTypeORMMock,
   pedidoRepositoryMock,
+  gatewayPagamentoService,
   pedidoFactoryMock,
   pedidoServiceMock,
 };
