@@ -48,4 +48,7 @@ export class PedidoDTO {
 
   @ApiProperty({ description: 'Cliente associado ao pedido' })
   cliente: ClienteDTO;
+
+  @ApiProperty({ description: 'QR Code para pagamento no formato EMVCo' })
+  qrCode: string;
 }

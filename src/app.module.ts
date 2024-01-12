@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
+import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './adapters/outbound/database/postgres.config.service';
 
@@ -37,9 +37,15 @@ import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
 import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
+import { IGatewayPagamentoService } from './domain/services/gatewaypag.service.port';
+import { GatewayPagamentoService } from './adapters/outbound/services/gatewaypag.service';
+import { IWebhookUseCase } from './domain/ports/webhook/webhook.use_case.port';
+import { WebhookUseCase } from './domain/use_cases/webhook/webhook.use_case';
+import { WebhookController } from './adapters/inbound/rest/v1/controllers/webhook/webhook.controller';
 
 @Module({
   imports: [
+    HttpModule,
     TypeOrmModule.forFeature([
       ProdutoModel,
       CategoriaModel,
@@ -60,6 +66,7 @@ import { PedidoService } from './domain/services/pedido.service';
     CategoriaController,
     ClienteController,
     PedidoController,
+    WebhookController
   ],
   providers: [
     AppUseCase,
@@ -113,6 +120,14 @@ import { PedidoService } from './domain/services/pedido.service';
       provide: IProdutoFactory,
       useClass: ProdutoFactory,
     },
+    {
+      provide: IGatewayPagamentoService,
+      useClass: GatewayPagamentoService,
+    },
+    {
+      provide: IWebhookUseCase,
+      useClass: WebhookUseCase,
+    }
   ],
 })
-export class AppModule {}
+export class AppModule { }

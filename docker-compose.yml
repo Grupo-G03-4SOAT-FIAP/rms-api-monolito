@@ -23,6 +23,11 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-pgpwd}
       POSTGRES_DB: ${DB_NAME:-rms}
       PGDATA: /data/postgres
+      ACCESS_TOKEN_MERCADOPAGO: 
+      USER_ID_MERCADOPAGO: 
+      EXTERNAL_POS_ID_MERCADOPAGO: 
+      WEBHOOK_URL_MERCADOPAGO: 
+      IDEMPOTENCY_KEY_MERCADOPAGO: 
     volumes:
       - postgres:/data/postgres
     restart: always
