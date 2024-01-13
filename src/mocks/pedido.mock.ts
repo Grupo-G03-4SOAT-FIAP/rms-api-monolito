@@ -98,7 +98,7 @@ const pedidoRepositoryMock = {
   listarPedidosRecebido: jest.fn(),
 };
 
-const gatewayPagamentoService = {
+const gatewayPagamentoServiceMock = {
   criarPedido: jest.fn(),
   consultarPedido: jest.fn(),
 };
@@ -121,7 +121,7 @@ export {
   pedidoDTOMock,
   pedidoTypeORMMock,
   pedidoRepositoryMock,
-  gatewayPagamentoService,
+  gatewayPagamentoServiceMock,
   pedidoFactoryMock,
   pedidoServiceMock,
 };

@@ -6,7 +6,7 @@ import { PedidoUseCase } from './pedido.use_case';
 import {
   pedidoFactoryMock,
   pedidoRepositoryMock,
-  gatewayPagamentoService,
+  gatewayPagamentoServiceMock,
   pedidoModelMock,
   pedidoEntityMock,
   criaPedidoDTOMock,
@@ -31,7 +31,7 @@ describe('PedidoUseCase', () => {
         },
         {
           provide: IGatewayPagamentoService,
-          useValue: gatewayPagamentoService,
+          useValue: gatewayPagamentoServiceMock,
         },
       ],
     }).compile();
@@ -46,7 +46,7 @@ describe('PedidoUseCase', () => {
   it('deve criar um pedido', async () => {
     pedidoFactoryMock.criarEntidadePedido.mockReturnValue(pedidoEntityMock);
     pedidoRepositoryMock.criarPedido.mockReturnValue(pedidoModelMock);
-    gatewayPagamentoService.criarPedido.mockReturnValue(null);
+    gatewayPagamentoServiceMock.criarPedido.mockReturnValue(null);
 
     const result = await pedidoUseCase.criarPedido(criaPedidoDTOMock);
 
