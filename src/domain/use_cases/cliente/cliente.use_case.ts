@@ -9,10 +9,13 @@ import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import {
   ClienteNaoLocalizadoErro,
   ClienteDuplicadoErro,
+  CPFInvalidoErro,
 } from 'src/domain/exceptions/cliente.exception';
 import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
 import { IClienteUseCase } from 'src/domain/ports/cliente/cliente.use_case.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
+
+import {validate as uuidValidate} from 'uuid'
 
 @Injectable()
 export class ClienteUseCase implements IClienteUseCase {
@@ -60,6 +63,10 @@ export class ClienteUseCase implements IClienteUseCase {
     clienteId: string,
     cliente: AtualizaClienteDTO,
   ): Promise<HTTPResponse<ClienteDTO>> {
+    if(!uuidValidate(clienteId)) {
+      throw new CPFInvalidoErro("ID inválido")
+    }
+    
     const { nome, email } = cliente;
 
     const buscarClientePorId =
@@ -95,6 +102,10 @@ export class ClienteUseCase implements IClienteUseCase {
   async excluirCliente(
     clienteId: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
+    if(!uuidValidate(clienteId)) {
+      throw new CPFInvalidoErro("ID inválido")
+    }
+
     const buscaCliente =
       await this.clienteRepository.buscarClientePorId(clienteId);
     if (!buscaCliente) {
@@ -108,6 +119,10 @@ export class ClienteUseCase implements IClienteUseCase {
   }
 
   async buscarClientePorId(clienteId: string): Promise<ClienteDTO> {
+    if(!uuidValidate(clienteId)) {
+      throw new CPFInvalidoErro("ID inválido")
+    }
+    
     const result = await this.clienteRepository.buscarClientePorId(clienteId);
     if (!result) {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
