@@ -68,6 +68,12 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
+    const buscarClientePorEmail = 
+      await this.clienteRepository.buscarClientePorEmail(email)
+    if(buscarClientePorEmail) {
+      throw new ClienteDuplicadoErro("Email informado já está em uso")
+    }
+
     const clienteEntity = new ClienteEntity(nome, email);
     const result = await this.clienteRepository.editarCliente(
       clienteId,
