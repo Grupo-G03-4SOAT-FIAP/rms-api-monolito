@@ -22,10 +22,11 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 #### Stack
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 
 ## Executar a aplicação usando o Docker Compose
 
@@ -38,11 +39,21 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 
 > DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
 
+## Executar a aplicação usando o Kubernetes do Docker Desktop
+
+1. Clonar este repositório;
+2. Navegar até a pasta raiz do projeto;
+3. Usar o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
+4. Usar o comando `kubectl apply -f k8s/namespace.yaml -f k8s/bff/config.yaml -f k8s/bff/deployment.yaml -f k8s/bff/service.yaml -f k8s/bff/hpa.yaml -f k8s/postgres/pvc-pv.yaml -f k8s/postgres/config.yaml -f k8s/postgres/deployment.yaml -f k8s/postgres/service.yaml`
+5. Acessar o Swagger em http://localhost:3000/swagger/
+
+> Se preferir você também pode gerenciar o cluster Kubernetes [através do Lens](https://www.mirantis.com/blog/getting-started-with-the-mirantis-lens-kubernetes-extension-in-docker-desktop/).
+
 ## Banco de Dados
 
 Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdmin](https://www.pgadmin.org/download/).
 
-> Host: localhost ou 127.0.0.1\
+> Host: localhost\
 > Porta: 5432 (padrão)\
 > Usuário: pguser\
 > Senha: pgpwd\
@@ -100,6 +111,6 @@ $ npm run test:cov
 
 ## Requisitos
 
-*Node.js v18.18.0 (LTS) e Docker Engine 24.0.6*
+*Node.js v18.18.0 (LTS), Docker Engine 24.0.6 e Kubernetes v1.28*
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
