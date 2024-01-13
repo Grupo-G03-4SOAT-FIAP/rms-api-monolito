@@ -34,11 +34,17 @@ export class CriaClienteDTO {
 
 export class AtualizaClienteDTO {
   @IsString()
+  @IsNotEmpty({
+    message: 'Nome não pode ser atualizado para vazio',
+  })
   @IsOptional()
   @ApiProperty({ description: 'Nome do cliente', required: false })
   nome?: string;
 
   @IsEmail()
+  @IsNotEmpty({
+    message: 'Email não pode ser vazio',
+  })
   @IsOptional()
   @ApiProperty({
     description: 'Endereço de e-mail do cliente',

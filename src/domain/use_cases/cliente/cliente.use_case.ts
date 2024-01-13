@@ -67,7 +67,11 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new CPFInvalidoErro("ID inválido")
     }
     
-    const { nome, email } = cliente;
+    const { nome, email } = cliente;  
+
+    if(nome == undefined) {
+      throw new CPFInvalidoErro("Imformações não preenchidas")
+    }
 
     const buscarClientePorId =
       await this.clienteRepository.buscarClientePorId(clienteId);
@@ -122,7 +126,7 @@ export class ClienteUseCase implements IClienteUseCase {
     if(!uuidValidate(clienteId)) {
       throw new CPFInvalidoErro("ID inválido")
     }
-    
+
     const result = await this.clienteRepository.buscarClientePorId(clienteId);
     if (!result) {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
