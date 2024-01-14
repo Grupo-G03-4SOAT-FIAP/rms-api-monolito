@@ -16,6 +16,7 @@ const clienteSoftDeleteMock = new softDeleteMock();
 
 describe('ClienteRepository', () => {
   let clienteRepository: ClienteRepository;
+  let clienteId: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,6 +30,7 @@ describe('ClienteRepository', () => {
     }).compile();
 
     clienteRepository = module.get<ClienteRepository>(ClienteRepository);
+    clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -53,8 +55,6 @@ describe('ClienteRepository', () => {
       Promise.resolve(clienteModelMock),
     );
 
-    const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     const result = await clienteRepository.editarCliente(
       clienteId,
       clienteEntityMock,
@@ -71,7 +71,6 @@ describe('ClienteRepository', () => {
   });
 
   it('deve excluir um cliente no formato softdelete', async () => {
-    const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     clienteSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const clienteService = new ClienteRepository(clienteSoftDeleteMock as any); // Usar "any" para evitar problemas de tipo
@@ -87,7 +86,7 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+
     const result = await clienteRepository.buscarClientePorId(clienteId);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
@@ -99,7 +98,6 @@ describe('ClienteRepository', () => {
   it('deve buscar um cliente por id e retornar nulo', async () => {
     clienteTypeORMMock.findOne.mockResolvedValue(null);
 
-    const clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const result = await clienteRepository.buscarClientePorId(clienteId);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
