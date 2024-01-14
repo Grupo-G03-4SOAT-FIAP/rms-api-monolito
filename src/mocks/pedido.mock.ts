@@ -2,8 +2,16 @@ import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { Repository } from 'typeorm';
 import { StatusPedido } from '../utils/pedido.enum';
-import { produtoEntityMock, produtoModelMock } from './produto.mock';
-import { clienteModelMock, clienteEntityMock } from './cliente.mock';
+import {
+  produtoDTOMock,
+  produtoEntityMock,
+  produtoModelMock,
+} from './produto.mock';
+import {
+  clienteModelMock,
+  clienteEntityMock,
+  clienteDTOMock,
+} from './cliente.mock';
 import {
   AtualizaPedidoDTO,
   CriaPedidoDTO,
@@ -72,9 +80,9 @@ const makePedidoDTO = (
 const pedidoDTOMock = makePedidoDTO(
   pedidoModelMock.id,
   pedidoModelMock.numeroPedido,
-  pedidoModelMock.itensPedido,
+  [produtoDTOMock],
   pedidoModelMock.statusPedido,
-  pedidoModelMock.cliente,
+  clienteDTOMock,
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
