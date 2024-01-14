@@ -1,3 +1,4 @@
+import { MensagemGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presenters/gatewaypag.dto';
 import {
   AtualizaPedidoDTO,
   CriaPedidoDTO,
@@ -14,6 +15,7 @@ export interface IPedidoUseCase {
   buscarPedido(pedidoId: string): Promise<PedidoDTO>;
   listarPedidos(): Promise<PedidoDTO[] | []>;
   listarPedidosRecebido(): Promise<PedidoDTO[] | []>;
+  webhookPagamento(id: string, topic: string, mensagem: MensagemGatewayPagamentoDTO): Promise<void>;
 }
 
 export const IPedidoUseCase = Symbol('IPedidoUseCase');

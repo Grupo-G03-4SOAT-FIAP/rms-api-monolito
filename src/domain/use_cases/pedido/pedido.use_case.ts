@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { MensagemGatewayPagamentoDTO, PedidoGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presenters/gatewaypag.dto';
 import {
   CriaPedidoDTO,
   PedidoDTO,
@@ -120,5 +121,33 @@ export class PedidoUseCase implements IPedidoUseCase {
       return pedidoDTO;
     });
     return listaPedidosDTO;
+  }
+
+  async webhookPagamento(id: string, topic: string, mensagem: MensagemGatewayPagamentoDTO): Promise<any> {
+    if (id && topic === 'merchant_order') {
+      const pedidoGatewayPag = await this.gatewayPagamentoService.consultarPedido(id);
+      const idInternoPedido = pedidoGatewayPag.external_reference;
+      if (this.verificarPagamento(pedidoGatewayPag)) {
+        const buscaPedido = await this.pedidoRepository.buscarPedido(idInternoPedido);
+        if (!buscaPedido) {
+          throw new PedidoNaoLocalizadoErro('Pedido não localizado');
+        }
+        await this.pedidoRepository.editarStatusPedido(
+          idInternoPedido,
+          "em preparacao",
+        );
+      }
+      return {
+        mensagem: 'Mensagem consumida com sucesso'
+      };
+    }
+  }
+
+  private verificarPagamento(pedidoGatewayPag: PedidoGatewayPagamentoDTO): boolean {
+    if (pedidoGatewayPag.order_status === 'paid' &&
+      pedidoGatewayPag.payments.every((payment) => { return payment.status === 'approved'; })) {
+      return true;
+    }
+    return false;
   }
 }

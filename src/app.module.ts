@@ -39,9 +39,6 @@ import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
 import { IGatewayPagamentoService } from './domain/services/gatewaypag.service.port';
 import { GatewayPagamentoService } from './adapters/outbound/services/gatewaypag.service';
-import { IWebhookUseCase } from './domain/ports/webhook/webhook.use_case.port';
-import { WebhookUseCase } from './domain/use_cases/webhook/webhook.use_case';
-import { WebhookController } from './adapters/inbound/rest/v1/controllers/webhook/webhook.controller';
 
 @Module({
   imports: [
@@ -65,8 +62,7 @@ import { WebhookController } from './adapters/inbound/rest/v1/controllers/webhoo
     ProdutoController,
     CategoriaController,
     ClienteController,
-    PedidoController,
-    WebhookController
+    PedidoController
   ],
   providers: [
     AppUseCase,
@@ -123,10 +119,6 @@ import { WebhookController } from './adapters/inbound/rest/v1/controllers/webhoo
     {
       provide: IGatewayPagamentoService,
       useClass: GatewayPagamentoService,
-    },
-    {
-      provide: IWebhookUseCase,
-      useClass: WebhookUseCase,
     }
   ],
 })
