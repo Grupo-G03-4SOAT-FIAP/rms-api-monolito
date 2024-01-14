@@ -101,6 +101,11 @@ const pedidoFactoryMock = {
   criarEntidadePedido: jest.fn(),
 };
 
+const pedidoDTOFactoryMock = {
+  criarPedidoDTO: jest.fn(),
+  criarListaPedidoDTO: jest.fn(),
+};
+
 const pedidoServiceMock = {
   gerarNumeroPedido: jest.fn(),
 };
@@ -122,6 +127,7 @@ export {
   pedidoTypeORMMock,
   pedidoRepositoryMock,
   pedidoFactoryMock,
+  pedidoDTOFactoryMock,
   pedidoServiceMock,
   pedidoUseCaseMock,
 };
