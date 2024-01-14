@@ -55,6 +55,9 @@ describe('PedidoFactory', () => {
 
     const result = await pedidoFactory.criarEntidadePedido(criaPedidoDTOMock);
 
+    expect(pedidoServiceMock.gerarNumeroPedido).toHaveBeenCalled();
+    expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalled();
+    expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalled();
     expect(result).toStrictEqual(pedidoEntityMock);
   });
 
@@ -65,6 +68,7 @@ describe('PedidoFactory', () => {
       criaPedidoDTOMock.itensPedido,
     );
 
+    expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalled();
     expect(result).toStrictEqual([produtoEntityMock]);
   });
 
@@ -88,6 +92,7 @@ describe('PedidoFactory', () => {
       criaPedidoDTOMock.cpfCliente,
     );
 
+    expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalled();
     expect(result).toStrictEqual(clienteEntityMock);
   });
 

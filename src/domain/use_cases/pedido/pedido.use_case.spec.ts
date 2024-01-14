@@ -10,10 +10,13 @@ import {
   criaPedidoDTOMock,
   atualizaPedidoDTOMock,
   pedidoDTOMock,
+  pedidoDTOFactoryMock,
 } from 'src/mocks/pedido.mock';
+import { IPedidoDTOFactory } from 'src/domain/ports/pedido/pedido.dto.factory.port';
 
 describe('PedidoUseCase', () => {
   let pedidoUseCase: PedidoUseCase;
+  let pedidoId: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,10 +30,15 @@ describe('PedidoUseCase', () => {
           provide: IPedidoFactory,
           useValue: pedidoFactoryMock,
         },
+        {
+          provide: IPedidoDTOFactory,
+          useValue: pedidoDTOFactoryMock,
+        },
       ],
     }).compile();
 
     pedidoUseCase = module.get<PedidoUseCase>(PedidoUseCase);
+    pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -40,6 +48,7 @@ describe('PedidoUseCase', () => {
   it('deve criar um pedido com sucesso', async () => {
     pedidoFactoryMock.criarEntidadePedido.mockReturnValue(pedidoEntityMock);
     pedidoRepositoryMock.criarPedido.mockReturnValue(pedidoModelMock);
+    pedidoDTOFactoryMock.criarPedidoDTO.mockReturnValue(pedidoDTOMock);
 
     const result = await pedidoUseCase.criarPedido(criaPedidoDTOMock);
 
@@ -49,6 +58,9 @@ describe('PedidoUseCase', () => {
     expect(pedidoRepositoryMock.criarPedido).toHaveBeenCalledWith(
       pedidoEntityMock,
     );
+    expect(pedidoDTOFactoryMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
     expect(result).toStrictEqual({
       mensagem: 'Pedido criado com sucesso',
       body: pedidoDTOMock,
@@ -56,10 +68,9 @@ describe('PedidoUseCase', () => {
   });
 
   it('deve editar o status de um pedido com sucesso', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModelMock);
     pedidoRepositoryMock.editarStatusPedido.mockReturnValue(pedidoModelMock);
+    pedidoDTOFactoryMock.criarPedidoDTO.mockReturnValue(pedidoDTOMock);
 
     const result = await pedidoUseCase.editarPedido(
       pedidoId,
@@ -78,8 +89,6 @@ describe('PedidoUseCase', () => {
   });
 
   it('deve editar o status de um pedido e retornar PedidoNaoLocalizadoErro', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93c';
-
     pedidoRepositoryMock.buscarPedido.mockReturnValue(null);
 
     await expect(
@@ -89,9 +98,8 @@ describe('PedidoUseCase', () => {
   });
 
   it('deve buscar um pedido por id', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModelMock);
+    pedidoDTOFactoryMock.criarPedidoDTO.mockReturnValue(pedidoDTOMock);
 
     const result = await pedidoUseCase.buscarPedido(pedidoId);
 
@@ -100,8 +108,6 @@ describe('PedidoUseCase', () => {
   });
 
   it('deve buscar um pedido por id e retornar PedidoNaoLocalizadoErro', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93c';
-
     pedidoRepositoryMock.buscarPedido.mockReturnValue(null);
 
     await expect(pedidoUseCase.buscarPedido(pedidoId)).rejects.toThrow(
@@ -112,6 +118,7 @@ describe('PedidoUseCase', () => {
 
   it('deve listar pedidos', async () => {
     pedidoRepositoryMock.listarPedidos.mockReturnValue([pedidoModelMock]);
+    pedidoDTOFactoryMock.criarListaPedidoDTO.mockReturnValue([pedidoDTOMock]);
 
     const result = await pedidoUseCase.listarPedidos();
 
@@ -121,6 +128,7 @@ describe('PedidoUseCase', () => {
 
   it('deve retornar uma lista vazia de pedidos', async () => {
     pedidoRepositoryMock.listarPedidos.mockReturnValue([]);
+    pedidoDTOFactoryMock.criarListaPedidoDTO.mockReturnValue([]);
 
     const result = await pedidoUseCase.listarPedidos();
 
@@ -132,6 +140,7 @@ describe('PedidoUseCase', () => {
     pedidoRepositoryMock.listarPedidosRecebido.mockReturnValue([
       pedidoModelMock,
     ]);
+    pedidoDTOFactoryMock.criarListaPedidoDTO.mockReturnValue([pedidoDTOMock]);
 
     const result = await pedidoUseCase.listarPedidosRecebido();
 
@@ -141,6 +150,7 @@ describe('PedidoUseCase', () => {
 
   it('deve retornar uma lista vazia de pedidos recebidos', async () => {
     pedidoRepositoryMock.listarPedidosRecebido.mockReturnValue([]);
+    pedidoDTOFactoryMock.criarListaPedidoDTO.mockReturnValue([]);
 
     const result = await pedidoUseCase.listarPedidosRecebido();
 

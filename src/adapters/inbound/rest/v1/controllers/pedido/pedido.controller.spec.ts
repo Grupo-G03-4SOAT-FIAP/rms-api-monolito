@@ -13,6 +13,7 @@ import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception'
 
 describe('PedidoController', () => {
   let pedidoController: PedidoController;
+  let pedidoId: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,6 +27,7 @@ describe('PedidoController', () => {
     }).compile();
 
     pedidoController = module.get<PedidoController>(PedidoController);
+    pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -80,7 +82,6 @@ describe('PedidoController', () => {
   });
 
   it('deve atualizar um pedido', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const HTTPResponse = {
       mensagem: 'Pedido atualizado com sucesso',
       body: pedidoDTOMock,
@@ -101,8 +102,6 @@ describe('PedidoController', () => {
   });
 
   it('deve atualizar um pedido e retornar NotFoundError', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     pedidoUseCaseMock.editarPedido.mockRejectedValue(
       new PedidoNaoLocalizadoErro('Pedido informado não existe'),
     );
@@ -117,8 +116,6 @@ describe('PedidoController', () => {
   });
 
   it('deve buscar um pedido', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     pedidoUseCaseMock.buscarPedido.mockResolvedValue(pedidoDTOMock);
 
     const result = await pedidoController.buscar(pedidoId);
@@ -128,8 +125,6 @@ describe('PedidoController', () => {
   });
 
   it('deve buscar um pedido e retornar NotFoundError', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     pedidoUseCaseMock.buscarPedido.mockRejectedValue(
       new PedidoNaoLocalizadoErro('Pedido informado não existe'),
     );

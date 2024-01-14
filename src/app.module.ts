@@ -37,6 +37,14 @@ import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
 import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
+import { PedidoDTOFactory } from './domain/factories/pedido/pedido.dto.factory';
+import { IPedidoDTOFactory } from './domain/ports/pedido/pedido.dto.factory.port';
+import { IProdutoDTOFactory } from './domain/ports/produto/produto.dto.factory.port';
+import { ProdutoDTOFactory } from './domain/factories/produto/produto.dto.factory';
+import { ICategoriaDTOFactory } from './domain/ports/categoria/categoria.dto.factory.port';
+import { CategoriaDTOFactory } from './domain/factories/categoria/categoria.dto.factory';
+import { IClienteDTOFactory } from './domain/ports/cliente/cliente.dto.factory.port';
+import { ClienteDTOFactory } from './domain/factories/cliente/cliente.dto.factory';
 
 @Module({
   imports: [
@@ -82,6 +90,14 @@ import { PedidoService } from './domain/services/pedido.service';
       useClass: ProdutoRepository,
     },
     {
+      provide: IProdutoFactory,
+      useClass: ProdutoFactory,
+    },
+    {
+      provide: IProdutoDTOFactory,
+      useClass: ProdutoDTOFactory,
+    },
+    {
       provide: ICategoriaUseCase,
       useClass: CategoriaUseCase,
     },
@@ -90,12 +106,20 @@ import { PedidoService } from './domain/services/pedido.service';
       useClass: CategoriaRepository,
     },
     {
+      provide: ICategoriaDTOFactory,
+      useClass: CategoriaDTOFactory,
+    },
+    {
       provide: IClienteUseCase,
       useClass: ClienteUseCase,
     },
     {
       provide: IClienteRepository,
       useClass: ClienteRepository,
+    },
+    {
+      provide: IClienteDTOFactory,
+      useClass: ClienteDTOFactory,
     },
     {
       provide: IPedidoUseCase,
@@ -110,8 +134,8 @@ import { PedidoService } from './domain/services/pedido.service';
       useClass: PedidoFactory,
     },
     {
-      provide: IProdutoFactory,
-      useClass: ProdutoFactory,
+      provide: IPedidoDTOFactory,
+      useClass: PedidoDTOFactory,
     },
   ],
 })
