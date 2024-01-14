@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ICategoriaUseCase } from '../../../domain/ports/categoria/categoria.use_case.port';
 import { ICategoriaRepository } from '../../../domain/ports/categoria/categoria.repository.port';
-import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
@@ -24,6 +23,28 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     private readonly categoriaFactory: ICategoriaFactory,
   ) {}
 
+  private async validarBuscaCategoriaPorNome(
+    nomeCategoria: string,
+  ): Promise<CategoriaModel | null> {
+    const buscaCategoria =
+      await this.categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
+    if (buscaCategoria) {
+      throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
+    }
+    return buscaCategoria;
+  }
+
+  private async validarBuscaCategoriaPorId(
+    categoriaId: string,
+  ): Promise<CategoriaModel | null> {
+    const buscaCategoriaPorId =
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+    if (!buscaCategoriaPorId) {
+      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+    }
+    return buscaCategoriaPorId;
+  }
+
   async criarCategoria(
     categoria: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
@@ -31,21 +52,14 @@ export class CategoriaUseCase implements ICategoriaUseCase {
       this.categoriaFactory.criarEntidadeCategoriaFromCriaCategoriaDTO(
         categoria,
       );
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorNome(
-        categoriaEntity.nome,
-      );
-    if (buscaCategoria) {
-      throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
-    }
-
-    const result =
+    await this.validarBuscaCategoriaPorNome(categoriaEntity.getNome);
+    const categoriaModel =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.id;
-    categoriaDTO.nome = result.nome;
-    categoriaDTO.descricao = result.descricao;
+    const categoriaDTO = this.categoriaFactory.criarCategoriaDTO(
+      categoriaModel.nome,
+      categoriaModel.descricao,
+      categoriaModel.id,
+    );
 
     return {
       mensagem: 'Categoria criada com sucesso',
@@ -57,36 +71,21 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoriaId: string,
     categoria: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
-    );
-    const buscaCategoriaPorId =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-    if (!buscaCategoriaPorId) {
-      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
-    }
-
-    if (categoriaEntity.getNome) {
-      const buscaCategoriaPorNome =
-        await this.categoriaRepository.buscarCategoriaPorNome(
-          categoriaEntity.getNome,
-        );
-      if (buscaCategoriaPorNome) {
-        throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
-      }
-    }
-
-    const result = await this.categoriaRepository.editarCategoria(
+    const categoriaEntity =
+      this.categoriaFactory.criarEntidadeCategoriaFromAtualizaCategoriaDTO(
+        categoria,
+      );
+    await this.validarBuscaCategoriaPorId(categoriaId);
+    await this.validarBuscaCategoriaPorNome(categoriaEntity.getNome);
+    const categoriaModel = await this.categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntity,
     );
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.id;
-    categoriaDTO.nome = result.nome;
-    categoriaDTO.descricao = result.descricao;
-
+    const categoriaDTO = this.categoriaFactory.criarCategoriaDTO(
+      categoriaModel.nome,
+      categoriaModel.descricao,
+      categoriaModel.id,
+    );
     return {
       mensagem: 'Categoria atualizada com sucesso',
       body: categoriaDTO,
