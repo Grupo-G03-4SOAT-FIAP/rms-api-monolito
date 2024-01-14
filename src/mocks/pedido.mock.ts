@@ -105,6 +105,14 @@ const pedidoServiceMock = {
   gerarNumeroPedido: jest.fn(),
 };
 
+const pedidoUseCaseMock = {
+  criarPedido: jest.fn(),
+  editarPedido: jest.fn(),
+  buscarPedido: jest.fn(),
+  listarPedidos: jest.fn(),
+  listarPedidosRecebido: jest.fn(),
+};
+
 export {
   pedidoModelMock,
   pedidoEntityMock,
@@ -115,4 +123,5 @@ export {
   pedidoRepositoryMock,
   pedidoFactoryMock,
   pedidoServiceMock,
+  pedidoUseCaseMock,
 };
