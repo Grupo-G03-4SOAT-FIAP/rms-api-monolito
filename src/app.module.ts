@@ -37,6 +37,8 @@ import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
 import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
+import { CategoriaFactory } from './domain/factories/categoria/categoria.factory';
+import { ICategoriaFactory } from './domain/ports/categoria/categoria.factory.port';
 
 @Module({
   imports: [
@@ -67,6 +69,7 @@ import { PedidoService } from './domain/services/pedido.service';
     ProdutoRepository,
     CategoriaUseCase,
     CategoriaRepository,
+    CategoriaFactory,
     ClienteUseCase,
     ClienteRepository,
     PedidoUseCase,
@@ -96,6 +99,10 @@ import { PedidoService } from './domain/services/pedido.service';
     {
       provide: IClienteRepository,
       useClass: ClienteRepository,
+    },
+    {
+      provide: ICategoriaFactory,
+      useClass: CategoriaFactory,
     },
     {
       provide: IPedidoUseCase,

@@ -13,24 +13,27 @@ import {
   CategoriaDuplicadaErro,
 } from '../../../domain/exceptions/categoria.exception';
 import { HTTPResponse } from '../../../utils/HTTPResponse';
+import { ICategoriaFactory } from '../../../domain/ports/categoria/categoria.factory.port';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
   constructor(
     @Inject(ICategoriaRepository)
     private readonly categoriaRepository: ICategoriaRepository,
+    @Inject(ICategoriaFactory)
+    private readonly categoriaFactory: ICategoriaFactory,
   ) {}
 
   async criarCategoria(
     categoria: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
-    );
+    const categoriaEntity =
+      this.categoriaFactory.criarEntidadeCategoriaFromCriaCategoriaDTO(
+        categoria,
+      );
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorNome(
-        categoriaEntity.getNome,
+        categoriaEntity.nome,
       );
     if (buscaCategoria) {
       throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');

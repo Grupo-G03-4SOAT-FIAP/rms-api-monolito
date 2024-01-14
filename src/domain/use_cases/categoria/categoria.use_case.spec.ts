@@ -11,6 +11,7 @@ import {
   CategoriaDuplicadaErro,
   CategoriaNaoLocalizadaErro,
 } from '../../../domain/exceptions/categoria.exception';
+import { ICategoriaFactory } from 'src/domain/ports/categoria/categoria.factory.port';
 
 const makeCategoriaModel = (
   id: string,
@@ -83,6 +84,7 @@ const makeCategoriaDTO = (
 describe('Categoria Use case', () => {
   let categoriaUseCase: CategoriaUseCase;
   let categoriaRepository: ICategoriaRepository;
+  let categoriaFactory: ICategoriaFactory;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -99,20 +101,28 @@ describe('Categoria Use case', () => {
             listarCategorias: jest.fn(),
           },
         },
+        // {
+        //   provide: ICategoriaFactory,
+        //   useValue: {
+        //     criarEntidadeCategoriaFromCriaCategoriaDTO: jest.fn(),
+        //   },
+        // },
       ],
     }).compile();
     categoriaUseCase = module.get<CategoriaUseCase>(CategoriaUseCase);
     categoriaRepository =
       module.get<ICategoriaRepository>(ICategoriaRepository);
+    categoriaFactory = module.get<ICategoriaFactory>(ICategoriaFactory);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test('Deve ter uma definição para Categoria Use Case e Categoria Repository', async () => {
+  test('Deve ter uma definição para Categoria Use Case, Categoria Repository e Categoria Factory', async () => {
     expect(categoriaUseCase).toBeDefined();
     expect(categoriaRepository).toBeDefined();
+    expect(categoriaFactory).toBeDefined();
   });
 
   describe('Criar categoria', () => {
