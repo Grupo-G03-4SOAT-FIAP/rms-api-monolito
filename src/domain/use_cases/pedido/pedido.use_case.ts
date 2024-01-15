@@ -38,6 +38,8 @@ export class PedidoUseCase implements IPedidoUseCase {
     const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
     const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
 
+    pedidoDTO.qrCode = qrData;
+
     return {
       mensagem: 'Pedido criado com sucesso',
       body: pedidoDTO,

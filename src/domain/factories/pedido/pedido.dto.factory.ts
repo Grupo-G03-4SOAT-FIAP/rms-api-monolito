@@ -12,15 +12,11 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     private readonly produtoDTOFactory: IProdutoDTOFactory,
     @Inject(IClienteDTOFactory)
     private readonly clienteDTOFactory: IClienteDTOFactory,
-  ) {}
+  ) { }
 
   async criarPedidoDTO(pedido: PedidoModel): Promise<PedidoDTO> {
     const itensPedido = await this.produtoDTOFactory.criarListaProdutoDTO(
       pedido.itensPedido,
-    );
-
-    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(
-      pedido.cliente,
     );
 
     const pedidoDTO = new PedidoDTO();
@@ -28,7 +24,13 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     pedidoDTO.numeroPedido = pedido.numeroPedido;
     pedidoDTO.itensPedido = itensPedido;
     pedidoDTO.statusPedido = pedido.statusPedido;
-    pedidoDTO.cliente = clienteDTO;
+
+    if (pedido.cliente) {
+      pedidoDTO.cliente = await this.clienteDTOFactory.criarClienteDTO(
+        pedido.cliente,
+      );
+    }
+
     return pedidoDTO;
   }
 

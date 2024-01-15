@@ -9,7 +9,7 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
   constructor(
     @Inject(ICategoriaDTOFactory)
     private readonly categoriaDTOFactory: ICategoriaDTOFactory,
-  ) {}
+  ) { }
 
   async criarProdutoDTO(produto: ProdutoModel): Promise<ProdutoDTO> {
     const categoriaDTO = await this.categoriaDTOFactory.criarCategoriaDTO(
@@ -32,17 +32,19 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
   ): Promise<ProdutoDTO[] | []> {
     const listaProdutosDTO = await Promise.all(
       produtos.map(async (produto: ProdutoModel) => {
-        const categoriaDTO = await this.categoriaDTOFactory.criarCategoriaDTO(
-          produto.categoria,
-        );
-
         const produtoDTO = new ProdutoDTO();
         produtoDTO.id = produto.id;
         produtoDTO.nome = produto.nome;
         produtoDTO.descricao = produto.descricao;
         produtoDTO.valorUnitario = produto.valorUnitario;
         produtoDTO.imagemUrl = produto.imagemUrl;
-        produtoDTO.categoria = categoriaDTO;
+
+        if (produtoDTO.categoria) {
+          produtoDTO.categoria = await this.categoriaDTOFactory.criarCategoriaDTO(
+            produto.categoria,
+          );
+        }
+
         return produtoDTO;
       }),
     );
