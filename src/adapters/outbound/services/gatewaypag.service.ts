@@ -32,21 +32,7 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
 
   async criarPedido(pedido: PedidoEntity): Promise<string> {
     // Criar um novo Pedido do Mercado Pago
-    const itensPedidoMercadoPago = pedido.itensPedido.map(itemPedidoSuaLoja => (
-      {
-        "sku_number": itemPedidoSuaLoja.id ?? null, // Campo opcional
-        "category": itemPedidoSuaLoja.categoria?.nome ?? null, // Campo opcional
-        "title": itemPedidoSuaLoja.nome,
-        "description": itemPedidoSuaLoja.descricao ?? null, // Campo opcional
-        "unit_price": itemPedidoSuaLoja.valorUnitario,
-        //"quantity": itemPedidoSuaLoja.quantidade,
-        "quantity": 1,
-        "unit_measure": "UNID",
-        //"total_amount": itemPedidoSuaLoja.valorTotal
-        "total_amount": 1 * itemPedidoSuaLoja.valorUnitario
-      }
-    ));
-    const valorTotalPedido = itensPedidoMercadoPago.reduce((valorTotalPedido, itemPedido) => { return BigNumber.sum(valorTotalPedido, itemPedido.total_amount).toNumber(); }, 0); // Deve ser a soma do total de todos os itens do pedido
+    const itensPedidoMercadoPago = this.gerarItensPedidoMercadoPago(pedido.itensPedido);
     let data = JSON.stringify({
       "title": "Product order",
       "description": "Purchase description.",
@@ -54,7 +40,7 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
       "external_reference": pedido.id.toString(), // Número interno do Pedido dentro da sua loja
       "items": itensPedidoMercadoPago,
       "notification_url": this._webhookURL,
-      "total_amount": valorTotalPedido
+      "total_amount": this.calcularValorTotalPedido(itensPedidoMercadoPago)
     });
 
     let config = {
@@ -78,6 +64,28 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  private gerarItensPedidoMercadoPago(itensPedido) {
+    const itensPedidoMercadoPago = itensPedido.map(itemPedidoSuaLoja => (
+      {
+        "sku_number": itemPedidoSuaLoja.id ?? null, // Campo opcional
+        "category": itemPedidoSuaLoja.categoria?.nome ?? null, // Campo opcional
+        "title": itemPedidoSuaLoja.nome,
+        "description": itemPedidoSuaLoja.descricao ?? null, // Campo opcional
+        "unit_price": itemPedidoSuaLoja.valorUnitario,
+        //"quantity": itemPedidoSuaLoja.quantidade,
+        "quantity": 1,
+        "unit_measure": "UNID",
+        //"total_amount": itemPedidoSuaLoja.valorTotal
+        "total_amount": 1 * itemPedidoSuaLoja.valorUnitario
+      }
+    ));
+    return itensPedidoMercadoPago;
+  }
+
+  private calcularValorTotalPedido(itensPedidoMercadoPago): number {
+    return itensPedidoMercadoPago.reduce((valorTotalPedido, itemPedido) => { return BigNumber.sum(valorTotalPedido, itemPedido.total_amount).toNumber(); }, 0); // Deve ser a soma do total de todos os itens do pedido
   }
 
   async consultarPedido(idPedido: string): Promise<PedidoGatewayPagamentoDTO> {
