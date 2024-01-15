@@ -60,10 +60,16 @@ const clienteRepositoryMock = {
   listarClientes: jest.fn(),
 };
 
+const clienteDTOFactoryMock = {
+  criarClienteDTO: jest.fn(),
+  criarListaClienteDTO: jest.fn(),
+};
+
 export {
   clienteModelMock,
   clienteEntityMock,
   clienteDTOMock,
   clienteTypeORMMock,
   clienteRepositoryMock,
+  clienteDTOFactoryMock,
 };

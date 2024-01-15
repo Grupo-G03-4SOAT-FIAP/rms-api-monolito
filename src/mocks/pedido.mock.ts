@@ -2,8 +2,16 @@ import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { Repository } from 'typeorm';
 import { StatusPedido } from '../utils/pedido.enum';
-import { produtoEntityMock, produtoModelMock } from './produto.mock';
-import { clienteModelMock, clienteEntityMock } from './cliente.mock';
+import {
+  produtoDTOMock,
+  produtoEntityMock,
+  produtoModelMock,
+} from './produto.mock';
+import {
+  clienteModelMock,
+  clienteEntityMock,
+  clienteDTOMock,
+} from './cliente.mock';
 import {
   AtualizaPedidoDTO,
   CriaPedidoDTO,
@@ -74,10 +82,9 @@ const makePedidoDTO = (
 const pedidoDTOMock = makePedidoDTO(
   pedidoModelMock.id,
   pedidoModelMock.numeroPedido,
-  pedidoModelMock.itensPedido,
+  [produtoDTOMock],
   pedidoModelMock.statusPedido,
-  pedidoModelMock.cliente,
-  null
+  clienteDTOMock,
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
@@ -109,8 +116,21 @@ const pedidoFactoryMock = {
   criarEntidadePedido: jest.fn(),
 };
 
+const pedidoDTOFactoryMock = {
+  criarPedidoDTO: jest.fn(),
+  criarListaPedidoDTO: jest.fn(),
+};
+
 const pedidoServiceMock = {
   gerarNumeroPedido: jest.fn(),
+};
+
+const pedidoUseCaseMock = {
+  criarPedido: jest.fn(),
+  editarPedido: jest.fn(),
+  buscarPedido: jest.fn(),
+  listarPedidos: jest.fn(),
+  listarPedidosRecebido: jest.fn(),
 };
 
 export {
@@ -123,5 +143,7 @@ export {
   pedidoRepositoryMock,
   gatewayPagamentoServiceMock,
   pedidoFactoryMock,
+  pedidoDTOFactoryMock,
   pedidoServiceMock,
+  pedidoUseCaseMock,
 };

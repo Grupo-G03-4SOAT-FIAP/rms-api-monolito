@@ -30,7 +30,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     );
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorNome(
-        categoriaEntity.getNome,
+        categoriaEntity.nome,
       );
     if (buscaCategoria) {
       throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
@@ -64,10 +64,10 @@ export class CategoriaUseCase implements ICategoriaUseCase {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
 
-    if (categoriaEntity.getNome) {
+    if (categoriaEntity.nome) {
       const buscaCategoriaPorNome =
         await this.categoriaRepository.buscarCategoriaPorNome(
-          categoriaEntity.getNome,
+          categoriaEntity.nome,
         );
       if (buscaCategoriaPorNome) {
         throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');

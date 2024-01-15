@@ -5,8 +5,8 @@ import {
   PedidoDTO,
   AtualizaPedidoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
-import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
+import { IPedidoDTOFactory } from 'src/domain/ports/pedido/pedido.dto.factory.port';
 import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
@@ -22,10 +22,11 @@ export class PedidoUseCase implements IPedidoUseCase {
     private readonly pedidoFactory: IPedidoFactory,
     @Inject(IGatewayPagamentoService)
     private readonly gatewayPagamentoService: IGatewayPagamentoService,
-  ) { }
+    @Inject(IPedidoDTOFactory)
+    private readonly pedidoDTOFactory: IPedidoDTOFactory,
+  ) {}
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-    // factory para criar a entidade pedido
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
 
     // Salva o pedido no Banco de Dados
@@ -35,14 +36,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     // Criar o pedido no Gateway de Pagamento
     const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
-
-    const pedidoDTO = new PedidoDTO();
-    pedidoDTO.id = result.id;
-    pedidoDTO.numeroPedido = result.numeroPedido;
-    pedidoDTO.itensPedido = result.itensPedido;
-    pedidoDTO.statusPedido = result.statusPedido;
-    pedidoDTO.cliente = result.cliente;
-    pedidoDTO.qrCode = qrData;
+    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
 
     return {
       mensagem: 'Pedido criado com sucesso',
@@ -65,13 +59,7 @@ export class PedidoUseCase implements IPedidoUseCase {
       pedidoId,
       statusPedido,
     );
-
-    const pedidoDTO = new PedidoDTO();
-    pedidoDTO.id = result.id;
-    pedidoDTO.numeroPedido = result.numeroPedido;
-    pedidoDTO.itensPedido = result.itensPedido;
-    pedidoDTO.statusPedido = result.statusPedido;
-    pedidoDTO.cliente = result.cliente;
+    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
 
     return {
       mensagem: 'Pedido atualizado com sucesso',
@@ -85,41 +73,21 @@ export class PedidoUseCase implements IPedidoUseCase {
       throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
     }
 
-    const pedidoDTO = new PedidoDTO();
-    pedidoDTO.id = result.id;
-    pedidoDTO.numeroPedido = result.numeroPedido;
-    pedidoDTO.itensPedido = result.itensPedido;
-    pedidoDTO.statusPedido = result.statusPedido;
-    pedidoDTO.cliente = result.cliente;
-
+    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
     return pedidoDTO;
   }
 
   async listarPedidos(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidos();
-    const listaPedidosDTO = result.map((pedido: PedidoModel) => {
-      const pedidoDTO = new PedidoDTO();
-      pedidoDTO.id = pedido.id;
-      pedidoDTO.numeroPedido = pedido.numeroPedido;
-      pedidoDTO.itensPedido = pedido.itensPedido;
-      pedidoDTO.statusPedido = pedido.statusPedido;
-      pedidoDTO.cliente = pedido.cliente;
-      return pedidoDTO;
-    });
+    const listaPedidosDTO =
+      await this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
   }
 
   async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidosRecebido();
-    const listaPedidosDTO = result.map((pedido: PedidoModel) => {
-      const pedidoDTO = new PedidoDTO();
-      pedidoDTO.id = pedido.id;
-      pedidoDTO.numeroPedido = pedido.numeroPedido;
-      pedidoDTO.itensPedido = pedido.itensPedido;
-      pedidoDTO.statusPedido = pedido.statusPedido;
-      pedidoDTO.cliente = pedido.cliente;
-      return pedidoDTO;
-    });
+    const listaPedidosDTO =
+      await this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
   }
 

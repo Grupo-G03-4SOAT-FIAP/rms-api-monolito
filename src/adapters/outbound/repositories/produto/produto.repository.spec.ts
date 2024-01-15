@@ -16,6 +16,8 @@ const produtoSoftDeleteMock = new softDeleteMock();
 
 describe('ProdutoRepository', () => {
   let produtoRepository: ProdutoRepository;
+  let produtoId: string;
+  let categoriaId: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,6 +31,8 @@ describe('ProdutoRepository', () => {
     }).compile();
 
     produtoRepository = module.get<ProdutoRepository>(ProdutoRepository);
+    produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -57,8 +61,6 @@ describe('ProdutoRepository', () => {
       Promise.resolve(produtoModelMock),
     );
 
-    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     const result = await produtoRepository.editarProduto(
       produtoId,
       produtoEntityMock,
@@ -77,7 +79,6 @@ describe('ProdutoRepository', () => {
   });
 
   it('deve excluir uma categoria', async () => {
-    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     produtoSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const produtoService = new ProdutoRepository(produtoSoftDeleteMock as any); // Usar "any" para evitar problemas de tipo
@@ -94,8 +95,6 @@ describe('ProdutoRepository', () => {
       Promise.resolve(produtoModelMock),
     );
 
-    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     const result = await produtoRepository.buscarProdutoPorId(produtoId);
 
     expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
@@ -107,8 +106,6 @@ describe('ProdutoRepository', () => {
 
   it('deve buscar um produto por id e retornar nulo', async () => {
     produtoTypeORMMock.findOne.mockResolvedValue(null);
-
-    const produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 
     const result = await produtoRepository.buscarProdutoPorId(produtoId);
 
@@ -185,8 +182,6 @@ describe('ProdutoRepository', () => {
     ];
     produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutos));
 
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     const result =
       await produtoRepository.listarProdutosPorCategoria(categoriaId);
 
@@ -200,8 +195,6 @@ describe('ProdutoRepository', () => {
   it('deve retornar uma lista vazia de produtos por categoria', async () => {
     const listaProdutos = [];
     produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutos));
-
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 
     const result =
       await produtoRepository.listarProdutosPorCategoria(categoriaId);

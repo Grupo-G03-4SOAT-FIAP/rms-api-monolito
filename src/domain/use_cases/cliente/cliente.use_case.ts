@@ -4,12 +4,12 @@ import {
   ClienteDTO,
   AtualizaClienteDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
-import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
 import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import {
   ClienteNaoLocalizadoErro,
   ClienteDuplicadoErro,
 } from 'src/domain/exceptions/cliente.exception';
+import { IClienteDTOFactory } from 'src/domain/ports/cliente/cliente.dto.factory.port';
 import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
 import { IClienteUseCase } from 'src/domain/ports/cliente/cliente.use_case.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
@@ -19,6 +19,8 @@ export class ClienteUseCase implements IClienteUseCase {
   constructor(
     @Inject(IClienteRepository)
     private readonly clienteRepository: IClienteRepository,
+    @Inject(IClienteDTOFactory)
+    private readonly clienteDTOFactory: IClienteDTOFactory,
   ) {}
 
   async criarCliente(
@@ -36,11 +38,7 @@ export class ClienteUseCase implements IClienteUseCase {
 
     const clienteEntity = new ClienteEntity(nome, email, cpf);
     const result = await this.clienteRepository.criarCliente(clienteEntity);
-
-    const clienteDTO = new ClienteDTO();
-    clienteDTO.id = result.id;
-    clienteDTO.nome = result.nome;
-    clienteDTO.cpf = result.cpf;
+    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
 
     return {
       mensagem: 'Cliente criado com sucesso',
@@ -65,12 +63,7 @@ export class ClienteUseCase implements IClienteUseCase {
       clienteId,
       clienteEntity,
     );
-
-    const clienteDTO = new ClienteDTO();
-    clienteDTO.id = result.id;
-    clienteDTO.nome = result.nome;
-    clienteDTO.email = result.email;
-    clienteDTO.cpf = result.cpf;
+    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
 
     return {
       mensagem: 'Cliente atualizado com sucesso',
@@ -99,12 +92,7 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
-    const clienteDTO = new ClienteDTO();
-    clienteDTO.id = result.id;
-    clienteDTO.nome = result.nome;
-    clienteDTO.email = result.email;
-    clienteDTO.cpf = result.cpf;
-
+    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
     return clienteDTO;
   }
 
@@ -114,25 +102,14 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
-    const clienteDTO = new ClienteDTO();
-    clienteDTO.id = result.id;
-    clienteDTO.nome = result.nome;
-    clienteDTO.email = result.email;
-    clienteDTO.cpf = result.cpf;
-
+    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
     return clienteDTO;
   }
 
   async listarClientes(): Promise<ClienteDTO[] | []> {
     const result = await this.clienteRepository.listarClientes();
-    const listaClienteDTO = result.map((cliente: ClienteModel) => {
-      const clienteDTO = new ClienteDTO();
-      clienteDTO.id = cliente.id;
-      clienteDTO.nome = cliente.nome;
-      clienteDTO.email = cliente.email;
-      clienteDTO.cpf = cliente.cpf;
-      return clienteDTO;
-    });
+    const listaClienteDTO =
+      await this.clienteDTOFactory.criarListaClienteDTO(result);
     return listaClienteDTO;
   }
 }
