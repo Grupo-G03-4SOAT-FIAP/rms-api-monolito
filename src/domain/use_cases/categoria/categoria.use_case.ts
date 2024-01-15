@@ -52,7 +52,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
       this.categoriaFactory.criarEntidadeCategoriaFromCriaCategoriaDTO(
         categoria,
       );
-    await this.validarBuscaCategoriaPorNome(categoriaEntity.getNome);
+    await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);
     const categoriaModel =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
     const categoriaDTO = this.categoriaFactory.criarCategoriaDTO(
@@ -76,7 +76,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
         categoria,
       );
     await this.validarBuscaCategoriaPorId(categoriaId);
-    await this.validarBuscaCategoriaPorNome(categoriaEntity.getNome);
+    await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);
     const categoriaModel = await this.categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntity,
