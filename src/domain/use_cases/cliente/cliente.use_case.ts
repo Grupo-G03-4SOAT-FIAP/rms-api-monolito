@@ -29,7 +29,7 @@ export class ClienteUseCase implements IClienteUseCase {
   ): Promise<HTTPResponse<ClienteDTO>> {
     const { nome, email, cpf } = cliente;
 
-    if (cpf) {
+    if (email) {
       const buscaCliente =
         await this.clienteRepository.buscarClientePorEmail(email);
       if (buscaCliente) {
@@ -37,7 +37,7 @@ export class ClienteUseCase implements IClienteUseCase {
       }
     }
 
-    if (email) {
+    if (cpf) {
       const buscaCliente =
         await this.clienteRepository.buscarClientePorCPF(cpf);
       if (buscaCliente) {
