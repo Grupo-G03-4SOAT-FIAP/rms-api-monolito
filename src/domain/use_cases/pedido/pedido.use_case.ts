@@ -37,7 +37,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
 
-    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
     pedidoDTO.qrCode = qrData;
 
     return {
@@ -61,7 +61,7 @@ export class PedidoUseCase implements IPedidoUseCase {
       pedidoId,
       statusPedido,
     );
-    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
     return {
       mensagem: 'Pedido atualizado com sucesso',
@@ -75,21 +75,19 @@ export class PedidoUseCase implements IPedidoUseCase {
       throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
     }
 
-    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
     return pedidoDTO;
   }
 
   async listarPedidos(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidos();
-    const listaPedidosDTO =
-      await this.pedidoDTOFactory.criarListaPedidoDTO(result);
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
   }
 
   async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidosRecebido();
-    const listaPedidosDTO =
-      await this.pedidoDTOFactory.criarListaPedidoDTO(result);
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
   }
 

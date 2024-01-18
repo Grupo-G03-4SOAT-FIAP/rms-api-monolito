@@ -18,12 +18,12 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     private readonly clienteDTOFactory: IClienteDTOFactory,
   ) {}
 
-  async criarPedidoDTO(pedido: PedidoModel): Promise<PedidoDTO> {
-    const itensPedido = await this.criarListaItemPedidoDTO(pedido.itensPedido);
+  criarPedidoDTO(pedido: PedidoModel): PedidoDTO {
+    const itensPedido = this.criarListaItemPedidoDTO(pedido.itensPedido);
 
     let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
     if (cliente) {
-      cliente = await this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
+      cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
     }
 
     const pedidoDTO = new PedidoDTO();
@@ -35,39 +35,31 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     return pedidoDTO;
   }
 
-  async criarListaPedidoDTO(pedidos: PedidoModel[]): Promise<PedidoDTO[] | []> {
-    const listaPedidosDTO = await Promise.all(
-      pedidos.map(async (pedido: PedidoModel) => {
-        const itensPedido = await this.criarListaItemPedidoDTO(
-          pedido.itensPedido,
-        );
+  criarListaPedidoDTO(pedidos: PedidoModel[]): PedidoDTO[] | [] {
+    const listaPedidosDTO = pedidos.map((pedido: PedidoModel) => {
+      const itensPedido = this.criarListaItemPedidoDTO(pedido.itensPedido);
 
-        let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
-        if (cliente) {
-          cliente = await this.clienteDTOFactory.criarClienteDTO(
-            pedido.cliente,
-          );
-        }
+      let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
+      if (cliente) {
+        cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
+      }
 
-        const pedidoDTO = new PedidoDTO();
-        pedidoDTO.id = pedido.id;
-        pedidoDTO.numeroPedido = pedido.numeroPedido;
-        pedidoDTO.itensPedido = itensPedido;
-        pedidoDTO.statusPedido = pedido.statusPedido;
-        pedidoDTO.cliente = cliente;
-        return pedidoDTO;
-      }),
-    );
+      const pedidoDTO = new PedidoDTO();
+      pedidoDTO.id = pedido.id;
+      pedidoDTO.numeroPedido = pedido.numeroPedido;
+      pedidoDTO.itensPedido = itensPedido;
+      pedidoDTO.statusPedido = pedido.statusPedido;
+      pedidoDTO.cliente = cliente;
+      return pedidoDTO;
+    });
 
     return listaPedidosDTO;
   }
 
-  async criarListaItemPedidoDTO(
-    itemPedidos: ItemPedidoModel[],
-  ): Promise<ItemPedidoDTO[]> {
-    const listaItensPedidoDTO = await Promise.all(
-      itemPedidos.map(async (itemPedido: ItemPedidoModel) => {
-        const produto = await this.produtoDTOFactory.criarProdutoDTO(
+  criarListaItemPedidoDTO(itemPedidos: ItemPedidoModel[]): ItemPedidoDTO[] {
+    const listaItensPedidoDTO = itemPedidos.map(
+      (itemPedido: ItemPedidoModel) => {
+        const produto = this.produtoDTOFactory.criarProdutoDTO(
           itemPedido.produto,
         );
 
@@ -76,7 +68,7 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
         itemPedidoDTO.quantidade = itemPedido.quantidade;
         itemPedidoDTO.produto = produto;
         return itemPedidoDTO;
-      }),
+      },
     );
 
     return listaItensPedidoDTO;
