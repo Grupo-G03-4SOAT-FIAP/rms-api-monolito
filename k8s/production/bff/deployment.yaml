@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rms-bff
+  namespace: rms
+  labels:
+    app: rms-bff
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rms-bff
+  template:
+    metadata:
+      labels:
+        app: rms-bff
+    spec:
+      containers:
+      - name: rms-bff
+        image: dannevesdantas/rms-bff:latest # Nome e tag da imagem no Docker Hub
+        envFrom:
+          - configMapRef:
+              name: rms-bff-config
+        ports:
+        - containerPort: 3000
+        resources:
+          # You must specify requests for CPU to autoscale
+          # based on CPU utilization
+          requests:
+            cpu: "250m"
+            memory: "512Mi"

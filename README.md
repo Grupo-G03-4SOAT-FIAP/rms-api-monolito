@@ -44,8 +44,9 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 1. Clonar este repositório;
 2. Navegar até a pasta raiz do projeto;
 3. Usar o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
-4. Usar o comando `kubectl apply -f k8s/namespace.yaml -f k8s/bff/config.yaml -f k8s/bff/deployment.yaml -f k8s/bff/service.yaml -f k8s/bff/hpa.yaml -f k8s/postgres/pvc-pv.yaml -f k8s/postgres/config.yaml -f k8s/postgres/deployment.yaml -f k8s/postgres/service.yaml`
-5. Acessar o Swagger em http://localhost:3000/swagger/
+4. Usar o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
+5. Usar o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
+6. Acessar o Swagger em http://localhost:3000/swagger/
 
 > Se preferir você também pode gerenciar o cluster Kubernetes [através do Lens](https://www.mirantis.com/blog/getting-started-with-the-mirantis-lens-kubernetes-extension-in-docker-desktop/).
 
