@@ -32,3 +32,14 @@ export class CPFInvalidoErro extends HttpException {
     super(errorResponse, HttpStatus.BAD_REQUEST);
   }
 }
+
+export class UUIDInvalidoErro extends HttpException {
+  constructor(message: string) {
+    const errorResponse = {
+      message: message,
+      error: 'Bad request',
+      statusCode: HttpStatus.BAD_REQUEST,
+    };
+    super(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+}

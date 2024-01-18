@@ -23,6 +23,9 @@ import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_reque
 import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
 import { ConflictError } from '../../../helpers/swagger/status-codes/conflict.swagger';
 
+import {validate as uuidValidate} from 'uuid'
+import { UUIDInvalidoErro } from 'src/domain/exceptions/cliente.exception';
+
 @Controller('cliente')
 @ApiTags('Cliente')
 export class ClienteController {
@@ -86,6 +89,9 @@ export class ClienteController {
     @Param('id') id: string,
     @Body() cliente: AtualizaClienteDTO,
   ) {
+    if(!uuidValidate(id)) {
+      throw new UUIDInvalidoErro("ID inválido")
+    }
     try {
       return await this.clienteUseCase.editarCliente(id, cliente);
     } catch (error) {
@@ -114,6 +120,9 @@ export class ClienteController {
     type: NotFoundError,
   })
   async remover(@Param('id') id: string) {
+    if(!uuidValidate(id)) {
+      throw new UUIDInvalidoErro("ID inválido")
+    }
     try {
       return await this.clienteUseCase.excluirCliente(id);
     } catch (error) {
@@ -137,6 +146,9 @@ export class ClienteController {
     type: NotFoundError,
   })
   async buscar(@Param('id') id: string) {
+    if(!uuidValidate(id)) {
+      throw new UUIDInvalidoErro("ID inválido")
+    }
     try {
       return await this.clienteUseCase.buscarClientePorId(id);
     } catch (error) {
