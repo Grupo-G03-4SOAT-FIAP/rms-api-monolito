@@ -5,7 +5,7 @@ import { ICategoriaDTOFactory } from 'src/domain/ports/categoria/categoria.dto.f
 
 @Injectable()
 export class CategoriaDTOFactory implements ICategoriaDTOFactory {
-  async criarCategoriaDTO(categoria: CategoriaModel): Promise<CategoriaDTO> {
+  criarCategoriaDTO(categoria: CategoriaModel): CategoriaDTO {
     const categoriaDTO = new CategoriaDTO();
     categoriaDTO.id = categoria.id;
     categoriaDTO.nome = categoria.nome;
@@ -14,9 +14,7 @@ export class CategoriaDTOFactory implements ICategoriaDTOFactory {
     return categoriaDTO;
   }
 
-  async criarListaCategoriaDTO(
-    categorias: CategoriaModel[],
-  ): Promise<[] | CategoriaDTO[]> {
+  criarListaCategoriaDTO(categorias: CategoriaModel[]): CategoriaDTO[] | [] {
     const listaCategoriasDTO = categorias.map((categoria: CategoriaModel) => {
       const categoriaDTO = new CategoriaDTO();
       categoriaDTO.id = categoria.id;

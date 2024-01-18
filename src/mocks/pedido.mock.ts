@@ -88,6 +88,7 @@ const pedidoDTOMock = makePedidoDTO(
   [itemPedidoDTOMock],
   pedidoModelMock.statusPedido,
   clienteDTOMock,
+  'qrCode',
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {

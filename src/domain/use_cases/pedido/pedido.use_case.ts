@@ -31,12 +31,14 @@ export class PedidoUseCase implements IPedidoUseCase {
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
-    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
 
+    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
     pedidoEntity.id = result.id;
 
     const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
+
     const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
+    pedidoDTO.qrCode = qrData;
 
     return {
       mensagem: 'Pedido criado com sucesso',
