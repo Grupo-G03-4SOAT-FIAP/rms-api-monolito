@@ -9,6 +9,12 @@ import {
   pedidoEntityMock,
   pedidoTypeORMMock,
 } from 'src/mocks/pedido.mock';
+import { ItemPedidoModel } from '../../models/item_pedido.model';
+import {
+  itemPedidoEntityMock,
+  itemPedidoModelMock,
+  itemPedidoTypeORMMock,
+} from 'src/mocks/item_pedido.mock';
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
@@ -21,6 +27,10 @@ describe('PedidoRepository', () => {
         {
           provide: getRepositoryToken(PedidoModel),
           useValue: pedidoTypeORMMock,
+        },
+        {
+          provide: getRepositoryToken(ItemPedidoModel),
+          useValue: itemPedidoTypeORMMock,
         },
       ],
     }).compile();
@@ -36,6 +46,11 @@ describe('PedidoRepository', () => {
   it('deve criar um pedido', async () => {
     pedidoTypeORMMock.create.mockReturnValue(pedidoModelMock);
     pedidoTypeORMMock.save.mockResolvedValue(Promise.resolve(pedidoModelMock));
+
+    itemPedidoTypeORMMock.create.mockReturnValue(itemPedidoModelMock);
+    itemPedidoTypeORMMock.save.mockResolvedValue(
+      Promise.resolve(itemPedidoModelMock),
+    );
 
     const result = await pedidoRepository.criarPedido(pedidoEntityMock);
 

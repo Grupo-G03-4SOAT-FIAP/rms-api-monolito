@@ -5,7 +5,7 @@ import { IClienteDTOFactory } from 'src/domain/ports/cliente/cliente.dto.factory
 
 @Injectable()
 export class ClienteDTOFactory implements IClienteDTOFactory {
-  async criarClienteDTO(cliente: ClienteModel): Promise<ClienteDTO> {
+  criarClienteDTO(cliente: ClienteModel): ClienteDTO {
     const clienteDTO = new ClienteDTO();
     clienteDTO.id = cliente.id;
     clienteDTO.nome = cliente.nome;
@@ -15,9 +15,7 @@ export class ClienteDTOFactory implements IClienteDTOFactory {
     return clienteDTO;
   }
 
-  async criarListaClienteDTO(
-    clientes: ClienteModel[],
-  ): Promise<ClienteDTO[] | []> {
+  criarListaClienteDTO(clientes: ClienteModel[]): ClienteDTO[] | [] {
     const listaClienteDTO = clientes.map((cliente: ClienteModel) => {
       const clienteDTO = new ClienteDTO();
       clienteDTO.id = cliente.id;

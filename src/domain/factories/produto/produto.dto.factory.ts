@@ -11,8 +11,8 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
     private readonly categoriaDTOFactory: ICategoriaDTOFactory,
   ) {}
 
-  async criarProdutoDTO(produto: ProdutoModel): Promise<ProdutoDTO> {
-    const categoriaDTO = await this.categoriaDTOFactory.criarCategoriaDTO(
+  criarProdutoDTO(produto: ProdutoModel): ProdutoDTO {
+    const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(
       produto.categoria,
     );
 
@@ -27,25 +27,21 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
     return produtoDTO;
   }
 
-  async criarListaProdutoDTO(
-    produtos: ProdutoModel[],
-  ): Promise<ProdutoDTO[] | []> {
-    const listaProdutosDTO = await Promise.all(
-      produtos.map(async (produto: ProdutoModel) => {
-        const categoriaDTO = await this.categoriaDTOFactory.criarCategoriaDTO(
-          produto.categoria,
-        );
+  criarListaProdutoDTO(produtos: ProdutoModel[]): ProdutoDTO[] | [] {
+    const listaProdutosDTO = produtos.map((produto: ProdutoModel) => {
+      const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(
+        produto.categoria,
+      );
 
-        const produtoDTO = new ProdutoDTO();
-        produtoDTO.id = produto.id;
-        produtoDTO.nome = produto.nome;
-        produtoDTO.descricao = produto.descricao;
-        produtoDTO.valorUnitario = produto.valorUnitario;
-        produtoDTO.imagemUrl = produto.imagemUrl;
-        produtoDTO.categoria = categoriaDTO;
-        return produtoDTO;
-      }),
-    );
+      const produtoDTO = new ProdutoDTO();
+      produtoDTO.id = produto.id;
+      produtoDTO.nome = produto.nome;
+      produtoDTO.descricao = produto.descricao;
+      produtoDTO.valorUnitario = produto.valorUnitario;
+      produtoDTO.imagemUrl = produto.imagemUrl;
+      produtoDTO.categoria = categoriaDTO;
+      return produtoDTO;
+    });
 
     return listaProdutosDTO;
   }
