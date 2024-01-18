@@ -5,7 +5,7 @@ import { ICategoriaDTOFactory } from 'src/domain/ports/categoria/categoria.dto.f
 
 @Injectable()
 export class CategoriaDTOFactory implements ICategoriaDTOFactory {
-  async criarCategoriaDTO(categoria: CategoriaModel): Promise<CategoriaDTO> {
+  criarCategoriaDTO(categoria: CategoriaModel): CategoriaDTO {
     const categoriaDTO = new CategoriaDTO();
     categoriaDTO.id = categoria.id;
     categoriaDTO.nome = categoria.nome;

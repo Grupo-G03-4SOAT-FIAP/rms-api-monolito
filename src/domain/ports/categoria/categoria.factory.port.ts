@@ -1,6 +1,5 @@
 import {
   AtualizaCategoriaDTO,
-  CategoriaDTO,
   CriaCategoriaDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
@@ -12,7 +11,6 @@ export interface ICategoriaFactory {
   criarEntidadeCategoriaFromAtualizaCategoriaDTO(
     categoriaDTO: AtualizaCategoriaDTO,
   ): CategoriaEntity;
-  criarCategoriaDTO(nome: string, descricao: string, id: string): CategoriaDTO;
 }
 
 export const ICategoriaFactory = Symbol('ICategoriaFactory');

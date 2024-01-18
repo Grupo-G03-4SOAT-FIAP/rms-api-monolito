@@ -85,7 +85,7 @@ const pedidoDTOMock = makePedidoDTO(
   [produtoDTOMock],
   pedidoModelMock.statusPedido,
   clienteDTOMock,
-  'sdafasrefdasfdsfdsfdsfsdf',
+  null,
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {

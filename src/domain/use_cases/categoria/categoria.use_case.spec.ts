@@ -13,6 +13,7 @@ import {
 } from '../../../domain/exceptions/categoria.exception';
 import { ICategoriaFactory } from 'src/domain/ports/categoria/categoria.factory.port';
 import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
+import { ICategoriaDTOFactory } from 'src/domain/ports/categoria/categoria.dto.factory.port';
 
 const makeCategoriaModel = (
   id: string,
@@ -86,6 +87,7 @@ describe('Categoria Use case', () => {
   let categoriaUseCase: CategoriaUseCase;
   let categoriaRepository: ICategoriaRepository;
   let categoriaFactory: ICategoriaFactory;
+  let categoriaDTOFactory: ICategoriaDTOFactory;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -106,8 +108,14 @@ describe('Categoria Use case', () => {
           provide: ICategoriaFactory,
           useValue: {
             criarEntidadeCategoriaFromCriaCategoriaDTO: jest.fn(),
-            criarCategoriaDTO: jest.fn(),
             criarEntidadeCategoriaFromAtualizaCategoriaDTO: jest.fn(),
+          },
+        },
+        {
+          provide: ICategoriaDTOFactory,
+          useValue: {
+            criarCategoriaDTO: jest.fn(),
+            criarListaCategoriaDTO: jest.fn(),
           },
         },
       ],
@@ -116,6 +124,8 @@ describe('Categoria Use case', () => {
     categoriaRepository =
       module.get<ICategoriaRepository>(ICategoriaRepository);
     categoriaFactory = module.get<ICategoriaFactory>(ICategoriaFactory);
+    categoriaDTOFactory =
+      module.get<ICategoriaDTOFactory>(ICategoriaDTOFactory);
   });
 
   afterEach(() => {
@@ -126,6 +136,7 @@ describe('Categoria Use case', () => {
     expect(categoriaUseCase).toBeDefined();
     expect(categoriaRepository).toBeDefined();
     expect(categoriaFactory).toBeDefined();
+    expect(categoriaDTOFactory).toBeDefined();
   });
 
   describe('Criar categoria', () => {
@@ -153,10 +164,6 @@ describe('Categoria Use case', () => {
       jest
         .spyOn(categoriaFactory, 'criarEntidadeCategoriaFromCriaCategoriaDTO')
         .mockReturnValue(categoriaEntity);
-
-      jest
-        .spyOn(categoriaFactory, 'criarCategoriaDTO')
-        .mockReturnValue(categoriaDto);
 
       // Act
       // Assert
@@ -200,7 +207,7 @@ describe('Categoria Use case', () => {
         .mockReturnValue(Promise.resolve(novaCategoriaModelMock));
 
       jest
-        .spyOn(categoriaFactory, 'criarCategoriaDTO')
+        .spyOn(categoriaDTOFactory, 'criarCategoriaDTO')
         .mockReturnValue(categoriaDTO);
 
       // Act
@@ -321,7 +328,7 @@ describe('Categoria Use case', () => {
         .mockReturnValue(Promise.resolve(null));
 
       jest
-        .spyOn(categoriaFactory, 'criarCategoriaDTO')
+        .spyOn(categoriaDTOFactory, 'criarCategoriaDTO')
         .mockReturnValue(categoriaDTO);
 
       jest
@@ -428,6 +435,10 @@ describe('Categoria Use case', () => {
         .spyOn(categoriaRepository, 'buscarCategoriaPorId')
         .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
 
+      jest
+        .spyOn(categoriaDTOFactory, 'criarCategoriaDTO')
+        .mockReturnValue(categoriaDTO);
+
       // Act
 
       const result = await categoriaUseCase.buscarCategoria(
@@ -472,6 +483,10 @@ describe('Categoria Use case', () => {
         .spyOn(categoriaRepository, 'listarCategorias')
         .mockReturnValue(Promise.resolve(listaCategoriasModel));
 
+      jest
+        .spyOn(categoriaDTOFactory, 'criarListaCategoriaDTO')
+        .mockReturnValue(Promise.resolve(listaCategorias));
+
       // Act
 
       const result = await categoriaUseCase.listarCategorias();
@@ -486,6 +501,10 @@ describe('Categoria Use case', () => {
 
       jest
         .spyOn(categoriaRepository, 'listarCategorias')
+        .mockReturnValue(Promise.resolve([]));
+
+      jest
+        .spyOn(categoriaDTOFactory, 'criarListaCategoriaDTO')
         .mockReturnValue(Promise.resolve([]));
 
       // Act
