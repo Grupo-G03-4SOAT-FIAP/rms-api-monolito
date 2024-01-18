@@ -75,7 +75,8 @@ export class CategoriaUseCase implements ICategoriaUseCase {
         categoria,
       );
     await this.validarBuscaCategoriaPorId(categoriaId);
-    await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);
+    if (categoriaEntity.nome)
+      await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);
     const categoriaModel = await this.categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntity,

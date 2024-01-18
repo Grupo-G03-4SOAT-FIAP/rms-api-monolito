@@ -1,11 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ICategoriaRepository } from '../../../domain/ports/categoria/categoria.repository.port';
 import { CategoriaUseCase } from './categoria.use_case';
-import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
-  CriaCategoriaDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 import {
   CategoriaDuplicadaErro,
@@ -14,74 +12,15 @@ import {
 import { ICategoriaFactory } from 'src/domain/ports/categoria/categoria.factory.port';
 import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 import { ICategoriaDTOFactory } from 'src/domain/ports/categoria/categoria.dto.factory.port';
-
-const makeCategoriaModel = (
-  id: string,
-  nome: string,
-  descricao: string,
-  produtos = null,
-  criadoEm = new Date().toISOString(),
-  atualizadoEm = new Date().toISOString(),
-): CategoriaModel => {
-  const categoriaModel = new CategoriaModel();
-  categoriaModel.id = id;
-  categoriaModel.nome = nome;
-  categoriaModel.descricao = descricao;
-  categoriaModel.produtos = produtos;
-  categoriaModel.criadoEm = criadoEm;
-  categoriaModel.atualizadoEm = atualizadoEm;
-  return categoriaModel;
-};
-
-const categoriaModelMock = makeCategoriaModel(
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
-  'Lanche',
-  'Lanche x tudo',
-);
-
-const novaCategoriaModelMock = makeCategoriaModel(
-  '0a14aa4e-75e7-405f-8301-81f60646c93c',
-  'Nova Categoria',
-  'Nova Descrição',
-);
-
-const categoriaAtualizadaModelMock = makeCategoriaModel(
-  '0a14aa4e-75e7-405f-8301-81f60646c93c',
-  'Novo Nome',
-  'Nova Descrição',
-);
-
-const listaCategoriasModel: CategoriaModel[] = [];
-listaCategoriasModel.push(categoriaAtualizadaModelMock);
-listaCategoriasModel.push(novaCategoriaModelMock);
-listaCategoriasModel.push(categoriaModelMock);
-
-const makeCriaCategoriaDTO = (
-  nome: string,
-  descricao: string,
-): CriaCategoriaDTO => {
-  const criaCategoriaDTO = new CriaCategoriaDTO();
-  criaCategoriaDTO.nome = nome;
-  criaCategoriaDTO.descricao = descricao;
-  return criaCategoriaDTO;
-};
-
-const novaCategoriaDTO = makeCriaCategoriaDTO(
-  novaCategoriaModelMock.nome,
-  novaCategoriaModelMock.descricao,
-);
-
-const makeCategoriaDTO = (
-  id: string,
-  nome: string,
-  descricao: string,
-): CategoriaDTO => {
-  const categoriaDTO = new CategoriaDTO();
-  categoriaDTO.id = id;
-  categoriaDTO.nome = nome;
-  categoriaDTO.descricao = descricao;
-  return categoriaDTO;
-};
+import {
+  novaCategoriaDTO,
+  categoriaAtualizadaModelMock,
+  listaCategoriasModel,
+  makeCriaCategoriaDTO,
+  novaCategoriaModelMock,
+  categoriaModelMock,
+  makeCategoriaDTO,
+} from 'src/mocks/categoria.mock';
 
 describe('Categoria Use case', () => {
   let categoriaUseCase: CategoriaUseCase;
