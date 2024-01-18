@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
+import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './adapters/outbound/database/postgres.config.service';
 
@@ -37,6 +37,8 @@ import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
 import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
+import { IGatewayPagamentoService } from './domain/ports/pedido/gatewaypag.service.port';
+import { GatewayPagamentoService } from './adapters/outbound/services/gatewaypag.service';
 import { PedidoDTOFactory } from './domain/factories/pedido/pedido.dto.factory';
 import { IPedidoDTOFactory } from './domain/ports/pedido/pedido.dto.factory.port';
 import { IProdutoDTOFactory } from './domain/ports/produto/produto.dto.factory.port';
@@ -49,6 +51,7 @@ import { ItemPedidoModel } from './adapters/outbound/models/item_pedido.model';
 
 @Module({
   imports: [
+    HttpModule,
     TypeOrmModule.forFeature([
       ProdutoModel,
       CategoriaModel,
@@ -138,6 +141,10 @@ import { ItemPedidoModel } from './adapters/outbound/models/item_pedido.model';
     {
       provide: IPedidoDTOFactory,
       useClass: PedidoDTOFactory,
+    },
+    {
+      provide: IGatewayPagamentoService,
+      useClass: GatewayPagamentoService,
     },
   ],
 })
