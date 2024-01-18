@@ -45,6 +45,7 @@ import { ICategoriaDTOFactory } from './domain/ports/categoria/categoria.dto.fac
 import { CategoriaDTOFactory } from './domain/factories/categoria/categoria.dto.factory';
 import { IClienteDTOFactory } from './domain/ports/cliente/cliente.dto.factory.port';
 import { ClienteDTOFactory } from './domain/factories/cliente/cliente.dto.factory';
+import { ItemPedidoModel } from './adapters/outbound/models/item_pedido.model';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { ClienteDTOFactory } from './domain/factories/cliente/cliente.dto.factor
       ProdutoModel,
       CategoriaModel,
       PedidoModel,
+      ItemPedidoModel,
       ClienteModel,
     ]),
     ConfigModule.forRoot({

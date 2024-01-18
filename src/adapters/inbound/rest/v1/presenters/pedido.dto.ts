@@ -2,20 +2,18 @@ import {
   IsString,
   IsNotEmpty,
   IsOptional,
-  IsUUID,
   IsEnum,
   MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { ProdutoDTO } from './produto.dto';
 import { ClienteDTO } from './cliente.dto';
 import { StatusPedido } from 'src/utils/pedido.enum';
+import { CriaItemPedidoDTO, ItemPedidoDTO } from './item_pedido.dto';
 
 export class CriaPedidoDTO {
-  @IsUUID(4, { each: true })
-  @IsNotEmpty({ message: 'Lista de UUIDs dos produtos não pode ser vazia' })
-  @ApiProperty({ description: 'Lista de UUIDs dos produtos' })
-  itensPedido: string[];
+  @IsNotEmpty({ message: 'Lista de itens do pedido não pode ser vazia' })
+  @ApiProperty({ description: 'Lista de produtos' })
+  itensPedido: CriaItemPedidoDTO[];
 
   @IsString()
   @IsOptional()
@@ -41,7 +39,7 @@ export class PedidoDTO {
   numeroPedido: string;
 
   @ApiProperty({ description: 'Itens do pedido' })
-  itensPedido: ProdutoDTO[];
+  itensPedido: ItemPedidoDTO[];
 
   @ApiProperty({ description: 'Status do pedido' })
   statusPedido: string;

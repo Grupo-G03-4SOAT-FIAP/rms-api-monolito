@@ -11,6 +11,8 @@ import { ClienteNaoLocalizadoErro } from '../../exceptions/cliente.exception';
 import { ProdutoNaoLocalizadoErro } from '../../exceptions/produto.exception';
 import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
 import { PedidoService } from '../../services/pedido.service';
+import { ItemPedidoEntity } from 'src/domain/entities/pedido/item_pedido.entity';
+import { CriaItemPedidoDTO } from 'src/adapters/inbound/rest/v1/presenters/item_pedido.dto';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
@@ -22,21 +24,26 @@ export class PedidoFactory implements IPedidoFactory {
     private readonly produtoRepository: IProdutoRepository,
   ) {}
 
-  async criarItemPedido(itens: string[]): Promise<ProdutoEntity[]> {
-    const itemPedido = await Promise.all(
+  async criarItemPedido(
+    itens: CriaItemPedidoDTO[],
+  ): Promise<ItemPedidoEntity[]> {
+    const itensPedido = await Promise.all(
       itens.map(async (item) => {
-        const buscaProduto =
-          await this.produtoRepository.buscarProdutoPorId(item);
+        const buscaProduto = await this.produtoRepository.buscarProdutoPorId(
+          item.produto,
+        );
         if (!buscaProduto) {
           throw new ProdutoNaoLocalizadoErro(
             `Produto informado não existe ${item}`,
           );
         }
+
         const categoriaEntity = new CategoriaEntity(
           buscaProduto.categoria.nome,
           buscaProduto.categoria.descricao,
           buscaProduto.categoria.id,
         );
+
         const produtoEntity = new ProdutoEntity(
           buscaProduto.nome,
           categoriaEntity,
@@ -45,10 +52,15 @@ export class PedidoFactory implements IPedidoFactory {
           buscaProduto.descricao,
           buscaProduto.id,
         );
-        return produtoEntity;
+
+        const itemPedidoEntity = new ItemPedidoEntity(
+          produtoEntity,
+          item.quantidade,
+        );
+        return itemPedidoEntity;
       }),
     );
-    return itemPedido;
+    return itensPedido;
   }
 
   async criarEntidadeCliente(

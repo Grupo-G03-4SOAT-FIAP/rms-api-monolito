@@ -22,7 +22,8 @@ export class CategoriaRepository implements ICategoriaRepository {
     categoriaId: string,
     categoria: CategoriaEntity,
   ): Promise<CategoriaModel> {
-    await this.categoriaRepository.update(categoriaId, categoria);
+    const novaCategoria = this.categoriaRepository.create(categoria);
+    await this.categoriaRepository.update(categoriaId, novaCategoria);
 
     return await this.categoriaRepository.findOne({
       where: { id: categoriaId },
