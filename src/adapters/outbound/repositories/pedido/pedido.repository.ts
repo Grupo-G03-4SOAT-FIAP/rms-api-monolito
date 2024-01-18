@@ -14,8 +14,8 @@ export class PedidoRepository implements IPedidoRepository {
   ) {}
 
   async criarPedido(pedido: PedidoEntity): Promise<PedidoModel> {
-    const novoPedido = this.pedidoRepository.create(pedido);
-    await this.pedidoRepository.save(novoPedido);
+    const pedidoModel = this.pedidoRepository.create(pedido);
+    const novoPedido = await this.pedidoRepository.save(pedidoModel);
     return novoPedido;
   }
 

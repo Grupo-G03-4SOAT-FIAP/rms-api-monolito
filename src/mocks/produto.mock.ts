@@ -1,7 +1,11 @@
 import { Repository } from 'typeorm';
 import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
 import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
-import { categoriaEntityMock, categoriaModelMock } from './categoria.mock';
+import {
+  categoriaDTOMock,
+  categoriaEntityMock,
+  categoriaModelMock,
+} from './categoria.mock';
 import { ProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
 import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 
@@ -49,7 +53,7 @@ const produtoDTOMock = makeProdutoDTO(
   produtoModelMock.descricao,
   produtoModelMock.valorUnitario,
   produtoModelMock.imagemUrl,
-  produtoModelMock.categoria,
+  categoriaDTOMock,
 );
 
 const produtoTypeORMMock: jest.Mocked<Repository<ProdutoModel>> = {
@@ -73,10 +77,16 @@ const produtoRepositoryMock = {
   listarProdutosPorCategoria: jest.fn(),
 };
 
+const produtoDTOFactoryMock = {
+  criarProdutoDTO: jest.fn(),
+  criarListaProdutoDTO: jest.fn(),
+};
+
 export {
   produtoModelMock,
   produtoEntityMock,
   produtoDTOMock,
   produtoTypeORMMock,
   produtoRepositoryMock,
+  produtoDTOFactoryMock,
 };

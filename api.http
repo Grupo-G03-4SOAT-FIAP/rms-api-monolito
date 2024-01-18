@@ -114,10 +114,10 @@ POST http://localhost:3000/pedido
 Content-Type: application/json
 
 {
-    "cpfCliente": "44470640735",
+    //"cpfCliente": "44470640735", // Campo opcional
     "itensPedido": [ 
         "3ecd5148-c71f-412b-9a3a-0c1896375bf2"
-    ],
+    ]
 }
 
 ### Editar pedido (atualizar status)

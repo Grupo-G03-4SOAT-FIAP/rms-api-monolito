@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
 import {
@@ -19,18 +20,19 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
+import { MensagemGatewayPagamentoDTO } from '../../presenters/gatewaypag.dto';
 
 @Controller('pedido')
 @ApiTags('Pedido')
 export class PedidoController {
   constructor(
     @Inject(IPedidoUseCase)
-    private readonly pedidoUseCase: IPedidoUseCase,
-  ) {}
+    private readonly pedidoUseCase: IPedidoUseCase
+  ) { }
 
   @Post()
   @HttpCode(201)
-  @ApiOperation({ summary: 'Adicionar um novo pedido ' })
+  @ApiOperation({ summary: 'Checkout de pedido' })
   @ApiResponse({
     status: 201,
     description: 'Pedido criado com sucesso',
@@ -40,6 +42,11 @@ export class PedidoController {
     status: 400,
     description: 'Dados inválidos',
     type: BadRequestError,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Pedido informado não existe',
+    type: NotFoundError,
   })
   async checkout(@Body() pedido: CriaPedidoDTO) {
     try {
@@ -129,4 +136,36 @@ export class PedidoController {
   async listar() {
     return await this.pedidoUseCase.listarPedidos();
   }
+
+  @Post('/webhook')
+  @HttpCode(201)
+  @ApiOperation({ summary: 'Consumir uma mensagem' })
+  @ApiResponse({
+    status: 201,
+    description: 'Mensagem consumida com sucesso',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Dados inválidos',
+    type: BadRequestError,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Pedido informado não existe',
+    type: NotFoundError,
+  })
+  async consumirMensagem(
+    @Query('id') id: string,
+    @Query('topic') topic: string,
+    @Body() mensagem: MensagemGatewayPagamentoDTO) {
+    try {
+      return await this.pedidoUseCase.webhookPagamento(id, topic, mensagem);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
+  }
+
 }

@@ -22,27 +22,53 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 #### Stack
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
+
+## Instruções para testar o pagamento de pedidos através do QR Code do Mercado Pago
+
+Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai precisar criar uma Aplicação no [portal do Mercado Pago Developers](https://www.mercadopago.com.br/developers/pt).
+
+1. Siga as instruções na página [Pré-requisitos](https://www.mercadopago.com.br/developers/pt/docs/qr-code/pre-requisites) no Mercado Pago Developers;
+2. Após criar as contas de teste do `Vendedor` e `Comprador`, abra uma janela anônima (Ctrl + Shift + P) no navegador e faça login no [portal do Mercado Pago Developers](https://www.mercadopago.com.br/developers/pt) usando o usuário e senha da conta de teste do Vendedor;
+3. Após fazer login no portal do Mercado Pago Developers usando o usuário e senha da conta de teste do Vendedor, crie uma aplicação de testes dento da conta de testes do Vendedor.
+4. Anote o `User ID` que aparece em baixo de "Detalhes da aplicação" na página inicial da aplicação de testes do Vendedor;
+5. Clique em "Credenciais de teste" no menu do lado esquerdo da tela e anote o `Access Token` da aplicação de testes do Vendedor;
+6. Cadastre uma Loja e um Caixa (POS) na aplicação de testes do Vendedor através da API do Mercado Pago, usando o [Postman](https://www.postman.com/). Anote o `id` da Loja e o `external_id` do Caixa que você acabou de cadastrar;
+7. Com o `User ID` e `Access Token` da aplicação de testes do Vendedor e com o `id` da Loja e o `external_id` do Caixa que você acabou de cadastrar, preencha as variáveis de ambiente no arquivo `.env`
+8. Execute a aplicação.
 
 ## Executar a aplicação usando o Docker Compose
 
 1. Clonar este repositório;
-2. Navegar até a pasta raiz do projeto;
-3. Usar o comando `docker-compose up --build --force-recreate --renew-anon-volumes`
-4. Acessar o Swagger em http://localhost:3000/swagger/
+2. Abra o arquivo `docker-compose.yml` e preencha o Acess Token e User ID do Mercado Pago;
+3. Navegar até a pasta raiz do projeto;
+4. Usar o comando `docker-compose up --build --force-recreate --renew-anon-volumes`
+5. Acessar o Swagger em http://localhost:3000/swagger/
 
 > Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
 
 > DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
 
+## Executar a aplicação usando o Kubernetes do Docker Desktop
+
+1. Clonar este repositório;
+2. Abra o arquivo `k8s/bff/config.yaml` e preencha o Acess Token e User ID do Mercado Pago;
+3. Navegar até a pasta raiz do projeto;
+4. Usar o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
+5. Usar o comando `kubectl apply -f k8s/namespace.yaml -f k8s/bff/config.yaml -f k8s/bff/deployment.yaml -f k8s/bff/service.yaml -f k8s/bff/hpa.yaml -f k8s/postgres/pvc-pv.yaml -f k8s/postgres/config.yaml -f k8s/postgres/deployment.yaml -f k8s/postgres/service.yaml`
+6. Acessar o Swagger em http://localhost:3000/swagger/
+
+> Se preferir você também pode gerenciar o cluster Kubernetes [através do Lens](https://www.mirantis.com/blog/getting-started-with-the-mirantis-lens-kubernetes-extension-in-docker-desktop/).
+
 ## Banco de Dados
 
 Você pode conectar-se a instância de banco de dados PostgreSQL usando o [pgAdmin](https://www.pgadmin.org/download/).
 
-> Host: localhost ou 127.0.0.1\
+> Host: localhost\
 > Porta: 5432 (padrão)\
 > Usuário: pguser\
 > Senha: pgpwd\
@@ -100,6 +126,6 @@ $ npm run test:cov
 
 ## Requisitos
 
-*Node.js v18.18.0 (LTS) e Docker Engine 24.0.6*
+*Node.js v18.18.0 (LTS), Docker Engine 24.0.6 e Kubernetes v1.28*
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
