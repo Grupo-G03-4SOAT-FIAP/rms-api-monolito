@@ -11,6 +11,7 @@ import {
   ClienteDuplicadoErro,
   CPFInvalidoErro,
   UUIDInvalidoErro,
+  ClienteNomeUndefinedErro,
 } from 'src/domain/exceptions/cliente.exception';
 import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
 import { IClienteUseCase } from 'src/domain/ports/cliente/cliente.use_case.port';
@@ -65,7 +66,7 @@ export class ClienteUseCase implements IClienteUseCase {
     const { nome, email } = cliente;  
 
     if(nome == undefined) {
-      throw new CPFInvalidoErro("Imformações não preenchidas")
+      throw new ClienteNomeUndefinedErro("Imformações não preenchidas")
     }
 
     const buscarClientePorId =

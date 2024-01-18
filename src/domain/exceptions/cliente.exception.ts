@@ -43,3 +43,14 @@ export class UUIDInvalidoErro extends HttpException {
     super(errorResponse, HttpStatus.BAD_REQUEST);
   }
 }
+
+export class ClienteNomeUndefinedErro extends HttpException {
+  constructor(message: string) {
+    const errorResponse = {
+      message: message,
+      error: 'Bad request',
+      statusCode: HttpStatus.CONFLICT,
+    };
+    super(errorResponse, HttpStatus.CONFLICT);
+  }
+}
