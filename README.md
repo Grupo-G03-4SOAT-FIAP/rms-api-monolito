@@ -41,6 +41,23 @@ Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai pr
 7. Com o `User ID` e `Access Token` da aplicação de testes do Vendedor e com o `id` da Loja e o `external_id` do Caixa que você acabou de cadastrar, preencha as variáveis de ambiente no arquivo `.env`
 8. Execute a aplicação.
 
+## Executar a aplicação usando o Kubernetes do Docker Desktop
+
+1. Clonar este repositório;
+2. Navegar até a pasta raiz do projeto;
+3. Usar o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
+4. Usar o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
+5. Usar o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
+6. Acessar o Swagger em http://localhost:3000/swagger/
+
+> Se preferir você também pode gerenciar o cluster Kubernetes [através do Lens](https://www.mirantis.com/blog/getting-started-with-the-mirantis-lens-kubernetes-extension-in-docker-desktop/).
+
+> Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
+
+<details>
+
+<summary>Como executar a aplicação usando o Docker Compose?</summary>
+
 ## Executar a aplicação usando o Docker Compose
 
 1. Clonar este repositório;
@@ -49,20 +66,9 @@ Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai pr
 4. Usar o comando `docker-compose up --build --force-recreate --renew-anon-volumes`
 5. Acessar o Swagger em http://localhost:3000/swagger/
 
-> Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
-
 > DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
 
-## Executar a aplicação usando o Kubernetes do Docker Desktop
-
-1. Clonar este repositório;
-2. Abra o arquivo `k8s/bff/config.yaml` e preencha o Acess Token e User ID do Mercado Pago;
-3. Navegar até a pasta raiz do projeto;
-4. Usar o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
-5. Usar o comando `kubectl apply -f k8s/namespace.yaml -f k8s/bff/config.yaml -f k8s/bff/deployment.yaml -f k8s/bff/service.yaml -f k8s/bff/hpa.yaml -f k8s/postgres/pvc-pv.yaml -f k8s/postgres/config.yaml -f k8s/postgres/deployment.yaml -f k8s/postgres/service.yaml`
-6. Acessar o Swagger em http://localhost:3000/swagger/
-
-> Se preferir você também pode gerenciar o cluster Kubernetes [através do Lens](https://www.mirantis.com/blog/getting-started-with-the-mirantis-lens-kubernetes-extension-in-docker-desktop/).
+</details>
 
 ## Banco de Dados
 
