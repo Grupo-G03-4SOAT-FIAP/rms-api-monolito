@@ -14,9 +14,7 @@ export class CategoriaDTOFactory implements ICategoriaDTOFactory {
     return categoriaDTO;
   }
 
-  async criarListaCategoriaDTO(
-    categorias: CategoriaModel[],
-  ): Promise<[] | CategoriaDTO[]> {
+  criarListaCategoriaDTO(categorias: CategoriaModel[]): CategoriaDTO[] | [] {
     const listaCategoriasDTO = categorias.map((categoria: CategoriaModel) => {
       const categoriaDTO = new CategoriaDTO();
       categoriaDTO.id = categoria.id;

@@ -27,8 +27,8 @@ import { MensagemGatewayPagamentoDTO } from '../../presenters/gatewaypag.dto';
 export class PedidoController {
   constructor(
     @Inject(IPedidoUseCase)
-    private readonly pedidoUseCase: IPedidoUseCase
-  ) { }
+    private readonly pedidoUseCase: IPedidoUseCase,
+  ) {}
 
   @Post()
   @HttpCode(201)
@@ -157,7 +157,8 @@ export class PedidoController {
   async consumirMensagem(
     @Query('id') id: string,
     @Query('topic') topic: string,
-    @Body() mensagem: MensagemGatewayPagamentoDTO) {
+    @Body() mensagem: MensagemGatewayPagamentoDTO,
+  ) {
     try {
       return await this.pedidoUseCase.webhookPagamento(id, topic, mensagem);
     } catch (error) {
@@ -167,5 +168,4 @@ export class PedidoController {
       throw error;
     }
   }
-
 }
