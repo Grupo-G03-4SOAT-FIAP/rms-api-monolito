@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rms-bff
+  namespace: rms
+  labels:
+    app: rms-bff
+spec:
+  selector:
+    app: rms-bff
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

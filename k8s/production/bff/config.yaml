@@ -6,12 +6,12 @@ metadata:
   labels:
     app: rms-bff
 data:
-  DB_HOST: "postgres" # Deve refletir o nome do service do PostgreSQL
-  DB_PORT: "5432"
-  DB_USERNAME: "pguser"
-  DB_PASSWORD: "pgpwd"
-  DB_NAME: "rms"
-  DB_SSL: "false"
+  DB_HOST: "" # Endpoint do banco de dados RDS (PostgreSQL) na AWS
+  DB_PORT: ""
+  DB_USERNAME: ""
+  DB_PASSWORD: ""
+  DB_NAME: ""
+  DB_SSL: ""
   ACCESS_TOKEN_MERCADOPAGO: ""
   USER_ID_MERCADOPAGO: ""
   EXTERNAL_POS_ID_MERCADOPAGO: ""
