@@ -4,11 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ClienteModel } from './cliente.model';
-import { ProdutoModel } from './produto.model';
+import { ItemPedidoModel } from './item_pedido.model';
 
 @Entity('pedidos')
 export class PedidoModel {
@@ -18,11 +19,13 @@ export class PedidoModel {
   @Column({ name: 'numero_pedido', nullable: false, unique: true })
   numeroPedido: string;
 
-  @Column({ name: 'itens_pedido', type: 'json', nullable: false }) // tipo 'json' para armazenar uma lista de produtos
-  itensPedido: ProdutoModel[];
+  @OneToMany(() => ItemPedidoModel, (itemPedido) => itemPedido.pedido, {
+    nullable: false,
+  })
+  itensPedido: ItemPedidoModel[];
 
   @ManyToOne(() => ClienteModel, { nullable: true })
-  @JoinColumn({ name: 'id_cliente' }) // A chave estrangeira
+  @JoinColumn({ name: 'id_cliente' })
   cliente: ClienteModel | null;
 
   @Column({ name: 'status_pedido', length: 20, nullable: false })

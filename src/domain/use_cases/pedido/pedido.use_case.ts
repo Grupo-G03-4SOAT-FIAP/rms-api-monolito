@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MensagemGatewayPagamentoDTO, PedidoGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presenters/gatewaypag.dto';
+import {
+  MensagemGatewayPagamentoDTO,
+  PedidoGatewayPagamentoDTO,
+} from 'src/adapters/inbound/rest/v1/presenters/gatewaypag.dto';
 import {
   CriaPedidoDTO,
   PedidoDTO,
@@ -10,7 +13,7 @@ import { IPedidoDTOFactory } from 'src/domain/ports/pedido/pedido.dto.factory.po
 import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
-import { IGatewayPagamentoService } from 'src/domain/services/gatewaypag.service.port';
+import { IGatewayPagamentoService } from 'src/domain/ports/pedido/gatewaypag.service.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 @Injectable()
@@ -29,14 +32,13 @@ export class PedidoUseCase implements IPedidoUseCase {
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
 
-    // Salva o pedido no Banco de Dados
     const result = await this.pedidoRepository.criarPedido(pedidoEntity);
-
     pedidoEntity.id = result.id;
 
-    // Criar o pedido no Gateway de Pagamento
     const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
-    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
+
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
+    pedidoDTO.qrCode = qrData;
 
     pedidoDTO.qrCode = qrData;
 
@@ -61,7 +63,7 @@ export class PedidoUseCase implements IPedidoUseCase {
       pedidoId,
       statusPedido,
     );
-    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
     return {
       mensagem: 'Pedido atualizado com sucesso',
@@ -75,47 +77,57 @@ export class PedidoUseCase implements IPedidoUseCase {
       throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
     }
 
-    const pedidoDTO = await this.pedidoDTOFactory.criarPedidoDTO(result);
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
     return pedidoDTO;
   }
 
   async listarPedidos(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidos();
-    const listaPedidosDTO =
-      await this.pedidoDTOFactory.criarListaPedidoDTO(result);
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
   }
 
   async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidosRecebido();
-    const listaPedidosDTO =
-      await this.pedidoDTOFactory.criarListaPedidoDTO(result);
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
   }
 
-  async webhookPagamento(id: string, topic: string, mensagem: MensagemGatewayPagamentoDTO): Promise<any> {
+  async webhookPagamento(
+    id: string,
+    topic: string,
+    mensagem: MensagemGatewayPagamentoDTO,
+  ): Promise<any> {
     if (id && topic === 'merchant_order') {
-      const pedidoGatewayPag = await this.gatewayPagamentoService.consultarPedido(id);
+      const pedidoGatewayPag =
+        await this.gatewayPagamentoService.consultarPedido(id);
       const idInternoPedido = pedidoGatewayPag.external_reference;
       if (this.verificarPagamento(pedidoGatewayPag)) {
-        const buscaPedido = await this.pedidoRepository.buscarPedido(idInternoPedido);
+        const buscaPedido =
+          await this.pedidoRepository.buscarPedido(idInternoPedido);
         if (!buscaPedido) {
           throw new PedidoNaoLocalizadoErro('Pedido não localizado');
         }
         await this.pedidoRepository.editarStatusPedido(
           idInternoPedido,
-          "em preparacao",
+          'em preparacao',
         );
       }
       return {
-        mensagem: 'Mensagem consumida com sucesso'
+        mensagem: 'Mensagem consumida com sucesso',
       };
     }
   }
 
-  private verificarPagamento(pedidoGatewayPag: PedidoGatewayPagamentoDTO): boolean {
-    if (pedidoGatewayPag.order_status === 'paid' &&
-      pedidoGatewayPag.payments.every((payment) => { return payment.status === 'approved'; })) {
+  private verificarPagamento(
+    pedidoGatewayPag: PedidoGatewayPagamentoDTO,
+  ): boolean {
+    if (
+      pedidoGatewayPag.order_status === 'paid' &&
+      pedidoGatewayPag.payments.every((payment) => {
+        return payment.status === 'approved';
+      })
+    ) {
       return true;
     }
     return false;

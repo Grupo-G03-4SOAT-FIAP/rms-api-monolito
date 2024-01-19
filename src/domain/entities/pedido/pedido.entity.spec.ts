@@ -1,12 +1,12 @@
 import { clienteEntityMock } from 'src/mocks/cliente.mock';
 import { StatusPedido } from 'src/utils/pedido.enum';
 import { ClienteEntity } from '../cliente/cliente.entity';
-import { ProdutoEntity } from '../produto/produto.entity';
-import { produtoEntityMock } from 'src/mocks/produto.mock';
 import { PedidoEntity } from './pedido.entity';
+import { itemPedidoEntityMock } from 'src/mocks/item_pedido.mock';
+import { ItemPedidoEntity } from './item_pedido.entity';
 
 describe('PedidoEntity', () => {
-  let produtos: ProdutoEntity[];
+  let itensPedido: ItemPedidoEntity[];
   let statusPedido: StatusPedido;
   let numeroPedido: string;
   let cliente: ClienteEntity;
@@ -14,7 +14,7 @@ describe('PedidoEntity', () => {
 
   beforeEach(() => {
     // Defina as variáveis antes de cada teste
-    produtos = [produtoEntityMock];
+    itensPedido = [itemPedidoEntityMock];
     statusPedido = StatusPedido.RECEBIDO;
     numeroPedido = '05012024';
     cliente = clienteEntityMock;
@@ -23,14 +23,14 @@ describe('PedidoEntity', () => {
 
   it('deve criar uma instância de PedidoEntity', () => {
     const pedido = new PedidoEntity(
-      produtos,
+      itensPedido,
       statusPedido,
       numeroPedido,
       cliente,
       id,
     );
 
-    expect(pedido.itensPedido).toEqual(produtos);
+    expect(pedido.itensPedido).toEqual(itensPedido);
     expect(pedido.statusPedido).toEqual(statusPedido);
     expect(pedido.numeroPedido).toEqual(numeroPedido);
     expect(pedido.cliente).toEqual(cliente);
@@ -38,9 +38,9 @@ describe('PedidoEntity', () => {
   });
 
   it('deve criar uma instância de PedidoEntity sem cliente e id', () => {
-    const pedido = new PedidoEntity(produtos, statusPedido, numeroPedido);
+    const pedido = new PedidoEntity(itensPedido, statusPedido, numeroPedido);
 
-    expect(pedido.itensPedido).toEqual(produtos);
+    expect(pedido.itensPedido).toEqual(itensPedido);
     expect(pedido.statusPedido).toEqual(statusPedido);
     expect(pedido.numeroPedido).toEqual(numeroPedido);
     expect(pedido.cliente).toBeUndefined();

@@ -1,16 +1,16 @@
-import { ProdutoEntity } from '../produto/produto.entity';
 import { ClienteEntity } from '../cliente/cliente.entity';
 import { StatusPedido } from 'src/utils/pedido.enum';
+import { ItemPedidoEntity } from './item_pedido.entity';
 
 export class PedidoEntity {
-  private _itensPedido: ProdutoEntity[];
+  private _itensPedido: ItemPedidoEntity[];
   private _statusPedido: StatusPedido;
   private _numeroPedido: string;
   private _cliente?: ClienteEntity;
   private _id?: string;
 
   constructor(
-    itensPedido: ProdutoEntity[],
+    itensPedido: ItemPedidoEntity[],
     statusPedido: StatusPedido,
     numeroPedido: string,
     cliente?: ClienteEntity,
@@ -23,11 +23,11 @@ export class PedidoEntity {
     this.statusPedido = statusPedido;
   }
 
-  get itensPedido(): ProdutoEntity[] {
+  get itensPedido(): ItemPedidoEntity[] {
     return this._itensPedido;
   }
 
-  set itensPedido(itensPedido: ProdutoEntity[]) {
+  set itensPedido(itensPedido: ItemPedidoEntity[]) {
     this._itensPedido = itensPedido;
   }
 
