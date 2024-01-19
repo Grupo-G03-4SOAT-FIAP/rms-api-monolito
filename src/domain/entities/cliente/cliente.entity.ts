@@ -1,31 +1,51 @@
 import { ToCapitalizeString } from '../../../utils/capitalize_string';
 import { CPF } from '../../value_objects/cpf';
 export class ClienteEntity {
-  nome: string;
-  email: string;
-  cpf?: string;
-  id?: string;
+  private _nome: string;
+  private _email: string;
+  private _cpf?: string;
+  private _id?: string;
 
   constructor(nome: string, email: string, cpf?: string, id?: string) {
     this.id = id;
-    this.setNome = nome;
+    this.nome = nome;
     this.email = email;
-    const cpfIntancia = new CPF(cpf);
-    this.cpf = cpfIntancia.getValue();
-  }
-
-  get getNome(): string {
-    return this.nome;
-  }
-  set setNome(nome: string) {
-    const capitalizedNome = new ToCapitalizeString(nome);
-    this.nome = capitalizedNome.input;
-  }
-
-  get getCpf(): string {
-    return this.cpf;
-  }
-  set setCpf(cpf: string) {
     this.cpf = cpf;
+  }
+
+  get nome(): string {
+    return this._nome;
+  }
+
+  set nome(nome: string) {
+    const capitalizedNome = new ToCapitalizeString(nome);
+    this._nome = capitalizedNome.input;
+  }
+
+  get email(): string {
+    return this._email;
+  }
+
+  set email(email: string) {
+    this._email = email;
+  }
+
+  get cpf(): string | undefined {
+    return this._cpf;
+  }
+
+  set cpf(cpf: string | undefined) {
+    if (cpf) {
+      const cpfObject = new CPF(cpf);
+      this._cpf = cpfObject.getValue();
+    }
+  }
+
+  get id(): string | undefined {
+    return this._id;
+  }
+
+  set id(id: string | undefined) {
+    this._id = id;
   }
 }

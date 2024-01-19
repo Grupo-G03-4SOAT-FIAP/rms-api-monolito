@@ -9,9 +9,16 @@ import {
   pedidoEntityMock,
   pedidoTypeORMMock,
 } from 'src/mocks/pedido.mock';
+import { ItemPedidoModel } from '../../models/item_pedido.model';
+import {
+  itemPedidoEntityMock,
+  itemPedidoModelMock,
+  itemPedidoTypeORMMock,
+} from 'src/mocks/item_pedido.mock';
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
+  let pedidoId: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,10 +28,15 @@ describe('PedidoRepository', () => {
           provide: getRepositoryToken(PedidoModel),
           useValue: pedidoTypeORMMock,
         },
+        {
+          provide: getRepositoryToken(ItemPedidoModel),
+          useValue: itemPedidoTypeORMMock,
+        },
       ],
     }).compile();
 
     pedidoRepository = module.get<PedidoRepository>(PedidoRepository);
+    pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -35,6 +47,11 @@ describe('PedidoRepository', () => {
     pedidoTypeORMMock.create.mockReturnValue(pedidoModelMock);
     pedidoTypeORMMock.save.mockResolvedValue(Promise.resolve(pedidoModelMock));
 
+    itemPedidoTypeORMMock.create.mockReturnValue(itemPedidoModelMock);
+    itemPedidoTypeORMMock.save.mockResolvedValue(
+      Promise.resolve(itemPedidoModelMock),
+    );
+
     const result = await pedidoRepository.criarPedido(pedidoEntityMock);
 
     expect(pedidoTypeORMMock.create).toHaveBeenCalledWith(pedidoEntityMock);
@@ -43,7 +60,6 @@ describe('PedidoRepository', () => {
   });
 
   it('deve editar o status de um pedido', async () => {
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const novoStatusPedido = 'recebido';
 
     pedidoTypeORMMock.findOne.mockResolvedValue(
@@ -70,7 +86,6 @@ describe('PedidoRepository', () => {
       Promise.resolve(pedidoModelMock),
     );
 
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const result = await pedidoRepository.buscarPedido(pedidoId);
 
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
@@ -83,7 +98,6 @@ describe('PedidoRepository', () => {
   it('deve buscar um pedido por id e retornar nulo', async () => {
     pedidoTypeORMMock.findOne.mockResolvedValue(null);
 
-    const pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     const result = await pedidoRepository.buscarPedido(pedidoId);
 
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({

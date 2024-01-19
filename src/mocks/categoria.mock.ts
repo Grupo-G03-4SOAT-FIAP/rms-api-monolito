@@ -48,9 +48,25 @@ const categoriaTypeORMMock: jest.Mocked<Repository<CategoriaModel>> = {
   Repository<CategoriaModel>
 >;
 
+const categoriaRepositoryMock = {
+  criarCategoria: jest.fn(),
+  editarCategoria: jest.fn(),
+  excluirCategoria: jest.fn(),
+  buscarCategoriaPorId: jest.fn(),
+  buscarCategoriaPorNome: jest.fn(),
+  listarCategorias: jest.fn(),
+};
+
+const categoriaDTOFactoryMock = {
+  criarCategoriaDTO: jest.fn(),
+  criarListaCategoriaDTO: jest.fn(),
+};
+
 export {
   categoriaModelMock,
   categoriaEntityMock,
   categoriaDTOMock,
   categoriaTypeORMMock,
+  categoriaRepositoryMock,
+  categoriaDTOFactoryMock,
 };

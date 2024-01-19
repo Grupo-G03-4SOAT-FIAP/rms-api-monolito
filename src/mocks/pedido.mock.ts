@@ -2,34 +2,45 @@ import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { Repository } from 'typeorm';
 import { StatusPedido } from '../utils/pedido.enum';
-import { produtoEntityMock, produtoModelMock } from './produto.mock';
-import { clienteModelMock, clienteEntityMock } from './cliente.mock';
+import {
+  clienteModelMock,
+  clienteEntityMock,
+  clienteDTOMock,
+} from './cliente.mock';
 import {
   AtualizaPedidoDTO,
   CriaPedidoDTO,
   PedidoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
 import { ClienteDTO } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
-import { ProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
+import {
+  itemPedidoDTOMock,
+  itemPedidoEntityMock,
+  itemPedidoModelMock,
+} from './item_pedido.mock';
+import {
+  CriaItemPedidoDTO,
+  ItemPedidoDTO,
+} from 'src/adapters/inbound/rest/v1/presenters/item_pedido.dto';
 
 const pedidoModelMock = new PedidoModel();
 pedidoModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 pedidoModelMock.numeroPedido = '05012024';
-pedidoModelMock.itensPedido = [produtoModelMock];
+pedidoModelMock.itensPedido = [itemPedidoModelMock];
 pedidoModelMock.cliente = clienteModelMock;
 pedidoModelMock.statusPedido = 'recebido';
 pedidoModelMock.criadoEm = new Date().toISOString();
 pedidoModelMock.atualizadoEm = new Date().toISOString();
 
 const pedidoEntityMock = new PedidoEntity(
-  [produtoEntityMock],
+  [itemPedidoEntityMock],
   StatusPedido.RECEBIDO,
   '05012024',
   clienteEntityMock,
 );
 
 const makeCriaPedidoDTO = (
-  itensPedido: string[],
+  itensPedido: CriaItemPedidoDTO[],
   cpfCliente?: string,
 ): CriaPedidoDTO => {
   const criaPedidoDTO = new CriaPedidoDTO();
@@ -39,7 +50,7 @@ const makeCriaPedidoDTO = (
 };
 
 const criaPedidoDTOMock = makeCriaPedidoDTO(
-  ['0a14aa4e-75e7-405f-8301-81f60646c93d'],
+  [{ produto: '0a14aa4e-75e7-405f-8301-81f60646c93d', quantidade: 2 }],
   '83904665030',
 );
 
@@ -56,9 +67,10 @@ const atualizaPedidoDTOMock = makeAtualizaPedidoDTO(StatusPedido.RECEBIDO);
 const makePedidoDTO = (
   id: string,
   numeroPedido: string,
-  itensPedido: ProdutoDTO[],
+  itensPedido: ItemPedidoDTO[],
   statusPedido: string,
   cliente: ClienteDTO,
+  qrCode: string,
 ): PedidoDTO => {
   const pedidoDTO = new PedidoDTO();
   pedidoDTO.id = id;
@@ -66,15 +78,17 @@ const makePedidoDTO = (
   pedidoDTO.itensPedido = itensPedido;
   pedidoDTO.statusPedido = statusPedido;
   pedidoDTO.cliente = cliente;
+  pedidoDTO.qrCode = qrCode;
   return pedidoDTO;
 };
 
 const pedidoDTOMock = makePedidoDTO(
   pedidoModelMock.id,
   pedidoModelMock.numeroPedido,
-  pedidoModelMock.itensPedido,
+  [itemPedidoDTOMock],
   pedidoModelMock.statusPedido,
-  pedidoModelMock.cliente,
+  clienteDTOMock,
+  'qrCode',
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
@@ -95,14 +109,32 @@ const pedidoRepositoryMock = {
   listarPedidosRecebido: jest.fn(),
 };
 
+const gatewayPagamentoServiceMock = {
+  criarPedido: jest.fn(),
+  consultarPedido: jest.fn(),
+};
+
 const pedidoFactoryMock = {
   criarItemPedido: jest.fn(),
   criarEntidadeCliente: jest.fn(),
   criarEntidadePedido: jest.fn(),
 };
 
+const pedidoDTOFactoryMock = {
+  criarPedidoDTO: jest.fn(),
+  criarListaPedidoDTO: jest.fn(),
+};
+
 const pedidoServiceMock = {
   gerarNumeroPedido: jest.fn(),
+};
+
+const pedidoUseCaseMock = {
+  criarPedido: jest.fn(),
+  editarPedido: jest.fn(),
+  buscarPedido: jest.fn(),
+  listarPedidos: jest.fn(),
+  listarPedidosRecebido: jest.fn(),
 };
 
 export {
@@ -113,6 +145,9 @@ export {
   pedidoDTOMock,
   pedidoTypeORMMock,
   pedidoRepositoryMock,
+  gatewayPagamentoServiceMock,
   pedidoFactoryMock,
+  pedidoDTOFactoryMock,
   pedidoServiceMock,
+  pedidoUseCaseMock,
 };

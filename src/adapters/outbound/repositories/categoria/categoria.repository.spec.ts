@@ -16,6 +16,7 @@ const categoriaSoftDeleteMock = new softDeleteMock();
 
 describe('CategoriaRepository', () => {
   let categoriaRepository: CategoriaRepository;
+  let categoriaId: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,6 +30,7 @@ describe('CategoriaRepository', () => {
     }).compile();
 
     categoriaRepository = module.get<CategoriaRepository>(CategoriaRepository);
+    categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -56,8 +58,6 @@ describe('CategoriaRepository', () => {
       Promise.resolve(categoriaModelMock),
     );
 
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     const result = await categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntityMock,
@@ -74,8 +74,6 @@ describe('CategoriaRepository', () => {
   });
 
   it('deve excluir uma categoria no formato softdelete', async () => {
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     categoriaSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const categoriaService = new CategoriaRepository(
@@ -94,8 +92,6 @@ describe('CategoriaRepository', () => {
       Promise.resolve(categoriaModelMock),
     );
 
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-
     const result = await categoriaRepository.buscarCategoriaPorId(categoriaId);
 
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
@@ -106,8 +102,6 @@ describe('CategoriaRepository', () => {
 
   it('deve buscar uma categoria por id e retornar nulo', async () => {
     categoriaTypeORMMock.findOne.mockResolvedValue(null);
-
-    const categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 
     const result = await categoriaRepository.buscarCategoriaPorId(categoriaId);
 

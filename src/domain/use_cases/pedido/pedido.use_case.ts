@@ -1,14 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
+  MensagemGatewayPagamentoDTO,
+  PedidoGatewayPagamentoDTO,
+} from 'src/adapters/inbound/rest/v1/presenters/gatewaypag.dto';
+import {
   CriaPedidoDTO,
   PedidoDTO,
   AtualizaPedidoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
-import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
+import { IPedidoDTOFactory } from 'src/domain/ports/pedido/pedido.dto.factory.port';
 import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
+import { IGatewayPagamentoService } from 'src/domain/ports/pedido/gatewaypag.service.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 
 @Injectable()
@@ -18,19 +23,22 @@ export class PedidoUseCase implements IPedidoUseCase {
     private readonly pedidoRepository: IPedidoRepository,
     @Inject(IPedidoFactory)
     private readonly pedidoFactory: IPedidoFactory,
+    @Inject(IGatewayPagamentoService)
+    private readonly gatewayPagamentoService: IGatewayPagamentoService,
+    @Inject(IPedidoDTOFactory)
+    private readonly pedidoDTOFactory: IPedidoDTOFactory,
   ) {}
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-    // factory para criar a entidade pedido
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
-    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
 
-    const pedidoDTO = new PedidoDTO();
-    pedidoDTO.id = result.id;
-    pedidoDTO.numeroPedido = result.numeroPedido;
-    pedidoDTO.itensPedido = result.itensPedido;
-    pedidoDTO.statusPedido = result.statusPedido;
-    pedidoDTO.cliente = result.cliente;
+    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
+    pedidoEntity.id = result.id;
+
+    const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
+
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
+    pedidoDTO.qrCode = qrData;
 
     return {
       mensagem: 'Pedido criado com sucesso',
@@ -53,13 +61,7 @@ export class PedidoUseCase implements IPedidoUseCase {
       pedidoId,
       statusPedido,
     );
-
-    const pedidoDTO = new PedidoDTO();
-    pedidoDTO.id = result.id;
-    pedidoDTO.numeroPedido = result.numeroPedido;
-    pedidoDTO.itensPedido = result.itensPedido;
-    pedidoDTO.statusPedido = result.statusPedido;
-    pedidoDTO.cliente = result.cliente;
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
     return {
       mensagem: 'Pedido atualizado com sucesso',
@@ -73,41 +75,59 @@ export class PedidoUseCase implements IPedidoUseCase {
       throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
     }
 
-    const pedidoDTO = new PedidoDTO();
-    pedidoDTO.id = result.id;
-    pedidoDTO.numeroPedido = result.numeroPedido;
-    pedidoDTO.itensPedido = result.itensPedido;
-    pedidoDTO.statusPedido = result.statusPedido;
-    pedidoDTO.cliente = result.cliente;
-
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
     return pedidoDTO;
   }
 
   async listarPedidos(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidos();
-    const listaPedidosDTO = result.map((pedido: PedidoModel) => {
-      const pedidoDTO = new PedidoDTO();
-      pedidoDTO.id = pedido.id;
-      pedidoDTO.numeroPedido = pedido.numeroPedido;
-      pedidoDTO.itensPedido = pedido.itensPedido;
-      pedidoDTO.statusPedido = pedido.statusPedido;
-      pedidoDTO.cliente = pedido.cliente;
-      return pedidoDTO;
-    });
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
   }
 
   async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
     const result = await this.pedidoRepository.listarPedidosRecebido();
-    const listaPedidosDTO = result.map((pedido: PedidoModel) => {
-      const pedidoDTO = new PedidoDTO();
-      pedidoDTO.id = pedido.id;
-      pedidoDTO.numeroPedido = pedido.numeroPedido;
-      pedidoDTO.itensPedido = pedido.itensPedido;
-      pedidoDTO.statusPedido = pedido.statusPedido;
-      pedidoDTO.cliente = pedido.cliente;
-      return pedidoDTO;
-    });
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
     return listaPedidosDTO;
+  }
+
+  async webhookPagamento(
+    id: string,
+    topic: string,
+    mensagem: MensagemGatewayPagamentoDTO,
+  ): Promise<any> {
+    if (id && topic === 'merchant_order') {
+      const pedidoGatewayPag =
+        await this.gatewayPagamentoService.consultarPedido(id);
+      const idInternoPedido = pedidoGatewayPag.external_reference;
+      if (this.verificarPagamento(pedidoGatewayPag)) {
+        const buscaPedido =
+          await this.pedidoRepository.buscarPedido(idInternoPedido);
+        if (!buscaPedido) {
+          throw new PedidoNaoLocalizadoErro('Pedido não localizado');
+        }
+        await this.pedidoRepository.editarStatusPedido(
+          idInternoPedido,
+          'em preparacao',
+        );
+      }
+      return {
+        mensagem: 'Mensagem consumida com sucesso',
+      };
+    }
+  }
+
+  private verificarPagamento(
+    pedidoGatewayPag: PedidoGatewayPagamentoDTO,
+  ): boolean {
+    if (
+      pedidoGatewayPag.order_status === 'paid' &&
+      pedidoGatewayPag.payments.every((payment) => {
+        return payment.status === 'approved';
+      })
+    ) {
+      return true;
+    }
+    return false;
   }
 }

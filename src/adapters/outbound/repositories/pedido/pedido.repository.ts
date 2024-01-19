@@ -5,18 +5,41 @@ import { PedidoModel } from '../../models/pedido.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { StatusPedido } from 'src/utils/pedido.enum';
+import { ItemPedidoModel } from '../../models/item_pedido.model';
 
 @Injectable()
 export class PedidoRepository implements IPedidoRepository {
   constructor(
     @InjectRepository(PedidoModel)
     private readonly pedidoRepository: Repository<PedidoModel>,
+    @InjectRepository(ItemPedidoModel)
+    private readonly itemPedidoRepository: Repository<ItemPedidoModel>,
   ) {}
 
   async criarPedido(pedido: PedidoEntity): Promise<PedidoModel> {
     const novoPedido = this.pedidoRepository.create(pedido);
     await this.pedidoRepository.save(novoPedido);
-    return novoPedido;
+
+    const itensPedido = novoPedido.itensPedido.map((itemPedido) => {
+      const novoItemPedido = this.itemPedidoRepository.create({
+        pedido: { id: novoPedido.id },
+        produto: { id: itemPedido.produto.id },
+        quantidade: itemPedido.quantidade,
+      });
+      return novoItemPedido;
+    });
+    await this.itemPedidoRepository.save(itensPedido);
+
+    const pedidoComItens = await this.pedidoRepository.findOne({
+      where: { id: novoPedido.id },
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
+    });
+    return pedidoComItens;
   }
 
   async editarStatusPedido(
@@ -29,14 +52,24 @@ export class PedidoRepository implements IPedidoRepository {
 
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
   }
 
   async buscarPedido(pedidoId: string): Promise<PedidoModel | null> {
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
   }
 
@@ -59,7 +92,12 @@ export class PedidoRepository implements IPedidoRepository {
         statusPedido: 'ASC', // Ordenação alfabética para garantir consistência
         criadoEm: 'ASC', // Ordene por criadoEm em ordem crescente (do mais antigo ao mais recente)
       },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
 
     if (pedidos.length > 0) {
@@ -80,7 +118,12 @@ export class PedidoRepository implements IPedidoRepository {
       order: {
         criadoEm: 'ASC', // Ordene por criadoEm em ordem crescente (do mais antigo ao mais recente)
       },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
 
     return pedidos;
