@@ -9,6 +9,7 @@ import { PedidoGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presente
 import { MercadoPagoConfig, MerchantOrder } from 'mercadopago';
 import axios from 'axios';
 import BigNumber from 'bignumber.js';
+import { DateTime } from "luxon";
 
 @Injectable()
 export class GatewayPagamentoService implements IGatewayPagamentoService {
@@ -40,14 +41,15 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
 
   async criarPedido(pedido: PedidoEntity): Promise<string> {
     // Criar um novo Pedido do Mercado Pago
+    const dataValidadeQrCode = DateTime.now().setZone('UTC').plus({hours:24}).toISO();
     const itensPedidoMercadoPago = this.gerarItensPedidoMercadoPago(
       pedido.itensPedido,
     );
     const data = JSON.stringify({
       title: 'Product order',
       description: 'Purchase description.',
-      expiration_date: '2024-06-01T00:00:00.000-04:00', // Campo opcional
-      external_reference: pedido.id.toString(), // Número interno do Pedido dentro da sua loja
+      expiration_date: dataValidadeQrCode.toString(), // Campo opcional
+      external_reference: pedido.id.toString(), // Número interno do pedido dentro da sua loja
       items: itensPedidoMercadoPago,
       notification_url: this._webhookURL,
       total_amount: this.calcularValorTotalPedido(itensPedidoMercadoPago),
