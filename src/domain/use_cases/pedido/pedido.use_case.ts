@@ -40,8 +40,6 @@ export class PedidoUseCase implements IPedidoUseCase {
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
     pedidoDTO.qrCode = qrData;
 
-    pedidoDTO.qrCode = qrData;
-
     return {
       mensagem: 'Pedido criado com sucesso',
       body: pedidoDTO,
