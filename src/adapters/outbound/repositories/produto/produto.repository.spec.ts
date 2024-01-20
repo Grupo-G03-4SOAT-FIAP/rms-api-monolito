@@ -18,6 +18,8 @@ describe('ProdutoRepository', () => {
   let produtoRepository: ProdutoRepository;
   let produtoId: string;
   let categoriaId: string;
+  let nomeProduto: string;
+  let relations: string[];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,6 +35,8 @@ describe('ProdutoRepository', () => {
     produtoRepository = module.get<ProdutoRepository>(ProdutoRepository);
     produtoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    nomeProduto = 'Produto X';
+    relations = ['categoria'];
   });
 
   afterEach(() => {
@@ -54,9 +58,6 @@ describe('ProdutoRepository', () => {
 
   it('deve editar um produto', async () => {
     produtoTypeORMMock.create.mockReturnValue(produtoModelMock);
-    produtoTypeORMMock.save.mockResolvedValue(
-      Promise.resolve(produtoModelMock),
-    );
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
@@ -73,7 +74,7 @@ describe('ProdutoRepository', () => {
     );
     expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: produtoId },
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(produtoModelMock);
   });
@@ -99,7 +100,7 @@ describe('ProdutoRepository', () => {
 
     expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: produtoId },
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(produtoModelMock);
   });
@@ -111,7 +112,7 @@ describe('ProdutoRepository', () => {
 
     expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: produtoId },
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(null);
   });
@@ -121,13 +122,11 @@ describe('ProdutoRepository', () => {
       Promise.resolve(produtoModelMock),
     );
 
-    const nomeProduto = 'Produto X';
-
     const result = await produtoRepository.buscarProdutoPorNome(nomeProduto);
 
     expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { nome: nomeProduto },
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(produtoModelMock);
   });
@@ -135,13 +134,11 @@ describe('ProdutoRepository', () => {
   it('deve buscar um produto por nome e retornar nulo', async () => {
     produtoTypeORMMock.findOne.mockResolvedValue(null);
 
-    const nomeProduto = 'Produto X';
-
     const result = await produtoRepository.buscarProdutoPorNome(nomeProduto);
 
     expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { nome: nomeProduto },
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(null);
   });
@@ -157,7 +154,7 @@ describe('ProdutoRepository', () => {
     const result = await produtoRepository.listarProdutos();
 
     expect(produtoTypeORMMock.find).toHaveBeenCalledWith({
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(listaProdutos);
   });
@@ -169,7 +166,7 @@ describe('ProdutoRepository', () => {
     const resultado = await produtoRepository.listarProdutos();
 
     expect(produtoTypeORMMock.find).toHaveBeenCalledWith({
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(resultado).toBe(listaProdutos);
   });
@@ -187,7 +184,7 @@ describe('ProdutoRepository', () => {
 
     expect(produtoTypeORMMock.find).toHaveBeenCalledWith({
       where: { categoria: { id: categoriaId } },
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(listaProdutos);
   });
@@ -201,7 +198,7 @@ describe('ProdutoRepository', () => {
 
     expect(produtoTypeORMMock.find).toHaveBeenCalledWith({
       where: { categoria: { id: categoriaId } },
-      relations: ['categoria'],
+      relations: relations,
     });
     expect(result).toBe(listaProdutos);
   });

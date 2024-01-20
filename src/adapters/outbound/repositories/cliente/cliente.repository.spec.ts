@@ -17,6 +17,7 @@ const clienteSoftDeleteMock = new softDeleteMock();
 describe('ClienteRepository', () => {
   let clienteRepository: ClienteRepository;
   let clienteId: string;
+  let cpfCliente: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,6 +32,7 @@ describe('ClienteRepository', () => {
 
     clienteRepository = module.get<ClienteRepository>(ClienteRepository);
     clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    cpfCliente = '83904665030';
   });
 
   afterEach(() => {
@@ -51,6 +53,7 @@ describe('ClienteRepository', () => {
   });
 
   it('deve editar um cliente', async () => {
+    clienteTypeORMMock.create.mockReturnValue(clienteModelMock);
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
@@ -60,9 +63,10 @@ describe('ClienteRepository', () => {
       clienteEntityMock,
     );
 
+    expect(clienteTypeORMMock.create).toHaveBeenCalledWith(clienteEntityMock);
     expect(clienteTypeORMMock.update).toHaveBeenCalledWith(
       clienteId,
-      clienteEntityMock,
+      clienteModelMock,
     );
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
@@ -111,7 +115,6 @@ describe('ClienteRepository', () => {
       Promise.resolve(clienteModelMock),
     );
 
-    const cpfCliente = '83904665030';
     const result = await clienteRepository.buscarClientePorCPF(cpfCliente);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
@@ -123,7 +126,6 @@ describe('ClienteRepository', () => {
   it('deve buscar um cliente por cpf e retornar nulo', async () => {
     clienteTypeORMMock.findOne.mockResolvedValue(null);
 
-    const cpfCliente = '83904665030';
     const result = await clienteRepository.buscarClientePorCPF(cpfCliente);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({

@@ -5,6 +5,10 @@ import { produtoDTOFactoryMock, produtoDTOMock } from 'src/mocks/produto.mock';
 import { clienteDTOFactoryMock, clienteDTOMock } from 'src/mocks/cliente.mock';
 import { IProdutoDTOFactory } from 'src/domain/ports/produto/produto.dto.factory.port';
 import { IClienteDTOFactory } from 'src/domain/ports/cliente/cliente.dto.factory.port';
+import {
+  itemPedidoDTOMock,
+  itemPedidoModelMock,
+} from 'src/mocks/item_pedido.mock';
 
 describe('PedidoDTOFactory', () => {
   let pedidoDTOFactory: PedidoDTOFactory;
@@ -31,44 +35,45 @@ describe('PedidoDTOFactory', () => {
     jest.clearAllMocks();
   });
 
-  it('deve criar um pedidoDTO', async () => {
-    produtoDTOFactoryMock.criarListaProdutoDTO.mockReturnValue([
-      produtoDTOMock,
-    ]);
+  it('deve criar um pedidoDTO', () => {
+    produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
 
-    const result = await pedidoDTOFactory.criarPedidoDTO(pedidoModelMock);
+    const result = pedidoDTOFactory.criarPedidoDTO(pedidoModelMock);
 
-    expect(produtoDTOFactoryMock.criarListaProdutoDTO).toHaveBeenCalledWith(
-      pedidoModelMock.itensPedido,
-    );
     expect(clienteDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
       pedidoModelMock.cliente,
     );
     expect(result).toStrictEqual(pedidoDTOMock);
   });
 
-  it('deve criar uma lista de pedidoDTO', async () => {
-    produtoDTOFactoryMock.criarListaProdutoDTO.mockReturnValue([
-      produtoDTOMock,
-    ]);
+  it('deve criar uma lista de pedidoDTO', () => {
+    produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
 
-    const result = await pedidoDTOFactory.criarListaPedidoDTO([
-      pedidoModelMock,
-    ]);
+    const result = pedidoDTOFactory.criarListaPedidoDTO([pedidoModelMock]);
 
-    expect(produtoDTOFactoryMock.criarListaProdutoDTO).toHaveBeenCalledWith(
-      pedidoModelMock.itensPedido,
-    );
     expect(clienteDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
       pedidoModelMock.cliente,
     );
     expect(result).toStrictEqual([pedidoDTOMock]);
   });
 
-  it('deve criar uma lista vazia de pedidoDTO', async () => {
-    const result = await pedidoDTOFactory.criarListaPedidoDTO([]);
+  it('deve criar uma lista vazia de pedidoDTO', () => {
+    const result = pedidoDTOFactory.criarListaPedidoDTO([]);
     expect(result).toStrictEqual([]);
+  });
+
+  it('deve criar uma lista de itemPedidoDTO', () => {
+    produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
+
+    const result = pedidoDTOFactory.criarListaItemPedidoDTO(
+      pedidoModelMock.itensPedido,
+    );
+
+    expect(produtoDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
+      itemPedidoModelMock.produto,
+    );
+    expect(result).toStrictEqual([itemPedidoDTOMock]);
   });
 });

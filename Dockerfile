@@ -2,6 +2,9 @@ FROM node:18
 
 RUN adduser --system --group --no-create-home nonroot
 
+RUN apt-get update \
+    && apt-get install -y curl build-essential
+
 WORKDIR /app
 
 COPY package*.json tsconfig.json ./
