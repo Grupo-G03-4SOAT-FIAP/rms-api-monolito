@@ -39,16 +39,22 @@ const criaItemPedidoDTOMock = makeCriaItemPedidoDTO(
 );
 
 const makeItemPedidoDTO = (
+  id: string,
   produto: ProdutoDTO,
   quantidade: number,
 ): ItemPedidoDTO => {
   const itemPedidoDTO = new ItemPedidoDTO();
+  itemPedidoDTO.id = id;
   itemPedidoDTO.produto = produto;
   itemPedidoDTO.quantidade = quantidade;
   return itemPedidoDTO;
 };
 
-const itemPedidoDTOMock = makeItemPedidoDTO(produtoDTOMock, 2);
+const itemPedidoDTOMock = makeItemPedidoDTO(
+  itemPedidoModelMock.id,
+  produtoDTOMock,
+  itemPedidoModelMock.quantidade,
+);
 
 const itemPedidoTypeORMMock: jest.Mocked<Repository<ItemPedidoModel>> = {
   create: jest.fn(),

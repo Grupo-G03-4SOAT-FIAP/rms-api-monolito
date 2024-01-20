@@ -1,17 +1,16 @@
 version: '3.9'
 
 services:
-
   db:
     container_name: db
     hostname: db
     image: postgres:16.1
     ports:
-      - "5432:5432"
+      - '5432:5432'
     expose:
       - 5432
     healthcheck:
-      test: ["CMD", "pg_isready -U ${DB_USER:-pguser} -d ${DB_NAME:-rms}"]
+      test: ['CMD', 'pg_isready -U ${DB_USER:-pguser} -d ${DB_NAME:-rms}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -36,14 +35,14 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     expose:
       - 3000
     env_file:
       - .env
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
+      DB_HOST: ${DB_USERNAME:-db}
+      DB_PORT: ${DB_USERNAME:-5432}
       DB_USER: ${DB_USERNAME:-pguser}
       DB_PASSWORD: ${DB_PASSWORD:-pgpwd}
       DB_NAME: ${DB_NAME:-rms}

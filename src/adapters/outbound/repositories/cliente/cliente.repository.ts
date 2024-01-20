@@ -13,17 +13,17 @@ export class ClienteRepository implements IClienteRepository {
   ) {}
 
   async criarCliente(cliente: ClienteEntity): Promise<ClienteModel> {
-    const novoCliente = this.clienteRepository.create(cliente);
-    await this.clienteRepository.save(novoCliente);
-    return novoCliente;
+    const clienteModel = this.clienteRepository.create(cliente);
+    await this.clienteRepository.save(clienteModel);
+    return clienteModel;
   }
 
   async editarCliente(
     clienteId: string,
     cliente: ClienteEntity,
   ): Promise<ClienteModel> {
-    const novaCliente = this.clienteRepository.create(cliente);
-    await this.clienteRepository.update(clienteId, novaCliente);
+    const clienteModel = this.clienteRepository.create(cliente);
+    await this.clienteRepository.update(clienteId, clienteModel);
     return await this.clienteRepository.findOne({ where: { id: clienteId } });
   }
 

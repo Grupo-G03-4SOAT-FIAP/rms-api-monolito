@@ -9,7 +9,7 @@ import { PedidoGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presente
 import { MercadoPagoConfig, MerchantOrder } from 'mercadopago';
 import axios from 'axios';
 import BigNumber from 'bignumber.js';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class GatewayPagamentoService implements IGatewayPagamentoService {
@@ -41,7 +41,10 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
 
   async criarPedido(pedido: PedidoEntity): Promise<string> {
     // Criar um novo Pedido do Mercado Pago
-    const dataValidadeQrCode = DateTime.now().setZone('UTC').plus({hours:24}).toISO();
+    const dataValidadeQrCode = DateTime.now()
+      .setZone('UTC')
+      .plus({ hours: 24 })
+      .toISO();
     const itensPedidoMercadoPago = this.gerarItensPedidoMercadoPago(
       pedido.itensPedido,
     );
@@ -87,14 +90,16 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
       unit_price: itemPedidoSuaLoja.produto.valorUnitario,
       quantity: itemPedidoSuaLoja.quantidade,
       unit_measure: 'UNID',
-      total_amount: this.calcularValorTotalItemPedido(itemPedidoSuaLoja)
+      total_amount: this.calcularValorTotalItemPedido(itemPedidoSuaLoja),
     }));
     return itensPedidoMercadoPago;
   }
 
   private calcularValorTotalItemPedido(itemPedidoSuaLoja): number {
     const quantidade = new BigNumber(itemPedidoSuaLoja.quantidade);
-    const valorUnitario = new BigNumber(itemPedidoSuaLoja.produto.valorUnitario);
+    const valorUnitario = new BigNumber(
+      itemPedidoSuaLoja.produto.valorUnitario,
+    );
     return valorUnitario.multipliedBy(quantidade).toNumber();
   }
 

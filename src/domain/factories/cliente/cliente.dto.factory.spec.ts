@@ -17,20 +17,18 @@ describe('ClienteDTOFactory', () => {
     jest.clearAllMocks();
   });
 
-  it('deve criar um clienteDTO', async () => {
-    const result = await clienteDTOFactory.criarClienteDTO(clienteModelMock);
+  it('deve criar um clienteDTO', () => {
+    const result = clienteDTOFactory.criarClienteDTO(clienteModelMock);
     expect(result).toStrictEqual(clienteDTOMock);
   });
 
-  it('deve criar uma lista de clienteDTO', async () => {
-    const result = await clienteDTOFactory.criarListaClienteDTO([
-      clienteModelMock,
-    ]);
+  it('deve criar uma lista de clienteDTO', () => {
+    const result = clienteDTOFactory.criarListaClienteDTO([clienteModelMock]);
     expect(result).toStrictEqual([clienteDTOMock]);
   });
 
-  it('deve criar uma lista vazia de clienteDTO', async () => {
-    const result = await clienteDTOFactory.criarListaClienteDTO([]);
+  it('deve criar uma lista vazia de clienteDTO', () => {
+    const result = clienteDTOFactory.criarListaClienteDTO([]);
     expect(result).toStrictEqual([]);
   });
 });
