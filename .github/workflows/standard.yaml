@@ -5,10 +5,8 @@ on:
     branches:
       - main
       - develop
-      - release
       - 'feature/**'
       - 'fix/**'
-      - 'release/**'
     paths-ignore:
       - '**/*.md'
       - .scafflater/**
@@ -16,19 +14,8 @@ on:
     branches:
       - main
       - develop
-      - release
     paths-ignore:
       - '**/*.md'
-      - .github/**
-      - .scafflater/**
-  pull_request_target:
-    branches:
-      - main
-      - develop
-      - release
-    paths-ignore:
-      - '**/*.md'
-      - .github/**
       - .scafflater/**
 
 env:
@@ -67,4 +54,4 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
