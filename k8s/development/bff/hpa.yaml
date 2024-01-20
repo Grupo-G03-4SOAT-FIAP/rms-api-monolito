@@ -10,4 +10,4 @@ spec:
     name: rms-bff
   minReplicas: 1
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 75 # Escala automaticamente ao atingir 75% de uso de CPU
+  targetCPUUtilizationPercentage: 75
