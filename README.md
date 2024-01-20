@@ -28,6 +28,10 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 
+<details>
+
+<summary>Como testar o pagamento de pedidos através do QR Code do Mercado Pago?</summary>
+
 ## Instruções para testar o pagamento de pedidos através do QR Code do Mercado Pago
 
 Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai precisar criar uma Aplicação no [portal do Mercado Pago Developers](https://www.mercadopago.com.br/developers/pt).
@@ -40,6 +44,8 @@ Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai pr
 6. Cadastre uma Loja e um Caixa (POS) na aplicação de testes do Vendedor através da API do Mercado Pago, usando o [Postman](https://www.postman.com/). Anote o `id` da Loja e o `external_id` do Caixa que você acabou de cadastrar;
 7. Com o `User ID` e `Access Token` da aplicação de testes do Vendedor e com o `id` da Loja e o `external_id` do Caixa que você acabou de cadastrar, preencha as variáveis de ambiente no arquivo `.env`
 8. Execute a aplicação.
+
+</details>
 
 ## Executar a aplicação usando o Kubernetes do Docker Desktop
 
