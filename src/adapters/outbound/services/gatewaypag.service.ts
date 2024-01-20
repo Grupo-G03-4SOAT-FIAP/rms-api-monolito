@@ -9,6 +9,7 @@ import { PedidoGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presente
 import { MercadoPagoConfig, MerchantOrder } from 'mercadopago';
 import axios from 'axios';
 import BigNumber from 'bignumber.js';
+import { DateTime } from "luxon";
 
 @Injectable()
 export class GatewayPagamentoService implements IGatewayPagamentoService {
@@ -40,14 +41,15 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
 
   async criarPedido(pedido: PedidoEntity): Promise<string> {
     // Criar um novo Pedido do Mercado Pago
+    const dataValidadeQrCode = DateTime.now().setZone('UTC').plus({hours:24}).toISO();
     const itensPedidoMercadoPago = this.gerarItensPedidoMercadoPago(
       pedido.itensPedido,
     );
     const data = JSON.stringify({
       title: 'Product order',
       description: 'Purchase description.',
-      expiration_date: '2024-02-01T00:00:00.000-04:00', // Campo opcional
-      external_reference: pedido.id.toString(), // Número interno do Pedido dentro da sua loja
+      expiration_date: dataValidadeQrCode.toString(), // Campo opcional
+      external_reference: pedido.id.toString(), // Número interno do pedido dentro da sua loja
       items: itensPedidoMercadoPago,
       notification_url: this._webhookURL,
       total_amount: this.calcularValorTotalPedido(itensPedidoMercadoPago),
@@ -78,18 +80,22 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
 
   private gerarItensPedidoMercadoPago(itensPedido) {
     const itensPedidoMercadoPago = itensPedido.map((itemPedidoSuaLoja) => ({
-      sku_number: itemPedidoSuaLoja.id ?? null, // Campo opcional
-      category: itemPedidoSuaLoja.categoria?.nome ?? null, // Campo opcional
-      title: itemPedidoSuaLoja.nome,
-      description: itemPedidoSuaLoja.descricao ?? null, // Campo opcional
-      unit_price: itemPedidoSuaLoja.valorUnitario,
-      //"quantity": itemPedidoSuaLoja.quantidade,
-      quantity: 1,
+      sku_number: itemPedidoSuaLoja.produto.id ?? null, // Campo opcional
+      category: itemPedidoSuaLoja.produto.categoria?.nome ?? null, // Campo opcional
+      title: itemPedidoSuaLoja.produto.nome,
+      description: itemPedidoSuaLoja.produto.descricao ?? null, // Campo opcional
+      unit_price: itemPedidoSuaLoja.produto.valorUnitario,
+      quantity: itemPedidoSuaLoja.quantidade,
       unit_measure: 'UNID',
-      //"total_amount": itemPedidoSuaLoja.valorTotal
-      total_amount: 1 * itemPedidoSuaLoja.valorUnitario,
+      total_amount: this.calcularValorTotalItemPedido(itemPedidoSuaLoja)
     }));
     return itensPedidoMercadoPago;
+  }
+
+  private calcularValorTotalItemPedido(itemPedidoSuaLoja): number {
+    const quantidade = new BigNumber(itemPedidoSuaLoja.quantidade);
+    const valorUnitario = new BigNumber(itemPedidoSuaLoja.produto.valorUnitario);
+    return valorUnitario.multipliedBy(quantidade).toNumber();
   }
 
   private calcularValorTotalPedido(itensPedidoMercadoPago): number {

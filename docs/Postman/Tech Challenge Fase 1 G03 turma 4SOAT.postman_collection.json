@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e5551e96-e647-4a60-8675-a84602476a95",
+		"_postman_id": "70004c7c-5ed4-4c5f-be46-5bdc82fe0a06",
 		"name": "Tech Challenge Fase 1 G03 turma 4SOAT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4241772"
@@ -462,7 +462,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cpfCliente\": \"44470640735\", // Aqui o CPF pode ser null caso o Cliente opte por não se identificar\r\n    \"itensPedido\": [ // Deve conter uma lista com um ou mais UUIDs de produtos\r\n        \"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4\"\r\n    ]\r\n}",
+							"raw": "{\r\n    \"cpfCliente\": \"44470640735\", // Campo opcional // Aqui o CPF pode ser null caso o Cliente opte por não se identificar\r\n    \"itensPedido\": [\r\n        {\r\n            \"produto\": \"3ecd5148-c71f-412b-9a3a-0c1896375bf2\",\r\n            \"quantidade\": 1\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
