@@ -18,6 +18,7 @@ import {
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
   let pedidoId: string;
+  let relations: string[];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -36,6 +37,12 @@ describe('PedidoRepository', () => {
 
     pedidoRepository = module.get<PedidoRepository>(PedidoRepository);
     pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    relations = [
+      'cliente',
+      'itensPedido',
+      'itensPedido.produto',
+      'itensPedido.produto.categoria',
+    ];
   });
 
   afterEach(() => {
@@ -71,12 +78,7 @@ describe('PedidoRepository', () => {
     ]);
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(pedidoModelMock);
   });
@@ -98,12 +100,7 @@ describe('PedidoRepository', () => {
     });
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(pedidoModelMock);
   });
@@ -117,12 +114,7 @@ describe('PedidoRepository', () => {
 
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(pedidoModelMock);
   });
@@ -134,12 +126,7 @@ describe('PedidoRepository', () => {
 
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(null);
   });
@@ -162,12 +149,7 @@ describe('PedidoRepository', () => {
         statusPedido: 'ASC',
         criadoEm: 'ASC',
       },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(listaPedidos);
   });
@@ -190,12 +172,7 @@ describe('PedidoRepository', () => {
         statusPedido: 'ASC',
         criadoEm: 'ASC',
       },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(listaPedidos);
   });
@@ -213,12 +190,7 @@ describe('PedidoRepository', () => {
       order: {
         criadoEm: 'ASC',
       },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(listaPedidos);
   });
@@ -236,12 +208,7 @@ describe('PedidoRepository', () => {
       order: {
         criadoEm: 'ASC',
       },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: relations,
     });
     expect(result).toBe(listaPedidos);
   });

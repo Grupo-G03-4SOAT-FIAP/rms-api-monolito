@@ -18,14 +18,9 @@ on:
       - '**/*.md'
       - .scafflater/**
 
-env:
-  app_name: 'rms'
-  dockerfile_path: 'dockerfiles/Dockerfile'
-  namespace: 'rms'
-
 jobs:
   ci:
-    name: CI - Build and Test
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,7 +44,7 @@ jobs:
       - name: Lint
         run: npm run lint
       - name: Test
-        run: npm test
+        run: npm run test:cov
       - name: Sonar Analysis
         uses: SonarSource/sonarcloud-github-action@master
         env:
