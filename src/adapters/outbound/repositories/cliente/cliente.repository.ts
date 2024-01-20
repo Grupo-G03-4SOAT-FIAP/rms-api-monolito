@@ -22,7 +22,8 @@ export class ClienteRepository implements IClienteRepository {
     clienteId: string,
     cliente: ClienteEntity,
   ): Promise<ClienteModel> {
-    await this.clienteRepository.update(clienteId, cliente);
+    const novaCliente = this.clienteRepository.create(cliente);
+    await this.clienteRepository.update(clienteId, novaCliente);
     return await this.clienteRepository.findOne({ where: { id: clienteId } });
   }
 

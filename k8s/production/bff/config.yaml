@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rms-bff-config
+  namespace: rms
+  labels:
+    app: rms-bff
+data:
+  DB_HOST: "" # Endpoint do banco de dados RDS (PostgreSQL) na AWS
+  DB_PORT: ""
+  DB_USERNAME: ""
+  DB_PASSWORD: ""
+  DB_NAME: ""
+  DB_SSL: ""
+  ACCESS_TOKEN_MERCADOPAGO: ""
+  USER_ID_MERCADOPAGO: ""
+  EXTERNAL_POS_ID_MERCADOPAGO: ""
+  WEBHOOK_URL_MERCADOPAGO: ""
+  IDEMPOTENCY_KEY_MERCADOPAGO: ""

@@ -37,7 +37,7 @@ import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
 import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
-import { IGatewayPagamentoService } from './domain/services/gatewaypag.service.port';
+import { IGatewayPagamentoService } from './domain/ports/pedido/gatewaypag.service.port';
 import { GatewayPagamentoService } from './adapters/outbound/services/gatewaypag.service';
 import { PedidoDTOFactory } from './domain/factories/pedido/pedido.dto.factory';
 import { IPedidoDTOFactory } from './domain/ports/pedido/pedido.dto.factory.port';
@@ -47,6 +47,7 @@ import { ICategoriaDTOFactory } from './domain/ports/categoria/categoria.dto.fac
 import { CategoriaDTOFactory } from './domain/factories/categoria/categoria.dto.factory';
 import { IClienteDTOFactory } from './domain/ports/cliente/cliente.dto.factory.port';
 import { ClienteDTOFactory } from './domain/factories/cliente/cliente.dto.factory';
+import { ItemPedidoModel } from './adapters/outbound/models/item_pedido.model';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { ClienteDTOFactory } from './domain/factories/cliente/cliente.dto.factor
       ProdutoModel,
       CategoriaModel,
       PedidoModel,
+      ItemPedidoModel,
       ClienteModel,
     ]),
     ConfigModule.forRoot({
@@ -70,7 +72,7 @@ import { ClienteDTOFactory } from './domain/factories/cliente/cliente.dto.factor
     ProdutoController,
     CategoriaController,
     ClienteController,
-    PedidoController
+    PedidoController,
   ],
   providers: [
     AppUseCase,
@@ -143,7 +145,7 @@ import { ClienteDTOFactory } from './domain/factories/cliente/cliente.dto.factor
     {
       provide: IGatewayPagamentoService,
       useClass: GatewayPagamentoService,
-    }
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}

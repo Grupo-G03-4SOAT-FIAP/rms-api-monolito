@@ -49,7 +49,7 @@ export class ClienteUseCase implements IClienteUseCase {
 
     const clienteEntity = new ClienteEntity(nome, email, cpf);
     const result = await this.clienteRepository.criarCliente(clienteEntity);
-    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
+    const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
 
     return {
       mensagem: 'Cliente criado com sucesso',
@@ -84,7 +84,7 @@ export class ClienteUseCase implements IClienteUseCase {
       clienteId,
       clienteEntity,
     );
-    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
+    const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
 
     return {
       mensagem: 'Cliente atualizado com sucesso',
@@ -113,7 +113,7 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
-    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
+    const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
     return clienteDTO;
   }
 
@@ -123,14 +123,13 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
-    const clienteDTO = await this.clienteDTOFactory.criarClienteDTO(result);
+    const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
     return clienteDTO;
   }
 
   async listarClientes(): Promise<ClienteDTO[] | []> {
     const result = await this.clienteRepository.listarClientes();
-    const listaClienteDTO =
-      await this.clienteDTOFactory.criarListaClienteDTO(result);
+    const listaClienteDTO = this.clienteDTOFactory.criarListaClienteDTO(result);
     return listaClienteDTO;
   }
 }

@@ -3,11 +3,6 @@ import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { Repository } from 'typeorm';
 import { StatusPedido } from '../utils/pedido.enum';
 import {
-  produtoDTOMock,
-  produtoEntityMock,
-  produtoModelMock,
-} from './produto.mock';
-import {
   clienteModelMock,
   clienteEntityMock,
   clienteDTOMock,
@@ -18,26 +13,34 @@ import {
   PedidoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
 import { ClienteDTO } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
-import { ProdutoDTO } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
+import {
+  itemPedidoDTOMock,
+  itemPedidoEntityMock,
+  itemPedidoModelMock,
+} from './item_pedido.mock';
+import {
+  CriaItemPedidoDTO,
+  ItemPedidoDTO,
+} from 'src/adapters/inbound/rest/v1/presenters/item_pedido.dto';
 
 const pedidoModelMock = new PedidoModel();
 pedidoModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 pedidoModelMock.numeroPedido = '05012024';
-pedidoModelMock.itensPedido = [produtoModelMock];
+pedidoModelMock.itensPedido = [itemPedidoModelMock];
 pedidoModelMock.cliente = clienteModelMock;
 pedidoModelMock.statusPedido = 'recebido';
 pedidoModelMock.criadoEm = new Date().toISOString();
 pedidoModelMock.atualizadoEm = new Date().toISOString();
 
 const pedidoEntityMock = new PedidoEntity(
-  [produtoEntityMock],
+  [itemPedidoEntityMock],
   StatusPedido.RECEBIDO,
   '05012024',
   clienteEntityMock,
 );
 
 const makeCriaPedidoDTO = (
-  itensPedido: string[],
+  itensPedido: CriaItemPedidoDTO[],
   cpfCliente?: string,
 ): CriaPedidoDTO => {
   const criaPedidoDTO = new CriaPedidoDTO();
@@ -47,7 +50,7 @@ const makeCriaPedidoDTO = (
 };
 
 const criaPedidoDTOMock = makeCriaPedidoDTO(
-  ['0a14aa4e-75e7-405f-8301-81f60646c93d'],
+  [{ produto: '0a14aa4e-75e7-405f-8301-81f60646c93d', quantidade: 2 }],
   '83904665030',
 );
 
@@ -64,7 +67,7 @@ const atualizaPedidoDTOMock = makeAtualizaPedidoDTO(StatusPedido.RECEBIDO);
 const makePedidoDTO = (
   id: string,
   numeroPedido: string,
-  itensPedido: ProdutoDTO[],
+  itensPedido: ItemPedidoDTO[],
   statusPedido: string,
   cliente: ClienteDTO,
   qrCode: string,
@@ -82,9 +85,10 @@ const makePedidoDTO = (
 const pedidoDTOMock = makePedidoDTO(
   pedidoModelMock.id,
   pedidoModelMock.numeroPedido,
-  [produtoDTOMock],
+  [itemPedidoDTOMock],
   pedidoModelMock.statusPedido,
   clienteDTOMock,
+  'qrCode',
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {

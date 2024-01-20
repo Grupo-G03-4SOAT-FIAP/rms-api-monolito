@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.port';
 import { IPedidoFactory } from 'src/domain/ports/pedido/pedido.factory.port';
-import { IGatewayPagamentoService } from 'src/domain/services/gatewaypag.service.port';
+import { IGatewayPagamentoService } from 'src/domain/ports/pedido/gatewaypag.service.port';
 import { PedidoUseCase } from './pedido.use_case';
 import {
   pedidoFactoryMock,
