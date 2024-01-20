@@ -1,0 +1,61 @@
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - release
+      - 'feature/**'
+      - 'fix/**'
+      - 'release/**'
+    paths-ignore:
+      - '**/*.md'
+      - .scafflater/**
+  pull_request:
+    branches:
+      - main
+      - develop
+      - release
+    paths-ignore:
+      - '**/*.md'
+      - .github/**
+      - .scafflater/**
+
+name: Standard
+
+env:
+  app_name: 'rms'
+  dockerfile_path: 'dockerfiles/Dockerfile'
+  namespace: 'rms'
+
+jobs:
+  ci:
+    name: CI - Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Node Cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: make dev-dependencies
+      - name: Lint
+        run: make lint
+      - name: Test
+        run: make test-coverage
+      - name: Sonar Analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}

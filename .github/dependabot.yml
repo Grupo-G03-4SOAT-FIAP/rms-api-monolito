@@ -1,0 +1,31 @@
+version: 2
+
+registries:
+  github-packages-npm:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{ secrets.GHA_PACKAGES }}
+
+updates:
+  - package-ecosystem: docker
+    directory: /dockerfiles
+    open-pull-requests-limit: 10
+    registries:
+      - aws-ecr-docker
+    schedule:
+      interval: monthly
+    target-branch: 'main'
+  - package-ecosystem: github-actions
+    directory: /
+    open-pull-requests-limit: 10
+    schedule:
+      interval: monthly
+    target-branch: 'main'
+  - package-ecosystem: npm
+    directory: /
+    open-pull-requests-limit: 10
+    registries:
+      - github-packages-npm
+    schedule:
+      interval: monthly
+    target-branch: 'main'

@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       # O Step abaixo foi adicionado manualmente pelo Danilo a fim de enviar o resultado do test coverage para o SonarCloud.
       # Mais informações em https://docs.sonarsource.com/sonarqube/9.8/analyzing-source-code/test-coverage/javascript-typescript-test-coverage/#add-coverage
       - name: Install dependencies
@@ -24,5 +24,5 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
