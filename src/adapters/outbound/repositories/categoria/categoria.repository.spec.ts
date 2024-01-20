@@ -17,6 +17,7 @@ const categoriaSoftDeleteMock = new softDeleteMock();
 describe('CategoriaRepository', () => {
   let categoriaRepository: CategoriaRepository;
   let categoriaId: string;
+  let nomeCategoria: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,6 +32,7 @@ describe('CategoriaRepository', () => {
 
     categoriaRepository = module.get<CategoriaRepository>(CategoriaRepository);
     categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    nomeCategoria = 'Lanche';
   });
 
   afterEach(() => {
@@ -120,8 +122,6 @@ describe('CategoriaRepository', () => {
       Promise.resolve(categoriaModelMock),
     );
 
-    const nomeCategoria = 'Lanche';
-
     const result =
       await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
 
@@ -135,8 +135,6 @@ describe('CategoriaRepository', () => {
 
   it('deve buscar uma categoria por nome e retornar nulo', async () => {
     categoriaTypeORMMock.findOne.mockResolvedValue(null);
-
-    const nomeCategoria = 'Lanche';
 
     const result =
       await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);

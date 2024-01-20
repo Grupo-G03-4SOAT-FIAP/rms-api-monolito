@@ -7,6 +7,7 @@ import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
 
 @Injectable()
 export class ProdutoRepository implements IProdutoRepository {
+  readonly relations: string[] = ['categoria'];
   constructor(
     @InjectRepository(ProdutoModel)
     private readonly produtoRepository: Repository<ProdutoModel>,
@@ -27,7 +28,7 @@ export class ProdutoRepository implements IProdutoRepository {
 
     return await this.produtoRepository.findOne({
       where: { id: produtoId },
-      relations: ['categoria'], // Especifica a relação que você deseja incluir
+      relations: this.relations, // Especifica a relação que você deseja incluir
     });
   }
 
@@ -38,7 +39,7 @@ export class ProdutoRepository implements IProdutoRepository {
   async buscarProdutoPorId(produtoId: string): Promise<ProdutoModel | null> {
     return await this.produtoRepository.findOne({
       where: { id: produtoId },
-      relations: ['categoria'],
+      relations: this.relations,
     });
   }
 
@@ -47,13 +48,13 @@ export class ProdutoRepository implements IProdutoRepository {
   ): Promise<ProdutoModel | null> {
     return await this.produtoRepository.findOne({
       where: { nome: nomeProduto },
-      relations: ['categoria'],
+      relations: this.relations,
     });
   }
 
   async listarProdutos(): Promise<ProdutoModel[] | []> {
     const produtos = await this.produtoRepository.find({
-      relations: ['categoria'],
+      relations: this.relations,
     });
     return produtos;
   }
@@ -63,7 +64,7 @@ export class ProdutoRepository implements IProdutoRepository {
   ): Promise<ProdutoModel[] | []> {
     const produtos = await this.produtoRepository.find({
       where: { categoria: { id: categoriaId } },
-      relations: ['categoria'],
+      relations: this.relations,
     });
     return produtos;
   }
