@@ -424,7 +424,7 @@ describe('Categoria Use case', () => {
 
       jest
         .spyOn(categoriaDTOFactory, 'criarListaCategoriaDTO')
-        .mockReturnValue(Promise.resolve(listaCategorias));
+        .mockReturnValue(listaCategorias);
 
       // Act
 
@@ -444,7 +444,7 @@ describe('Categoria Use case', () => {
 
       jest
         .spyOn(categoriaDTOFactory, 'criarListaCategoriaDTO')
-        .mockReturnValue(Promise.resolve([]));
+        .mockReturnValue([]);
 
       // Act
 
