@@ -21,6 +21,15 @@ on:
       - '**/*.md'
       - .github/**
       - .scafflater/**
+  pull_request_target:
+    branches:
+      - main
+      - develop
+      - release
+    paths-ignore:
+      - '**/*.md'
+      - .github/**
+      - .scafflater/**
 
 env:
   app_name: 'rms'
