@@ -28,10 +28,10 @@ describe('ProdutoDTOFactory', () => {
     jest.clearAllMocks();
   });
 
-  it('deve criar um produtoDTO', async () => {
+  it('deve criar um produtoDTO', () => {
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
-    const result = await produtoDTOFactory.criarProdutoDTO(produtoModelMock);
+    const result = produtoDTOFactory.criarProdutoDTO(produtoModelMock);
 
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       produtoModelMock.categoria,
@@ -39,12 +39,10 @@ describe('ProdutoDTOFactory', () => {
     expect(result).toStrictEqual(produtoDTOMock);
   });
 
-  it('deve criar uma lista de produtoDTO', async () => {
+  it('deve criar uma lista de produtoDTO', () => {
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
-    const result = await produtoDTOFactory.criarListaProdutoDTO([
-      produtoModelMock,
-    ]);
+    const result = produtoDTOFactory.criarListaProdutoDTO([produtoModelMock]);
 
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       produtoModelMock.categoria,
@@ -52,8 +50,8 @@ describe('ProdutoDTOFactory', () => {
     expect(result).toStrictEqual([produtoDTOMock]);
   });
 
-  it('deve criar uma lista vazia de produtoDTO', async () => {
-    const result = await produtoDTOFactory.criarListaProdutoDTO([]);
+  it('deve criar uma lista vazia de produtoDTO', () => {
+    const result = produtoDTOFactory.criarListaProdutoDTO([]);
     expect(result).toStrictEqual([]);
   });
 });

@@ -17,21 +17,21 @@ export class PedidoRepository implements IPedidoRepository {
   ) {}
 
   async criarPedido(pedido: PedidoEntity): Promise<PedidoModel> {
-    const novoPedido = this.pedidoRepository.create(pedido);
-    await this.pedidoRepository.save(novoPedido);
+    const pedidoModel = this.pedidoRepository.create(pedido);
+    await this.pedidoRepository.save(pedidoModel);
 
-    const itensPedido = novoPedido.itensPedido.map((itemPedido) => {
-      const novoItemPedido = this.itemPedidoRepository.create({
-        pedido: { id: novoPedido.id },
+    const itensPedido = pedidoModel.itensPedido.map((itemPedido) => {
+      const itemPedidoModel = this.itemPedidoRepository.create({
+        pedido: { id: pedidoModel.id },
         produto: { id: itemPedido.produto.id },
         quantidade: itemPedido.quantidade,
       });
-      return novoItemPedido;
+      return itemPedidoModel;
     });
     await this.itemPedidoRepository.save(itensPedido);
 
     const pedidoComItens = await this.pedidoRepository.findOne({
-      where: { id: novoPedido.id },
+      where: { id: pedidoModel.id },
       relations: [
         'cliente',
         'itensPedido',

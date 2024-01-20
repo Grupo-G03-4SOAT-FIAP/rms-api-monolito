@@ -54,9 +54,6 @@ describe('ProdutoRepository', () => {
 
   it('deve editar um produto', async () => {
     produtoTypeORMMock.create.mockReturnValue(produtoModelMock);
-    produtoTypeORMMock.save.mockResolvedValue(
-      Promise.resolve(produtoModelMock),
-    );
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );

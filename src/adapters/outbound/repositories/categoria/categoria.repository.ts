@@ -13,17 +13,17 @@ export class CategoriaRepository implements ICategoriaRepository {
   ) {}
 
   async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaModel> {
-    const novoPedido = this.categoriaRepository.create(categoria);
-    await this.categoriaRepository.save(novoPedido);
-    return novoPedido;
+    const categoriaModel = this.categoriaRepository.create(categoria);
+    await this.categoriaRepository.save(categoriaModel);
+    return categoriaModel;
   }
 
   async editarCategoria(
     categoriaId: string,
     categoria: CategoriaEntity,
   ): Promise<CategoriaModel> {
-    const novaCategoria = this.categoriaRepository.create(categoria);
-    await this.categoriaRepository.update(categoriaId, novaCategoria);
+    const categoriaModel = this.categoriaRepository.create(categoria);
+    await this.categoriaRepository.update(categoriaId, categoriaModel);
 
     return await this.categoriaRepository.findOne({
       where: { id: categoriaId },

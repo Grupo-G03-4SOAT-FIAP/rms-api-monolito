@@ -51,6 +51,7 @@ describe('ClienteRepository', () => {
   });
 
   it('deve editar um cliente', async () => {
+    clienteTypeORMMock.create.mockReturnValue(clienteModelMock);
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
@@ -60,9 +61,10 @@ describe('ClienteRepository', () => {
       clienteEntityMock,
     );
 
+    expect(clienteTypeORMMock.create).toHaveBeenCalledWith(clienteEntityMock);
     expect(clienteTypeORMMock.update).toHaveBeenCalledWith(
       clienteId,
-      clienteEntityMock,
+      clienteModelMock,
     );
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },

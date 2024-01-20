@@ -54,6 +54,7 @@ describe('CategoriaRepository', () => {
   });
 
   it('deve editar uma categoria', async () => {
+    categoriaTypeORMMock.create.mockReturnValue(categoriaModelMock);
     categoriaTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
@@ -63,9 +64,12 @@ describe('CategoriaRepository', () => {
       categoriaEntityMock,
     );
 
+    expect(categoriaTypeORMMock.create).toHaveBeenCalledWith(
+      categoriaEntityMock,
+    );
     expect(categoriaTypeORMMock.update).toHaveBeenCalledWith(
       categoriaId,
-      categoriaEntityMock,
+      categoriaModelMock,
     );
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },

@@ -13,17 +13,17 @@ export class ProdutoRepository implements IProdutoRepository {
   ) {}
 
   async criarProduto(produto: ProdutoEntity): Promise<ProdutoModel> {
-    const novoProduto = this.produtoRepository.create(produto);
-    await this.produtoRepository.save(novoProduto);
-    return novoProduto;
+    const produtoModel = this.produtoRepository.create(produto);
+    await this.produtoRepository.save(produtoModel);
+    return produtoModel;
   }
 
   async editarProduto(
     produtoId: string,
     produto: ProdutoEntity,
   ): Promise<ProdutoModel> {
-    const novoProduto = this.produtoRepository.create(produto);
-    await this.produtoRepository.update(produtoId, novoProduto);
+    const produtoModel = this.produtoRepository.create(produto);
+    await this.produtoRepository.update(produtoId, produtoModel);
 
     return await this.produtoRepository.findOne({
       where: { id: produtoId },

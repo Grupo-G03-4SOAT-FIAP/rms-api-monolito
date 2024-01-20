@@ -11,7 +11,6 @@ import {
 } from 'src/mocks/pedido.mock';
 import { ItemPedidoModel } from '../../models/item_pedido.model';
 import {
-  itemPedidoEntityMock,
   itemPedidoModelMock,
   itemPedidoTypeORMMock,
 } from 'src/mocks/item_pedido.mock';
@@ -44,6 +43,12 @@ describe('PedidoRepository', () => {
   });
 
   it('deve criar um pedido', async () => {
+    const itensPedido = {
+      pedido: { id: pedidoModelMock.id },
+      produto: { id: itemPedidoModelMock.produto.id },
+      quantidade: itemPedidoModelMock.quantidade,
+    };
+
     pedidoTypeORMMock.create.mockReturnValue(pedidoModelMock);
     pedidoTypeORMMock.save.mockResolvedValue(Promise.resolve(pedidoModelMock));
 
@@ -52,10 +57,27 @@ describe('PedidoRepository', () => {
       Promise.resolve(itemPedidoModelMock),
     );
 
+    pedidoTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(pedidoModelMock),
+    );
+
     const result = await pedidoRepository.criarPedido(pedidoEntityMock);
 
     expect(pedidoTypeORMMock.create).toHaveBeenCalledWith(pedidoEntityMock);
     expect(pedidoTypeORMMock.save).toHaveBeenCalledWith(pedidoModelMock);
+    expect(itemPedidoTypeORMMock.create).toHaveBeenCalledWith(itensPedido);
+    expect(itemPedidoTypeORMMock.save).toHaveBeenCalledWith([
+      itemPedidoModelMock,
+    ]);
+    expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
+      where: { id: pedidoId },
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
+    });
     expect(result).toBe(pedidoModelMock);
   });
 
@@ -76,7 +98,12 @@ describe('PedidoRepository', () => {
     });
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
     expect(result).toBe(pedidoModelMock);
   });
@@ -90,7 +117,12 @@ describe('PedidoRepository', () => {
 
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
     expect(result).toBe(pedidoModelMock);
   });
@@ -102,7 +134,12 @@ describe('PedidoRepository', () => {
 
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
     expect(result).toBe(null);
   });
@@ -125,7 +162,12 @@ describe('PedidoRepository', () => {
         statusPedido: 'ASC',
         criadoEm: 'ASC',
       },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
     expect(result).toBe(listaPedidos);
   });
@@ -148,7 +190,12 @@ describe('PedidoRepository', () => {
         statusPedido: 'ASC',
         criadoEm: 'ASC',
       },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
     expect(result).toBe(listaPedidos);
   });
@@ -166,7 +213,12 @@ describe('PedidoRepository', () => {
       order: {
         criadoEm: 'ASC',
       },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
     expect(result).toBe(listaPedidos);
   });
@@ -184,7 +236,12 @@ describe('PedidoRepository', () => {
       order: {
         criadoEm: 'ASC',
       },
-      relations: ['cliente'],
+      relations: [
+        'cliente',
+        'itensPedido',
+        'itensPedido.produto',
+        'itensPedido.produto.categoria',
+      ],
     });
     expect(result).toBe(listaPedidos);
   });
