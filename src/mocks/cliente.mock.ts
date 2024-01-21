@@ -1,5 +1,8 @@
 import { Repository } from 'typeorm';
-import { ClienteDTO } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
+import {
+  ClienteDTO,
+  CriaClienteDTO,
+} from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
 import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
 import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 
@@ -16,7 +19,23 @@ const clienteEntityMock = new ClienteEntity(
   'Jhon',
   'jhon@teste.com.br',
   '83904665030',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
+
+const makeCriaClienteDTO = (
+  nome: string,
+  email: string,
+  cpf?: string,
+): CriaClienteDTO => {
+  const criaClienteDTO = new CriaClienteDTO();
+  criaClienteDTO.nome = nome;
+  (criaClienteDTO.email = email), (criaClienteDTO.cpf = cpf);
+  return criaClienteDTO;
+};
+
+const criaClienteDTOMock = makeCriaClienteDTO(
+  'Jhon',
+  'jhon@teste.com.br',
+  '83904665030',
 );
 
 const makeClienteDTO = (
@@ -57,6 +76,7 @@ const clienteRepositoryMock = {
   excluirCliente: jest.fn(),
   buscarClientePorId: jest.fn(),
   buscarClientePorCPF: jest.fn(),
+  buscarClientePorEmail: jest.fn(),
   listarClientes: jest.fn(),
 };
 
@@ -72,4 +92,5 @@ export {
   clienteTypeORMMock,
   clienteRepositoryMock,
   clienteDTOFactoryMock,
+  criaClienteDTOMock,
 };
