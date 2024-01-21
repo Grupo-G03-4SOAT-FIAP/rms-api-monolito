@@ -8,8 +8,6 @@ import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import {
   ClienteNaoLocalizadoErro,
   ClienteDuplicadoErro,
-  CPFInvalidoErro,
-  UUIDInvalidoErro,
   ClienteNomeUndefinedErro,
 } from 'src/domain/exceptions/cliente.exception';
 import { IClienteDTOFactory } from 'src/domain/ports/cliente/cliente.dto.factory.port';

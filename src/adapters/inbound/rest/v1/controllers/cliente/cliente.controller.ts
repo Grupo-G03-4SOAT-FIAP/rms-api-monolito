@@ -24,9 +24,6 @@ import { BadRequestError } from '../../../helpers/swagger/status-codes/bad_reque
 import { NotFoundError } from '../../../helpers/swagger/status-codes/not_found.swagger';
 import { ConflictError } from '../../../helpers/swagger/status-codes/conflict.swagger';
 
-import {validate as uuidValidate} from 'uuid'
-import { UUIDInvalidoErro } from 'src/domain/exceptions/cliente.exception';
-
 @Controller('cliente')
 @ApiTags('Cliente')
 export class ClienteController {
