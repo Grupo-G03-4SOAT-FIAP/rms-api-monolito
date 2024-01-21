@@ -1,3 +1,9 @@
+###
+# Dependencies section
+###
+.PHONY: dev-dependencies
+dev-dependencies:
+	@npm install
 
 
 ##
@@ -10,7 +16,6 @@ lint:
 .PHONY: format-code ## Run format code
 format-code:
 	@npm run format
-
 
 
 ###
