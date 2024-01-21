@@ -116,8 +116,8 @@ export const novaCategoriaDTO = makeCategoriaDTO(
   novaCategoriaModelMock.descricao,
 );
 
-export class softDeleteMock {
+export class SoftDeleteMock {
   softDelete: jest.Mock = jest.fn();
 }
 
-export const categoriaSoftDeleteMock = new softDeleteMock();
+export const categoriaSoftDeleteMock = new SoftDeleteMock();
