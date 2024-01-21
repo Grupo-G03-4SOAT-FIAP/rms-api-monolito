@@ -34,7 +34,7 @@ export class PedidoFactory implements IPedidoFactory {
         );
         if (!buscaProduto) {
           throw new ProdutoNaoLocalizadoErro(
-            `Produto informado não existe ${item}`,
+            `Produto informado não existe ${item.produto}`,
           );
         }
 

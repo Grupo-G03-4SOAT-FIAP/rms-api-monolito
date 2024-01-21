@@ -112,7 +112,7 @@ export class PedidoUseCase implements IPedidoUseCase {
         );
       }
       return {
-        mensagem: 'Mensagem consumida com sucesso',
+        mensagem: `Mensagem ${mensagem} consumida com sucesso`,
       };
     }
   }

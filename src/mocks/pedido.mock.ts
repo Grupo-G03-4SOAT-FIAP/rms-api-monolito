@@ -88,7 +88,7 @@ const pedidoDTOMock = makePedidoDTO(
   [itemPedidoDTOMock],
   pedidoModelMock.statusPedido,
   clienteDTOMock,
-  'qrCode',
+  null,
 );
 
 const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
@@ -123,6 +123,7 @@ const pedidoFactoryMock = {
 const pedidoDTOFactoryMock = {
   criarPedidoDTO: jest.fn(),
   criarListaPedidoDTO: jest.fn(),
+  criarListaItemPedidoDTO: jest.fn(),
 };
 
 const pedidoServiceMock = {

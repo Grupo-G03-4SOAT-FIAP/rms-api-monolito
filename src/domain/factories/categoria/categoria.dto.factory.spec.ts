@@ -17,21 +17,20 @@ describe('CategoriaDTOFactory', () => {
     jest.clearAllMocks();
   });
 
-  it('deve criar um categoriaDTO', async () => {
-    const result =
-      await categoriaDTOFactory.criarCategoriaDTO(categoriaModelMock);
+  it('deve criar um categoriaDTO', () => {
+    const result = categoriaDTOFactory.criarCategoriaDTO(categoriaModelMock);
     expect(result).toStrictEqual(categoriaDTOMock);
   });
 
-  it('deve criar uma lista de categoriaDTO', async () => {
-    const result = await categoriaDTOFactory.criarListaCategoriaDTO([
+  it('deve criar uma lista de categoriaDTO', () => {
+    const result = categoriaDTOFactory.criarListaCategoriaDTO([
       categoriaModelMock,
     ]);
     expect(result).toStrictEqual([categoriaDTOMock]);
   });
 
-  it('deve criar uma lista vazia de categoriaDTO', async () => {
-    const result = await categoriaDTOFactory.criarListaCategoriaDTO([]);
+  it('deve criar uma lista vazia de categoriaDTO', () => {
+    const result = categoriaDTOFactory.criarListaCategoriaDTO([]);
     expect(result).toStrictEqual([]);
   });
 });

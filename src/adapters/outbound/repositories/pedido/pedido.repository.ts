@@ -9,6 +9,13 @@ import { ItemPedidoModel } from '../../models/item_pedido.model';
 
 @Injectable()
 export class PedidoRepository implements IPedidoRepository {
+  readonly relations = [
+    'cliente',
+    'itensPedido',
+    'itensPedido.produto',
+    'itensPedido.produto.categoria',
+  ];
+
   constructor(
     @InjectRepository(PedidoModel)
     private readonly pedidoRepository: Repository<PedidoModel>,
@@ -17,27 +24,22 @@ export class PedidoRepository implements IPedidoRepository {
   ) {}
 
   async criarPedido(pedido: PedidoEntity): Promise<PedidoModel> {
-    const novoPedido = this.pedidoRepository.create(pedido);
-    await this.pedidoRepository.save(novoPedido);
+    const pedidoModel = this.pedidoRepository.create(pedido);
+    await this.pedidoRepository.save(pedidoModel);
 
-    const itensPedido = novoPedido.itensPedido.map((itemPedido) => {
-      const novoItemPedido = this.itemPedidoRepository.create({
-        pedido: { id: novoPedido.id },
+    const itensPedido = pedidoModel.itensPedido.map((itemPedido) => {
+      const itemPedidoModel = this.itemPedidoRepository.create({
+        pedido: { id: pedidoModel.id },
         produto: { id: itemPedido.produto.id },
         quantidade: itemPedido.quantidade,
       });
-      return novoItemPedido;
+      return itemPedidoModel;
     });
     await this.itemPedidoRepository.save(itensPedido);
 
     const pedidoComItens = await this.pedidoRepository.findOne({
-      where: { id: novoPedido.id },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      where: { id: pedidoModel.id },
+      relations: this.relations,
     });
     return pedidoComItens;
   }
@@ -52,24 +54,14 @@ export class PedidoRepository implements IPedidoRepository {
 
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: this.relations,
     });
   }
 
   async buscarPedido(pedidoId: string): Promise<PedidoModel | null> {
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: this.relations,
     });
   }
 
@@ -92,12 +84,7 @@ export class PedidoRepository implements IPedidoRepository {
         statusPedido: 'ASC', // Ordenação alfabética para garantir consistência
         criadoEm: 'ASC', // Ordene por criadoEm em ordem crescente (do mais antigo ao mais recente)
       },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: this.relations,
     });
 
     if (pedidos.length > 0) {
@@ -118,12 +105,7 @@ export class PedidoRepository implements IPedidoRepository {
       order: {
         criadoEm: 'ASC', // Ordene por criadoEm em ordem crescente (do mais antigo ao mais recente)
       },
-      relations: [
-        'cliente',
-        'itensPedido',
-        'itensPedido.produto',
-        'itensPedido.produto.categoria',
-      ],
+      relations: this.relations,
     });
 
     return pedidos;

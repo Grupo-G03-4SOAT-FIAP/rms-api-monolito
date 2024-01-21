@@ -1,0 +1,52 @@
+name: Standard
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'fix/**'
+    paths-ignore:
+      - '**/*.md'
+      - .scafflater/**
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths-ignore:
+      - '**/*.md'
+      - .scafflater/**
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Node Cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run test:cov
+      - name: Sonar Analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
