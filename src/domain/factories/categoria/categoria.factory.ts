@@ -8,18 +8,8 @@ import { ICategoriaFactory } from 'src/domain/ports/categoria/categoria.factory.
 
 @Injectable()
 export class CategoriaFactory implements ICategoriaFactory {
-  criarEntidadeCategoriaFromCriaCategoriaDTO(
-    categoriaDTO: CriaCategoriaDTO,
-  ): CategoriaEntity {
-    const categoriaEntity = new CategoriaEntity(
-      categoriaDTO.nome,
-      categoriaDTO.descricao,
-    );
-    return categoriaEntity;
-  }
-
-  criarEntidadeCategoriaFromAtualizaCategoriaDTO(
-    categoriaDTO: AtualizaCategoriaDTO,
+  criarEntidadeCategoria(
+    categoriaDTO: CriaCategoriaDTO | AtualizaCategoriaDTO,
   ): CategoriaEntity {
     const categoriaEntity = new CategoriaEntity(
       categoriaDTO.nome,

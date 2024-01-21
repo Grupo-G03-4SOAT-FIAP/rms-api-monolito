@@ -46,8 +46,7 @@ describe('Categoria Use case', () => {
         {
           provide: ICategoriaFactory,
           useValue: {
-            criarEntidadeCategoriaFromCriaCategoriaDTO: jest.fn(),
-            criarEntidadeCategoriaFromAtualizaCategoriaDTO: jest.fn(),
+            criarEntidadeCategoria: jest.fn(),
           },
         },
         {
@@ -101,7 +100,7 @@ describe('Categoria Use case', () => {
         .mockReturnValue(Promise.resolve(categoriaModelMock));
 
       jest
-        .spyOn(categoriaFactory, 'criarEntidadeCategoriaFromCriaCategoriaDTO')
+        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
         .mockReturnValue(categoriaEntity);
 
       // Act
@@ -134,7 +133,7 @@ describe('Categoria Use case', () => {
       );
 
       jest
-        .spyOn(categoriaFactory, 'criarEntidadeCategoriaFromCriaCategoriaDTO')
+        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
         .mockReturnValue(categoriaEntity);
 
       jest
@@ -207,10 +206,7 @@ describe('Categoria Use case', () => {
       );
 
       jest
-        .spyOn(
-          categoriaFactory,
-          'criarEntidadeCategoriaFromAtualizaCategoriaDTO',
-        )
+        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
         .mockReturnValue(categoriaEntity);
 
       jest
@@ -252,10 +248,7 @@ describe('Categoria Use case', () => {
       );
 
       jest
-        .spyOn(
-          categoriaFactory,
-          'criarEntidadeCategoriaFromAtualizaCategoriaDTO',
-        )
+        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
         .mockReturnValue(categoriaEntity);
 
       jest

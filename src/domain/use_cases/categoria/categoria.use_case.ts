@@ -52,9 +52,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoria: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
     const categoriaEntity =
-      this.categoriaFactory.criarEntidadeCategoriaFromCriaCategoriaDTO(
-        categoria,
-      );
+      this.categoriaFactory.criarEntidadeCategoria(categoria);
     await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);
     const categoriaModel =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
@@ -71,9 +69,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoria: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
     const categoriaEntity =
-      this.categoriaFactory.criarEntidadeCategoriaFromAtualizaCategoriaDTO(
-        categoria,
-      );
+      this.categoriaFactory.criarEntidadeCategoria(categoria);
     await this.validarBuscaCategoriaPorId(categoriaId);
     if (categoriaEntity.nome)
       await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);

@@ -5,11 +5,8 @@ import {
 import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 
 export interface ICategoriaFactory {
-  criarEntidadeCategoriaFromCriaCategoriaDTO(
-    categoriaDTO: CriaCategoriaDTO,
-  ): CategoriaEntity;
-  criarEntidadeCategoriaFromAtualizaCategoriaDTO(
-    categoriaDTO: AtualizaCategoriaDTO,
+  criarEntidadeCategoria(
+    categoriaDTO: CriaCategoriaDTO | AtualizaCategoriaDTO,
   ): CategoriaEntity;
 }
 

@@ -29,7 +29,7 @@ describe('Categoria Factory', () => {
     );
 
     const entidade =
-      categoriaFactory.criarEntidadeCategoriaFromCriaCategoriaDTO(
+      categoriaFactory.criarEntidadeCategoria(
         criaCategoriaDTO,
       );
 
