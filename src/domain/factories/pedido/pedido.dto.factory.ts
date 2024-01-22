@@ -30,6 +30,7 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     pedidoDTO.id = pedido.id;
     pedidoDTO.numeroPedido = pedido.numeroPedido;
     pedidoDTO.itensPedido = itensPedido;
+    pedidoDTO.pago = pedido.pago;
     pedidoDTO.statusPedido = pedido.statusPedido;
     pedidoDTO.cliente = cliente;
     return pedidoDTO;
@@ -48,6 +49,7 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
       pedidoDTO.id = pedido.id;
       pedidoDTO.numeroPedido = pedido.numeroPedido;
       pedidoDTO.itensPedido = itensPedido;
+      pedidoDTO.pago = pedido.pago;
       pedidoDTO.statusPedido = pedido.statusPedido;
       pedidoDTO.cliente = cliente;
       return pedidoDTO;

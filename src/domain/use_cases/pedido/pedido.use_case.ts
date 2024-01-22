@@ -106,6 +106,10 @@ export class PedidoUseCase implements IPedidoUseCase {
         if (!buscaPedido) {
           throw new PedidoNaoLocalizadoErro('Pedido não localizado');
         }
+        await this.pedidoRepository.editarStatusPagamento(
+          idInternoPedido,
+          true,
+        );
         await this.pedidoRepository.editarStatusPedido(
           idInternoPedido,
           'em preparacao',
