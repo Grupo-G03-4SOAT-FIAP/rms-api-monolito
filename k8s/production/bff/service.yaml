@@ -11,5 +11,5 @@ spec:
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 80 # Porta no Load Balancer
+      targetPort: 3000 # Porta do Pod
