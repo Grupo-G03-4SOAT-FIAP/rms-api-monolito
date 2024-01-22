@@ -15,6 +15,7 @@ import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.por
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
 import { IGatewayPagamentoService } from 'src/domain/ports/pedido/gatewaypag.service.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PedidoUseCase implements IPedidoUseCase {
@@ -25,9 +26,10 @@ export class PedidoUseCase implements IPedidoUseCase {
     private readonly pedidoFactory: IPedidoFactory,
     @Inject(IGatewayPagamentoService)
     private readonly gatewayPagamentoService: IGatewayPagamentoService,
+    private configService: ConfigService,
     @Inject(IPedidoDTOFactory)
     private readonly pedidoDTOFactory: IPedidoDTOFactory,
-  ) {}
+  ) { }
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
@@ -35,10 +37,14 @@ export class PedidoUseCase implements IPedidoUseCase {
     const result = await this.pedidoRepository.criarPedido(pedidoEntity);
     pedidoEntity.id = result.id;
 
-    const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
-
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
-    pedidoDTO.qrCode = qrData;
+
+    const mercadoPagoIsEnabled = this.configService.get<string>('ENABLE_MERCADOPAGO').toLowerCase() === 'true';
+
+    if (mercadoPagoIsEnabled) {
+      const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
+      pedidoDTO.qrCode = qrData;
+    }
 
     return {
       mensagem: 'Pedido criado com sucesso',
