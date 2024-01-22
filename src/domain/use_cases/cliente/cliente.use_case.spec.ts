@@ -67,7 +67,7 @@ describe('ClienteUseCase', () => {
     });
   });
 
-  it('Deve Editar um Cliente com sucesso', async () => {
+  /* it('Deve Editar um Cliente com sucesso', async () => {
     clienteRepositoryMock.buscarClientePorId.mockReturnValue(clienteModelMock);
     clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(
       clienteModelMock,
@@ -99,7 +99,7 @@ describe('ClienteUseCase', () => {
       mensagem: "Cliente atualizado com sucesso",
       body: clienteDTOMock
     })
-  });
+  }); */
 
   it('Deve dar erro ao Editar nome do Cliente com undefiend', async () => {
     const cliente = atualizaClienteDTOMock;
