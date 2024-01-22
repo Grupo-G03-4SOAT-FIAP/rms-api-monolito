@@ -1,94 +1,98 @@
-import { ProdutoFactory } from './produto.factory';
-import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
+import { Test, TestingModule } from '@nestjs/testing';
 import {
-  AtualizaProdutoDTO,
-  CriaProdutoDTO,
-} from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
-import { ProdutoEntity } from '../../entities/produto/produto.entity';
-import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
+  categoriaEntityMock,
+  categoriaModelMock,
+  categoriaRepositoryMock,
+} from 'src/mocks/categoria.mock';
+import { ProdutoFactory } from './produto.factory';
+import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
+import {
+  atualizaProdutoDTOMock,
+  criaProdutoDTOMock,
+  produtoEntityMock,
+} from 'src/mocks/produto.mock';
+import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
 
-const categoriaModel = new CategoriaModel();
-categoriaModel.id = '1a14aa4e-75e7-405f-8301-81f60646c93c';
-categoriaModel.nome = 'Categoria X';
-categoriaModel.descricao = 'Descrição X';
+describe('ProdutoFactory', () => {
+  let produtoFactory: ProdutoFactory;
+  let categoriaId: string;
 
-const criaProdutoDTO = new CriaProdutoDTO();
-criaProdutoDTO.nome = 'X-Tudo';
-criaProdutoDTO.descricao =
-  'Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)';
-criaProdutoDTO.valorUnitario = 12;
-criaProdutoDTO.imagemUrl =
-  'https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg';
-criaProdutoDTO.categoriaId = '9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4';
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        ProdutoFactory,
+        {
+          provide: ICategoriaRepository,
+          useValue: categoriaRepositoryMock,
+        },
+      ],
+    }).compile();
 
-const atualizaProdutoDTO = new AtualizaProdutoDTO();
-atualizaProdutoDTO.nome = 'X-Salada';
-atualizaProdutoDTO.descricao =
-  'Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)';
-atualizaProdutoDTO.valorUnitario = 15;
-criaProdutoDTO.imagemUrl =
-  'https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg';
-atualizaProdutoDTO.categoriaId = '9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4';
-
-describe('Produto Factory', () => {
-  it('Deve produzir uma entidade Produto a partir de um CriaProdutoDTO', async () => {
-    // Arrange
-
-    const produtoFactory = new ProdutoFactory();
-    const categoriaEntity = new CategoriaEntity(
-      categoriaModel.nome,
-      categoriaModel.descricao,
-      categoriaModel.id,
-    );
-    const produtoEntity = new ProdutoEntity(
-      criaProdutoDTO.nome,
-      categoriaEntity,
-      criaProdutoDTO.valorUnitario,
-      criaProdutoDTO.imagemUrl,
-      criaProdutoDTO.descricao,
-      undefined,
-    );
-
-    // Act
-
-    const result = await produtoFactory.criarEntidadeProdutoFromCriaProdutoDTO(
-      categoriaModel,
-      criaProdutoDTO,
-    );
-
-    // Assert
-
-    expect(result).toEqual(produtoEntity);
+    produtoFactory = module.get<ProdutoFactory>(ProdutoFactory);
+    categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
-  it('Deve produzir uma entidade Produto a partir de um AtualizaProdutoDTO', async () => {
-    // Arrange
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-    const produtoFactory = new ProdutoFactory();
-    const categoriaEntity = new CategoriaEntity(
-      categoriaModel.nome,
-      categoriaModel.descricao,
-      categoriaModel.id,
+  it('deve criar a entidade produto com criaProdutoDTO', async () => {
+    categoriaEntityMock.id = categoriaId;
+    produtoEntityMock.categoria = categoriaEntityMock;
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
+      categoriaModelMock,
     );
-    const produtoEntity = new ProdutoEntity(
-      atualizaProdutoDTO.nome,
-      categoriaEntity,
-      atualizaProdutoDTO.valorUnitario,
-      atualizaProdutoDTO.imagemUrl,
-      atualizaProdutoDTO.descricao,
-      undefined,
-    );
-
-    // Act
 
     const result =
-      await produtoFactory.criarEntidadeProdutoFromAtualizaProdutoDTO(
-        categoriaModel,
-        atualizaProdutoDTO,
-      );
+      await produtoFactory.criarEntidadeProduto(criaProdutoDTOMock);
 
-    // Assert
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(result).toStrictEqual(produtoEntityMock);
+  });
 
-    expect(result).toEqual(produtoEntity);
+  it('deve criar a entidade produto com atualizaProdutoDTO', async () => {
+    categoriaEntityMock.id = categoriaId;
+    produtoEntityMock.categoria = categoriaEntityMock;
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
+      categoriaModelMock,
+    );
+
+    const result = await produtoFactory.criarEntidadeProduto(
+      atualizaProdutoDTOMock,
+    );
+
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(result).toStrictEqual(produtoEntityMock);
+  });
+
+  it('deve criar a entidade categoria de uma entidade produto', async () => {
+    categoriaEntityMock.id = categoriaId;
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
+      categoriaModelMock,
+    );
+
+    const result = await produtoFactory.criarEntidadeCategoria(categoriaId);
+
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(result).toStrictEqual(categoriaEntityMock);
+  });
+
+  it('deve lançar uma exceção ao tentar criar a entidade produto com uma categoria inexistente', async () => {
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(null);
+
+    await expect(
+      produtoFactory.criarEntidadeCategoria(categoriaId),
+    ).rejects.toThrow(
+      new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
   });
 });

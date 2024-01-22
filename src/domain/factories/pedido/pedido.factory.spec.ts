@@ -21,6 +21,8 @@ import {
   criaItemPedidoDTOMock,
   itemPedidoEntityMock,
 } from 'src/mocks/item_pedido.mock';
+import { ProdutoNaoLocalizadoErro } from 'src/domain/exceptions/produto.exception';
+import { ClienteNaoLocalizadoErro } from 'src/domain/exceptions/cliente.exception';
 
 describe('PedidoFactory', () => {
   let pedidoFactory: PedidoFactory;
@@ -83,7 +85,9 @@ describe('PedidoFactory', () => {
 
     await expect(
       pedidoFactory.criarItemPedido([criaItemPedidoDTOMock]),
-    ).rejects.toThrow(`Produto informado não existe ${produtoId}`);
+    ).rejects.toThrow(
+      new ProdutoNaoLocalizadoErro(`Produto informado não existe ${produtoId}`),
+    );
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
       produtoId,
     );
@@ -113,7 +117,9 @@ describe('PedidoFactory', () => {
 
     await expect(
       pedidoFactory.criarEntidadeCliente(criaPedidoDTOMock.cpfCliente),
-    ).rejects.toThrow('Cliente informado não existe');
+    ).rejects.toThrow(
+      new ClienteNaoLocalizadoErro('Cliente informado não existe'),
+    );
     expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalledWith(
       criaPedidoDTOMock.cpfCliente,
     );

@@ -7,27 +7,28 @@ import {
   CategoriaDTO,
   CriaCategoriaDTO,
 } from '../../../adapters/inbound/rest/v1/presenters/categoria.dto';
-import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
 import {
   CategoriaNaoLocalizadaErro,
   CategoriaDuplicadaErro,
 } from '../../../domain/exceptions/categoria.exception';
 import { HTTPResponse } from '../../../utils/HTTPResponse';
+import { ICategoriaDTOFactory } from 'src/domain/ports/categoria/categoria.dto.factory.port';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
   constructor(
     @Inject(ICategoriaRepository)
     private readonly categoriaRepository: ICategoriaRepository,
+    @Inject(ICategoriaDTOFactory)
+    private readonly categoriaDTOFactory: ICategoriaDTOFactory,
   ) {}
 
   async criarCategoria(
     categoria: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
-    );
+    const { nome, descricao } = categoria;
+    const categoriaEntity = new CategoriaEntity(nome, descricao);
+
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorNome(
         categoriaEntity.nome,
@@ -38,11 +39,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
 
     const result =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.id;
-    categoriaDTO.nome = result.nome;
-    categoriaDTO.descricao = result.descricao;
+    const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(result);
 
     return {
       mensagem: 'Categoria criada com sucesso',
@@ -54,10 +51,9 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoriaId: string,
     categoria: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
-    );
+    const { nome, descricao } = categoria;
+    const categoriaEntity = new CategoriaEntity(nome, descricao);
+
     const buscaCategoriaPorId =
       await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoriaPorId) {
@@ -78,11 +74,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
       categoriaId,
       categoriaEntity,
     );
-
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.id;
-    categoriaDTO.nome = result.nome;
-    categoriaDTO.descricao = result.descricao;
+    const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(result);
 
     return {
       mensagem: 'Categoria atualizada com sucesso',
@@ -112,23 +104,15 @@ export class CategoriaUseCase implements ICategoriaUseCase {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
 
-    const categoriaDTO = new CategoriaDTO();
-    categoriaDTO.id = result.id;
-    categoriaDTO.nome = result.nome;
-    categoriaDTO.descricao = result.descricao;
+    const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(result);
 
     return categoriaDTO;
   }
 
   async listarCategorias(): Promise<CategoriaDTO[] | []> {
     const result = await this.categoriaRepository.listarCategorias();
-    const listaCategoriasDTO = result.map((categoria: CategoriaModel) => {
-      const categoriaDTO = new CategoriaDTO();
-      categoriaDTO.id = categoria.id;
-      categoriaDTO.nome = categoria.nome;
-      categoriaDTO.descricao = categoria.descricao;
-      return categoriaDTO;
-    });
+    const listaCategoriasDTO =
+      this.categoriaDTOFactory.criarListaCategoriaDTO(result);
 
     return listaCategoriasDTO;
   }

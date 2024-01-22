@@ -1,10 +1,15 @@
 import { Repository } from 'typeorm';
-import { CategoriaDTO } from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
+import {
+  AtualizaCategoriaDTO,
+  CategoriaDTO,
+  CriaCategoriaDTO,
+} from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
 import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
 import { produtoModelMock } from './produto.mock';
 import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 
-const categoriaModelMock = new CategoriaModel();
+// Mock para simular dados da tabela categoria no banco de dados
+export const categoriaModelMock = new CategoriaModel();
 categoriaModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 categoriaModelMock.nome = 'Lanche';
 categoriaModelMock.descricao = 'Lanche x tudo';
@@ -13,31 +18,30 @@ categoriaModelMock.criadoEm = new Date().toISOString();
 categoriaModelMock.atualizadoEm = new Date().toISOString();
 categoriaModelMock.excluidoEm = new Date().toISOString();
 
-const categoriaEntityMock = new CategoriaEntity(
+// Mock para simular dados da entidade categoria
+export const categoriaEntityMock = new CategoriaEntity(
   'Lanche',
   'Lanche x tudo',
-  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
-const makeCategoriaDTO = (
-  id: string,
-  nome: string,
-  descricao: string,
-): CategoriaDTO => {
-  const categoriaDTO = new CategoriaDTO();
-  categoriaDTO.id = id;
-  categoriaDTO.nome = nome;
-  categoriaDTO.descricao = descricao;
-  return categoriaDTO;
-};
+// Mock para simular o DTO com os dados recebidos pelo usuario ao criar uma categoria
+export const criaCategoriaDTOMock = new CriaCategoriaDTO();
+criaCategoriaDTOMock.nome = categoriaModelMock.nome;
+criaCategoriaDTOMock.descricao = categoriaModelMock.descricao;
 
-const categoriaDTOMock = makeCategoriaDTO(
-  categoriaModelMock.id,
-  categoriaModelMock.nome,
-  categoriaModelMock.descricao,
-);
+// Mock para simular o DTO com os dados recebidos pelo usuario ao atualizar uma categoria
+export const atualizaCategoriaDTOMock = new AtualizaCategoriaDTO();
+atualizaCategoriaDTOMock.nome = categoriaModelMock.nome;
+atualizaCategoriaDTOMock.descricao = categoriaModelMock.descricao;
 
-const categoriaTypeORMMock: jest.Mocked<Repository<CategoriaModel>> = {
+// Mock para simular o DTO com dados de categoria enviados para o usuario ao responder uma requisição
+export const categoriaDTOMock = new CategoriaDTO();
+categoriaDTOMock.id = categoriaModelMock.id;
+categoriaDTOMock.nome = categoriaModelMock.nome;
+categoriaDTOMock.descricao = categoriaModelMock.descricao;
+
+// Mock jest das funções do typeORM interagindo com a tabela categoria
+export const categoriaTypeORMMock: jest.Mocked<Repository<CategoriaModel>> = {
   create: jest.fn(),
   save: jest.fn(),
   update: jest.fn(),
@@ -48,7 +52,8 @@ const categoriaTypeORMMock: jest.Mocked<Repository<CategoriaModel>> = {
   Repository<CategoriaModel>
 >;
 
-const categoriaRepositoryMock = {
+// Mock jest das funções do repository categoria
+export const categoriaRepositoryMock = {
   criarCategoria: jest.fn(),
   editarCategoria: jest.fn(),
   excluirCategoria: jest.fn(),
@@ -57,16 +62,17 @@ const categoriaRepositoryMock = {
   listarCategorias: jest.fn(),
 };
 
-const categoriaDTOFactoryMock = {
+// Mock jest das funções da factory que cria DTO categoria
+export const categoriaDTOFactoryMock = {
   criarCategoriaDTO: jest.fn(),
   criarListaCategoriaDTO: jest.fn(),
 };
 
-export {
-  categoriaModelMock,
-  categoriaEntityMock,
-  categoriaDTOMock,
-  categoriaTypeORMMock,
-  categoriaRepositoryMock,
-  categoriaDTOFactoryMock,
+// Mock jest das funções do use case categoria
+export const categoriaUseCaseMock = {
+  criarCategoria: jest.fn(),
+  editarCategoria: jest.fn(),
+  excluirCategoria: jest.fn(),
+  buscarCategoria: jest.fn(),
+  listarCategorias: jest.fn(),
 };
