@@ -37,6 +37,8 @@ import { IPedidoFactory } from './domain/ports/pedido/pedido.factory.port';
 import { IProdutoFactory } from './domain/ports/produto/produto.factory.port';
 import { ProdutoFactory } from './domain/factories/produto/produto.factory';
 import { PedidoService } from './domain/services/pedido.service';
+import { CategoriaFactory } from './domain/factories/categoria/categoria.factory';
+import { ICategoriaFactory } from './domain/ports/categoria/categoria.factory.port';
 import { IGatewayPagamentoService } from './domain/ports/pedido/gatewaypag.service.port';
 import { GatewayPagamentoService } from './adapters/outbound/services/gatewaypag.service';
 import { PedidoDTOFactory } from './domain/factories/pedido/pedido.dto.factory';
@@ -82,6 +84,7 @@ import { ItemPedidoModel } from './adapters/outbound/models/item_pedido.model';
     ProdutoDTOFactory,
     CategoriaUseCase,
     CategoriaRepository,
+    CategoriaFactory,
     ClienteUseCase,
     ClienteRepository,
     ClienteDTOFactory,
@@ -113,6 +116,10 @@ import { ItemPedidoModel } from './adapters/outbound/models/item_pedido.model';
     {
       provide: ICategoriaRepository,
       useClass: CategoriaRepository,
+    },
+    {
+      provide: ICategoriaFactory,
+      useClass: CategoriaFactory,
     },
     {
       provide: ICategoriaDTOFactory,
