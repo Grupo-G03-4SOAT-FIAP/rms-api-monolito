@@ -1,5 +1,6 @@
 import { Repository } from 'typeorm';
 import {
+  AtualizaClienteDTO,
   ClienteDTO,
   CriaClienteDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
@@ -31,6 +32,21 @@ const makeCriaClienteDTO = (
   (criaClienteDTO.email = email), (criaClienteDTO.cpf = cpf);
   return criaClienteDTO;
 };
+
+const makeAtualizaClienteDTO = (
+  nome: string,
+  email: string,
+): AtualizaClienteDTO => {
+  const atualizaClienteDTO = new AtualizaClienteDTO();
+  atualizaClienteDTO.nome = nome;
+  atualizaClienteDTO.email = email;
+  return atualizaClienteDTO;
+};
+
+const atualizaClienteDTOMock = makeAtualizaClienteDTO(
+  "usuario",
+  'usuario@teste.com.br',
+);
 
 const criaClienteDTOMock = makeCriaClienteDTO(
   'Jhon',
@@ -93,4 +109,5 @@ export {
   clienteRepositoryMock,
   clienteDTOFactoryMock,
   criaClienteDTOMock,
+  atualizaClienteDTOMock
 };

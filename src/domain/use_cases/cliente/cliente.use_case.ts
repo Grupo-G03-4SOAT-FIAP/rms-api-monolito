@@ -62,7 +62,7 @@ export class ClienteUseCase implements IClienteUseCase {
     const { nome, email } = cliente;  
 
     if(nome == undefined) {
-      throw new ClienteNomeUndefinedErro("Imformações não preenchidas")
+      throw new ClienteNomeUndefinedErro("Informações não preenchidas")
     }
 
     const buscarClientePorId =
