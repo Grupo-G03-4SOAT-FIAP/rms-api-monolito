@@ -131,9 +131,10 @@ export class PedidoUseCase implements IPedidoUseCase {
     pedidoGatewayPag: PedidoGatewayPagamentoDTO,
   ): boolean {
     if (
-      pedidoGatewayPag.order_status === 'paid' &&
+      pedidoGatewayPag.status === 'closed' && // closed: Order with payments covering total amount.
+      pedidoGatewayPag.order_status === 'paid' && // paid: Order with the sum of all payments "approved", "chargeback" or "in_mediation", covers the order total amount.
       pedidoGatewayPag.payments.every((payment) => {
-        return payment.status === 'approved';
+        return payment.status === 'approved'; // approved: The payment has been approved and accredited.
       })
     ) {
       return true;
