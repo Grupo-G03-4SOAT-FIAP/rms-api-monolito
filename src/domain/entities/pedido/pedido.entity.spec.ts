@@ -9,6 +9,7 @@ describe('PedidoEntity', () => {
   let itensPedido: ItemPedidoEntity[];
   let statusPedido: StatusPedido;
   let numeroPedido: string;
+  let pago: boolean;
   let cliente: ClienteEntity;
   let id: string;
 
@@ -26,7 +27,7 @@ describe('PedidoEntity', () => {
       itensPedido,
       statusPedido,
       numeroPedido,
-      false,
+      pago,
       cliente,
       id,
     );
