@@ -26,7 +26,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     private readonly categoriaDTOFactory: ICategoriaDTOFactory,
   ) {}
 
-  private async validarBuscaCategoriaPorNome(
+  private async validarCategoriaPorNome(
     nomeCategoria: string,
   ): Promise<CategoriaModel | null> {
     const buscaCategoria =
@@ -37,7 +37,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     return buscaCategoria;
   }
 
-  private async validarBuscaCategoriaPorId(
+  private async validarCategoriaPorId(
     categoriaId: string,
   ): Promise<CategoriaModel | null> {
     const buscaCategoriaPorId =
@@ -53,7 +53,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   ): Promise<HTTPResponse<CategoriaDTO>> {
     const categoriaEntity =
       this.categoriaFactory.criarEntidadeCategoria(categoria);
-    await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);
+    await this.validarCategoriaPorNome(categoriaEntity.nome);
     const categoriaModel =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
     const categoriaDTO =
@@ -70,9 +70,9 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   ): Promise<HTTPResponse<CategoriaDTO>> {
     const categoriaEntity =
       this.categoriaFactory.criarEntidadeCategoria(categoria);
-    await this.validarBuscaCategoriaPorId(categoriaId);
+    await this.validarCategoriaPorId(categoriaId);
     if (categoriaEntity.nome)
-      await this.validarBuscaCategoriaPorNome(categoriaEntity.nome);
+      await this.validarCategoriaPorNome(categoriaEntity.nome);
     const categoriaModel = await this.categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntity,
@@ -88,7 +88,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   async excluirCategoria(
     categoriaId: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
-    await this.validarBuscaCategoriaPorId(categoriaId);
+    await this.validarCategoriaPorId(categoriaId);
     await this.categoriaRepository.excluirCategoria(categoriaId);
     return {
       mensagem: 'Categoria excluida com sucesso',
@@ -96,7 +96,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   }
 
   async buscarCategoria(categoriaId: string): Promise<CategoriaDTO> {
-    const categoriaModel = await this.validarBuscaCategoriaPorId(categoriaId);
+    const categoriaModel = await this.validarCategoriaPorId(categoriaId);
     const categoriaDTO =
       this.categoriaDTOFactory.criarCategoriaDTO(categoriaModel);
     return categoriaDTO;

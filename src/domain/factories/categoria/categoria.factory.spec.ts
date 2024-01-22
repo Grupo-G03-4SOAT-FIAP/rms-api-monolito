@@ -28,10 +28,7 @@ describe('Categoria Factory', () => {
       criaCategoriaDTO.descricao,
     );
 
-    const entidade =
-      categoriaFactory.criarEntidadeCategoria(
-        criaCategoriaDTO,
-      );
+    const entidade = categoriaFactory.criarEntidadeCategoria(criaCategoriaDTO);
 
     expect(entidade).toEqual(expectedEntidade);
   });
