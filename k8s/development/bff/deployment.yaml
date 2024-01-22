@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: rms-bff
-        image: rms-bff:latest
+        image: rms-bff:latest # No Kubernetes do Docker Desktop a imagem deve já estar presente no cache de imagens do Docker na máquina local
         imagePullPolicy: IfNotPresent # Necessário definir "IfNotPresent" ao utilizar o Kubernetes do Docker Desktop para evitar erros "ImagePullBackOff" ao criar os Pods
         envFrom:
           - configMapRef:
