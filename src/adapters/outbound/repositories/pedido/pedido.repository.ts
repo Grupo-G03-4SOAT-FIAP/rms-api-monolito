@@ -44,6 +44,20 @@ export class PedidoRepository implements IPedidoRepository {
     return pedidoComItens;
   }
 
+  async editarStatusPagamento(
+    pedidoId: string,
+    statusPagamento: boolean,
+  ): Promise<PedidoModel> {
+    await this.pedidoRepository.update(pedidoId, {
+      pago: statusPagamento,
+    });
+
+    return await this.pedidoRepository.findOne({
+      where: { id: pedidoId },
+      relations: this.relations,
+    });
+  }
+
   async editarStatusPedido(
     pedidoId: string,
     statusPedido: string,

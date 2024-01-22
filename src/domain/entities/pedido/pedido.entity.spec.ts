@@ -26,6 +26,7 @@ describe('PedidoEntity', () => {
       itensPedido,
       statusPedido,
       numeroPedido,
+      false,
       cliente,
       id,
     );
@@ -38,7 +39,12 @@ describe('PedidoEntity', () => {
   });
 
   it('deve criar uma instância de PedidoEntity sem cliente e id', () => {
-    const pedido = new PedidoEntity(itensPedido, statusPedido, numeroPedido);
+    const pedido = new PedidoEntity(
+      itensPedido,
+      statusPedido,
+      numeroPedido,
+      false,
+    );
 
     expect(pedido.itensPedido).toEqual(itensPedido);
     expect(pedido.statusPedido).toEqual(statusPedido);

@@ -28,6 +28,7 @@ pedidoModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 pedidoModelMock.numeroPedido = '05012024';
 pedidoModelMock.itensPedido = [itemPedidoModelMock];
 pedidoModelMock.cliente = clienteModelMock;
+pedidoModelMock.pago = false;
 pedidoModelMock.statusPedido = 'recebido';
 pedidoModelMock.criadoEm = new Date().toISOString();
 pedidoModelMock.atualizadoEm = new Date().toISOString();
@@ -36,6 +37,7 @@ const pedidoEntityMock = new PedidoEntity(
   [itemPedidoEntityMock],
   StatusPedido.RECEBIDO,
   '05012024',
+  false,
   clienteEntityMock,
 );
 
@@ -68,6 +70,7 @@ const makePedidoDTO = (
   id: string,
   numeroPedido: string,
   itensPedido: ItemPedidoDTO[],
+  pago: boolean,
   statusPedido: string,
   cliente: ClienteDTO,
   qrCode: string,
@@ -76,6 +79,7 @@ const makePedidoDTO = (
   pedidoDTO.id = id;
   pedidoDTO.numeroPedido = numeroPedido;
   pedidoDTO.itensPedido = itensPedido;
+  pedidoDTO.pago = pago;
   pedidoDTO.statusPedido = statusPedido;
   pedidoDTO.cliente = cliente;
   pedidoDTO.qrCode = qrCode;
@@ -86,6 +90,7 @@ const pedidoDTOMock = makePedidoDTO(
   pedidoModelMock.id,
   pedidoModelMock.numeroPedido,
   [itemPedidoDTOMock],
+  false,
   pedidoModelMock.statusPedido,
   clienteDTOMock,
   null,
