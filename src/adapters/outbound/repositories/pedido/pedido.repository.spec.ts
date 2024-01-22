@@ -83,6 +83,28 @@ describe('PedidoRepository', () => {
     expect(result).toBe(pedidoModelMock);
   });
 
+  it('deve alterar o status de pagamento do pedido', async () => {
+    const novoStatusPagamento = true;
+
+    pedidoTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(pedidoModelMock),
+    );
+
+    const result = await pedidoRepository.editarStatusPagamento(
+      pedidoId,
+      novoStatusPagamento,
+    );
+
+    expect(pedidoTypeORMMock.update).toHaveBeenCalledWith(pedidoId, {
+      pago: novoStatusPagamento,
+    });
+    expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
+      where: { id: pedidoId },
+      relations: relations,
+    });
+    expect(result).toBe(pedidoModelMock);
+  });
+
   it('deve editar o status de um pedido', async () => {
     const novoStatusPedido = 'recebido';
 
