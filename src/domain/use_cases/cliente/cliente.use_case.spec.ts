@@ -5,13 +5,13 @@ import {
   atualizaClienteDTOMock,
   clienteDTOFactoryMock,
   clienteDTOMock,
+  clienteEntityAtualizaMock,
   clienteEntityMock,
   clienteModelMock,
   clienteRepositoryMock,
   criaClienteDTOMock,
 } from 'src/mocks/cliente.mock';
 import { IClienteDTOFactory } from 'src/domain/ports/cliente/cliente.dto.factory.port';
-import { ClienteNomeUndefinedErro } from 'src/domain/exceptions/cliente.exception';
 
 describe('ClienteUseCase', () => {
   let clienteUseCase: ClienteUseCase;
@@ -67,11 +67,9 @@ describe('ClienteUseCase', () => {
     });
   });
 
-  /* it('Deve Editar um Cliente com sucesso', async () => {
+  it('Deve Editar um Cliente com sucesso', async () => {
     clienteRepositoryMock.buscarClientePorId.mockReturnValue(clienteModelMock);
-    clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(
-      clienteModelMock,
-    );
+    clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(null);
 
     clienteRepositoryMock.editarCliente.mockReturnValue(clienteModelMock);
 
@@ -90,26 +88,61 @@ describe('ClienteUseCase', () => {
     );
     expect(clienteRepositoryMock.editarCliente).toHaveBeenCalledWith(
       clienteId,
-      atualizaClienteDTOMock
-    )
+      clienteEntityAtualizaMock,
+    );
     expect(clienteDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock
-    )
+      clienteModelMock,
+    );
     expect(result).toStrictEqual({
-      mensagem: "Cliente atualizado com sucesso",
-      body: clienteDTOMock
-    })
-  }); */
+      mensagem: 'Cliente atualizado com sucesso',
+      body: clienteDTOMock,
+    });
+  });
 
-  it('Deve dar erro ao Editar nome do Cliente com undefiend', async () => {
-    const cliente = atualizaClienteDTOMock;
-    cliente.nome = undefined;
-    try {
-      await clienteUseCase.editarCliente(clienteId, cliente);
-      fail('A exceção ClienteNomeUndefinedErro deveria aparecer');
-    } catch (error) {
-      expect(error).toBeInstanceOf(ClienteNomeUndefinedErro);
-      expect(error.message).toBe('Informações não preenchidas');
-    }
+  it('Deve dar o erro ClienteNomeUndefinedErro ao Editar nome do Cliente com undefiend', async () => {
+    atualizaClienteDTOMock.nome = null;
+
+    await expect(
+      clienteUseCase.editarCliente(clienteId, atualizaClienteDTOMock),
+    ).rejects.toThrow('Informações não preenchidas');
+  });
+
+  it('Deve dar o erro ClienteNaoLocalizadoErro ao Editar um ID que não existe', async () => {
+    clienteRepositoryMock.buscarClientePorId.mockReturnValue(null);
+
+    await expect(
+      clienteUseCase.editarCliente(clienteId, atualizaClienteDTOMock),
+    ).rejects.toThrow('Cliente informado não existe');
+  });
+
+  it('Deve dar o erro ClienteDuplicadoErro ao Editar um email que já existe', async () => {
+    clienteRepositoryMock.buscarClientePorId.mockReturnValue(clienteModelMock);
+    clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(
+      clienteModelMock,
+    );
+
+    await expect(
+      clienteUseCase.editarCliente(clienteId, atualizaClienteDTOMock),
+    ).rejects.toThrow('Email informado já está em uso');
+  });
+
+  it('Deve Excluir o cliente com sucesso', async () => {
+    clienteRepositoryMock.buscarClientePorId.mockReturnValue(clienteModelMock);
+
+    const result = await clienteUseCase.excluirCliente(clienteId);
+
+    expect(clienteRepositoryMock.excluirCliente).toHaveBeenCalledWith(
+      clienteId,
+    );
+    expect(result).toStrictEqual({
+      mensagem: 'Cliente excluído com sucesso',
+    });
+  });
+  it('Deve dar o erro ClienteNaoLocalizadoErro ao Excluir o cliente com um ID que não existe', async () => {
+    clienteRepositoryMock.buscarClientePorId.mockReturnValue(null);
+
+    await expect(clienteUseCase.excluirCliente(clienteId)).rejects.toThrow(
+      'Cliente informado não existe',
+    );
   });
 });
