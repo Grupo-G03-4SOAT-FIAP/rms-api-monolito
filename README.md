@@ -49,16 +49,16 @@ Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai pr
 
 ## Executar a aplicação usando o Kubernetes do Docker Desktop
 
-1. Clonar este repositório;
-2. Navegar até a pasta raiz do projeto;
-3. Usar o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
-4. Usar o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
-5. Usar o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
-6. Acessar o Swagger em http://localhost:3000/swagger/
+1. Clone este repositório;
+2. Navegue até a pasta raiz do projeto;
+3. Use o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
+4. Use o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
+5. Use o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/metrics-server.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
+6. Acesse o Swagger em http://localhost:3000/swagger/
 
-> Se preferir você também pode gerenciar o cluster Kubernetes [através do Lens](https://www.mirantis.com/blog/getting-started-with-the-mirantis-lens-kubernetes-extension-in-docker-desktop/).
+> Os arquivos yaml dos manifestos do Kubernetes devem ser aplicados na ordem especificada acima.
 
-> Se preferir você também pode executar a aplicação através do [Makefile](Makefile).
+> Para remover a aplicação do Kubernetes, use o comando `kubectl delete namespace rms`
 
 <details>
 

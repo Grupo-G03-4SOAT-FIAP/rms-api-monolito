@@ -6,7 +6,7 @@ metadata:
   labels:
     app: rms-bff
 data:
-  DB_HOST: "postgres" # Deve refletir o nome do service do PostgreSQL
+  DB_HOST: "postgres" # Deve refletir o nome do Service do PostgreSQL
   DB_PORT: "5432"
   DB_USERNAME: "pguser"
   DB_PASSWORD: "pgpwd"
