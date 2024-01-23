@@ -58,11 +58,11 @@ export class ClienteUseCase implements IClienteUseCase {
   async editarCliente(
     clienteId: string,
     cliente: AtualizaClienteDTO,
-  ): Promise<HTTPResponse<ClienteDTO>> {    
-    const { nome, email } = cliente;  
+  ): Promise<HTTPResponse<ClienteDTO>> {
+    const { nome, email } = cliente;
 
-    if(nome == undefined) {
-      throw new ClienteNomeUndefinedErro("Informações não preenchidas")
+    if (nome == null) {
+      throw new ClienteNomeUndefinedErro('Informações não preenchidas');
     }
 
     const buscarClientePorId =
@@ -71,10 +71,10 @@ export class ClienteUseCase implements IClienteUseCase {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
 
-    const buscarClientePorEmail = 
-      await this.clienteRepository.buscarClientePorEmail(email)
-    if(buscarClientePorEmail) {
-      throw new ClienteDuplicadoErro("Email informado já está em uso")
+    const buscarClientePorEmail =
+      await this.clienteRepository.buscarClientePorEmail(email);
+    if (buscarClientePorEmail) {
+      throw new ClienteDuplicadoErro('Email informado já está em uso');
     }
 
     const clienteEntity = new ClienteEntity(nome, email);
