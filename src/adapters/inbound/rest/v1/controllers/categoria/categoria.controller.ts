@@ -48,7 +48,7 @@ export class CategoriaController {
   })
   @ApiResponse({
     status: 409,
-    description: 'Existe uma categoria com esse dado',
+    description: 'Existe uma categoria com esse nome',
     type: ConflictError,
   })
   async criar(@Body() categoria: CriaCategoriaDTO) {
@@ -81,7 +81,7 @@ export class CategoriaController {
   })
   @ApiResponse({
     status: 409,
-    description: 'Existe uma categoria com esse dado',
+    description: 'Existe uma categoria com esse nome',
     type: ConflictError,
   })
   async atualizar(
@@ -105,7 +105,7 @@ export class CategoriaController {
   @ApiOperation({ summary: 'Remover uma categoria' })
   @ApiResponse({
     status: 200,
-    description: 'Categoria excluida com sucesso',
+    description: 'Categoria excluída com sucesso',
   })
   @ApiResponse({
     status: 404,
@@ -124,7 +124,7 @@ export class CategoriaController {
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Listar uma categoria' })
+  @ApiOperation({ summary: 'Buscar uma categoria pelo id' })
   @ApiResponse({
     status: 200,
     description: 'Categoria retornada com sucesso',

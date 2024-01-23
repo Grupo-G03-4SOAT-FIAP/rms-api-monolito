@@ -32,7 +32,7 @@ export class ProdutoController {
 
   @Post()
   @HttpCode(201)
-  @ApiOperation({ summary: 'Adicionar um novo produto ' })
+  @ApiOperation({ summary: 'Adicionar um novo produto' })
   @ApiResponse({
     status: 201,
     description: 'Produto criado com sucesso',
@@ -81,8 +81,12 @@ export class ProdutoController {
   })
   @ApiResponse({
     status: 404,
-    description:
-      'Produto informado não existe <br/>' + 'Categoria informada não existe',
+    description: 'Produto informado não existe',
+    type: NotFoundError,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Categoria informada não existe',
     type: NotFoundError,
   })
   @ApiResponse({

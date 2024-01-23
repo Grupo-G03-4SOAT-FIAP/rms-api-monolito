@@ -15,6 +15,7 @@ import { IPedidoRepository } from 'src/domain/ports/pedido/pedido.repository.por
 import { IPedidoUseCase } from 'src/domain/ports/pedido/pedido.use_case.port';
 import { IGatewayPagamentoService } from 'src/domain/ports/pedido/gatewaypag.service.port';
 import { HTTPResponse } from 'src/utils/HTTPResponse';
+import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -29,7 +30,17 @@ export class PedidoUseCase implements IPedidoUseCase {
     private configService: ConfigService,
     @Inject(IPedidoDTOFactory)
     private readonly pedidoDTOFactory: IPedidoDTOFactory,
-  ) { }
+  ) {}
+
+  private async validarPedidoPorId(
+    pedidoId: string,
+  ): Promise<PedidoModel | null> {
+    const pedidoModel = await this.pedidoRepository.buscarPedido(pedidoId);
+    if (!pedidoModel) {
+      throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
+    }
+    return pedidoModel;
+  }
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
     const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
@@ -58,10 +69,7 @@ export class PedidoUseCase implements IPedidoUseCase {
   ): Promise<HTTPResponse<PedidoDTO>> {
     const { statusPedido } = pedido;
 
-    const buscaPedido = await this.pedidoRepository.buscarPedido(pedidoId);
-    if (!buscaPedido) {
-      throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
-    }
+    await this.validarPedidoPorId(pedidoId);
 
     const result = await this.pedidoRepository.editarStatusPedido(
       pedidoId,
@@ -76,11 +84,7 @@ export class PedidoUseCase implements IPedidoUseCase {
   }
 
   async buscarPedido(pedidoId: string): Promise<PedidoDTO> {
-    const result = await this.pedidoRepository.buscarPedido(pedidoId);
-    if (!result) {
-      throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
-    }
-
+    const result = await this.validarPedidoPorId(pedidoId);
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
     return pedidoDTO;
   }

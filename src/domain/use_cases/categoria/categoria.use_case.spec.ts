@@ -2,31 +2,24 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ICategoriaRepository } from '../../../domain/ports/categoria/categoria.repository.port';
 import { CategoriaUseCase } from './categoria.use_case';
 import {
-  AtualizaCategoriaDTO,
-  CategoriaDTO,
-} from 'src/adapters/inbound/rest/v1/presenters/categoria.dto';
-import {
   CategoriaDuplicadaErro,
   CategoriaNaoLocalizadaErro,
 } from '../../../domain/exceptions/categoria.exception';
 import { ICategoriaFactory } from 'src/domain/ports/categoria/categoria.factory.port';
-import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 import { ICategoriaDTOFactory } from 'src/domain/ports/categoria/categoria.dto.factory.port';
 import {
-  novaCategoriaDTO,
-  categoriaAtualizadaModelMock,
-  listaCategoriasModel,
-  makeCriaCategoriaDTO,
-  novaCategoriaModelMock,
   categoriaModelMock,
-  makeCategoriaDTO,
+  categoriaRepositoryMock,
+  categoriaFactoryMock,
+  categoriaDTOFactoryMock,
+  criaCategoriaDTOMock,
+  categoriaDTOMock,
+  categoriaEntityMock,
 } from 'src/mocks/categoria.mock';
 
-describe('Categoria Use case', () => {
+describe('CategoriaUseCase', () => {
   let categoriaUseCase: CategoriaUseCase;
-  let categoriaRepository: ICategoriaRepository;
-  let categoriaFactory: ICategoriaFactory;
-  let categoriaDTOFactory: ICategoriaDTOFactory;
+  let categoriaId: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,418 +27,243 @@ describe('Categoria Use case', () => {
         CategoriaUseCase,
         {
           provide: ICategoriaRepository,
-          useValue: {
-            buscarCategoriaPorNome: jest.fn(),
-            buscarCategoriaPorId: jest.fn(),
-            criarCategoria: jest.fn(),
-            editarCategoria: jest.fn(),
-            excluirCategoria: jest.fn(),
-            listarCategorias: jest.fn(),
-          },
+          useValue: categoriaRepositoryMock,
         },
         {
           provide: ICategoriaFactory,
-          useValue: {
-            criarEntidadeCategoria: jest.fn(),
-          },
+          useValue: categoriaFactoryMock,
         },
         {
           provide: ICategoriaDTOFactory,
-          useValue: {
-            criarCategoriaDTO: jest.fn(),
-            criarListaCategoriaDTO: jest.fn(),
-          },
+          useValue: categoriaDTOFactoryMock,
         },
       ],
     }).compile();
+
     categoriaUseCase = module.get<CategoriaUseCase>(CategoriaUseCase);
-    categoriaRepository =
-      module.get<ICategoriaRepository>(ICategoriaRepository);
-    categoriaFactory = module.get<ICategoriaFactory>(ICategoriaFactory);
-    categoriaDTOFactory =
-      module.get<ICategoriaDTOFactory>(ICategoriaDTOFactory);
+    categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test('Deve ter uma definição para Categoria Use Case, Categoria Repository e Categoria Factory', async () => {
-    expect(categoriaUseCase).toBeDefined();
-    expect(categoriaRepository).toBeDefined();
-    expect(categoriaFactory).toBeDefined();
-    expect(categoriaDTOFactory).toBeDefined();
-  });
+  it('deve criar uma categoria com sucesso', async () => {
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
+    categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(null);
+    categoriaRepositoryMock.criarCategoria.mockReturnValue(categoriaModelMock);
+    categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
-  describe('Criar categoria', () => {
-    it('Deve ser lançado um erro ao tentar criar uma categoria com um nome já registrado no sistema', async () => {
-      // Arrange
+    const result = await categoriaUseCase.criarCategoria(criaCategoriaDTOMock);
 
-      const categoriaDto = makeCategoriaDTO(
-        '0a14aa4e-75e7-405f-8601-81f60646c93d',
-        'lanche',
-        'lanche x tudo',
-      );
-      const criaCategoriaDTO = makeCriaCategoriaDTO(
-        categoriaDto.nome,
-        categoriaDto.descricao,
-      );
-      const categoriaEntity = new CategoriaEntity(
-        criaCategoriaDTO.nome,
-        criaCategoriaDTO.descricao,
-      );
-
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
-        .mockReturnValue(Promise.resolve(categoriaModelMock));
-
-      jest
-        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
-        .mockReturnValue(categoriaEntity);
-
-      // Act
-      // Assert
-
-      expect(categoriaUseCase.criarCategoria(criaCategoriaDTO)).rejects.toThrow(
-        new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
-      );
-
-      expect(categoriaRepository.buscarCategoriaPorNome).toHaveBeenCalledTimes(
-        1,
-      );
-    });
-
-    it('Deve ser possível criar uma nova categoria', async () => {
-      // Arrange
-      const categoriaDTO = makeCategoriaDTO(
-        novaCategoriaModelMock.id,
-        novaCategoriaModelMock.nome,
-        novaCategoriaModelMock.descricao,
-      );
-      const categoriaEntity = new CategoriaEntity(
-        categoriaDTO.nome,
-        categoriaDTO.descricao,
-        categoriaDTO.id,
-      );
-      const criaCategoriaDTO = makeCriaCategoriaDTO(
-        categoriaDTO.nome,
-        categoriaDTO.descricao,
-      );
-
-      jest
-        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
-        .mockReturnValue(categoriaEntity);
-
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
-        .mockReturnValue(Promise.resolve(null));
-
-      jest
-        .spyOn(categoriaRepository, 'criarCategoria')
-        .mockReturnValue(Promise.resolve(novaCategoriaModelMock));
-
-      jest
-        .spyOn(categoriaDTOFactory, 'criarCategoriaDTO')
-        .mockReturnValue(categoriaDTO);
-
-      // Act
-      const result = await categoriaUseCase.criarCategoria(criaCategoriaDTO);
-
-      // Assert
-      expect(result).toEqual({
-        mensagem: 'Categoria criada com sucesso',
-        body: categoriaDTO,
-      });
-
-      expect(categoriaRepository.buscarCategoriaPorNome).toHaveBeenCalledTimes(
-        1,
-      );
-      expect(categoriaRepository.criarCategoria).toHaveBeenCalledTimes(1);
+    expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
+      criaCategoriaDTOMock,
+    );
+    expect(categoriaRepositoryMock.criarCategoria).toHaveBeenCalledWith(
+      categoriaEntityMock,
+    );
+    expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual({
+      mensagem: 'Categoria criada com sucesso',
+      body: categoriaDTOMock,
     });
   });
 
-  describe('Editar categoria', () => {
-    it('Deve ser lançado um erro se a categoria informada para edição não existe', async () => {
-      // Arrange
+  it('deve retornar erro ao criar uma categoria com nome duplicado', async () => {
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
+    categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(
+      categoriaModelMock,
+    );
 
-      const categoriaDTO = new AtualizaCategoriaDTO();
-      categoriaDTO.nome = 'Categoria atualizada';
-      categoriaDTO.descricao = 'Descrição atualizada';
+    await expect(
+      categoriaUseCase.criarCategoria(criaCategoriaDTOMock),
+    ).rejects.toThrow(
+      new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
+    );
+    expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
+      criaCategoriaDTOMock,
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorNome).toHaveBeenCalledWith(
+      categoriaEntityMock.nome,
+    );
+  });
 
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
-        .mockReturnValue(Promise.resolve(null));
+  it('deve editar uma categoria com sucesso', async () => {
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
+      categoriaModelMock,
+    );
+    categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(null);
+    categoriaRepositoryMock.editarCategoria.mockReturnValue(categoriaModelMock);
+    categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
-        .mockReturnValue(Promise.resolve(null));
+    const result = await categoriaUseCase.editarCategoria(
+      categoriaId,
+      criaCategoriaDTOMock,
+    );
 
-      // Act
-      // Assert
-
-      expect(
-        categoriaUseCase.editarCategoria(
-          '0a14aa4e-75e7-405f-8601-81f60646c93d',
-          categoriaDTO,
-        ),
-      ).rejects.toThrow(
-        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
-      );
-
-      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-    });
-
-    it('Deve ser lançado um erro se a categoria informada para edição tiver o mesmo nome de uma categoria já registrada', async () => {
-      // Arrange
-
-      const atualizaCategoriaDTO = new AtualizaCategoriaDTO();
-      atualizaCategoriaDTO.nome = novaCategoriaDTO.nome;
-      const categoriaEntity = new CategoriaEntity(
-        atualizaCategoriaDTO.nome,
-        atualizaCategoriaDTO.descricao,
-      );
-
-      jest
-        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
-        .mockReturnValue(categoriaEntity);
-
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
-        .mockReturnValue(Promise.resolve(categoriaModelMock));
-
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
-        .mockReturnValue(Promise.resolve(novaCategoriaModelMock));
-
-      // Act
-      // Assert
-
-      expect(
-        categoriaUseCase.editarCategoria(
-          categoriaModelMock.id,
-          atualizaCategoriaDTO,
-        ),
-      ).rejects.toThrow(
-        new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
-      );
-
-      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-    });
-
-    it('Deve ser possível editar uma categoria', async () => {
-      // Arrange
-
-      const atualizaCategoriaDto = new AtualizaCategoriaDTO();
-      const categoriaDTO = makeCategoriaDTO(
-        categoriaAtualizadaModelMock.id,
-        categoriaAtualizadaModelMock.nome,
-        categoriaAtualizadaModelMock.descricao,
-      );
-      const categoriaEntity = new CategoriaEntity(
-        categoriaDTO.nome,
-        categoriaDTO.descricao,
-        categoriaDTO.id,
-      );
-
-      jest
-        .spyOn(categoriaFactory, 'criarEntidadeCategoria')
-        .mockReturnValue(categoriaEntity);
-
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
-        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
-
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorNome')
-        .mockReturnValue(Promise.resolve(null));
-
-      jest
-        .spyOn(categoriaDTOFactory, 'criarCategoriaDTO')
-        .mockReturnValue(categoriaDTO);
-
-      jest
-        .spyOn(categoriaRepository, 'editarCategoria')
-        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
-
-      // Act
-
-      const result = await categoriaUseCase.editarCategoria(
-        categoriaAtualizadaModelMock.id,
-        atualizaCategoriaDto,
-      );
-
-      // Assert
-
-      expect(result).toEqual({
-        mensagem: 'Categoria atualizada com sucesso',
-        body: categoriaDTO,
-      });
-
-      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-      expect(categoriaRepository.editarCategoria).toHaveBeenCalledTimes(1);
+    expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
+      criaCategoriaDTOMock,
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(categoriaRepositoryMock.editarCategoria).toHaveBeenCalledWith(
+      categoriaId,
+      categoriaEntityMock,
+    );
+    expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual({
+      mensagem: 'Categoria atualizada com sucesso',
+      body: categoriaDTOMock,
     });
   });
 
-  describe('Excluir categoria', () => {
-    it('Deve ser retornado um erro se o id da categoria informada para exclusão não existir na base de dados', async () => {
-      // Arrange
+  it('deve retornar erro ao editar uma categoria com nome duplicado', async () => {
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
+      categoriaModelMock,
+    );
+    categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(
+      categoriaModelMock,
+    );
 
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
-        .mockReturnValue(Promise.resolve(null));
+    await expect(
+      categoriaUseCase.editarCategoria(categoriaId, criaCategoriaDTOMock),
+    ).rejects.toThrow(
+      new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
+    );
+    expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
+      criaCategoriaDTOMock,
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorNome).toHaveBeenCalledWith(
+      categoriaEntityMock.nome,
+    );
+  });
 
-      // Act
-      // Assert
+  it('deve retornar erro ao editar uma categoria que não existe', async () => {
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(null);
 
-      expect(
-        categoriaUseCase.excluirCategoria(
-          '0a14aa4e-75e7-405f-8601-81f60646c93d',
-        ),
-      ).rejects.toThrow(
-        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
-      );
+    await expect(
+      categoriaUseCase.editarCategoria(categoriaId, criaCategoriaDTOMock),
+    ).rejects.toThrow(
+      new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+    );
+    expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
+      criaCategoriaDTOMock,
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+  });
 
-      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-    });
+  it('deve excluir uma categoria com sucesso', async () => {
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
+      categoriaModelMock,
+    );
+    categoriaRepositoryMock.excluirCategoria.mockReturnValue(
+      categoriaModelMock,
+    );
 
-    it('Deve ser possível excluir uma categoria', async () => {
-      // Arrange
+    const result = await categoriaUseCase.excluirCategoria(categoriaId);
 
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
-        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
-
-      // Act
-
-      const result = await categoriaUseCase.excluirCategoria(
-        categoriaAtualizadaModelMock.id,
-      );
-
-      // Assert
-
-      expect(result).toEqual({
-        mensagem: 'Categoria excluida com sucesso',
-      });
-
-      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-      expect(categoriaRepository.excluirCategoria).toHaveBeenCalledTimes(1);
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(categoriaRepositoryMock.excluirCategoria).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(result).toStrictEqual({
+      mensagem: 'Categoria excluída com sucesso',
     });
   });
 
-  describe('Buscar Categoria', () => {
-    it('Deve deve retornado um erro ao tentar buscar uma categoria que o ID não esteja cadastrado no banco de dados', async () => {
-      // Arrange
+  it('deve retornar erro ao excluir uma categoria que não existe', async () => {
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(null);
 
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
-        .mockReturnValue(Promise.resolve(null));
-
-      // Act
-      // Assert
-
-      expect(
-        categoriaUseCase.buscarCategoria(
-          '0a14aa4e-7587-405f-8601-81f60646c93d',
-        ),
-      ).rejects.toThrow(
-        new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
-      );
-
-      expect(categoriaRepository.buscarCategoriaPorId).toHaveBeenCalledTimes(1);
-    });
-
-    it('Deve ser possível buscar uma categoria por ID', async () => {
-      // Arrange
-
-      const categoriaDTO = makeCategoriaDTO(
-        categoriaAtualizadaModelMock.id,
-        categoriaAtualizadaModelMock.nome,
-        categoriaAtualizadaModelMock.descricao,
-      );
-
-      jest
-        .spyOn(categoriaRepository, 'buscarCategoriaPorId')
-        .mockReturnValue(Promise.resolve(categoriaAtualizadaModelMock));
-
-      jest
-        .spyOn(categoriaDTOFactory, 'criarCategoriaDTO')
-        .mockReturnValue(categoriaDTO);
-
-      // Act
-
-      const result = await categoriaUseCase.buscarCategoria(
-        categoriaAtualizadaModelMock.id,
-      );
-
-      // Assert
-
-      expect(result).toEqual(categoriaDTO);
-    });
+    await expect(
+      categoriaUseCase.excluirCategoria(categoriaId),
+    ).rejects.toThrow(
+      new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
   });
 
-  describe('Listar Categorias', () => {
-    it('Deve ser possível retornar uma lista com todas as categorias cadastradas', async () => {
-      // Arrange
+  it('deve buscar uma categoria por id com sucesso', async () => {
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
+      categoriaModelMock,
+    );
+    categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
-      const categoria1DTO = makeCategoriaDTO(
-        categoriaAtualizadaModelMock.id,
-        categoriaAtualizadaModelMock.nome,
-        categoriaAtualizadaModelMock.descricao,
-      );
+    const result = await categoriaUseCase.buscarCategoria(categoriaId);
 
-      const categoria2DTO = makeCategoriaDTO(
-        novaCategoriaModelMock.id,
-        novaCategoriaModelMock.nome,
-        novaCategoriaModelMock.descricao,
-      );
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+    expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual(categoriaDTOMock);
+  });
 
-      const categoria3DTO = makeCategoriaDTO(
-        categoriaModelMock.id,
-        categoriaModelMock.nome,
-        categoriaModelMock.descricao,
-      );
+  it('deve retornar erro ao buscar uma categoria por id que não existe', async () => {
+    categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(null);
 
-      const listaCategorias: CategoriaDTO[] = [
-        categoria1DTO,
-        categoria2DTO,
-        categoria3DTO,
-      ];
+    await expect(categoriaUseCase.buscarCategoria(categoriaId)).rejects.toThrow(
+      new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
+    );
+    expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
+      categoriaId,
+    );
+  });
 
-      jest
-        .spyOn(categoriaRepository, 'listarCategorias')
-        .mockReturnValue(Promise.resolve(listaCategoriasModel));
+  it('deve listar categorias com sucesso', async () => {
+    categoriaRepositoryMock.listarCategorias.mockReturnValue([
+      categoriaModelMock,
+    ]);
+    categoriaDTOFactoryMock.criarListaCategoriaDTO.mockReturnValue([
+      categoriaDTOMock,
+    ]);
 
-      jest
-        .spyOn(categoriaDTOFactory, 'criarListaCategoriaDTO')
-        .mockReturnValue(listaCategorias);
+    const result = await categoriaUseCase.listarCategorias();
 
-      // Act
+    expect(categoriaRepositoryMock.listarCategorias).toHaveBeenCalled();
+    expect(categoriaDTOFactoryMock.criarListaCategoriaDTO).toHaveBeenCalledWith(
+      [categoriaModelMock],
+    );
+    expect(result).toStrictEqual([categoriaDTOMock]);
+  });
 
-      const result = await categoriaUseCase.listarCategorias();
+  it('deve retornar lista vazia ao listar categorias', async () => {
+    categoriaRepositoryMock.listarCategorias.mockReturnValue([]);
+    categoriaDTOFactoryMock.criarListaCategoriaDTO.mockReturnValue([]);
 
-      // Assert
+    const result = await categoriaUseCase.listarCategorias();
 
-      expect(result).toEqual(listaCategorias);
-    });
-
-    it('Deve ser retornada uma lista vazia em casos onde não tem categorias criadas', async () => {
-      // Arrange
-
-      jest
-        .spyOn(categoriaRepository, 'listarCategorias')
-        .mockReturnValue(Promise.resolve([]));
-
-      jest
-        .spyOn(categoriaDTOFactory, 'criarListaCategoriaDTO')
-        .mockReturnValue([]);
-
-      // Act
-
-      const result = await categoriaUseCase.listarCategorias();
-
-      // Assert
-
-      expect(result).toEqual([]);
-    });
+    expect(categoriaRepositoryMock.listarCategorias).toHaveBeenCalled();
+    expect(categoriaDTOFactoryMock.criarListaCategoriaDTO).toHaveBeenCalledWith(
+      [],
+    );
+    expect(result).toStrictEqual([]);
   });
 });

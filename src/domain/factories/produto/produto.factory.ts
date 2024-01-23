@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CategoriaEntity } from '../../entities/categoria/categoria.entity';
 import { ProdutoEntity } from '../../entities/produto/produto.entity';
 import { IProdutoFactory } from '../../ports/produto/produto.factory.port';
@@ -6,49 +6,42 @@ import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
-import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
+import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
+import { ICategoriaRepository } from 'src/domain/ports/categoria/categoria.repository.port';
 
 @Injectable()
 export class ProdutoFactory implements IProdutoFactory {
-  async criarEntidadeProdutoFromCriaProdutoDTO(
-    categoria: CategoriaModel,
-    criaProdutoDTO: CriaProdutoDTO,
-  ): Promise<ProdutoEntity> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
-      categoria.id,
-    );
+  constructor(
+    @Inject(ICategoriaRepository)
+    private readonly categoriaRepository: ICategoriaRepository,
+  ) {}
 
-    const produtoEntity = new ProdutoEntity(
-      criaProdutoDTO.nome,
-      categoriaEntity,
-      criaProdutoDTO.valorUnitario,
-      criaProdutoDTO.imagemUrl,
-      criaProdutoDTO.descricao,
-    );
+  async criarEntidadeCategoria(categoriaId: string): Promise<CategoriaEntity> {
+    const buscaCategoria =
+      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
+    if (!buscaCategoria) {
+      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+    }
 
-    return produtoEntity;
+    const { nome, descricao, id } = buscaCategoria;
+    const categoriaEntity = new CategoriaEntity(nome, descricao, id);
+    return categoriaEntity;
   }
 
-  async criarEntidadeProdutoFromAtualizaProdutoDTO(
-    categoria: CategoriaModel,
-    atualizaProdutoDTO: AtualizaProdutoDTO,
+  async criarEntidadeProduto(
+    produto: CriaProdutoDTO | AtualizaProdutoDTO,
   ): Promise<ProdutoEntity> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
-      categoria.id,
-    );
+    let categoriaEntity = undefined;
+    if (produto.categoriaId) {
+      categoriaEntity = await this.criarEntidadeCategoria(produto.categoriaId);
+    }
 
-    const produtoEntity = new ProdutoEntity(
-      atualizaProdutoDTO.nome,
+    return new ProdutoEntity(
+      produto.nome,
       categoriaEntity,
-      atualizaProdutoDTO.valorUnitario,
-      atualizaProdutoDTO.imagemUrl,
-      atualizaProdutoDTO.descricao,
+      produto.valorUnitario,
+      produto.imagemUrl,
+      produto.descricao,
     );
-
-    return produtoEntity;
   }
 }
