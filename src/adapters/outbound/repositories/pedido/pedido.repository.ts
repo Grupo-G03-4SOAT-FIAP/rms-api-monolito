@@ -58,6 +58,20 @@ export class PedidoRepository implements IPedidoRepository {
     });
   }
 
+  async editarStatusPagamento(
+    pedidoId: string,
+    statusPagamento: boolean,
+  ): Promise<PedidoModel> {
+    await this.pedidoRepository.update(pedidoId, {
+      pago: statusPagamento,
+    });
+
+    return await this.pedidoRepository.findOne({
+      where: { id: pedidoId },
+      relations: this.relations,
+    });
+  }
+
   async buscarPedido(pedidoId: string): Promise<PedidoModel | null> {
     return await this.pedidoRepository.findOne({
       where: { id: pedidoId },

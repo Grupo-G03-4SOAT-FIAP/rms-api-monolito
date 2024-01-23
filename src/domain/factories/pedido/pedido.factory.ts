@@ -88,6 +88,7 @@ export class PedidoFactory implements IPedidoFactory {
       itensPedido,
       StatusPedido.RECEBIDO,
       numeroPedido,
+      false,
       clienteEntity,
     );
   }

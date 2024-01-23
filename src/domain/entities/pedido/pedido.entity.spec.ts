@@ -9,6 +9,7 @@ describe('PedidoEntity', () => {
   let itensPedido: ItemPedidoEntity[];
   let statusPedido: StatusPedido;
   let numeroPedido: string;
+  let pago: boolean;
   let cliente: ClienteEntity;
   let id: string;
 
@@ -17,6 +18,7 @@ describe('PedidoEntity', () => {
     itensPedido = [itemPedidoEntityMock];
     statusPedido = StatusPedido.RECEBIDO;
     numeroPedido = '05012024';
+    pago = true
     cliente = clienteEntityMock;
     id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
@@ -26,6 +28,7 @@ describe('PedidoEntity', () => {
       itensPedido,
       statusPedido,
       numeroPedido,
+      pago,
       cliente,
       id,
     );
@@ -33,16 +36,23 @@ describe('PedidoEntity', () => {
     expect(pedido.itensPedido).toEqual(itensPedido);
     expect(pedido.statusPedido).toEqual(statusPedido);
     expect(pedido.numeroPedido).toEqual(numeroPedido);
+    expect(pedido.pago).toEqual(pago);
     expect(pedido.cliente).toEqual(cliente);
     expect(pedido.id).toEqual(id);
   });
 
   it('deve criar uma instância de PedidoEntity sem cliente e id', () => {
-    const pedido = new PedidoEntity(itensPedido, statusPedido, numeroPedido);
+    const pedido = new PedidoEntity(
+      itensPedido,
+      statusPedido,
+      numeroPedido,
+      pago,
+    );
 
     expect(pedido.itensPedido).toEqual(itensPedido);
     expect(pedido.statusPedido).toEqual(statusPedido);
     expect(pedido.numeroPedido).toEqual(numeroPedido);
+    expect(pedido.pago).toEqual(pago);
     expect(pedido.cliente).toBeUndefined();
     expect(pedido.id).toBeUndefined();
   });

@@ -44,6 +44,9 @@ export class PedidoDTO {
   @ApiProperty({ description: 'Status do pedido' })
   statusPedido: string;
 
+  @ApiProperty({ description: 'Status do pagamento' })
+  pago: boolean;
+
   @ApiProperty({ description: 'Cliente associado ao pedido' })
   cliente: ClienteDTO;
 
