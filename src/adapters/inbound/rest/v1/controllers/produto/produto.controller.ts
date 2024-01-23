@@ -32,7 +32,7 @@ export class ProdutoController {
 
   @Post()
   @HttpCode(201)
-  @ApiOperation({ summary: 'Adicionar um novo produto ' })
+  @ApiOperation({ summary: 'Adicionar um novo produto' })
   @ApiResponse({
     status: 201,
     description: 'Produto criado com sucesso',

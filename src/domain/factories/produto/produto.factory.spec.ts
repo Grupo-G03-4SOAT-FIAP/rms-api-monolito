@@ -30,6 +30,7 @@ describe('ProdutoFactory', () => {
 
     produtoFactory = module.get<ProdutoFactory>(ProdutoFactory);
     categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    categoriaEntityMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -37,7 +38,6 @@ describe('ProdutoFactory', () => {
   });
 
   it('deve criar a entidade produto com criaProdutoDTO', async () => {
-    categoriaEntityMock.id = categoriaId;
     produtoEntityMock.categoria = categoriaEntityMock;
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
       categoriaModelMock,
@@ -53,7 +53,6 @@ describe('ProdutoFactory', () => {
   });
 
   it('deve criar a entidade produto com atualizaProdutoDTO', async () => {
-    categoriaEntityMock.id = categoriaId;
     produtoEntityMock.categoria = categoriaEntityMock;
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
       categoriaModelMock,
@@ -70,7 +69,6 @@ describe('ProdutoFactory', () => {
   });
 
   it('deve criar a entidade categoria de uma entidade produto', async () => {
-    categoriaEntityMock.id = categoriaId;
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
       categoriaModelMock,
     );

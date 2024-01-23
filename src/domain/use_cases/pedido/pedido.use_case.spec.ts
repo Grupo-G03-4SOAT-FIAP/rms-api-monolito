@@ -117,6 +117,9 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.buscarPedido(pedidoId);
 
     expect(pedidoRepositoryMock.buscarPedido).toHaveBeenCalledWith(pedidoId);
+    expect(pedidoDTOFactoryMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
     expect(result).toStrictEqual(pedidoDTOMock);
   });
 
@@ -136,6 +139,9 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.listarPedidos();
 
     expect(pedidoRepositoryMock.listarPedidos).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([
+      pedidoModelMock,
+    ]);
     expect(result).toStrictEqual([pedidoDTOMock]);
   });
 
@@ -146,6 +152,7 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.listarPedidos();
 
     expect(pedidoRepositoryMock.listarPedidos).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([]);
     expect(result).toStrictEqual([]);
   });
 
@@ -158,6 +165,9 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.listarPedidosRecebido();
 
     expect(pedidoRepositoryMock.listarPedidosRecebido).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([
+      pedidoModelMock,
+    ]);
     expect(result).toStrictEqual([pedidoDTOMock]);
   });
 
@@ -168,6 +178,7 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.listarPedidosRecebido();
 
     expect(pedidoRepositoryMock.listarPedidosRecebido).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([]);
     expect(result).toStrictEqual([]);
   });
 });

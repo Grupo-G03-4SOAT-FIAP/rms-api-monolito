@@ -15,6 +15,7 @@ import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exce
 import { HTTPResponse } from 'src/utils/HTTPResponse';
 import { IProdutoFactory } from 'src/domain/ports/produto/produto.factory.port';
 import { IProdutoDTOFactory } from 'src/domain/ports/produto/produto.dto.factory.port';
+import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {
@@ -29,18 +30,35 @@ export class ProdutoUseCase implements IProdutoUseCase {
     private readonly produtoDTOFactory: IProdutoDTOFactory,
   ) {}
 
+  private async validarProdutoPorNome(
+    nomeProduto: string,
+  ): Promise<ProdutoModel | null> {
+    const produtoModel =
+      await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
+    if (produtoModel) {
+      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
+    }
+    return produtoModel;
+  }
+
+  private async validarProdutoPorId(
+    produtoId: string,
+  ): Promise<ProdutoModel | null> {
+    const produtoModel =
+      await this.produtoRepository.buscarProdutoPorId(produtoId);
+    if (!produtoModel) {
+      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
+    }
+    return produtoModel;
+  }
+
   async criarProduto(
     produto: CriaProdutoDTO,
   ): Promise<HTTPResponse<ProdutoDTO>> {
     const produtoEntity =
       await this.produtoFactory.criarEntidadeProduto(produto);
 
-    const buscaProduto = await this.produtoRepository.buscarProdutoPorNome(
-      produtoEntity.nome,
-    );
-    if (buscaProduto) {
-      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-    }
+    await this.validarProdutoPorNome(produtoEntity.nome);
 
     const result = await this.produtoRepository.criarProduto(produtoEntity);
     const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(result);
@@ -58,18 +76,10 @@ export class ProdutoUseCase implements IProdutoUseCase {
     const produtoEntity =
       await this.produtoFactory.criarEntidadeProduto(produto);
 
-    const buscaProdutoPorId =
-      await this.produtoRepository.buscarProdutoPorId(produtoId);
-    if (!buscaProdutoPorId) {
-      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
-    }
+    await this.validarProdutoPorId(produtoId);
 
     if (produtoEntity.nome) {
-      const buscaProdutoPorNome =
-        await this.produtoRepository.buscarProdutoPorNome(produtoEntity.nome);
-      if (buscaProdutoPorNome) {
-        throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-      }
+      await this.validarProdutoPorNome(produtoEntity.nome);
     }
 
     const result = await this.produtoRepository.editarProduto(
@@ -87,12 +97,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
   async excluirProduto(
     produtoId: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
-    const buscaProduto =
-      await this.produtoRepository.buscarProdutoPorId(produtoId);
-    if (!buscaProduto) {
-      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
-    }
-
+    await this.validarProdutoPorId(produtoId);
     await this.produtoRepository.excluirProduto(produtoId);
     return {
       mensagem: 'Produto excluído com sucesso',
@@ -100,13 +105,8 @@ export class ProdutoUseCase implements IProdutoUseCase {
   }
 
   async buscarProduto(produtoId: string): Promise<ProdutoDTO> {
-    const result = await this.produtoRepository.buscarProdutoPorId(produtoId);
-    if (!result) {
-      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
-    }
-
+    const result = await this.validarProdutoPorId(produtoId);
     const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(result);
-
     return produtoDTO;
   }
 

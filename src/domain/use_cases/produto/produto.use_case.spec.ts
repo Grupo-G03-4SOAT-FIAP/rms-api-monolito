@@ -24,7 +24,7 @@ import {
 } from 'src/domain/exceptions/produto.exception';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/exceptions/categoria.exception';
 
-describe('ProdutoUsecase', () => {
+describe('ProdutoUseCase', () => {
   let produtoUseCase: ProdutoUseCase;
   let produtoId: string;
   let categoriaId: string;
@@ -94,6 +94,12 @@ describe('ProdutoUsecase', () => {
     ).rejects.toThrow(
       new ProdutoDuplicadoErro('Existe um produto com esse nome'),
     );
+    expect(produtoFactoryMock.criarEntidadeProduto).toHaveBeenCalledWith(
+      criaProdutoDTOMock,
+    );
+    expect(produtoRepositoryMock.buscarProdutoPorNome).toHaveBeenCalledWith(
+      produtoEntityMock.nome,
+    );
   });
 
   it('deve editar um produto com sucesso', async () => {
@@ -139,6 +145,12 @@ describe('ProdutoUsecase', () => {
     ).rejects.toThrow(
       new ProdutoNaoLocalizadoErro('Produto informado não existe'),
     );
+    expect(produtoFactoryMock.criarEntidadeProduto).toHaveBeenCalledWith(
+      atualizaProdutoDTOMock,
+    );
+    expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
+      produtoId,
+    );
   });
 
   it('deve retornar erro ao editar um produto com nome duplicado', async () => {
@@ -152,6 +164,15 @@ describe('ProdutoUsecase', () => {
       produtoUseCase.editarProduto(produtoId, atualizaProdutoDTOMock),
     ).rejects.toThrow(
       new ProdutoDuplicadoErro('Existe um produto com esse nome'),
+    );
+    expect(produtoFactoryMock.criarEntidadeProduto).toHaveBeenCalledWith(
+      atualizaProdutoDTOMock,
+    );
+    expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
+      produtoId,
+    );
+    expect(produtoRepositoryMock.buscarProdutoPorNome).toHaveBeenCalledWith(
+      produtoEntityMock.nome,
     );
   });
 
@@ -174,6 +195,9 @@ describe('ProdutoUsecase', () => {
     await expect(produtoUseCase.excluirProduto(produtoId)).rejects.toThrow(
       new ProdutoNaoLocalizadoErro('Produto informado não existe'),
     );
+    expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
+      produtoId,
+    );
   });
 
   it('deve buscar um produto por id', async () => {
@@ -185,6 +209,9 @@ describe('ProdutoUsecase', () => {
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
       produtoId,
     );
+    expect(produtoDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
+      produtoModelMock,
+    );
     expect(result).toStrictEqual(produtoDTOMock);
   });
 
@@ -193,6 +220,9 @@ describe('ProdutoUsecase', () => {
 
     await expect(produtoUseCase.buscarProduto(produtoId)).rejects.toThrow(
       new ProdutoNaoLocalizadoErro('Produto informado não existe'),
+    );
+    expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
+      produtoId,
     );
   });
 
@@ -205,6 +235,9 @@ describe('ProdutoUsecase', () => {
     const result = await produtoUseCase.listarProdutos();
 
     expect(produtoRepositoryMock.listarProdutos).toHaveBeenCalledWith();
+    expect(produtoDTOFactoryMock.criarListaProdutoDTO).toHaveBeenCalledWith([
+      produtoModelMock,
+    ]);
     expect(result).toStrictEqual([produtoDTOMock]);
   });
 
