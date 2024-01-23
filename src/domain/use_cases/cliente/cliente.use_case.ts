@@ -9,6 +9,7 @@ import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import {
   ClienteNaoLocalizadoErro,
   ClienteDuplicadoErro,
+  ClienteNomeUndefinedErro,
 } from 'src/domain/exceptions/cliente.exception';
 import { IClienteDTOFactory } from 'src/domain/ports/cliente/cliente.dto.factory.port';
 import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
@@ -46,10 +47,25 @@ export class ClienteUseCase implements IClienteUseCase {
     return clienteModel;
   }
 
+  private async validarClientePorEmail(
+    emailCliente: string,
+  ): Promise<ClienteModel | null> {
+    const clienteModel =
+      await this.clienteRepository.buscarClientePorEmail(emailCliente);
+    if (clienteModel) {
+      throw new ClienteDuplicadoErro('Existe um cliente com esse email');
+    }
+    return clienteModel;
+  }
+
   async criarCliente(
     cliente: CriaClienteDTO,
   ): Promise<HTTPResponse<ClienteDTO>> {
     const { nome, email, cpf } = cliente;
+
+    if (email) {
+      await this.validarClientePorEmail(email);
+    }
 
     if (cpf) {
       await this.validarClientePorCPF(cpf);
@@ -71,6 +87,12 @@ export class ClienteUseCase implements IClienteUseCase {
   ): Promise<HTTPResponse<ClienteDTO>> {
     await this.validarClientePorId(clienteId);
     const { nome, email } = cliente;
+    if (nome == null) {
+      throw new ClienteNomeUndefinedErro('Informações não preenchidas');
+    }
+    if (email) {
+      await this.validarClientePorEmail(email);
+    }
     const clienteEntity = new ClienteEntity(nome, email);
     const result = await this.clienteRepository.editarCliente(
       clienteId,

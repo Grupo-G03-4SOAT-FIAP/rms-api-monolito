@@ -24,6 +24,11 @@ export const clienteEntityMock = new ClienteEntity(
   '83904665030',
 );
 
+export const clienteEntityAtualizaMock = new ClienteEntity(
+  'Jhon',
+  'jhon@teste.com.br',
+);
+
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar um cliente
 export const criaClienteDTOMock = new CriaClienteDTO();
 criaClienteDTOMock.nome = clienteModelMock.nome;
@@ -61,6 +66,7 @@ export const clienteRepositoryMock = {
   excluirCliente: jest.fn(),
   buscarClientePorId: jest.fn(),
   buscarClientePorCPF: jest.fn(),
+  buscarClientePorEmail: jest.fn(),
   listarClientes: jest.fn(),
 };
 

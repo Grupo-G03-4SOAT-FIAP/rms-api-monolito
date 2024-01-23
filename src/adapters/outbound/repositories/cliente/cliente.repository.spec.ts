@@ -18,6 +18,7 @@ describe('ClienteRepository', () => {
   let clienteRepository: ClienteRepository;
   let clienteId: string;
   let cpfCliente: string;
+  let emailCliente: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,6 +34,7 @@ describe('ClienteRepository', () => {
     clienteRepository = module.get<ClienteRepository>(ClienteRepository);
     clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     cpfCliente = '83904665030';
+    emailCliente = 'jhon@email.com.br';
   });
 
   afterEach(() => {
@@ -132,6 +134,19 @@ describe('ClienteRepository', () => {
       where: { cpf: cpfCliente },
     });
     expect(result).toBe(null);
+  });
+
+  it('deve buscar um cliente por email', async () => {
+    clienteTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(clienteModelMock),
+    );
+
+    const result = await clienteRepository.buscarClientePorEmail(emailCliente);
+
+    expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
+      where: { email: emailCliente },
+    });
+    expect(result).toBe(clienteModelMock);
   });
 
   it('deve listar todos clientes', async () => {
