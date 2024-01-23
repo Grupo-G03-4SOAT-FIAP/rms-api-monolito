@@ -108,6 +108,7 @@ describe('ClienteUseCase', () => {
   });
 
   it('Deve dar o erro ClienteNaoLocalizadoErro ao Editar um ID que não existe', async () => {
+    atualizaClienteDTOMock.nome = 'Jhon'
     clienteRepositoryMock.buscarClientePorId.mockReturnValue(null);
 
     await expect(
@@ -116,6 +117,7 @@ describe('ClienteUseCase', () => {
   });
 
   it('Deve dar o erro ClienteDuplicadoErro ao Editar um email que já existe', async () => {
+    atualizaClienteDTOMock.nome = 'Jhon'
     clienteRepositoryMock.buscarClientePorId.mockReturnValue(clienteModelMock);
     clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(
       clienteModelMock,
