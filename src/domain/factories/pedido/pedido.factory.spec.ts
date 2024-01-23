@@ -9,6 +9,7 @@ import { IProdutoRepository } from 'src/domain/ports/produto/produto.repository.
 import { IClienteRepository } from 'src/domain/ports/cliente/cliente.repository.port';
 import { PedidoService } from 'src/domain/services/pedido.service';
 import {
+  produtoEntityMock,
   produtoModelMock,
   produtoRepositoryMock,
 } from 'src/mocks/produto.mock';
@@ -21,6 +22,9 @@ import {
   criaItemPedidoDTOMock,
   itemPedidoEntityMock,
 } from 'src/mocks/item_pedido.mock';
+import { ProdutoNaoLocalizadoErro } from 'src/domain/exceptions/produto.exception';
+import { ClienteNaoLocalizadoErro } from 'src/domain/exceptions/cliente.exception';
+import { categoriaEntityMock } from 'src/mocks/categoria.mock';
 
 describe('PedidoFactory', () => {
   let pedidoFactory: PedidoFactory;
@@ -45,6 +49,9 @@ describe('PedidoFactory', () => {
     }).compile();
 
     pedidoFactory = module.get<PedidoFactory>(PedidoFactory);
+    clienteEntityMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    categoriaEntityMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    produtoEntityMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {
@@ -83,7 +90,9 @@ describe('PedidoFactory', () => {
 
     await expect(
       pedidoFactory.criarItemPedido([criaItemPedidoDTOMock]),
-    ).rejects.toThrow(`Produto informado não existe ${produtoId}`);
+    ).rejects.toThrow(
+      new ProdutoNaoLocalizadoErro(`Produto informado não existe ${produtoId}`),
+    );
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
       produtoId,
     );
@@ -113,7 +122,9 @@ describe('PedidoFactory', () => {
 
     await expect(
       pedidoFactory.criarEntidadeCliente(criaPedidoDTOMock.cpfCliente),
-    ).rejects.toThrow('Cliente informado não existe');
+    ).rejects.toThrow(
+      new ClienteNaoLocalizadoErro('Cliente informado não existe'),
+    );
     expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalledWith(
       criaPedidoDTOMock.cpfCliente,
     );

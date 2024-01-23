@@ -6,7 +6,6 @@ import {
   CategoriaDTO,
   CriaCategoriaDTO,
 } from '../../../adapters/inbound/rest/v1/presenters/categoria.dto';
-import { CategoriaModel } from '../../../adapters/outbound/models/categoria.model';
 import {
   CategoriaNaoLocalizadaErro,
   CategoriaDuplicadaErro,
@@ -14,6 +13,7 @@ import {
 import { HTTPResponse } from '../../../utils/HTTPResponse';
 import { ICategoriaFactory } from '../../../domain/ports/categoria/categoria.factory.port';
 import { ICategoriaDTOFactory } from 'src/domain/ports/categoria/categoria.dto.factory.port';
+import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {
@@ -71,8 +71,10 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     const categoriaEntity =
       this.categoriaFactory.criarEntidadeCategoria(categoria);
     await this.validarCategoriaPorId(categoriaId);
+
     if (categoriaEntity.nome)
       await this.validarCategoriaPorNome(categoriaEntity.nome);
+
     const categoriaModel = await this.categoriaRepository.editarCategoria(
       categoriaId,
       categoriaEntity,
@@ -91,7 +93,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     await this.validarCategoriaPorId(categoriaId);
     await this.categoriaRepository.excluirCategoria(categoriaId);
     return {
-      mensagem: 'Categoria excluida com sucesso',
+      mensagem: 'Categoria excluída com sucesso',
     };
   }
 

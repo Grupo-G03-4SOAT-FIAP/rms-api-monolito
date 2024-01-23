@@ -2,17 +2,13 @@ import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
-import { CategoriaModel } from 'src/adapters/outbound/models/categoria.model';
+import { CategoriaEntity } from 'src/domain/entities/categoria/categoria.entity';
 import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
 
 export interface IProdutoFactory {
-  criarEntidadeProdutoFromCriaProdutoDTO(
-    categoria: CategoriaModel,
-    criaProdutoDTO: CriaProdutoDTO,
-  ): Promise<ProdutoEntity>;
-  criarEntidadeProdutoFromAtualizaProdutoDTO(
-    categoria: CategoriaModel,
-    atualizaProdutoDTO: AtualizaProdutoDTO,
+  criarEntidadeCategoria(categoriaId: string): Promise<CategoriaEntity>;
+  criarEntidadeProduto(
+    produto: CriaProdutoDTO | AtualizaProdutoDTO,
   ): Promise<ProdutoEntity>;
 }
 
