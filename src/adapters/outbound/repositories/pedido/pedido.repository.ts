@@ -44,12 +44,12 @@ export class PedidoRepository implements IPedidoRepository {
     return pedidoComItens;
   }
 
-  async editarStatusPagamento(
+  async editarStatusPedido(
     pedidoId: string,
-    statusPagamento: boolean,
+    statusPedido: string,
   ): Promise<PedidoModel> {
     await this.pedidoRepository.update(pedidoId, {
-      pago: statusPagamento,
+      statusPedido: statusPedido,
     });
 
     return await this.pedidoRepository.findOne({
@@ -58,12 +58,12 @@ export class PedidoRepository implements IPedidoRepository {
     });
   }
 
-  async editarStatusPedido(
+  async editarStatusPagamento(
     pedidoId: string,
-    statusPedido: string,
+    statusPagamento: boolean,
   ): Promise<PedidoModel> {
     await this.pedidoRepository.update(pedidoId, {
-      statusPedido: statusPedido,
+      pago: statusPagamento,
     });
 
     return await this.pedidoRepository.findOne({

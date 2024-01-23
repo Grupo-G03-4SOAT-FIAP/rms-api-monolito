@@ -107,6 +107,7 @@ export class PedidoUseCase implements IPedidoUseCase {
     mensagem: MensagemGatewayPagamentoDTO,
   ): Promise<any> {
     if (id && topic === 'merchant_order') {
+      console.log(mensagem);
       const pedidoGatewayPag =
         await this.gatewayPagamentoService.consultarPedido(id);
       const idInternoPedido = pedidoGatewayPag.external_reference;
@@ -126,7 +127,7 @@ export class PedidoUseCase implements IPedidoUseCase {
         );
       }
       return {
-        mensagem: `Mensagem ${mensagem} consumida com sucesso`,
+        mensagem: 'Mensagem consumida com sucesso',
       };
     }
   }

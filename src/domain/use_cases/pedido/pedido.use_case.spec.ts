@@ -14,6 +14,8 @@ import {
   pedidoDTOMock,
   pedidoDTOFactoryMock,
   configServiceMock,
+  mensagemGatewayPagamentoDTO,
+  pedidoGatewayPagamentoDTO,
 } from 'src/mocks/pedido.mock';
 import { IPedidoDTOFactory } from 'src/domain/ports/pedido/pedido.dto.factory.port';
 import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
@@ -102,6 +104,34 @@ describe('PedidoUseCase', () => {
     expect(result).toStrictEqual({
       mensagem: 'Pedido atualizado com sucesso',
       body: pedidoDTOMock,
+    });
+  });
+
+  it('deve atualizar o status de pagamento do pedido com sucesso', async () => {
+    const idPedidoMercadoPago = '15171882961';
+    const topicMercadoPago = 'merchant_order';
+
+    pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModelMock);
+    pedidoRepositoryMock.editarStatusPedido.mockReturnValue(pedidoModelMock);
+    pedidoDTOFactoryMock.criarPedidoDTO.mockReturnValue(pedidoDTOMock);
+    gatewayPagamentoServiceMock.consultarPedido.mockReturnValue(pedidoGatewayPagamentoDTO);
+
+    const result = await pedidoUseCase.webhookPagamento(
+      idPedidoMercadoPago,
+      topicMercadoPago,
+      mensagemGatewayPagamentoDTO,
+    );
+
+    expect(pedidoRepositoryMock.editarStatusPagamento).toHaveBeenCalledWith(
+      pedidoId,
+      true,
+    );
+    expect(pedidoRepositoryMock.editarStatusPedido).toHaveBeenCalledWith(
+      pedidoId,
+      'em preparacao',
+    );
+    expect(result).toStrictEqual({
+      mensagem: 'Mensagem consumida com sucesso'
     });
   });
 

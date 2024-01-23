@@ -17,6 +17,7 @@ import {
   itemPedidoEntityMock,
   itemPedidoModelMock,
 } from './item_pedido.mock';
+import { MensagemGatewayPagamentoDTO, PaymentDTO, PedidoGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presenters/gatewaypag.dto';
 
 // Mock para simular dados da tabela pedido no banco de dados
 export const pedidoModelMock = new PedidoModel();
@@ -59,6 +60,19 @@ pedidoDTOMock.statusPedido = pedidoModelMock.statusPedido;
 pedidoDTOMock.cliente = clienteDTOMock;
 pedidoDTOMock.qrCode = null;
 
+export const mensagemGatewayPagamentoDTO = new MensagemGatewayPagamentoDTO();
+mensagemGatewayPagamentoDTO.resource = 'https://api.mercadolibre.com/merchant_orders/15171882961';
+mensagemGatewayPagamentoDTO.topic = 'merchant_order'
+
+export const pedidoGatewayPagamentoDTO = new PedidoGatewayPagamentoDTO();
+pedidoGatewayPagamentoDTO.id = 15171882961;
+pedidoGatewayPagamentoDTO.status = 'closed';
+pedidoGatewayPagamentoDTO.external_reference = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+const itemDTO = new PaymentDTO();
+itemDTO.status = "approved";
+pedidoGatewayPagamentoDTO.payments = [itemDTO];
+pedidoGatewayPagamentoDTO.order_status = 'paid';
+
 // Mock jest das funções do typeORM interagindo com a tabela pedido
 export const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
   create: jest.fn(),
@@ -72,11 +86,8 @@ export const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
 
 export const configServiceMock = {
   get: jest.fn((key: string) => {
-    switch (key) {
-      case 'ENABLE_MERCADOPAGO':
-        return 'false';
-      default:
-        return undefined;
+    if (key === 'ENABLE_MERCADOPAGO') {
+      return 'false';
     }
   })
 }
@@ -85,6 +96,7 @@ export const configServiceMock = {
 export const pedidoRepositoryMock = {
   criarPedido: jest.fn(),
   editarStatusPedido: jest.fn(),
+  editarStatusPagamento: jest.fn(),
   buscarPedido: jest.fn(),
   listarPedidos: jest.fn(),
   listarPedidosRecebido: jest.fn(),
