@@ -15,6 +15,7 @@ import {
   pedidoDTOFactoryMock,
 } from 'src/mocks/pedido.mock';
 import { IPedidoDTOFactory } from 'src/domain/ports/pedido/pedido.dto.factory.port';
+import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
 
 describe('PedidoUseCase', () => {
   let pedidoUseCase: PedidoUseCase;
@@ -89,18 +90,23 @@ describe('PedidoUseCase', () => {
       pedidoId,
       atualizaPedidoDTOMock.statusPedido,
     );
+    expect(pedidoDTOFactoryMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
     expect(result).toStrictEqual({
       mensagem: 'Pedido atualizado com sucesso',
       body: pedidoDTOMock,
     });
   });
 
-  it('deve editar o status de um pedido e retornar PedidoNaoLocalizadoErro', async () => {
+  it('deve retornar erro ao editar um pedido não existe', async () => {
     pedidoRepositoryMock.buscarPedido.mockReturnValue(null);
 
     await expect(
       pedidoUseCase.editarPedido(pedidoId, atualizaPedidoDTOMock),
-    ).rejects.toThrow('Pedido informado não existe');
+    ).rejects.toThrow(
+      new PedidoNaoLocalizadoErro('Pedido informado não existe'),
+    );
     expect(pedidoRepositoryMock.buscarPedido).toHaveBeenCalledWith(pedidoId);
   });
 
@@ -111,25 +117,31 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.buscarPedido(pedidoId);
 
     expect(pedidoRepositoryMock.buscarPedido).toHaveBeenCalledWith(pedidoId);
+    expect(pedidoDTOFactoryMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
     expect(result).toStrictEqual(pedidoDTOMock);
   });
 
-  it('deve buscar um pedido por id e retornar PedidoNaoLocalizadoErro', async () => {
+  it('deve retornar erro ao buscar um pedido que não existe', async () => {
     pedidoRepositoryMock.buscarPedido.mockReturnValue(null);
 
     await expect(pedidoUseCase.buscarPedido(pedidoId)).rejects.toThrow(
-      'Pedido informado não existe',
+      new PedidoNaoLocalizadoErro('Pedido informado não existe'),
     );
     expect(pedidoRepositoryMock.buscarPedido).toHaveBeenCalledWith(pedidoId);
   });
 
-  it('deve listar pedidos', async () => {
+  it('deve listar todos os pedidos', async () => {
     pedidoRepositoryMock.listarPedidos.mockReturnValue([pedidoModelMock]);
     pedidoDTOFactoryMock.criarListaPedidoDTO.mockReturnValue([pedidoDTOMock]);
 
     const result = await pedidoUseCase.listarPedidos();
 
     expect(pedidoRepositoryMock.listarPedidos).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([
+      pedidoModelMock,
+    ]);
     expect(result).toStrictEqual([pedidoDTOMock]);
   });
 
@@ -140,6 +152,7 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.listarPedidos();
 
     expect(pedidoRepositoryMock.listarPedidos).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([]);
     expect(result).toStrictEqual([]);
   });
 
@@ -152,6 +165,9 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.listarPedidosRecebido();
 
     expect(pedidoRepositoryMock.listarPedidosRecebido).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([
+      pedidoModelMock,
+    ]);
     expect(result).toStrictEqual([pedidoDTOMock]);
   });
 
@@ -162,6 +178,7 @@ describe('PedidoUseCase', () => {
     const result = await pedidoUseCase.listarPedidosRecebido();
 
     expect(pedidoRepositoryMock.listarPedidosRecebido).toHaveBeenCalledWith();
+    expect(pedidoDTOFactoryMock.criarListaPedidoDTO).toHaveBeenCalledWith([]);
     expect(result).toStrictEqual([]);
   });
 });

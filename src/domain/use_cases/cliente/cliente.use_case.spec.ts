@@ -99,7 +99,7 @@ describe('ClienteUseCase', () => {
     });
   });
 
-  it('Deve dar o erro ClienteNomeUndefinedErro ao Editar nome do Cliente com undefiend', async () => {
+  it('Deve dar o erro ClienteNomeUndefinedErro ao Editar nome do Cliente com null', async () => {
     atualizaClienteDTOMock.nome = null;
 
     await expect(
@@ -125,7 +125,7 @@ describe('ClienteUseCase', () => {
 
     await expect(
       clienteUseCase.editarCliente(clienteId, atualizaClienteDTOMock),
-    ).rejects.toThrow('Email informado já está em uso');
+    ).rejects.toThrow('Existe um cliente com esse email');
   });
 
   it('Deve Excluir o cliente com sucesso', async () => {

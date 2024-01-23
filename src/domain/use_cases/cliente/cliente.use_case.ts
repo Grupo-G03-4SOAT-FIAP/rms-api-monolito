@@ -4,6 +4,7 @@ import {
   ClienteDTO,
   AtualizaClienteDTO,
 } from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
+import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
 import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 import {
   ClienteNaoLocalizadoErro,
@@ -24,25 +25,50 @@ export class ClienteUseCase implements IClienteUseCase {
     private readonly clienteDTOFactory: IClienteDTOFactory,
   ) {}
 
+  private async validarClientePorId(
+    clienteId: string,
+  ): Promise<ClienteModel | null> {
+    const clienteModel =
+      await this.clienteRepository.buscarClientePorId(clienteId);
+    if (!clienteModel) {
+      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
+    }
+    return clienteModel;
+  }
+
+  private async validarClientePorCPF(
+    cpfCliente: string,
+  ): Promise<ClienteModel | null> {
+    const clienteModel =
+      await this.clienteRepository.buscarClientePorCPF(cpfCliente);
+    if (clienteModel) {
+      throw new ClienteDuplicadoErro('Existe um cliente com esse cpf');
+    }
+    return clienteModel;
+  }
+
+  private async validarClientePorEmail(
+    emailCliente: string,
+  ): Promise<ClienteModel | null> {
+    const clienteModel =
+      await this.clienteRepository.buscarClientePorEmail(emailCliente);
+    if (clienteModel) {
+      throw new ClienteDuplicadoErro('Existe um cliente com esse email');
+    }
+    return clienteModel;
+  }
+
   async criarCliente(
     cliente: CriaClienteDTO,
   ): Promise<HTTPResponse<ClienteDTO>> {
     const { nome, email, cpf } = cliente;
 
     if (email) {
-      const buscaCliente =
-        await this.clienteRepository.buscarClientePorEmail(email);
-      if (buscaCliente) {
-        throw new ClienteDuplicadoErro('Existe um cliente com esse email');
-      }
+      await this.buscarClientePorEmail(email)
     }
 
     if (cpf) {
-      const buscaCliente =
-        await this.clienteRepository.buscarClientePorCPF(cpf);
-      if (buscaCliente) {
-        throw new ClienteDuplicadoErro('Existe um cliente com esse cpf');
-      }
+      await this.validarClientePorCPF(cpf);
     }
 
     const clienteEntity = new ClienteEntity(nome, email, cpf);
@@ -59,22 +85,19 @@ export class ClienteUseCase implements IClienteUseCase {
     clienteId: string,
     cliente: AtualizaClienteDTO,
   ): Promise<HTTPResponse<ClienteDTO>> {
+    await this.validarClientePorId(clienteId);
     const { nome, email } = cliente;
 
     if (nome == null) {
       throw new ClienteNomeUndefinedErro('Informações não preenchidas');
     }
 
-    const buscarClientePorId =
-      await this.clienteRepository.buscarClientePorId(clienteId);
-    if (!buscarClientePorId) {
-      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
+    if (clienteId) {
+      await this.buscarClientePorId(clienteId)
     }
 
-    const buscarClientePorEmail =
-      await this.clienteRepository.buscarClientePorEmail(email);
-    if (buscarClientePorEmail) {
-      throw new ClienteDuplicadoErro('Email informado já está em uso');
+    if (email) {
+      await this.buscarClientePorEmail(email)
     }
 
     const clienteEntity = new ClienteEntity(nome, email);
@@ -93,33 +116,29 @@ export class ClienteUseCase implements IClienteUseCase {
   async excluirCliente(
     clienteId: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
-    const buscaCliente =
-      await this.clienteRepository.buscarClientePorId(clienteId);
-    if (!buscaCliente) {
-      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
-    }
-
+    await this.validarClientePorId(clienteId);
     await this.clienteRepository.excluirCliente(clienteId);
     return {
       mensagem: 'Cliente excluído com sucesso',
     };
   }
 
+  async buscarClientePorEmail(clienteEmail: string): Promise<ClienteDTO> {
+    const result = await this.validarClientePorEmail(clienteEmail);
+
+    const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
+    return clienteDTO;
+  }
+
   async buscarClientePorId(clienteId: string): Promise<ClienteDTO> {
-    const result = await this.clienteRepository.buscarClientePorId(clienteId);
-    if (!result) {
-      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
-    }
+    const result = await this.validarClientePorId(clienteId);
 
     const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
     return clienteDTO;
   }
 
   async buscarClientePorCPF(cpfCliente: string): Promise<ClienteDTO> {
-    const result = await this.clienteRepository.buscarClientePorCPF(cpfCliente);
-    if (!result) {
-      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
-    }
+    const result = await this.validarClientePorCPF(cpfCliente);
 
     const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
     return clienteDTO;

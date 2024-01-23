@@ -7,7 +7,8 @@ import {
 import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
 import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 
-const clienteModelMock = new ClienteModel();
+// Mock para simular dados da tabela cliente no banco de dados
+export const clienteModelMock = new ClienteModel();
 clienteModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 clienteModelMock.nome = 'Jhon';
 clienteModelMock.email = 'jhon@teste.com.br';
@@ -16,59 +17,37 @@ clienteModelMock.criadoEm = new Date().toISOString();
 clienteModelMock.atualizadoEm = new Date().toISOString();
 clienteModelMock.excluidoEm = new Date().toISOString();
 
-const clienteEntityMock = new ClienteEntity(
+// Mock para simular dados da entidade cliente
+export const clienteEntityMock = new ClienteEntity(
   'Jhon',
   'jhon@teste.com.br',
   '83904665030',
 );
-const clienteEntityAtualizaMock = new ClienteEntity(
+export const clienteEntityAtualizaMock = new ClienteEntity(
   'Jhon',
   'jhon@teste.com.br',
 );
 
-const makeCriaClienteDTO = (
-  nome: string,
-  email: string,
-  cpf?: string,
-): CriaClienteDTO => {
-  const criaClienteDTO = new CriaClienteDTO();
-  criaClienteDTO.nome = nome;
-  (criaClienteDTO.email = email), (criaClienteDTO.cpf = cpf);
-  return criaClienteDTO;
-};
+// Mock para simular o DTO com os dados recebidos pelo usuario ao criar um cliente
+export const criaClienteDTOMock = new CriaClienteDTO();
+criaClienteDTOMock.nome = clienteModelMock.nome;
+criaClienteDTOMock.email = clienteModelMock.email;
+criaClienteDTOMock.cpf = clienteModelMock.cpf;
 
+// Mock para simular o DTO com os dados recebidos pelo usuario ao atualizar um cliente
 export const atualizaClienteDTOMock = new AtualizaClienteDTO();
-atualizaClienteDTOMock.nome = 'Jhon';
-atualizaClienteDTOMock.email = 'jhon@teste.com.br';
+atualizaClienteDTOMock.nome = clienteModelMock.nome;
+atualizaClienteDTOMock.email = clienteModelMock.email;
 
-const criaClienteDTOMock = makeCriaClienteDTO(
-  'Jhon',
-  'jhon@teste.com.br',
-  '83904665030',
-);
+// Mock para simular o DTO com dados de cliente enviados para o usuario ao responder uma requisição
+export const clienteDTOMock = new ClienteDTO();
+clienteDTOMock.id = clienteModelMock.id;
+clienteDTOMock.nome = clienteModelMock.nome;
+clienteDTOMock.email = clienteModelMock.email;
+clienteDTOMock.cpf = clienteModelMock.cpf;
 
-const makeClienteDTO = (
-  id: string,
-  nome: string,
-  email: string,
-  cpf: string,
-): ClienteDTO => {
-  const clienteDTO = new ClienteDTO();
-  clienteDTO.id = id;
-  clienteDTO.nome = nome;
-  clienteDTO.email = email;
-  clienteDTO.cpf = cpf;
-  return clienteDTO;
-};
-
-const clienteDTOMock = makeClienteDTO(
-  clienteModelMock.id,
-  clienteModelMock.nome,
-  clienteModelMock.email,
-  clienteModelMock.cpf,
-);
-
-const clienteTypeORMMock: jest.Mocked<Repository<ClienteModel>> = {
+// Mock jest das funções do typeORM interagindo com a tabela cliente
+export const clienteTypeORMMock: jest.Mocked<Repository<ClienteModel>> = {
   create: jest.fn(),
   save: jest.fn(),
   update: jest.fn(),
@@ -79,7 +58,8 @@ const clienteTypeORMMock: jest.Mocked<Repository<ClienteModel>> = {
   Repository<ClienteModel>
 >;
 
-const clienteRepositoryMock = {
+// Mock jest das funções do repository cliente
+export const clienteRepositoryMock = {
   criarCliente: jest.fn(),
   editarCliente: jest.fn(),
   excluirCliente: jest.fn(),
@@ -89,18 +69,18 @@ const clienteRepositoryMock = {
   listarClientes: jest.fn(),
 };
 
-const clienteDTOFactoryMock = {
+// Mock jest das funções da factory que cria DTO cliente
+export const clienteDTOFactoryMock = {
   criarClienteDTO: jest.fn(),
   criarListaClienteDTO: jest.fn(),
 };
 
-export {
-  clienteModelMock,
-  clienteEntityMock,
-  clienteEntityAtualizaMock,
-  clienteDTOMock,
-  clienteTypeORMMock,
-  clienteRepositoryMock,
-  clienteDTOFactoryMock,
-  criaClienteDTOMock,
+// Mock jest das funções do use case cliente
+export const clienteUseCaseMock = {
+  criarCliente: jest.fn(),
+  editarCliente: jest.fn(),
+  excluirCliente: jest.fn(),
+  buscarClientePorId: jest.fn(),
+  buscarClientePorCPF: jest.fn(),
+  listarClientes: jest.fn(),
 };
