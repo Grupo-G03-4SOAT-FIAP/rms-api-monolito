@@ -21,6 +21,10 @@ const clienteEntityMock = new ClienteEntity(
   'jhon@teste.com.br',
   '83904665030',
 );
+const clienteEntityAtualizaMock = new ClienteEntity(
+  'Jhon',
+  'jhon@teste.com.br',
+);
 
 const makeCriaClienteDTO = (
   nome: string,
@@ -33,20 +37,9 @@ const makeCriaClienteDTO = (
   return criaClienteDTO;
 };
 
-const makeAtualizaClienteDTO = (
-  nome: string,
-  email: string,
-): AtualizaClienteDTO => {
-  const atualizaClienteDTO = new AtualizaClienteDTO();
-  atualizaClienteDTO.nome = nome;
-  atualizaClienteDTO.email = email;
-  return atualizaClienteDTO;
-};
-
-const atualizaClienteDTOMock = makeAtualizaClienteDTO(
-  "usuario",
-  'usuario@teste.com.br',
-);
+export const atualizaClienteDTOMock = new AtualizaClienteDTO();
+atualizaClienteDTOMock.nome = 'Jhon';
+atualizaClienteDTOMock.email = 'jhon@teste.com.br';
 
 const criaClienteDTOMock = makeCriaClienteDTO(
   'Jhon',
@@ -104,10 +97,10 @@ const clienteDTOFactoryMock = {
 export {
   clienteModelMock,
   clienteEntityMock,
+  clienteEntityAtualizaMock,
   clienteDTOMock,
   clienteTypeORMMock,
   clienteRepositoryMock,
   clienteDTOFactoryMock,
   criaClienteDTOMock,
-  atualizaClienteDTOMock
 };
