@@ -70,6 +70,17 @@ export const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
   Repository<PedidoModel>
 >;
 
+export const configServiceMock = {
+  get: jest.fn((key: string) => {
+    switch (key) {
+      case 'ENABLE_MERCADOPAGO':
+        return 'false';
+      default:
+        return undefined;
+    }
+  })
+}
+
 // Mock jest das funções do repository pedido
 export const pedidoRepositoryMock = {
   criarPedido: jest.fn(),

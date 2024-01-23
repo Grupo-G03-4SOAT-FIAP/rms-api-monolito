@@ -13,12 +13,15 @@ import {
   atualizaPedidoDTOMock,
   pedidoDTOMock,
   pedidoDTOFactoryMock,
+  configServiceMock,
 } from 'src/mocks/pedido.mock';
 import { IPedidoDTOFactory } from 'src/domain/ports/pedido/pedido.dto.factory.port';
 import { PedidoNaoLocalizadoErro } from 'src/domain/exceptions/pedido.exception';
+import { ConfigService } from '@nestjs/config';
 
 describe('PedidoUseCase', () => {
   let pedidoUseCase: PedidoUseCase;
+  let configService: ConfigService;
   let pedidoId: string;
 
   beforeEach(async () => {
@@ -41,9 +44,14 @@ describe('PedidoUseCase', () => {
           provide: IPedidoDTOFactory,
           useValue: pedidoDTOFactoryMock,
         },
+        {
+          provide: ConfigService,
+          useValue: configServiceMock,
+        },
       ],
     }).compile();
 
+    configService = module.get<ConfigService>(ConfigService);
     pedidoUseCase = module.get<PedidoUseCase>(PedidoUseCase);
     pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
