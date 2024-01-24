@@ -7,7 +7,10 @@ import { pedidoModelMock } from './pedido.mock';
 import { Repository } from 'typeorm';
 import { ItemPedidoModel } from 'src/infrastructure/sql/models/item_pedido.model';
 import { ItemPedidoEntity } from 'src/domain/pedido/entities/item_pedido.entity';
-import { CriaItemPedidoDTO, ItemPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
+import {
+  CriaItemPedidoDTO,
+  ItemPedidoDTO,
+} from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
 
 // Mock para simular dados da tabela item pedido no banco de dados
 export const itemPedidoModelMock = new ItemPedidoModel();

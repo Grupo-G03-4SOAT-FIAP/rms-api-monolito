@@ -12,10 +12,17 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ICategoriaUseCase } from 'src/domain/categoria/interfaces/categoria.use_case.port';
-import { AtualizaCategoriaDTO, CategoriaDTO, CriaCategoriaDTO } from '../../presenters/categoria/categoria.dto';
+import {
+  AtualizaCategoriaDTO,
+  CategoriaDTO,
+  CriaCategoriaDTO,
+} from '../../presenters/categoria/categoria.dto';
 import { BadRequestError } from '../../helpers/swagger/status-codes/bad_requests.swagger';
 import { ConflictError } from '../../helpers/swagger/status-codes/conflict.swagger';
-import { CategoriaDuplicadaErro, CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
+import {
+  CategoriaDuplicadaErro,
+  CategoriaNaoLocalizadaErro,
+} from 'src/domain/categoria/exceptions/categoria.exception';
 import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swagger';
 
 @Controller('categoria')

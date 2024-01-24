@@ -2,8 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { CategoriaController } from './categoria.controller';
 import { ICategoriaUseCase } from 'src/domain/categoria/interfaces/categoria.use_case.port';
-import { CategoriaDuplicadaErro, CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
-import { atualizaCategoriaDTOMock, categoriaDTOMock, categoriaUseCaseMock, criaCategoriaDTOMock } from 'src/mocks/categoria.mock';
+import {
+  CategoriaDuplicadaErro,
+  CategoriaNaoLocalizadaErro,
+} from 'src/domain/categoria/exceptions/categoria.exception';
+import {
+  atualizaCategoriaDTOMock,
+  categoriaDTOMock,
+  categoriaUseCaseMock,
+  criaCategoriaDTOMock,
+} from 'src/mocks/categoria.mock';
 
 describe('Categoria', () => {
   let categoriaController: CategoriaController;

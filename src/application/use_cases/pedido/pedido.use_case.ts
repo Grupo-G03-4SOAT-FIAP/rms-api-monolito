@@ -8,8 +8,15 @@ import { IPedidoFactory } from 'src/domain/pedido/interfaces/pedido.factory.port
 import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
 import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
-import { MensagemGatewayPagamentoDTO, PedidoGatewayPagamentoDTO } from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
-import { AtualizaPedidoDTO, CriaPedidoDTO, PedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
+import {
+  MensagemGatewayPagamentoDTO,
+  PedidoGatewayPagamentoDTO,
+} from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
+import {
+  AtualizaPedidoDTO,
+  CriaPedidoDTO,
+  PedidoDTO,
+} from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 
 @Injectable()
 export class PedidoUseCase implements IPedidoUseCase {
@@ -43,10 +50,13 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
-    const mercadoPagoIsEnabled = this.configService.get<string>('ENABLE_MERCADOPAGO').toLowerCase() === 'true';
+    const mercadoPagoIsEnabled =
+      this.configService.get<string>('ENABLE_MERCADOPAGO').toLowerCase() ===
+      'true';
 
     if (mercadoPagoIsEnabled) {
-      const qrData = await this.gatewayPagamentoService.criarPedido(pedidoEntity);
+      const qrData =
+        await this.gatewayPagamentoService.criarPedido(pedidoEntity);
       pedidoDTO.qrCode = qrData;
     }
 

@@ -2,13 +2,20 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
-import { ProdutoDuplicadoErro, ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.exception';
+import {
+  ProdutoDuplicadoErro,
+  ProdutoNaoLocalizadoErro,
+} from 'src/domain/produto/exceptions/produto.exception';
 import { IProdutoDTOFactory } from 'src/domain/produto/interfaces/produto.dto.factory.port';
 import { IProdutoFactory } from 'src/domain/produto/interfaces/produto.factory.port';
 import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.repository.port';
 import { IProdutoUseCase } from 'src/domain/produto/interfaces/produto.use_case.port';
 import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
-import { AtualizaProdutoDTO, CriaProdutoDTO, ProdutoDTO } from 'src/presentation/rest/v1/presenters/produto/produto.dto';
+import {
+  AtualizaProdutoDTO,
+  CriaProdutoDTO,
+  ProdutoDTO,
+} from 'src/presentation/rest/v1/presenters/produto/produto.dto';
 
 @Injectable()
 export class ProdutoUseCase implements IProdutoUseCase {

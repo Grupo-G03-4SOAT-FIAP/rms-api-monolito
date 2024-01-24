@@ -5,7 +5,10 @@ import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.fa
 import { produtoDTOFactoryMock, produtoDTOMock } from 'src/mocks/produto.mock';
 import { clienteDTOFactoryMock, clienteDTOMock } from 'src/mocks/cliente.mock';
 import { pedidoDTOMock, pedidoModelMock } from 'src/mocks/pedido.mock';
-import { itemPedidoDTOMock, itemPedidoModelMock } from 'src/mocks/item_pedido.mock';
+import {
+  itemPedidoDTOMock,
+  itemPedidoModelMock,
+} from 'src/mocks/item_pedido.mock';
 
 describe('PedidoDTOFactory', () => {
   let pedidoDTOFactory: PedidoDTOFactory;

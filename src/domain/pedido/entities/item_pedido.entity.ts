@@ -1,4 +1,4 @@
-import { ProdutoEntity } from "src/domain/produto/entities/produto.entity";
+import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 
 export class ItemPedidoEntity {
   private _produto: ProdutoEntity;

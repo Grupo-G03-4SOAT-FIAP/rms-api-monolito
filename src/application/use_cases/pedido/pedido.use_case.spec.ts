@@ -6,7 +6,20 @@ import { IPedidoFactory } from 'src/domain/pedido/interfaces/pedido.factory.port
 import { IGatewayPagamentoService } from 'src/domain/pedido/interfaces/gatewaypag.service.port';
 import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.factory.port';
 import { PedidoNaoLocalizadoErro } from 'src/domain/pedido/exceptions/pedido.exception';
-import { atualizaPedidoDTOMock, configServiceMock, criaPedidoDTOMock, gatewayPagamentoServiceMock, mensagemGatewayPagamentoDTO, pedidoDTOFactoryMock, pedidoDTOMock, pedidoEntityMock, pedidoFactoryMock, pedidoGatewayPagamentoDTO, pedidoModelMock, pedidoRepositoryMock } from 'src/mocks/pedido.mock';
+import {
+  atualizaPedidoDTOMock,
+  configServiceMock,
+  criaPedidoDTOMock,
+  gatewayPagamentoServiceMock,
+  mensagemGatewayPagamentoDTO,
+  pedidoDTOFactoryMock,
+  pedidoDTOMock,
+  pedidoEntityMock,
+  pedidoFactoryMock,
+  pedidoGatewayPagamentoDTO,
+  pedidoModelMock,
+  pedidoRepositoryMock,
+} from 'src/mocks/pedido.mock';
 
 describe('PedidoUseCase', () => {
   let pedidoUseCase: PedidoUseCase;
@@ -101,7 +114,9 @@ describe('PedidoUseCase', () => {
     pedidoRepositoryMock.buscarPedido.mockReturnValue(pedidoModelMock);
     pedidoRepositoryMock.editarStatusPedido.mockReturnValue(pedidoModelMock);
     pedidoDTOFactoryMock.criarPedidoDTO.mockReturnValue(pedidoDTOMock);
-    gatewayPagamentoServiceMock.consultarPedido.mockReturnValue(pedidoGatewayPagamentoDTO);
+    gatewayPagamentoServiceMock.consultarPedido.mockReturnValue(
+      pedidoGatewayPagamentoDTO,
+    );
 
     const result = await pedidoUseCase.webhookPagamento(
       idPedidoMercadoPago,
@@ -118,7 +133,7 @@ describe('PedidoUseCase', () => {
       'em preparacao',
     );
     expect(result).toStrictEqual({
-      mensagem: 'Mensagem consumida com sucesso'
+      mensagem: 'Mensagem consumida com sucesso',
     });
   });
 

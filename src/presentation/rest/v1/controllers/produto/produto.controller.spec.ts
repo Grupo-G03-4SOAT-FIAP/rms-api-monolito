@@ -3,8 +3,16 @@ import { ConflictException, NotFoundException } from '@nestjs/common';
 import { ProdutoController } from './produto.controller';
 import { IProdutoUseCase } from 'src/domain/produto/interfaces/produto.use_case.port';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
-import { ProdutoDuplicadoErro, ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.exception';
-import { atualizaProdutoDTOMock, criaProdutoDTOMock, produtoDTOMock, produtoUseCaseMock } from 'src/mocks/produto.mock';
+import {
+  ProdutoDuplicadoErro,
+  ProdutoNaoLocalizadoErro,
+} from 'src/domain/produto/exceptions/produto.exception';
+import {
+  atualizaProdutoDTOMock,
+  criaProdutoDTOMock,
+  produtoDTOMock,
+  produtoUseCaseMock,
+} from 'src/mocks/produto.mock';
 
 describe('Produto', () => {
   let produtoController: ProdutoController;

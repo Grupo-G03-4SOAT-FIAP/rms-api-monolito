@@ -1,6 +1,9 @@
-import { ProdutoEntity } from "../entities/produto.entity";
-import { AtualizaProdutoDTO, CriaProdutoDTO } from "src/presentation/rest/v1/presenters/produto/produto.dto";
-import { CategoriaEntity } from "src/domain/categoria/entities/categoria.entity";
+import { ProdutoEntity } from '../entities/produto.entity';
+import {
+  AtualizaProdutoDTO,
+  CriaProdutoDTO,
+} from 'src/presentation/rest/v1/presenters/produto/produto.dto';
+import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 
 export interface IProdutoFactory {
   criarEntidadeCategoria(categoriaId: string): Promise<CategoriaEntity>;

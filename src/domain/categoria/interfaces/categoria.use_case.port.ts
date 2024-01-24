@@ -1,5 +1,9 @@
-import { HTTPResponse } from "src/application/common/HTTPResponse";
-import { AtualizaCategoriaDTO, CategoriaDTO, CriaCategoriaDTO } from "src/presentation/rest/v1/presenters/categoria/categoria.dto";
+import { HTTPResponse } from 'src/application/common/HTTPResponse';
+import {
+  AtualizaCategoriaDTO,
+  CategoriaDTO,
+  CriaCategoriaDTO,
+} from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
 
 export interface ICategoriaUseCase {
   criarCategoria(

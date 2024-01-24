@@ -1,5 +1,5 @@
-import { PedidoModel } from "src/infrastructure/sql/models/pedido.model";
-import { PedidoEntity } from "../entities/pedido.entity";
+import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
+import { PedidoEntity } from '../entities/pedido.entity';
 
 export interface IPedidoRepository {
   criarPedido(pedido: PedidoEntity): Promise<PedidoModel>;

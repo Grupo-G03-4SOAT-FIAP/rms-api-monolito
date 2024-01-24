@@ -2,8 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutoFactory } from './produto.factory';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
-import { categoriaEntityMock, categoriaModelMock, categoriaRepositoryMock } from 'src/mocks/categoria.mock';
-import { atualizaProdutoDTOMock, criaProdutoDTOMock, produtoEntityMock } from 'src/mocks/produto.mock';
+import {
+  categoriaEntityMock,
+  categoriaModelMock,
+  categoriaRepositoryMock,
+} from 'src/mocks/categoria.mock';
+import {
+  atualizaProdutoDTOMock,
+  criaProdutoDTOMock,
+  produtoEntityMock,
+} from 'src/mocks/produto.mock';
 
 describe('ProdutoFactory', () => {
   let produtoFactory: ProdutoFactory;

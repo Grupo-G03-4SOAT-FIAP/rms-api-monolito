@@ -1,6 +1,6 @@
-import { ClienteEntity } from "src/domain/cliente/entities/cliente.entity";
-import { StatusPedido } from "../enums/pedido.enum";
-import { ItemPedidoEntity } from "./item_pedido.entity";
+import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
+import { StatusPedido } from '../enums/pedido.enum';
+import { ItemPedidoEntity } from './item_pedido.entity';
 
 export class PedidoEntity {
   private _itensPedido: ItemPedidoEntity[];

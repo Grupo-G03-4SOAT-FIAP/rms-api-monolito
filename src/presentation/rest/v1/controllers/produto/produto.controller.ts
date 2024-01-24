@@ -13,7 +13,11 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IProdutoUseCase } from 'src/domain/produto/interfaces/produto.use_case.port';
-import { AtualizaProdutoDTO, CriaProdutoDTO, ProdutoDTO } from '../../presenters/produto/produto.dto';
+import {
+  AtualizaProdutoDTO,
+  CriaProdutoDTO,
+  ProdutoDTO,
+} from '../../presenters/produto/produto.dto';
 import { BadRequestError } from '../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swagger';
 import { ConflictError } from '../../helpers/swagger/status-codes/conflict.swagger';

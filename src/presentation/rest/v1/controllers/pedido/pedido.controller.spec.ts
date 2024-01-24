@@ -4,7 +4,12 @@ import { NotFoundException } from '@nestjs/common';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
 import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.exception';
 import { PedidoNaoLocalizadoErro } from 'src/domain/pedido/exceptions/pedido.exception';
-import { atualizaPedidoDTOMock, criaPedidoDTOMock, pedidoDTOMock, pedidoUseCaseMock } from 'src/mocks/pedido.mock';
+import {
+  atualizaPedidoDTOMock,
+  criaPedidoDTOMock,
+  pedidoDTOMock,
+  pedidoUseCaseMock,
+} from 'src/mocks/pedido.mock';
 
 describe('PedidoController', () => {
   let pedidoController: PedidoController;

@@ -5,11 +5,26 @@ import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.reposi
 import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 import { ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.exception';
 import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.exception';
-import { criaPedidoDTOMock, pedidoEntityMock, pedidoServiceMock } from 'src/mocks/pedido.mock';
-import { produtoEntityMock, produtoModelMock, produtoRepositoryMock } from 'src/mocks/produto.mock';
-import { clienteEntityMock, clienteModelMock, clienteRepositoryMock } from 'src/mocks/cliente.mock';
+import {
+  criaPedidoDTOMock,
+  pedidoEntityMock,
+  pedidoServiceMock,
+} from 'src/mocks/pedido.mock';
+import {
+  produtoEntityMock,
+  produtoModelMock,
+  produtoRepositoryMock,
+} from 'src/mocks/produto.mock';
+import {
+  clienteEntityMock,
+  clienteModelMock,
+  clienteRepositoryMock,
+} from 'src/mocks/cliente.mock';
 import { categoriaEntityMock } from 'src/mocks/categoria.mock';
-import { criaItemPedidoDTOMock, itemPedidoEntityMock } from 'src/mocks/item_pedido.mock';
+import {
+  criaItemPedidoDTOMock,
+  itemPedidoEntityMock,
+} from 'src/mocks/item_pedido.mock';
 
 describe('PedidoFactory', () => {
   let pedidoFactory: PedidoFactory;

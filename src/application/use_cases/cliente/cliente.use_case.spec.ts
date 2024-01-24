@@ -2,7 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClienteUseCase } from './cliente.use_case';
 import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
-import { atualizaClienteDTOMock, clienteDTOFactoryMock, clienteDTOMock, clienteEntityAtualizaMock, clienteEntityMock, clienteModelMock, clienteRepositoryMock, criaClienteDTOMock } from 'src/mocks/cliente.mock';
+import {
+  atualizaClienteDTOMock,
+  clienteDTOFactoryMock,
+  clienteDTOMock,
+  clienteEntityAtualizaMock,
+  clienteEntityMock,
+  clienteModelMock,
+  clienteRepositoryMock,
+  criaClienteDTOMock,
+} from 'src/mocks/cliente.mock';
 
 describe('ClienteUseCase', () => {
   let clienteUseCase: ClienteUseCase;

@@ -1,5 +1,5 @@
-import { CategoriaModel } from "src/infrastructure/sql/models/categoria.model";
-import { CategoriaEntity } from "../entities/categoria.entity";
+import { CategoriaModel } from 'src/infrastructure/sql/models/categoria.model';
+import { CategoriaEntity } from '../entities/categoria.entity';
 
 export interface ICategoriaRepository {
   criarCategoria(categoria: CategoriaEntity): Promise<CategoriaModel>;

@@ -4,10 +4,25 @@ import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.reposi
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { IProdutoFactory } from 'src/domain/produto/interfaces/produto.factory.port';
 import { IProdutoDTOFactory } from 'src/domain/produto/interfaces/produto.dto.factory.port';
-import { ProdutoDuplicadoErro, ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.exception';
+import {
+  ProdutoDuplicadoErro,
+  ProdutoNaoLocalizadoErro,
+} from 'src/domain/produto/exceptions/produto.exception';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
-import { atualizaProdutoDTOMock, criaProdutoDTOMock, produtoDTOFactoryMock, produtoDTOMock, produtoEntityMock, produtoFactoryMock, produtoModelMock, produtoRepositoryMock } from 'src/mocks/produto.mock';
-import { categoriaModelMock, categoriaRepositoryMock } from 'src/mocks/categoria.mock';
+import {
+  atualizaProdutoDTOMock,
+  criaProdutoDTOMock,
+  produtoDTOFactoryMock,
+  produtoDTOMock,
+  produtoEntityMock,
+  produtoFactoryMock,
+  produtoModelMock,
+  produtoRepositoryMock,
+} from 'src/mocks/produto.mock';
+import {
+  categoriaModelMock,
+  categoriaRepositoryMock,
+} from 'src/mocks/categoria.mock';
 
 describe('ProdutoUseCase', () => {
   let produtoUseCase: ProdutoUseCase;

@@ -1,7 +1,11 @@
 import { Repository } from 'typeorm';
 import { produtoModelMock } from './produto.mock';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
-import { AtualizaCategoriaDTO, CategoriaDTO, CriaCategoriaDTO } from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
+import {
+  AtualizaCategoriaDTO,
+  CategoriaDTO,
+  CriaCategoriaDTO,
+} from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
 import { CategoriaModel } from 'src/infrastructure/sql/models/categoria.model';
 
 // Mock para simular dados da tabela categoria no banco de dados

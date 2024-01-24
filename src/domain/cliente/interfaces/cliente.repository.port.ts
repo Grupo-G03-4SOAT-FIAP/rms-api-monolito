@@ -1,5 +1,5 @@
-import { ClienteModel } from "src/infrastructure/sql/models/cliente.model";
-import { ClienteEntity } from "../entities/cliente.entity";
+import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
+import { ClienteEntity } from '../entities/cliente.entity';
 
 export interface IClienteRepository {
   criarCliente(cliente: ClienteEntity): Promise<ClienteModel>;

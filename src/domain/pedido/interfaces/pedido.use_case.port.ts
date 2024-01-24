@@ -1,6 +1,10 @@
-import { HTTPResponse } from "src/application/common/HTTPResponse";
-import { MensagemGatewayPagamentoDTO } from "src/presentation/rest/v1/presenters/pedido/gatewaypag.dto";
-import { AtualizaPedidoDTO, CriaPedidoDTO, PedidoDTO } from "src/presentation/rest/v1/presenters/pedido/pedido.dto";
+import { HTTPResponse } from 'src/application/common/HTTPResponse';
+import { MensagemGatewayPagamentoDTO } from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
+import {
+  AtualizaPedidoDTO,
+  CriaPedidoDTO,
+  PedidoDTO,
+} from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 
 export interface IPedidoUseCase {
   criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>>;

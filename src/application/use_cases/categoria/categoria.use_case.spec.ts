@@ -3,8 +3,19 @@ import { CategoriaUseCase } from './categoria.use_case';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { ICategoriaFactory } from 'src/domain/categoria/interfaces/categoria.factory.port';
 import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
-import { CategoriaDuplicadaErro, CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
-import { categoriaDTOFactoryMock, categoriaDTOMock, categoriaEntityMock, categoriaFactoryMock, categoriaModelMock, categoriaRepositoryMock, criaCategoriaDTOMock } from 'src/mocks/categoria.mock';
+import {
+  CategoriaDuplicadaErro,
+  CategoriaNaoLocalizadaErro,
+} from 'src/domain/categoria/exceptions/categoria.exception';
+import {
+  categoriaDTOFactoryMock,
+  categoriaDTOMock,
+  categoriaEntityMock,
+  categoriaFactoryMock,
+  categoriaModelMock,
+  categoriaRepositoryMock,
+  criaCategoriaDTOMock,
+} from 'src/mocks/categoria.mock';
 
 describe('CategoriaUseCase', () => {
   let categoriaUseCase: CategoriaUseCase;

@@ -1,5 +1,5 @@
-import { ProdutoModel } from "src/infrastructure/sql/models/produto.model";
-import { ProdutoEntity } from "../entities/produto.entity";
+import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
+import { ProdutoEntity } from '../entities/produto.entity';
 
 export interface IProdutoRepository {
   criarProduto(produto: ProdutoEntity): Promise<ProdutoModel>;

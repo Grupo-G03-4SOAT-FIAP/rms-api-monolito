@@ -5,8 +5,15 @@ import { PedidoRepository } from './pedido.repository';
 import { PedidoModel } from '../../models/pedido.model';
 import { ItemPedidoModel } from '../../models/item_pedido.model';
 import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
-import { pedidoEntityMock, pedidoModelMock, pedidoTypeORMMock } from 'src/mocks/pedido.mock';
-import { itemPedidoModelMock, itemPedidoTypeORMMock } from 'src/mocks/item_pedido.mock';
+import {
+  pedidoEntityMock,
+  pedidoModelMock,
+  pedidoTypeORMMock,
+} from 'src/mocks/pedido.mock';
+import {
+  itemPedidoModelMock,
+  itemPedidoTypeORMMock,
+} from 'src/mocks/item_pedido.mock';
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;

@@ -2,8 +2,16 @@ import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClienteController } from './cliente.controller';
 import { IClienteUseCase } from 'src/domain/cliente/interfaces/cliente.use_case.port';
-import { ClienteDuplicadoErro, ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.exception';
-import { atualizaClienteDTOMock, clienteDTOMock, clienteUseCaseMock, criaClienteDTOMock } from 'src/mocks/cliente.mock';
+import {
+  ClienteDuplicadoErro,
+  ClienteNaoLocalizadoErro,
+} from 'src/domain/cliente/exceptions/cliente.exception';
+import {
+  atualizaClienteDTOMock,
+  clienteDTOMock,
+  clienteUseCaseMock,
+  criaClienteDTOMock,
+} from 'src/mocks/cliente.mock';
 
 describe('Cliente Controller', () => {
   let clienteController: ClienteController;

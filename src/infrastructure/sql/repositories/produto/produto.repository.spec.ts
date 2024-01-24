@@ -2,7 +2,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutoRepository } from './produto.repository';
 import { ProdutoModel } from '../../models/produto.model';
-import { produtoEntityMock, produtoModelMock, produtoTypeORMMock } from 'src/mocks/produto.mock';
+import {
+  produtoEntityMock,
+  produtoModelMock,
+  produtoTypeORMMock,
+} from 'src/mocks/produto.mock';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();

@@ -1,12 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
-import { ClienteDuplicadoErro, ClienteNaoLocalizadoErro, ClienteNomeUndefinedErro } from 'src/domain/cliente/exceptions/cliente.exception';
+import {
+  ClienteDuplicadoErro,
+  ClienteNaoLocalizadoErro,
+  ClienteNomeUndefinedErro,
+} from 'src/domain/cliente/exceptions/cliente.exception';
 import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
 import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 import { IClienteUseCase } from 'src/domain/cliente/interfaces/cliente.use_case.port';
 import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
-import { AtualizaClienteDTO, ClienteDTO, CriaClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
+import {
+  AtualizaClienteDTO,
+  ClienteDTO,
+  CriaClienteDTO,
+} from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 
 @Injectable()
 export class ClienteUseCase implements IClienteUseCase {

@@ -1,4 +1,4 @@
-import { CategoriaEntity } from "./categoria.entity";
+import { CategoriaEntity } from './categoria.entity';
 
 describe('CategoriaEntity', () => {
   let nome: string;

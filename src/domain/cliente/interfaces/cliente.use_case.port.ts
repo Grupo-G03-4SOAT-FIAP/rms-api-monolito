@@ -1,5 +1,9 @@
-import { HTTPResponse } from "src/application/common/HTTPResponse";
-import { AtualizaClienteDTO, ClienteDTO, CriaClienteDTO } from "src/presentation/rest/v1/presenters/cliente/cliente.dto";
+import { HTTPResponse } from 'src/application/common/HTTPResponse';
+import {
+  AtualizaClienteDTO,
+  ClienteDTO,
+  CriaClienteDTO,
+} from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 
 export interface IClienteUseCase {
   criarCliente(cliente: CriaClienteDTO): Promise<HTTPResponse<ClienteDTO>>;
