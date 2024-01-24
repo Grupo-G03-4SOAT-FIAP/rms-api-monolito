@@ -1,23 +1,27 @@
-import { PedidoModel } from 'src/adapters/outbound/models/pedido.model';
-import { PedidoEntity } from 'src/domain/entities/pedido/pedido.entity';
 import { Repository } from 'typeorm';
-import { StatusPedido } from '../utils/pedido.enum';
 import {
   clienteModelMock,
   clienteEntityMock,
   clienteDTOMock,
 } from './cliente.mock';
 import {
-  AtualizaPedidoDTO,
-  CriaPedidoDTO,
-  PedidoDTO,
-} from 'src/adapters/inbound/rest/v1/presenters/pedido.dto';
-import {
   itemPedidoDTOMock,
   itemPedidoEntityMock,
   itemPedidoModelMock,
 } from './item_pedido.mock';
-import { MensagemGatewayPagamentoDTO, PaymentDTO, PedidoGatewayPagamentoDTO } from 'src/adapters/inbound/rest/v1/presenters/gatewaypag.dto';
+import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
+import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
+import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
+import {
+  AtualizaPedidoDTO,
+  CriaPedidoDTO,
+  PedidoDTO,
+} from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
+import {
+  MensagemGatewayPagamentoDTO,
+  PaymentDTO,
+  PedidoGatewayPagamentoDTO,
+} from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
 
 // Mock para simular dados da tabela pedido no banco de dados
 export const pedidoModelMock = new PedidoModel();
@@ -61,15 +65,17 @@ pedidoDTOMock.cliente = clienteDTOMock;
 pedidoDTOMock.qrCode = null;
 
 export const mensagemGatewayPagamentoDTO = new MensagemGatewayPagamentoDTO();
-mensagemGatewayPagamentoDTO.resource = 'https://api.mercadolibre.com/merchant_orders/15171882961';
-mensagemGatewayPagamentoDTO.topic = 'merchant_order'
+mensagemGatewayPagamentoDTO.resource =
+  'https://api.mercadolibre.com/merchant_orders/15171882961';
+mensagemGatewayPagamentoDTO.topic = 'merchant_order';
 
 export const pedidoGatewayPagamentoDTO = new PedidoGatewayPagamentoDTO();
 pedidoGatewayPagamentoDTO.id = 15171882961;
 pedidoGatewayPagamentoDTO.status = 'closed';
-pedidoGatewayPagamentoDTO.external_reference = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+pedidoGatewayPagamentoDTO.external_reference =
+  '0a14aa4e-75e7-405f-8301-81f60646c93d';
 const itemDTO = new PaymentDTO();
-itemDTO.status = "approved";
+itemDTO.status = 'approved';
 pedidoGatewayPagamentoDTO.payments = [itemDTO];
 pedidoGatewayPagamentoDTO.order_status = 'paid';
 
@@ -89,8 +95,8 @@ export const configServiceMock = {
     if (key === 'ENABLE_MERCADOPAGO') {
       return 'false';
     }
-  })
-}
+  }),
+};
 
 // Mock jest das funções do repository pedido
 export const pedidoRepositoryMock = {
