@@ -32,6 +32,8 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     pedidoDTO.itensPedido = itensPedido;
     pedidoDTO.pago = pedido.pago;
     pedidoDTO.statusPedido = pedido.statusPedido;
+    pedidoDTO.criadoEm = pedido.criadoEm;
+    pedidoDTO.atualizadoEm = pedido.atualizadoEm;
     pedidoDTO.cliente = cliente;
     return pedidoDTO;
   }
@@ -51,6 +53,8 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
       pedidoDTO.itensPedido = itensPedido;
       pedidoDTO.pago = pedido.pago;
       pedidoDTO.statusPedido = pedido.statusPedido;
+      pedidoDTO.criadoEm = pedido.criadoEm;
+      pedidoDTO.atualizadoEm = pedido.atualizadoEm;
       pedidoDTO.cliente = cliente;
       return pedidoDTO;
     });
