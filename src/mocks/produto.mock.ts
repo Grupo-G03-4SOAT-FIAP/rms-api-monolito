@@ -1,16 +1,12 @@
 import { Repository } from 'typeorm';
-import { ProdutoModel } from 'src/adapters/outbound/models/produto.model';
-import { ProdutoEntity } from 'src/domain/entities/produto/produto.entity';
 import {
   categoriaDTOMock,
   categoriaEntityMock,
   categoriaModelMock,
 } from './categoria.mock';
-import {
-  AtualizaProdutoDTO,
-  CriaProdutoDTO,
-  ProdutoDTO,
-} from 'src/adapters/inbound/rest/v1/presenters/produto.dto';
+import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
+import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
+import { AtualizaProdutoDTO, CriaProdutoDTO, ProdutoDTO } from 'src/presentation/rest/v1/presenters/produto/produto.dto';
 
 // Mock para simular dados da tabela produto no banco de dados
 export const produtoModelMock = new ProdutoModel();

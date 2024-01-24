@@ -1,11 +1,7 @@
+import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
+import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
+import { AtualizaClienteDTO, ClienteDTO, CriaClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import { Repository } from 'typeorm';
-import {
-  AtualizaClienteDTO,
-  ClienteDTO,
-  CriaClienteDTO,
-} from 'src/adapters/inbound/rest/v1/presenters/cliente.dto';
-import { ClienteModel } from 'src/adapters/outbound/models/cliente.model';
-import { ClienteEntity } from 'src/domain/entities/cliente/cliente.entity';
 
 // Mock para simular dados da tabela cliente no banco de dados
 export const clienteModelMock = new ClienteModel();
