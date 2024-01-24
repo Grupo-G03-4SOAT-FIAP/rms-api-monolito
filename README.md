@@ -92,13 +92,9 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 
 ## Arquitetura
 
-Architectural Pattern: *Arquitetura Hexagonal / Ports and Adapters*.
+*Architectural Pattern: [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) + [Screaming Architecture](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)*.
 
-<br>
-
-![Ports and Adapters](https://github.com/Grupo-G03-4SOAT-FIAP/rms-backend-fase01/assets/5115895/5a7d9588-a222-4e8b-acdf-3cb71076e65b)
-
-<br>
+![Clean Architecture](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/bd905801-03d6-48d8-8836-d065e22f1036)
 
 ## Como contribuir
 
