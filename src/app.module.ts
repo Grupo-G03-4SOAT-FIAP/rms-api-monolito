@@ -40,10 +40,8 @@ import { ICategoriaUseCase } from './domain/categoria/interfaces/categoria.use_c
 import { ICategoriaRepository } from './domain/categoria/interfaces/categoria.repository.port';
 import { ICategoriaFactory } from './domain/categoria/interfaces/categoria.factory.port';
 import { ICategoriaDTOFactory } from './domain/categoria/interfaces/categoria.dto.factory.port';
-import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria.entity.factory.port';
 import { IClienteUseCase } from './domain/cliente/interfaces/cliente.use_case.port';
 import { CategoriaDTOFactory } from './domain/categoria/factories/categoria.dto.factory';
-import { CategoriaEntityFactory } from './domain/categoria/factories/categoria.entity.factory';
 import { IClienteRepository } from './domain/cliente/interfaces/cliente.repository.port';
 import { IClienteDTOFactory } from './domain/cliente/interfaces/cliente.dto.factory.port';
 import { IPedidoUseCase } from './domain/pedido/interfaces/pedido.use_case.port';
@@ -90,7 +88,6 @@ import { GatewayPagamentoService } from './infrastructure/services/gateway_pagam
     ClienteUseCase,
     ClienteRepository,
     ClienteDTOFactory,
-    CategoriaEntityFactory,
     PedidoUseCase,
     PedidoRepository,
     PedidoFactory,
@@ -127,10 +124,6 @@ import { GatewayPagamentoService } from './infrastructure/services/gateway_pagam
     {
       provide: ICategoriaDTOFactory,
       useClass: CategoriaDTOFactory,
-    },
-    {
-      provide: ICategoriaEntityFactory,
-      useClass: CategoriaEntityFactory,
     },
     {
       provide: IClienteUseCase,

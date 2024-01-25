@@ -9,7 +9,6 @@ import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.
 import { ICategoriaFactory } from 'src/domain/categoria/interfaces/categoria.factory.port';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { ICategoriaUseCase } from 'src/domain/categoria/interfaces/categoria.use_case.port';
-import { CategoriaModel } from 'src/infrastructure/sql/models/categoria.model';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
@@ -52,13 +51,15 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   async criarCategoria(
     categoria: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity =
-      this.categoriaFactory.criarEntidadeCategoria(categoria);
+    const categoriaEntity = this.categoriaFactory.criarEntidadeCategoria(
+      categoria.nome,
+      categoria.descricao,
+    );
     await this.validarCategoriaPorNome(categoriaEntity.nome);
-    const categoriaModel =
+    const categoriaEntidade =
       await this.categoriaRepository.criarCategoria(categoriaEntity);
     const categoriaDTO =
-      this.categoriaDTOFactory.criarCategoriaDTO(categoriaModel);
+      this.categoriaDTOFactory.criarCategoriaDTO(categoriaEntidade);
     return {
       mensagem: 'Categoria criada com sucesso',
       body: categoriaDTO,
@@ -69,8 +70,10 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoriaId: string,
     categoria: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity =
-      this.categoriaFactory.criarEntidadeCategoria(categoria);
+    const categoriaEntity = this.categoriaFactory.criarEntidadeCategoria(
+      categoria.nome,
+      categoria.descricao,
+    );
     await this.validarCategoriaPorId(categoriaId);
 
     if (categoriaEntity.nome)

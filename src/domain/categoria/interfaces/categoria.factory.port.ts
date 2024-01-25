@@ -4,7 +4,7 @@ export interface ICategoriaFactory {
   criarEntidadeCategoria(
     nome: string,
     descricao: string,
-    id: string,
+    id?: string,
   ): CategoriaEntity;
 }
 

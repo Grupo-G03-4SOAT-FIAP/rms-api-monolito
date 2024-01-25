@@ -4,21 +4,21 @@ import { Repository } from 'typeorm';
 import { CategoriaModel } from '../../models/categoria.model';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
-import { ICategoriaEntityFactory } from 'src/domain/categoria/interfaces/categoria.entity.factory.port';
+import { ICategoriaFactory } from 'src/domain/categoria/interfaces/categoria.factory.port';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {
   constructor(
     @InjectRepository(CategoriaModel)
     private readonly categoriaRepository: Repository<CategoriaModel>,
-    @Inject(ICategoriaEntityFactory)
-    private readonly categoriaEntityFactory: ICategoriaEntityFactory,
+    @Inject(ICategoriaFactory)
+    private readonly categoriaFactory: ICategoriaFactory,
   ) {}
 
   async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaEntity> {
     const categoriaModel = this.categoriaRepository.create(categoria);
     await this.categoriaRepository.save(categoriaModel);
-    return this.categoriaEntityFactory.criarCategoriaEntidade(
+    return this.categoriaFactory.criarEntidadeCategoria(
       categoriaModel.nome,
       categoriaModel.descricao,
       categoriaModel.id,
@@ -34,7 +34,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     const result = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
-    return this.categoriaEntityFactory.criarCategoriaEntidade(
+    return this.categoriaFactory.criarEntidadeCategoria(
       result.nome,
       result.descricao,
       result.id,
@@ -51,7 +51,8 @@ export class CategoriaRepository implements ICategoriaRepository {
     const result = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
-    return this.categoriaEntityFactory.criarCategoriaEntidade(
+    if (!result || result === null) return null;
+    return this.categoriaFactory.criarEntidadeCategoria(
       result.nome,
       result.descricao,
       result.id,
@@ -64,7 +65,8 @@ export class CategoriaRepository implements ICategoriaRepository {
     const result = await this.categoriaRepository.findOne({
       where: { nome: nomeCategoria },
     });
-    return this.categoriaEntityFactory.criarCategoriaEntidade(
+    if (!result || result === null) return null;
+    return this.categoriaFactory.criarEntidadeCategoria(
       result.nome,
       result.descricao,
       result.id,
@@ -74,7 +76,7 @@ export class CategoriaRepository implements ICategoriaRepository {
   async listarCategorias(): Promise<CategoriaEntity[] | []> {
     const categorias = await this.categoriaRepository.find({});
     const categoriaEntityList = categorias.map((categoria) => {
-      return this.categoriaEntityFactory.criarCategoriaEntidade(
+      return new CategoriaEntity(
         categoria.nome,
         categoria.descricao,
         categoria.id,
