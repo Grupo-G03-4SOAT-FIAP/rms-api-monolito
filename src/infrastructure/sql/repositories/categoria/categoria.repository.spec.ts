@@ -9,7 +9,6 @@ import {
   categoriaTypeORMMock,
 } from 'src/mocks/categoria.mock';
 import { ICategoriaFactory } from 'src/domain/categoria/interfaces/categoria.factory.port';
-import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
@@ -113,7 +112,7 @@ describe('CategoriaRepository', () => {
       Promise.resolve(categoriaModelMock),
     );
     categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
-      Promise.resolve(categoriaEntityMock),
+      categoriaEntityMock,
     );
 
     const result = await categoriaRepository.buscarCategoriaPorId(categoriaId);
@@ -140,13 +139,11 @@ describe('CategoriaRepository', () => {
       Promise.resolve(categoriaModelMock),
     );
     categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
-      Promise.resolve(categoriaEntityMock),
+      categoriaEntityMock,
     );
 
     const result =
       await categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
-
-    // Assert
 
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { nome: nomeCategoria },
@@ -167,22 +164,27 @@ describe('CategoriaRepository', () => {
   });
 
   it('deve listar todas categorias', async () => {
-    const listaCategorias = [
+    const listaCategoriaModel = [
       categoriaModelMock,
       categoriaModelMock,
       categoriaModelMock,
     ];
-    const listaEntidades = listaCategorias.map((categoria) => {
-      return new CategoriaEntity(
-        categoria.nome,
-        categoria.descricao,
-        categoria.id,
-      );
-    });
-    categoriaTypeORMMock.find.mockReturnValue(Promise.resolve(listaCategorias));
+    const listaCategoriaEntity = [
+      categoriaEntityMock,
+      categoriaEntityMock,
+      categoriaEntityMock,
+    ];
+    categoriaTypeORMMock.find.mockReturnValue(
+      Promise.resolve(listaCategoriaModel),
+    );
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
+
     const result = await categoriaRepository.listarCategorias();
+
     expect(categoriaTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(result).toStrictEqual(listaEntidades);
+    expect(result).toStrictEqual(listaCategoriaEntity);
   });
 
   it('deve retornar uma lista vazia de categorias', async () => {
