@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
 import { CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
+import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 import {
   ProdutoDuplicadoErro,
   ProdutoNaoLocalizadoErro,
@@ -10,7 +11,6 @@ import { IProdutoDTOFactory } from 'src/domain/produto/interfaces/produto.dto.fa
 import { IProdutoFactory } from 'src/domain/produto/interfaces/produto.factory.port';
 import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.repository.port';
 import { IProdutoUseCase } from 'src/domain/produto/interfaces/produto.use_case.port';
-import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
 import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,
@@ -32,7 +32,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
   private async validarProdutoPorNome(
     nomeProduto: string,
-  ): Promise<ProdutoModel | null> {
+  ): Promise<ProdutoEntity | null> {
     const produtoModel =
       await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
     if (produtoModel) {
@@ -43,7 +43,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
   private async validarProdutoPorId(
     produtoId: string,
-  ): Promise<ProdutoModel | null> {
+  ): Promise<ProdutoEntity | null> {
     const produtoModel =
       await this.produtoRepository.buscarProdutoPorId(produtoId);
     if (!produtoModel) {

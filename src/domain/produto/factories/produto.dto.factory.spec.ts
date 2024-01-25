@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutoDTOFactory } from './produto.dto.factory';
-import { produtoDTOMock, produtoModelMock } from 'src/mocks/produto.mock';
+import { produtoDTOMock, produtoEntityMock, produtoEntityNotIdMock, produtoModelMock } from 'src/mocks/produto.mock';
 import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
 import {
   categoriaDTOFactoryMock,
@@ -31,10 +31,10 @@ describe('ProdutoDTOFactory', () => {
   it('deve criar um produtoDTO', () => {
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
-    const result = produtoDTOFactory.criarProdutoDTO(produtoModelMock);
+    const result = produtoDTOFactory.criarProdutoDTO(produtoEntityMock);
 
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
-      produtoModelMock.categoria,
+      produtoEntityMock.categoria,
     );
     expect(result).toStrictEqual(produtoDTOMock);
   });
@@ -42,10 +42,10 @@ describe('ProdutoDTOFactory', () => {
   it('deve criar uma lista de produtoDTO', () => {
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
-    const result = produtoDTOFactory.criarListaProdutoDTO([produtoModelMock]);
+    const result = produtoDTOFactory.criarListaProdutoDTO([produtoEntityMock]);
 
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
-      produtoModelMock.categoria,
+      produtoEntityMock.categoria,
     );
     expect(result).toStrictEqual([produtoDTOMock]);
   });

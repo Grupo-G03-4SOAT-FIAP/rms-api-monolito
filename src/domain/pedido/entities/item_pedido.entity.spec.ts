@@ -1,6 +1,6 @@
 import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 import { ItemPedidoEntity } from './item_pedido.entity';
-import { produtoEntityMock } from 'src/mocks/produto.mock';
+import { produtoEntityNotIdMock } from 'src/mocks/produto.mock';
 
 describe('ItemPedidoEntity', () => {
   let produto: ProdutoEntity;
@@ -9,7 +9,7 @@ describe('ItemPedidoEntity', () => {
 
   beforeEach(() => {
     // Defina as variáveis antes de cada teste
-    produto = produtoEntityMock;
+    produto = produtoEntityNotIdMock;
     quantidade = 2;
     id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });

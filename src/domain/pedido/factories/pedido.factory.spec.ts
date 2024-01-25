@@ -11,7 +11,7 @@ import {
   pedidoServiceMock,
 } from 'src/mocks/pedido.mock';
 import {
-  produtoEntityMock,
+  produtoEntityNotIdMock,
   produtoModelMock,
   produtoRepositoryMock,
 } from 'src/mocks/produto.mock';
@@ -50,7 +50,7 @@ describe('PedidoFactory', () => {
     pedidoFactory = module.get<PedidoFactory>(PedidoFactory);
     clienteEntityMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     categoriaEntityMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
-    produtoEntityMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+    produtoEntityNotIdMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 
   afterEach(() => {

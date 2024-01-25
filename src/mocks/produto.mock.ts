@@ -16,7 +16,7 @@ import {
 export const produtoModelMock = new ProdutoModel();
 produtoModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 produtoModelMock.nome = 'Produto X';
-produtoModelMock.descricao = 'Teste produto x';
+produtoModelMock.descricao = 'Teste Produto X';
 produtoModelMock.valorUnitario = 5.0;
 produtoModelMock.imagemUrl = 'http://';
 produtoModelMock.categoria = categoriaModelMock;
@@ -24,19 +24,29 @@ produtoModelMock.criadoEm = new Date().toISOString();
 produtoModelMock.atualizadoEm = new Date().toISOString();
 produtoModelMock.excluidoEm = new Date().toISOString();
 
-// Mock para simular dados da entidade produto
+// Mock para simular dados da entidade produto com todos itens
 export const produtoEntityMock = new ProdutoEntity(
   'Produto X',
   categoriaEntityMock,
   5.0,
   'http://',
-  'Teste produto x',
+  'Teste Produto X',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
+
+// Mock para simular dados da entidade produto sem id
+export const produtoEntityNotIdMock = new ProdutoEntity(
+  'Produto X',
+  categoriaEntityMock,
+  5.0,
+  'http://',
+  'Teste Produto X',
 );
 
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar um produto
 export const criaProdutoDTOMock = new CriaProdutoDTO();
 criaProdutoDTOMock.nome = 'Produto X';
-criaProdutoDTOMock.descricao = 'Teste produto x';
+criaProdutoDTOMock.descricao = 'Teste Produto X';
 criaProdutoDTOMock.valorUnitario = 5.0;
 criaProdutoDTOMock.imagemUrl = 'http://';
 criaProdutoDTOMock.categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -44,7 +54,7 @@ criaProdutoDTOMock.categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 // Mock para simular o DTO com os dados recebidos pelo usuario ao atualizar um produto
 export const atualizaProdutoDTOMock = new AtualizaProdutoDTO();
 atualizaProdutoDTOMock.nome = 'Produto X';
-atualizaProdutoDTOMock.descricao = 'Teste produto x';
+atualizaProdutoDTOMock.descricao = 'Teste Produto X';
 atualizaProdutoDTOMock.valorUnitario = 5.0;
 atualizaProdutoDTOMock.imagemUrl = 'http://';
 atualizaProdutoDTOMock.categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
@@ -101,4 +111,10 @@ export const produtoUseCaseMock = {
   buscarProduto: jest.fn(),
   listarProdutos: jest.fn(),
   listarProdutosPorCategoria: jest.fn(),
+};
+
+// Mock jest das funções da factory que cria entidade produto
+export const produtoEntityFactoryMock = {
+  criarEntidadeCategoria: jest.fn(),
+  criarEntidadeProduto: jest.fn(),
 };

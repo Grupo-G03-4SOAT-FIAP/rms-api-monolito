@@ -3,10 +3,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutoRepository } from './produto.repository';
 import { ProdutoModel } from '../../models/produto.model';
 import {
-  produtoEntityMock,
+  produtoEntityFactoryMock,
+  produtoEntityNotIdMock,
   produtoModelMock,
+  produtoRepositoryMock,
   produtoTypeORMMock,
 } from 'src/mocks/produto.mock';
+import { IProdutoEntityFactory } from 'src/domain/produto/interfaces/produto.entity.factory.port';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
@@ -29,6 +32,10 @@ describe('ProdutoRepository', () => {
           provide: getRepositoryToken(ProdutoModel),
           useValue: produtoTypeORMMock,
         },
+        {
+          provide: IProdutoEntityFactory,
+          useValue: produtoEntityFactoryMock,
+        },
       ],
     }).compile();
 
@@ -48,12 +55,15 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.save.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
+    produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
 
-    const result = await produtoRepository.criarProduto(produtoEntityMock);
+    const result = await produtoRepository.criarProduto(produtoEntityNotIdMock);
 
-    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(produtoEntityMock);
+    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(produtoEntityNotIdMock);
     expect(produtoTypeORMMock.save).toHaveBeenCalledWith(produtoModelMock);
-    expect(result).toBe(produtoModelMock);
+    expect(result).toStrictEqual(produtoEntityNotIdMock);
   });
 
   it('deve editar um produto', async () => {
@@ -61,13 +71,16 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
+    produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
 
     const result = await produtoRepository.editarProduto(
       produtoId,
-      produtoEntityMock,
+      produtoEntityNotIdMock,
     );
 
-    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(produtoEntityMock);
+    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(produtoEntityNotIdMock);
     expect(produtoTypeORMMock.update).toHaveBeenCalledWith(
       produtoId,
       produtoModelMock,
@@ -76,15 +89,18 @@ describe('ProdutoRepository', () => {
       where: { id: produtoId },
       relations: relations,
     });
-    expect(result).toBe(produtoModelMock);
+    expect(result).toStrictEqual(produtoEntityNotIdMock);
   });
 
-  it('deve excluir uma categoria', async () => {
+  it('deve excluir um produto no formato softdelete', async () => {
     produtoSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
-    const produtoService = new ProdutoRepository(produtoSoftDeleteMock as any); // Usar "any" para evitar problemas de tipo
+    const clienteService = new ProdutoRepository(
+      produtoSoftDeleteMock as any,
+      produtoEntityFactoryMock,
+    ); // Usar "any" para evitar problemas de tipo
 
-    await produtoService.excluirProduto(produtoId);
+    await clienteService.excluirProduto(produtoId);
 
     expect(produtoSoftDeleteMock.softDelete).toHaveBeenCalledWith({
       id: produtoId,
@@ -95,6 +111,9 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
+    produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
 
     const result = await produtoRepository.buscarProdutoPorId(produtoId);
 
@@ -102,7 +121,7 @@ describe('ProdutoRepository', () => {
       where: { id: produtoId },
       relations: relations,
     });
-    expect(result).toBe(produtoModelMock);
+    expect(result).toStrictEqual(produtoEntityNotIdMock);
   });
 
   it('deve buscar um produto por id e retornar nulo', async () => {
@@ -121,6 +140,9 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
+    produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
 
     const result = await produtoRepository.buscarProdutoPorNome(nomeProduto);
 
@@ -128,7 +150,7 @@ describe('ProdutoRepository', () => {
       where: { nome: nomeProduto },
       relations: relations,
     });
-    expect(result).toBe(produtoModelMock);
+    expect(result).toStrictEqual(produtoEntityNotIdMock);
   });
 
   it('deve buscar um produto por nome e retornar nulo', async () => {
@@ -144,19 +166,27 @@ describe('ProdutoRepository', () => {
   });
 
   it('deve listar todos produtos', async () => {
-    const listaProdutos = [
+    const listaProdutoModel = [
       produtoModelMock,
       produtoModelMock,
       produtoModelMock,
     ];
-    produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutos));
+    const listaProdutoEntity = [
+      produtoEntityNotIdMock,
+      produtoEntityNotIdMock,
+      produtoEntityNotIdMock,
+    ];
+    produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutoModel));
+    produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
 
     const result = await produtoRepository.listarProdutos();
 
     expect(produtoTypeORMMock.find).toHaveBeenCalledWith({
       relations: relations,
     });
-    expect(result).toBe(listaProdutos);
+    expect(result).toStrictEqual(listaProdutoEntity);
   });
 
   it('deve retornar uma lista vazia de produtos', async () => {
@@ -168,16 +198,24 @@ describe('ProdutoRepository', () => {
     expect(produtoTypeORMMock.find).toHaveBeenCalledWith({
       relations: relations,
     });
-    expect(resultado).toBe(listaProdutos);
+    expect(resultado).toStrictEqual(listaProdutos);
   });
 
   it('deve listar produtos por categoria', async () => {
-    const listaProdutos = [
+    const listaProdutoModel = [
       produtoModelMock,
       produtoModelMock,
       produtoModelMock,
     ];
-    produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutos));
+    const listaProdutoEntity = [
+      produtoEntityNotIdMock,
+      produtoEntityNotIdMock,
+      produtoEntityNotIdMock,
+    ];
+    produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutoModel));
+    produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
 
     const result =
       await produtoRepository.listarProdutosPorCategoria(categoriaId);
@@ -186,7 +224,7 @@ describe('ProdutoRepository', () => {
       where: { categoria: { id: categoriaId } },
       relations: relations,
     });
-    expect(result).toBe(listaProdutos);
+    expect(result).toStrictEqual(listaProdutoEntity);
   });
 
   it('deve retornar uma lista vazia de produtos por categoria', async () => {
@@ -200,6 +238,6 @@ describe('ProdutoRepository', () => {
       where: { categoria: { id: categoriaId } },
       relations: relations,
     });
-    expect(result).toBe(listaProdutos);
+    expect(result).toStrictEqual(listaProdutos);
   });
 });
