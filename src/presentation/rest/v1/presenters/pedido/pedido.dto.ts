@@ -44,6 +44,12 @@ export class PedidoDTO {
   @ApiProperty({ description: 'Status do pedido' })
   statusPedido: string;
 
+  @ApiProperty({ description: 'Data de criação do pedido' })
+  criadoEm: string;
+
+  @ApiProperty({ description: 'Data da última atualização do pedido' })
+  atualizadoEm: string;
+
   @ApiProperty({ description: 'Status do pagamento' })
   pago: boolean;
 

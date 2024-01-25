@@ -31,8 +31,8 @@ pedidoModelMock.itensPedido = [itemPedidoModelMock];
 pedidoModelMock.cliente = clienteModelMock;
 pedidoModelMock.pago = false;
 pedidoModelMock.statusPedido = 'recebido';
-pedidoModelMock.criadoEm = new Date().toISOString();
-pedidoModelMock.atualizadoEm = new Date().toISOString();
+pedidoModelMock.criadoEm = '2024-01-25T00:05:04.941Z';
+pedidoModelMock.atualizadoEm = '2024-01-25T00:05:04.941Z';
 
 // Mock para simular dados da entidade pedido
 export const pedidoEntityMock = new PedidoEntity(
@@ -61,6 +61,8 @@ pedidoDTOMock.numeroPedido = pedidoModelMock.numeroPedido;
 pedidoDTOMock.itensPedido = [itemPedidoDTOMock];
 pedidoDTOMock.pago = false;
 pedidoDTOMock.statusPedido = pedidoModelMock.statusPedido;
+pedidoDTOMock.criadoEm = '2024-01-25T00:05:04.941Z';
+pedidoDTOMock.atualizadoEm = '2024-01-25T00:05:04.941Z';
 pedidoDTOMock.cliente = clienteDTOMock;
 pedidoDTOMock.qrCode = null;
 
