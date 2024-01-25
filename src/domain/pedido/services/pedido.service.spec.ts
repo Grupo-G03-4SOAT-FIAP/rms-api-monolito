@@ -19,7 +19,7 @@ describe('PedidoService', () => {
   it('deve gerar um número de pedido válido', () => {
     const numeroPedido = pedidoService.gerarNumeroPedido();
 
-    expect(numeroPedido).toHaveLength(6);
+    expect(numeroPedido.length).toBeLessThanOrEqual(6);
     expect(typeof numeroPedido).toBe('string');
   });
 

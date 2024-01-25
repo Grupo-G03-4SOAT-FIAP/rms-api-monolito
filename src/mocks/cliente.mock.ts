@@ -17,14 +17,23 @@ clienteModelMock.criadoEm = new Date().toISOString();
 clienteModelMock.atualizadoEm = new Date().toISOString();
 clienteModelMock.excluidoEm = new Date().toISOString();
 
-// Mock para simular dados da entidade cliente
+// Mock para simular dados da entidade cliente com todos itens
 export const clienteEntityMock = new ClienteEntity(
+  'Jhon',
+  'jhon@teste.com.br',
+  '83904665030',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
+
+// Mock para simular dados da entidade cliente sem id
+export const clienteEntityNotIdMock = new ClienteEntity(
   'Jhon',
   'jhon@teste.com.br',
   '83904665030',
 );
 
-export const clienteEntityAtualizaMock = new ClienteEntity(
+// Mock para simular dados da entidade cliente sem cpf
+export const clienteEntityNotCpfMock = new ClienteEntity(
   'Jhon',
   'jhon@teste.com.br',
 );
@@ -39,6 +48,11 @@ criaClienteDTOMock.cpf = clienteModelMock.cpf;
 export const atualizaClienteDTOMock = new AtualizaClienteDTO();
 atualizaClienteDTOMock.nome = clienteModelMock.nome;
 atualizaClienteDTOMock.email = clienteModelMock.email;
+
+// Mock para simular o DTO com os dados recebidos pelo usuario ao atualizar um cliente sem nome
+export const atualizaClienteDTONomeNullMock = new AtualizaClienteDTO();
+atualizaClienteDTONomeNullMock.nome = null;
+atualizaClienteDTONomeNullMock.email = clienteModelMock.email;
 
 // Mock para simular o DTO com dados de cliente enviados para o usuario ao responder uma requisição
 export const clienteDTOMock = new ClienteDTO();
@@ -68,6 +82,11 @@ export const clienteRepositoryMock = {
   buscarClientePorCPF: jest.fn(),
   buscarClientePorEmail: jest.fn(),
   listarClientes: jest.fn(),
+};
+
+// Mock jest das funções da factory que cria entidade cliente
+export const clienteEntityFactoryMock = {
+  criarEntidadeCliente: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria DTO cliente

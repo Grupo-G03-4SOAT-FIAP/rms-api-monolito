@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClienteDTOFactory } from './cliente.dto.factory';
-import { clienteDTOMock, clienteModelMock } from 'src/mocks/cliente.mock';
+import { clienteDTOMock, clienteEntityMock } from 'src/mocks/cliente.mock';
 
 describe('ClienteDTOFactory', () => {
   let clienteDTOFactory: ClienteDTOFactory;
@@ -18,12 +18,12 @@ describe('ClienteDTOFactory', () => {
   });
 
   it('deve criar um clienteDTO', () => {
-    const result = clienteDTOFactory.criarClienteDTO(clienteModelMock);
+    const result = clienteDTOFactory.criarClienteDTO(clienteEntityMock);
     expect(result).toStrictEqual(clienteDTOMock);
   });
 
   it('deve criar uma lista de clienteDTO', () => {
-    const result = clienteDTOFactory.criarListaClienteDTO([clienteModelMock]);
+    const result = clienteDTOFactory.criarListaClienteDTO([clienteEntityMock]);
     expect(result).toStrictEqual([clienteDTOMock]);
   });
 
