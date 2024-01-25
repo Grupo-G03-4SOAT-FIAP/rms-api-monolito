@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ICategoriaDTOFactory } from '../interfaces/categoria.dto.factory.port';
-import { CategoriaModel } from 'src/infrastructure/sql/models/categoria.model';
 import { CategoriaDTO } from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
+import { CategoriaEntity } from '../entities/categoria.entity';
 
 @Injectable()
 export class CategoriaDTOFactory implements ICategoriaDTOFactory {
-  criarCategoriaDTO(categoria: CategoriaModel): CategoriaDTO {
+  criarCategoriaDTO(categoria: CategoriaEntity): CategoriaDTO {
     const categoriaDTO = new CategoriaDTO();
     categoriaDTO.id = categoria.id;
     categoriaDTO.nome = categoria.nome;
@@ -14,8 +14,8 @@ export class CategoriaDTOFactory implements ICategoriaDTOFactory {
     return categoriaDTO;
   }
 
-  criarListaCategoriaDTO(categorias: CategoriaModel[]): CategoriaDTO[] | [] {
-    const listaCategoriasDTO = categorias.map((categoria: CategoriaModel) => {
+  criarListaCategoriaDTO(categorias: CategoriaEntity[]): CategoriaDTO[] | [] {
+    const listaCategoriasDTO = categorias.map((categoria: CategoriaEntity) => {
       const categoriaDTO = new CategoriaDTO();
       categoriaDTO.id = categoria.id;
       categoriaDTO.nome = categoria.nome;

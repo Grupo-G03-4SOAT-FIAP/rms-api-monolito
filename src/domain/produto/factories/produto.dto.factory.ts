@@ -3,6 +3,7 @@ import { IProdutoDTOFactory } from '../interfaces/produto.dto.factory.port';
 import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
 import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
 import { ProdutoDTO } from 'src/presentation/rest/v1/presenters/produto/produto.dto';
+import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 
 @Injectable()
 export class ProdutoDTOFactory implements IProdutoDTOFactory {
@@ -13,7 +14,7 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
 
   criarProdutoDTO(produto: ProdutoModel): ProdutoDTO {
     const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(
-      produto.categoria,
+      produto.categoria as unknown as CategoriaEntity,
     );
 
     const produtoDTO = new ProdutoDTO();
@@ -30,7 +31,7 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
   criarListaProdutoDTO(produtos: ProdutoModel[]): ProdutoDTO[] | [] {
     const listaProdutosDTO = produtos.map((produto: ProdutoModel) => {
       const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(
-        produto.categoria,
+        produto.categoria as unknown as CategoriaEntity,
       );
 
       const produtoDTO = new ProdutoDTO();
