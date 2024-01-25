@@ -12,7 +12,7 @@ import { CategoriaModel } from 'src/infrastructure/sql/models/categoria.model';
 export const categoriaModelMock = new CategoriaModel();
 categoriaModelMock.id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
 categoriaModelMock.nome = 'Lanche';
-categoriaModelMock.descricao = 'Lanche x tudo';
+categoriaModelMock.descricao = 'Lanche X Tudo';
 categoriaModelMock.produtos = [produtoModelMock];
 categoriaModelMock.criadoEm = new Date().toISOString();
 categoriaModelMock.atualizadoEm = new Date().toISOString();
@@ -36,9 +36,9 @@ atualizaCategoriaDTOMock.descricao = categoriaModelMock.descricao;
 
 // Mock para simular o DTO com dados de categoria enviados para o usuario ao responder uma requisição
 export const categoriaDTOMock = new CategoriaDTO();
-categoriaDTOMock.id = categoriaModelMock.id;
-categoriaDTOMock.nome = categoriaModelMock.nome;
-categoriaDTOMock.descricao = categoriaModelMock.descricao;
+categoriaDTOMock.id = categoriaEntityMock.id;
+categoriaDTOMock.nome = categoriaEntityMock.nome;
+categoriaDTOMock.descricao = categoriaEntityMock.descricao;
 
 // Mock jest das funções do typeORM interagindo com a tabela categoria
 export const categoriaTypeORMMock: jest.Mocked<Repository<CategoriaModel>> = {

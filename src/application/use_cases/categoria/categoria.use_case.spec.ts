@@ -12,7 +12,6 @@ import {
   categoriaDTOMock,
   categoriaEntityMock,
   categoriaFactoryMock,
-  categoriaModelMock,
   categoriaRepositoryMock,
   criaCategoriaDTOMock,
 } from 'src/mocks/categoria.mock';
@@ -53,19 +52,20 @@ describe('CategoriaUseCase', () => {
       categoriaEntityMock,
     );
     categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(null);
-    categoriaRepositoryMock.criarCategoria.mockReturnValue(categoriaModelMock);
+    categoriaRepositoryMock.criarCategoria.mockReturnValue(categoriaEntityMock);
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
     const result = await categoriaUseCase.criarCategoria(criaCategoriaDTOMock);
 
     expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
-      criaCategoriaDTOMock,
+      categoriaEntityMock.nome,
+      categoriaEntityMock.descricao,
     );
     expect(categoriaRepositoryMock.criarCategoria).toHaveBeenCalledWith(
       categoriaEntityMock,
     );
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
     expect(result).toStrictEqual({
       mensagem: 'Categoria criada com sucesso',
@@ -78,7 +78,7 @@ describe('CategoriaUseCase', () => {
       categoriaEntityMock,
     );
     categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
 
     await expect(
@@ -87,7 +87,8 @@ describe('CategoriaUseCase', () => {
       new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
     );
     expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
-      criaCategoriaDTOMock,
+      categoriaEntityMock.nome,
+      categoriaEntityMock.descricao,
     );
     expect(categoriaRepositoryMock.buscarCategoriaPorNome).toHaveBeenCalledWith(
       categoriaEntityMock.nome,
@@ -99,10 +100,12 @@ describe('CategoriaUseCase', () => {
       categoriaEntityMock,
     );
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
     categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(null);
-    categoriaRepositoryMock.editarCategoria.mockReturnValue(categoriaModelMock);
+    categoriaRepositoryMock.editarCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
     const result = await categoriaUseCase.editarCategoria(
@@ -111,7 +114,8 @@ describe('CategoriaUseCase', () => {
     );
 
     expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
-      criaCategoriaDTOMock,
+      categoriaEntityMock.nome,
+      categoriaEntityMock.descricao,
     );
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,
@@ -121,7 +125,7 @@ describe('CategoriaUseCase', () => {
       categoriaEntityMock,
     );
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
     expect(result).toStrictEqual({
       mensagem: 'Categoria atualizada com sucesso',
@@ -134,10 +138,10 @@ describe('CategoriaUseCase', () => {
       categoriaEntityMock,
     );
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
     categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
 
     await expect(
@@ -146,7 +150,8 @@ describe('CategoriaUseCase', () => {
       new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
     );
     expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
-      criaCategoriaDTOMock,
+      categoriaEntityMock.nome,
+      categoriaEntityMock.descricao,
     );
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,
@@ -168,7 +173,8 @@ describe('CategoriaUseCase', () => {
       new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
     );
     expect(categoriaFactoryMock.criarEntidadeCategoria).toHaveBeenCalledWith(
-      criaCategoriaDTOMock,
+      categoriaEntityMock.nome,
+      categoriaEntityMock.descricao,
     );
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,
@@ -177,10 +183,10 @@ describe('CategoriaUseCase', () => {
 
   it('deve excluir uma categoria com sucesso', async () => {
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
     categoriaRepositoryMock.excluirCategoria.mockReturnValue(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
 
     const result = await categoriaUseCase.excluirCategoria(categoriaId);
@@ -211,7 +217,7 @@ describe('CategoriaUseCase', () => {
 
   it('deve buscar uma categoria por id com sucesso', async () => {
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
@@ -221,7 +227,7 @@ describe('CategoriaUseCase', () => {
       categoriaId,
     );
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
-      categoriaModelMock,
+      categoriaEntityMock,
     );
     expect(result).toStrictEqual(categoriaDTOMock);
   });
@@ -239,7 +245,7 @@ describe('CategoriaUseCase', () => {
 
   it('deve listar categorias com sucesso', async () => {
     categoriaRepositoryMock.listarCategorias.mockReturnValue([
-      categoriaModelMock,
+      categoriaEntityMock,
     ]);
     categoriaDTOFactoryMock.criarListaCategoriaDTO.mockReturnValue([
       categoriaDTOMock,
@@ -249,7 +255,7 @@ describe('CategoriaUseCase', () => {
 
     expect(categoriaRepositoryMock.listarCategorias).toHaveBeenCalled();
     expect(categoriaDTOFactoryMock.criarListaCategoriaDTO).toHaveBeenCalledWith(
-      [categoriaModelMock],
+      [categoriaEntityMock],
     );
     expect(result).toStrictEqual([categoriaDTOMock]);
   });

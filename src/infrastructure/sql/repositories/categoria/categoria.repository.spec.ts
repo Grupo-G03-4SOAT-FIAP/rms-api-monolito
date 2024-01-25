@@ -4,15 +4,19 @@ import { CategoriaModel } from '../../models/categoria.model';
 import { CategoriaRepository } from './categoria.repository';
 import {
   categoriaEntityMock,
+  categoriaFactoryMock,
   categoriaModelMock,
   categoriaTypeORMMock,
 } from 'src/mocks/categoria.mock';
+import { ICategoriaFactory } from 'src/domain/categoria/interfaces/categoria.factory.port';
+import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
 }
 
 const categoriaSoftDeleteMock = new softDeleteMock();
+let categoriaEntidadeFactory: ICategoriaFactory;
 
 describe('CategoriaRepository', () => {
   let categoriaRepository: CategoriaRepository;
@@ -26,6 +30,10 @@ describe('CategoriaRepository', () => {
         {
           provide: getRepositoryToken(CategoriaModel),
           useValue: categoriaTypeORMMock,
+        },
+        {
+          provide: ICategoriaFactory,
+          useValue: categoriaFactoryMock,
         },
       ],
     }).compile();
@@ -44,6 +52,9 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.save.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
+    );
 
     const result =
       await categoriaRepository.criarCategoria(categoriaEntityMock);
@@ -52,13 +63,16 @@ describe('CategoriaRepository', () => {
       categoriaEntityMock,
     );
     expect(categoriaTypeORMMock.save).toHaveBeenCalledWith(categoriaModelMock);
-    expect(result).toBe(categoriaModelMock);
+    expect(result).toBe(categoriaEntityMock);
   });
 
   it('deve editar uma categoria', async () => {
     categoriaTypeORMMock.create.mockReturnValue(categoriaModelMock);
     categoriaTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
+    );
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      categoriaEntityMock,
     );
 
     const result = await categoriaRepository.editarCategoria(
@@ -76,15 +90,16 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
     });
-    expect(result).toBe(categoriaModelMock);
+    expect(result).toBe(categoriaEntityMock);
   });
 
   it('deve excluir uma categoria no formato softdelete', async () => {
     categoriaSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const categoriaService = new CategoriaRepository(
-      categoriaSoftDeleteMock as any,
-    ); // Usar "any" para evitar problemas de tipo
+      categoriaSoftDeleteMock as any, // Usar "any" para evitar problemas de tipo
+      categoriaEntidadeFactory,
+    );
 
     await categoriaService.excluirCategoria(categoriaId);
 
@@ -97,13 +112,16 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      Promise.resolve(categoriaEntityMock),
+    );
 
     const result = await categoriaRepository.buscarCategoriaPorId(categoriaId);
 
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
     });
-    expect(result).toBe(categoriaModelMock);
+    expect(result).toBe(categoriaEntityMock);
   });
 
   it('deve buscar uma categoria por id e retornar nulo', async () => {
@@ -118,8 +136,11 @@ describe('CategoriaRepository', () => {
   });
 
   it('deve buscar uma categoria por nome', async () => {
-    categoriaTypeORMMock.findOne.mockResolvedValue(
+    categoriaTypeORMMock.findOne.mockReturnValue(
       Promise.resolve(categoriaModelMock),
+    );
+    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+      Promise.resolve(categoriaEntityMock),
     );
 
     const result =
@@ -130,7 +151,7 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { nome: nomeCategoria },
     });
-    expect(result).toBe(categoriaModelMock);
+    expect(result).toBe(categoriaEntityMock);
   });
 
   it('deve buscar uma categoria por nome e retornar nulo', async () => {
@@ -151,14 +172,17 @@ describe('CategoriaRepository', () => {
       categoriaModelMock,
       categoriaModelMock,
     ];
-    categoriaTypeORMMock.find.mockResolvedValue(
-      Promise.resolve(listaCategorias),
-    );
-
+    const listaEntidades = listaCategorias.map((categoria) => {
+      return new CategoriaEntity(
+        categoria.nome,
+        categoria.descricao,
+        categoria.id,
+      );
+    });
+    categoriaTypeORMMock.find.mockReturnValue(Promise.resolve(listaCategorias));
     const result = await categoriaRepository.listarCategorias();
-
     expect(categoriaTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(result).toBe(listaCategorias);
+    expect(result).toStrictEqual(listaEntidades);
   });
 
   it('deve retornar uma lista vazia de categorias', async () => {

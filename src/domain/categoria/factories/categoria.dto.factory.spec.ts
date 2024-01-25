@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriaDTOFactory } from './categoria.dto.factory';
-import { categoriaDTOMock, categoriaModelMock } from 'src/mocks/categoria.mock';
+import {
+  categoriaDTOMock,
+  categoriaEntityMock,
+} from 'src/mocks/categoria.mock';
 
 describe('CategoriaDTOFactory', () => {
   let categoriaDTOFactory: CategoriaDTOFactory;
@@ -18,13 +21,13 @@ describe('CategoriaDTOFactory', () => {
   });
 
   it('deve criar um categoriaDTO', () => {
-    const result = categoriaDTOFactory.criarCategoriaDTO(categoriaModelMock);
+    const result = categoriaDTOFactory.criarCategoriaDTO(categoriaEntityMock);
     expect(result).toStrictEqual(categoriaDTOMock);
   });
 
   it('deve criar uma lista de categoriaDTO', () => {
     const result = categoriaDTOFactory.criarListaCategoriaDTO([
-      categoriaModelMock,
+      categoriaEntityMock,
     ]);
     expect(result).toStrictEqual([categoriaDTOMock]);
   });
