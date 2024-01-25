@@ -28,17 +28,20 @@ export class CategoriaRepository implements ICategoriaRepository {
   async editarCategoria(
     categoriaId: string,
     categoria: CategoriaEntity,
-  ): Promise<CategoriaEntity> {
+  ): Promise<CategoriaEntity | null> {
     const categoriaModel = this.categoriaRepository.create(categoria);
     await this.categoriaRepository.update(categoriaId, categoriaModel);
-    const result = await this.categoriaRepository.findOne({
+    const categoriaModelEditado = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
-    return this.categoriaFactory.criarEntidadeCategoria(
-      result.nome,
-      result.descricao,
-      result.id,
-    );
+    if (categoriaModel) {
+      return this.categoriaFactory.criarEntidadeCategoria(
+        categoriaModelEditado.nome,
+        categoriaModelEditado.descricao,
+        categoriaModelEditado.id,
+      );
+    }
+    return null;
   }
 
   async excluirCategoria(categoriaId: string): Promise<void> {
@@ -48,35 +51,39 @@ export class CategoriaRepository implements ICategoriaRepository {
   async buscarCategoriaPorId(
     categoriaId: string,
   ): Promise<CategoriaEntity | null> {
-    const result = await this.categoriaRepository.findOne({
+    const categoriaModel = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
-    if (!result || result === null) return null;
-    return this.categoriaFactory.criarEntidadeCategoria(
-      result.nome,
-      result.descricao,
-      result.id,
-    );
+    if (categoriaModel) {
+      return this.categoriaFactory.criarEntidadeCategoria(
+        categoriaModel.nome,
+        categoriaModel.descricao,
+        categoriaModel.id,
+      );
+    }
+    return null;
   }
 
   async buscarCategoriaPorNome(
     nomeCategoria: string,
   ): Promise<CategoriaEntity | null> {
-    const result = await this.categoriaRepository.findOne({
+    const categoriaModel = await this.categoriaRepository.findOne({
       where: { nome: nomeCategoria },
     });
-    if (!result || result === null) return null;
-    return this.categoriaFactory.criarEntidadeCategoria(
-      result.nome,
-      result.descricao,
-      result.id,
-    );
+    if (categoriaModel) {
+      return this.categoriaFactory.criarEntidadeCategoria(
+        categoriaModel.nome,
+        categoriaModel.descricao,
+        categoriaModel.id,
+      );
+    }
+    return null;
   }
 
   async listarCategorias(): Promise<CategoriaEntity[] | []> {
     const categorias = await this.categoriaRepository.find({});
-    const categoriaEntityList = categorias.map((categoria) => {
-      return new CategoriaEntity(
+    const categoriaEntityList = categorias.map((categoria: CategoriaModel) => {
+      return this.categoriaFactory.criarEntidadeCategoria(
         categoria.nome,
         categoria.descricao,
         categoria.id,

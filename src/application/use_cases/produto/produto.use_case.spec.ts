@@ -178,10 +178,14 @@ describe('ProdutoUseCase', () => {
 
   it('deve excluir um produto com sucesso', async () => {
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
+    produtoRepositoryMock.excluirProduto.mockReturnValue(null);
 
     const result = await produtoUseCase.excluirProduto(produtoId);
 
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
+      produtoId,
+    );
+    expect(produtoRepositoryMock.excluirProduto).toHaveBeenCalledWith(
       produtoId,
     );
     expect(result).toStrictEqual({

@@ -8,6 +8,7 @@ import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.
 import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
 import { ItemPedidoModel } from 'src/infrastructure/sql/models/item_pedido.model';
 import { ItemPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
+import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
 
 @Injectable()
 export class PedidoDTOFactory implements IPedidoDTOFactory {
@@ -23,7 +24,9 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
 
     let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
     if (cliente) {
-      cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
+      cliente = this.clienteDTOFactory.criarClienteDTO(
+        pedido.cliente as unknown as ClienteEntity,
+      );
     }
 
     const pedidoDTO = new PedidoDTO();
@@ -44,7 +47,9 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
 
       let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
       if (cliente) {
-        cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
+        cliente = this.clienteDTOFactory.criarClienteDTO(
+          pedido.cliente as unknown as ClienteEntity,
+        );
       }
 
       const pedidoDTO = new PedidoDTO();

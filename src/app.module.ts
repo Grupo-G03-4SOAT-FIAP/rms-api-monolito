@@ -50,6 +50,8 @@ import { IPedidoFactory } from './domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoDTOFactory } from './domain/pedido/interfaces/pedido.dto.factory.port';
 import { IGatewayPagamentoService } from './domain/pedido/interfaces/gatewaypag.service.port';
 import { GatewayPagamentoService } from './infrastructure/services/gateway_pagamentos/gatewaypag.service';
+import { ClienteEntityFactory } from './domain/cliente/factories/cliente.entity.factory';
+import { IClienteEntityFactory } from './domain/cliente/interfaces/cliente.entity.factory.port';
 
 @Module({
   imports: [
@@ -88,6 +90,7 @@ import { GatewayPagamentoService } from './infrastructure/services/gateway_pagam
     ClienteUseCase,
     ClienteRepository,
     ClienteDTOFactory,
+    ClienteEntityFactory,
     PedidoUseCase,
     PedidoRepository,
     PedidoFactory,
@@ -136,6 +139,10 @@ import { GatewayPagamentoService } from './infrastructure/services/gateway_pagam
     {
       provide: IClienteDTOFactory,
       useClass: ClienteDTOFactory,
+    },
+    {
+      provide: IClienteEntityFactory,
+      useClass: ClienteEntityFactory,
     },
     {
       provide: IPedidoUseCase,

@@ -72,9 +72,7 @@ export class PedidoFactory implements IPedidoFactory {
       if (!buscaCliente) {
         throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
       }
-      const { nome, email, cpf, id } = buscaCliente;
-      const clientEntity = new ClienteEntity(nome, email, cpf, id);
-      return clientEntity;
+      return buscaCliente;
     }
     return null;
   }

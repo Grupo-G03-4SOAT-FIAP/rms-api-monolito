@@ -3,10 +3,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClienteModel } from '../../models/cliente.model';
 import { ClienteRepository } from './cliente.repository';
 import {
+  clienteEntityFactoryMock,
   clienteEntityMock,
+  clienteEntityNotCpfMock,
+  clienteEntityNotIdMock,
   clienteModelMock,
   clienteTypeORMMock,
 } from 'src/mocks/cliente.mock';
+import { IClienteEntityFactory } from 'src/domain/cliente/interfaces/cliente.entity.factory.port';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
@@ -28,6 +32,10 @@ describe('ClienteRepository', () => {
           provide: getRepositoryToken(ClienteModel),
           useValue: clienteTypeORMMock,
         },
+        {
+          provide: IClienteEntityFactory,
+          useValue: clienteEntityFactoryMock,
+        },
       ],
     }).compile();
 
@@ -46,12 +54,23 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.save.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
+    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
+      clienteEntityMock,
+    );
 
-    const result = await clienteRepository.criarCliente(clienteEntityMock);
+    const result = await clienteRepository.criarCliente(clienteEntityNotIdMock);
 
-    expect(clienteTypeORMMock.create).toHaveBeenCalledWith(clienteEntityMock);
+    expect(clienteTypeORMMock.create).toHaveBeenCalledWith(
+      clienteEntityNotIdMock,
+    );
     expect(clienteTypeORMMock.save).toHaveBeenCalledWith(clienteModelMock);
-    expect(result).toBe(clienteModelMock);
+    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
+      clienteModelMock.nome,
+      clienteModelMock.email,
+      clienteModelMock.cpf,
+      clienteModelMock.id,
+    );
+    expect(result).toStrictEqual(clienteEntityMock);
   });
 
   it('deve editar um cliente', async () => {
@@ -59,13 +78,18 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-
-    const result = await clienteRepository.editarCliente(
-      clienteId,
+    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
       clienteEntityMock,
     );
 
-    expect(clienteTypeORMMock.create).toHaveBeenCalledWith(clienteEntityMock);
+    const result = await clienteRepository.editarCliente(
+      clienteId,
+      clienteEntityNotCpfMock,
+    );
+
+    expect(clienteTypeORMMock.create).toHaveBeenCalledWith(
+      clienteEntityNotCpfMock,
+    );
     expect(clienteTypeORMMock.update).toHaveBeenCalledWith(
       clienteId,
       clienteModelMock,
@@ -73,13 +97,22 @@ describe('ClienteRepository', () => {
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(result).toBe(clienteModelMock);
+    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
+      clienteModelMock.nome,
+      clienteModelMock.email,
+      clienteModelMock.cpf,
+      clienteModelMock.id,
+    );
+    expect(result).toStrictEqual(clienteEntityMock);
   });
 
   it('deve excluir um cliente no formato softdelete', async () => {
     clienteSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
-    const clienteService = new ClienteRepository(clienteSoftDeleteMock as any); // Usar "any" para evitar problemas de tipo
+    const clienteService = new ClienteRepository(
+      clienteSoftDeleteMock as any,
+      clienteEntityFactoryMock,
+    ); // Usar "any" para evitar problemas de tipo
 
     await clienteService.excluirCliente(clienteId);
 
@@ -92,13 +125,22 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
+    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.buscarClientePorId(clienteId);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(result).toBe(clienteModelMock);
+    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
+      clienteModelMock.nome,
+      clienteModelMock.email,
+      clienteModelMock.cpf,
+      clienteModelMock.id,
+    );
+    expect(result).toStrictEqual(clienteEntityMock);
   });
 
   it('deve buscar um cliente por id e retornar nulo', async () => {
@@ -109,12 +151,15 @@ describe('ClienteRepository', () => {
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(result).toBe(null);
+    expect(result).toStrictEqual(null);
   });
 
   it('deve buscar um cliente por cpf', async () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
+    );
+    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
+      clienteEntityMock,
     );
 
     const result = await clienteRepository.buscarClientePorCPF(cpfCliente);
@@ -122,7 +167,13 @@ describe('ClienteRepository', () => {
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { cpf: cpfCliente },
     });
-    expect(result).toBe(clienteModelMock);
+    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
+      clienteModelMock.nome,
+      clienteModelMock.email,
+      clienteModelMock.cpf,
+      clienteModelMock.id,
+    );
+    expect(result).toStrictEqual(clienteEntityMock);
   });
 
   it('deve buscar um cliente por cpf e retornar nulo', async () => {
@@ -133,12 +184,15 @@ describe('ClienteRepository', () => {
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { cpf: cpfCliente },
     });
-    expect(result).toBe(null);
+    expect(result).toStrictEqual(null);
   });
 
   it('deve buscar um cliente por email', async () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
+    );
+    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
+      clienteEntityMock,
     );
 
     const result = await clienteRepository.buscarClientePorEmail(emailCliente);
@@ -146,21 +200,54 @@ describe('ClienteRepository', () => {
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { email: emailCliente },
     });
-    expect(result).toBe(clienteModelMock);
+    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
+      clienteModelMock.nome,
+      clienteModelMock.email,
+      clienteModelMock.cpf,
+      clienteModelMock.id,
+    );
+    expect(result).toStrictEqual(clienteEntityMock);
+  });
+
+  it('deve buscar um cliente por email e retornar nulo', async () => {
+    clienteTypeORMMock.findOne.mockResolvedValue(null);
+
+    const result = await clienteRepository.buscarClientePorEmail(emailCliente);
+
+    expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
+      where: { email: emailCliente },
+    });
+    expect(result).toStrictEqual(null);
   });
 
   it('deve listar todos clientes', async () => {
-    const listaClientes = [
+    const listaClienteModel = [
       clienteModelMock,
       clienteModelMock,
       clienteModelMock,
     ];
-    clienteTypeORMMock.find.mockResolvedValue(Promise.resolve(listaClientes));
+    const listaClienteEntity = [
+      clienteEntityMock,
+      clienteEntityMock,
+      clienteEntityMock,
+    ];
+    clienteTypeORMMock.find.mockResolvedValue(
+      Promise.resolve(listaClienteModel),
+    );
+    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.listarClientes();
 
     expect(clienteTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(result).toBe(listaClientes);
+    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
+      clienteModelMock.nome,
+      clienteModelMock.email,
+      clienteModelMock.cpf,
+      clienteModelMock.id,
+    );
+    expect(result).toStrictEqual(listaClienteEntity);
   });
 
   it('deve retornar uma lista vazia de clientes', async () => {
@@ -170,6 +257,6 @@ describe('ClienteRepository', () => {
     const result = await clienteRepository.listarClientes();
 
     expect(clienteTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(result).toEqual(listaClientes);
+    expect(result).toStrictEqual(listaClientes);
   });
 });
