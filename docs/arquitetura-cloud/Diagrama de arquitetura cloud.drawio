@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-25T15:57:00.081Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="vb65NplHyYwn4sjTdV-k" version="23.0.0" type="device">
+<mxfile host="app.diagrams.net" modified="2024-01-25T18:32:04.654Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="Ssr2CGXbXNmjf0ux8m6D" version="23.0.0" type="device">
   <diagram name="Página-1" id="QyuDZeAoyNbm0Pvu70TN">
     <mxGraphModel dx="2901" dy="1098" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -348,7 +348,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="L6SBvmUNMrdH3GEFA7w_-23" value="etcs" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;kubernetesLabel=1;prIcon=etcd;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="L6SBvmUNMrdH3GEFA7w_-1">
+        <mxCell id="L6SBvmUNMrdH3GEFA7w_-23" value="etcd" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;kubernetesLabel=1;prIcon=etcd;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="L6SBvmUNMrdH3GEFA7w_-1">
           <mxGeometry x="630" y="1730" width="50" height="48" as="geometry" />
         </mxCell>
         <mxCell id="L6SBvmUNMrdH3GEFA7w_-59" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.9;entryY=0.2;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.28;exitY=0.99;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="L6SBvmUNMrdH3GEFA7w_-1" source="L6SBvmUNMrdH3GEFA7w_-17" target="L6SBvmUNMrdH3GEFA7w_-23">

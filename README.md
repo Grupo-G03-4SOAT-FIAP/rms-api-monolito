@@ -99,7 +99,7 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 ### Arquitetura Cloud
 
 *Clique para ampliar a imagem.*
-![white drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/5fa2bec5-c044-4789-99cd-90b68684741f)
+![white drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/f8a364ba-ae6e-45e2-ab51-5612b34a67c7)
 
 ## Como contribuir
 
