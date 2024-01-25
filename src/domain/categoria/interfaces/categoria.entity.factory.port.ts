@@ -7,3 +7,5 @@ export interface ICategoriaEntityFactory {
     id?: string,
   ): CategoriaEntity;
 }
+
+export const ICategoriaEntityFactory = Symbol('ICategoriaEntityFactory');

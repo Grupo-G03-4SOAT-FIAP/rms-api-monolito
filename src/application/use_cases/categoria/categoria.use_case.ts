@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
+import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 import {
   CategoriaDuplicadaErro,
   CategoriaNaoLocalizadaErro,
@@ -28,7 +29,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
 
   private async validarCategoriaPorNome(
     nomeCategoria: string,
-  ): Promise<CategoriaModel | null> {
+  ): Promise<CategoriaEntity | null> {
     const buscaCategoria =
       await this.categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
     if (buscaCategoria) {
@@ -39,7 +40,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
 
   private async validarCategoriaPorId(
     categoriaId: string,
-  ): Promise<CategoriaModel | null> {
+  ): Promise<CategoriaEntity | null> {
     const buscaCategoriaPorId =
       await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
     if (!buscaCategoriaPorId) {

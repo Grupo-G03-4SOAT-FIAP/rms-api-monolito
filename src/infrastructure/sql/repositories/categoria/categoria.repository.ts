@@ -1,26 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategoriaModel } from '../../models/categoria.model';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
+import { ICategoriaEntityFactory } from 'src/domain/categoria/interfaces/categoria.entity.factory.port';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {
   constructor(
     @InjectRepository(CategoriaModel)
     private readonly categoriaRepository: Repository<CategoriaModel>,
+    @Inject(ICategoriaEntityFactory)
+    private readonly categoriaEntityFactory: ICategoriaEntityFactory,
   ) {}
 
   async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaEntity> {
     const categoriaModel = this.categoriaRepository.create(categoria);
     await this.categoriaRepository.save(categoriaModel);
-    const categoriaEntity = new CategoriaEntity(
+    return this.categoriaEntityFactory.criarCategoriaEntidade(
       categoriaModel.nome,
       categoriaModel.descricao,
       categoriaModel.id,
     );
-    return categoriaEntity;
   }
 
   async editarCategoria(
@@ -29,16 +31,14 @@ export class CategoriaRepository implements ICategoriaRepository {
   ): Promise<CategoriaEntity> {
     const categoriaModel = this.categoriaRepository.create(categoria);
     await this.categoriaRepository.update(categoriaId, categoriaModel);
-
     const result = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
-    const categoriaEntity = new CategoriaEntity(
+    return this.categoriaEntityFactory.criarCategoriaEntidade(
       result.nome,
       result.descricao,
       result.id,
     );
-    return categoriaEntity;
   }
 
   async excluirCategoria(categoriaId: string): Promise<void> {
@@ -51,12 +51,11 @@ export class CategoriaRepository implements ICategoriaRepository {
     const result = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
-    const categoriaEntity = new CategoriaEntity(
+    return this.categoriaEntityFactory.criarCategoriaEntidade(
       result.nome,
       result.descricao,
       result.id,
     );
-    return categoriaEntity;
   }
 
   async buscarCategoriaPorNome(
@@ -65,23 +64,21 @@ export class CategoriaRepository implements ICategoriaRepository {
     const result = await this.categoriaRepository.findOne({
       where: { nome: nomeCategoria },
     });
-    const categoriaEntity = new CategoriaEntity(
+    return this.categoriaEntityFactory.criarCategoriaEntidade(
       result.nome,
       result.descricao,
       result.id,
     );
-    return categoriaEntity;
   }
 
   async listarCategorias(): Promise<CategoriaEntity[] | []> {
     const categorias = await this.categoriaRepository.find({});
     const categoriaEntityList = categorias.map((categoria) => {
-      const categoriaEntity = new CategoriaEntity(
+      return this.categoriaEntityFactory.criarCategoriaEntidade(
         categoria.nome,
         categoria.descricao,
         categoria.id,
       );
-      return categoriaEntity;
     });
     return categoriaEntityList;
   }
