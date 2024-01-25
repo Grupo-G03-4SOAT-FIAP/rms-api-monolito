@@ -17,7 +17,6 @@ import {
 } from 'src/mocks/produto.mock';
 import {
   clienteEntityMock,
-  clienteModelMock,
   clienteRepositoryMock,
 } from 'src/mocks/cliente.mock';
 import { categoriaEntityMock } from 'src/mocks/categoria.mock';
@@ -61,7 +60,9 @@ describe('PedidoFactory', () => {
   it('deve criar a entidade pedido', async () => {
     pedidoServiceMock.gerarNumeroPedido.mockReturnValue('05012024');
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
-    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(clienteModelMock);
+    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await pedidoFactory.criarEntidadePedido(criaPedidoDTOMock);
 
@@ -99,7 +100,9 @@ describe('PedidoFactory', () => {
   });
 
   it('deve criar a entidade cliente', async () => {
-    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(clienteModelMock);
+    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await pedidoFactory.criarEntidadeCliente(
       criaPedidoDTOMock.cpfCliente,
@@ -110,7 +113,9 @@ describe('PedidoFactory', () => {
   });
 
   it('deve criar a entidade cliente com cliente undefined', async () => {
-    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(clienteModelMock);
+    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await pedidoFactory.criarEntidadeCliente();
 

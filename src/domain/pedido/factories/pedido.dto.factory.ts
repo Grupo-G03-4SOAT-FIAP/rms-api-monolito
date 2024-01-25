@@ -24,7 +24,9 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
 
     let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
     if (cliente) {
-      cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente as unknown as ClienteEntity);
+      cliente = this.clienteDTOFactory.criarClienteDTO(
+        pedido.cliente as unknown as ClienteEntity,
+      );
     }
 
     const pedidoDTO = new PedidoDTO();
@@ -45,7 +47,9 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
 
       let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
       if (cliente) {
-        cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente as unknown as ClienteEntity);
+        cliente = this.clienteDTOFactory.criarClienteDTO(
+          pedido.cliente as unknown as ClienteEntity,
+        );
       }
 
       const pedidoDTO = new PedidoDTO();

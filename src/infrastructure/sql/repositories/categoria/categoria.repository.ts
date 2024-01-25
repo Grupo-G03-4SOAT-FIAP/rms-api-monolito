@@ -40,7 +40,7 @@ export class CategoriaRepository implements ICategoriaRepository {
         categoriaModelEditado.descricao,
         categoriaModelEditado.id,
       );
-    };
+    }
     return null;
   }
 
@@ -60,7 +60,7 @@ export class CategoriaRepository implements ICategoriaRepository {
         categoriaModel.descricao,
         categoriaModel.id,
       );
-    };
+    }
     return null;
   }
 
@@ -76,7 +76,7 @@ export class CategoriaRepository implements ICategoriaRepository {
         categoriaModel.descricao,
         categoriaModel.id,
       );
-    };
+    }
     return null;
   }
 

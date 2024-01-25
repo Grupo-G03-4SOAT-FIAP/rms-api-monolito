@@ -20,7 +20,6 @@ describe('ClienteUseCase', () => {
   let clienteUseCase: ClienteUseCase;
   let clienteId: string;
   let cpfCliente: string;
-  let emailCliente: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,7 +43,6 @@ describe('ClienteUseCase', () => {
     clienteUseCase = module.get<ClienteUseCase>(ClienteUseCase);
     clienteId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     cpfCliente = '83904665030';
-    emailCliente = 'jhon@email.com.br';
   });
 
   afterEach(() => {
@@ -59,7 +57,7 @@ describe('ClienteUseCase', () => {
     );
     clienteRepositoryMock.criarCliente.mockReturnValue(clienteEntityMock);
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
-    
+
     const result = await clienteUseCase.criarCliente(criaClienteDTOMock);
 
     expect(clienteRepositoryMock.buscarClientePorEmail).toHaveBeenCalledWith(
@@ -79,7 +77,7 @@ describe('ClienteUseCase', () => {
     expect(clienteDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
       clienteEntityMock,
     );
-    
+
     expect(result).toStrictEqual({
       mensagem: 'Cliente criado com sucesso',
       body: clienteDTOMock,
@@ -91,9 +89,9 @@ describe('ClienteUseCase', () => {
       clienteEntityMock,
     );
 
-    await expect(clienteUseCase.criarCliente(criaClienteDTOMock)).rejects.toThrow(
-      'Existe um cliente com esse email',
-    );
+    await expect(
+      clienteUseCase.criarCliente(criaClienteDTOMock),
+    ).rejects.toThrow('Existe um cliente com esse email');
     expect(clienteRepositoryMock.buscarClientePorEmail).toHaveBeenCalledWith(
       criaClienteDTOMock.email,
     );
@@ -101,11 +99,13 @@ describe('ClienteUseCase', () => {
 
   it('deve retornar erro ao criar um cliente com cpf que ja existe', async () => {
     clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(null);
-    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(clienteEntityMock);
-
-    await expect(clienteUseCase.criarCliente(criaClienteDTOMock)).rejects.toThrow(
-      'Existe um cliente com esse cpf',
+    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
+      clienteEntityMock,
     );
+
+    await expect(
+      clienteUseCase.criarCliente(criaClienteDTOMock),
+    ).rejects.toThrow('Existe um cliente com esse cpf');
     expect(clienteRepositoryMock.buscarClientePorEmail).toHaveBeenCalledWith(
       criaClienteDTOMock.email,
     );
@@ -231,16 +231,18 @@ describe('ClienteUseCase', () => {
   it('deve retornar erro ao buscar um cliente por id que não existe', async () => {
     clienteRepositoryMock.buscarClientePorId.mockReturnValue(null);
 
-    await expect(
-      clienteUseCase.buscarClientePorId(clienteId),
-    ).rejects.toThrow('Cliente informado não existe');
+    await expect(clienteUseCase.buscarClientePorId(clienteId)).rejects.toThrow(
+      'Cliente informado não existe',
+    );
     expect(clienteRepositoryMock.buscarClientePorId).toHaveBeenCalledWith(
       clienteId,
     );
   });
 
   it('deve buscar um cliente por cpf', async () => {
-    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(clienteEntityMock);
+    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
+      clienteEntityMock,
+    );
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
 
     const result = await clienteUseCase.buscarClientePorCPF(cpfCliente);
@@ -267,7 +269,9 @@ describe('ClienteUseCase', () => {
 
   it('deve listar todos os clientes', async () => {
     clienteRepositoryMock.listarClientes.mockReturnValue([clienteEntityMock]);
-    clienteDTOFactoryMock.criarListaClienteDTO.mockReturnValue([clienteDTOMock]);
+    clienteDTOFactoryMock.criarListaClienteDTO.mockReturnValue([
+      clienteDTOMock,
+    ]);
 
     const result = await clienteUseCase.listarClientes();
 
