@@ -12,22 +12,33 @@ export class CategoriaRepository implements ICategoriaRepository {
     private readonly categoriaRepository: Repository<CategoriaModel>,
   ) {}
 
-  async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaModel> {
+  async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaEntity> {
     const categoriaModel = this.categoriaRepository.create(categoria);
     await this.categoriaRepository.save(categoriaModel);
-    return categoriaModel;
+    const categoriaEntity = new CategoriaEntity(
+      categoriaModel.nome,
+      categoriaModel.descricao,
+      categoriaModel.id,
+    );
+    return categoriaEntity;
   }
 
   async editarCategoria(
     categoriaId: string,
     categoria: CategoriaEntity,
-  ): Promise<CategoriaModel> {
+  ): Promise<CategoriaEntity> {
     const categoriaModel = this.categoriaRepository.create(categoria);
     await this.categoriaRepository.update(categoriaId, categoriaModel);
 
-    return await this.categoriaRepository.findOne({
+    const result = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
+    const categoriaEntity = new CategoriaEntity(
+      result.nome,
+      result.descricao,
+      result.id,
+    );
+    return categoriaEntity;
   }
 
   async excluirCategoria(categoriaId: string): Promise<void> {
@@ -36,22 +47,42 @@ export class CategoriaRepository implements ICategoriaRepository {
 
   async buscarCategoriaPorId(
     categoriaId: string,
-  ): Promise<CategoriaModel | null> {
-    return await this.categoriaRepository.findOne({
+  ): Promise<CategoriaEntity | null> {
+    const result = await this.categoriaRepository.findOne({
       where: { id: categoriaId },
     });
+    const categoriaEntity = new CategoriaEntity(
+      result.nome,
+      result.descricao,
+      result.id,
+    );
+    return categoriaEntity;
   }
 
   async buscarCategoriaPorNome(
     nomeCategoria: string,
-  ): Promise<CategoriaModel | null> {
-    return await this.categoriaRepository.findOne({
+  ): Promise<CategoriaEntity | null> {
+    const result = await this.categoriaRepository.findOne({
       where: { nome: nomeCategoria },
     });
+    const categoriaEntity = new CategoriaEntity(
+      result.nome,
+      result.descricao,
+      result.id,
+    );
+    return categoriaEntity;
   }
 
-  async listarCategorias(): Promise<CategoriaModel[] | []> {
+  async listarCategorias(): Promise<CategoriaEntity[] | []> {
     const categorias = await this.categoriaRepository.find({});
-    return categorias;
+    const categoriaEntityList = categorias.map((categoria) => {
+      const categoriaEntity = new CategoriaEntity(
+        categoria.nome,
+        categoria.descricao,
+        categoria.id,
+      );
+      return categoriaEntity;
+    });
+    return categoriaEntityList;
   }
 }
