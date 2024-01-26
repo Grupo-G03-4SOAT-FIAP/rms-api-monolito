@@ -15,7 +15,9 @@ describe('ProdutoEntityFactory', () => {
   });
 
   it('deve criar uma entidade categoria', () => {
-    const result = produtoEntityFactory.criarEntidadeCategoria(produtoModelMock.categoria);
+    const result = produtoEntityFactory.criarEntidadeCategoria(
+      produtoModelMock.categoria,
+    );
     expect(result).toStrictEqual(produtoEntityMock.categoria);
   });
 

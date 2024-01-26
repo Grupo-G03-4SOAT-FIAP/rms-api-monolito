@@ -7,24 +7,28 @@ import { ProdutoEntity } from '../entities/produto.entity';
 
 @Injectable()
 export class ProdutoEntityFactory implements IProdutoEntityFactory {
-    criarEntidadeCategoria(categoriaModel: CategoriaModel): CategoriaEntity {
-        const categoriaEntity = new CategoriaEntity(categoriaModel.nome, categoriaModel.descricao, categoriaModel.id);
-        return categoriaEntity;
+  criarEntidadeCategoria(categoriaModel: CategoriaModel): CategoriaEntity {
+    const categoriaEntity = new CategoriaEntity(
+      categoriaModel.nome,
+      categoriaModel.descricao,
+      categoriaModel.id,
+    );
+    return categoriaEntity;
+  }
+
+  criarEntidadeProduto(produtoModel: ProdutoModel): ProdutoEntity {
+    let categoriaEntity = undefined;
+    if (produtoModel.categoria) {
+      categoriaEntity = this.criarEntidadeCategoria(produtoModel.categoria);
     }
 
-    criarEntidadeProduto(produtoModel: ProdutoModel): ProdutoEntity {
-        let categoriaEntity = undefined;
-        if (produtoModel.categoria) {
-            categoriaEntity = this.criarEntidadeCategoria(produtoModel.categoria);
-        }
-
-        return new ProdutoEntity(
-            produtoModel.nome,
-            categoriaEntity,
-            produtoModel.valorUnitario,
-            produtoModel.imagemUrl,
-            produtoModel.descricao,
-            produtoModel.id,
-        );
-    }
+    return new ProdutoEntity(
+      produtoModel.nome,
+      categoriaEntity,
+      produtoModel.valorUnitario,
+      produtoModel.imagemUrl,
+      produtoModel.descricao,
+      produtoModel.id,
+    );
+  }
 }

@@ -6,7 +6,6 @@ import {
   produtoEntityFactoryMock,
   produtoEntityNotIdMock,
   produtoModelMock,
-  produtoRepositoryMock,
   produtoTypeORMMock,
 } from 'src/mocks/produto.mock';
 import { IProdutoEntityFactory } from 'src/domain/produto/interfaces/produto.entity.factory.port';
@@ -61,7 +60,9 @@ describe('ProdutoRepository', () => {
 
     const result = await produtoRepository.criarProduto(produtoEntityNotIdMock);
 
-    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(produtoEntityNotIdMock);
+    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(
+      produtoEntityNotIdMock,
+    );
     expect(produtoTypeORMMock.save).toHaveBeenCalledWith(produtoModelMock);
     expect(result).toStrictEqual(produtoEntityNotIdMock);
   });
@@ -80,7 +81,9 @@ describe('ProdutoRepository', () => {
       produtoEntityNotIdMock,
     );
 
-    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(produtoEntityNotIdMock);
+    expect(produtoTypeORMMock.create).toHaveBeenCalledWith(
+      produtoEntityNotIdMock,
+    );
     expect(produtoTypeORMMock.update).toHaveBeenCalledWith(
       produtoId,
       produtoModelMock,
@@ -176,7 +179,9 @@ describe('ProdutoRepository', () => {
       produtoEntityNotIdMock,
       produtoEntityNotIdMock,
     ];
-    produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutoModel));
+    produtoTypeORMMock.find.mockResolvedValue(
+      Promise.resolve(listaProdutoModel),
+    );
     produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
       produtoEntityNotIdMock,
     );
@@ -212,7 +217,9 @@ describe('ProdutoRepository', () => {
       produtoEntityNotIdMock,
       produtoEntityNotIdMock,
     ];
-    produtoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaProdutoModel));
+    produtoTypeORMMock.find.mockResolvedValue(
+      Promise.resolve(listaProdutoModel),
+    );
     produtoEntityFactoryMock.criarEntidadeProduto.mockReturnValue(
       produtoEntityNotIdMock,
     );

@@ -62,7 +62,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve criar um produto com sucesso', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityNotIdMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.criarProduto.mockReturnValue(produtoModelMock);
     produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
 
@@ -84,7 +86,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve retornar erro ao criar um produto com nome duplicado', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityNotIdMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorNome.mockReturnValue(
       produtoModelMock,
     );
@@ -103,7 +107,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve editar um produto com sucesso', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityNotIdMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
     produtoRepositoryMock.buscarProdutoPorNome.mockReturnValue(null);
     produtoRepositoryMock.editarProduto.mockReturnValue(produtoModelMock);
@@ -137,7 +143,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve retornar erro ao editar um produto que não existe', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityNotIdMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(null);
 
     await expect(
@@ -154,7 +162,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve retornar erro ao editar um produto com nome duplicado', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityNotIdMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
     produtoRepositoryMock.buscarProdutoPorNome.mockReturnValue(
       produtoModelMock,

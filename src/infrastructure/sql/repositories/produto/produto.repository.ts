@@ -14,12 +14,13 @@ export class ProdutoRepository implements IProdutoRepository {
     private readonly produtoRepository: Repository<ProdutoModel>,
     @Inject(IProdutoEntityFactory)
     private readonly produtoEntityFactory: IProdutoEntityFactory,
-  ) { }
+  ) {}
 
   async criarProduto(produto: ProdutoEntity): Promise<ProdutoEntity> {
     const produtoModel = this.produtoRepository.create(produto);
     await this.produtoRepository.save(produtoModel);
-    const produtoEntity = this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
+    const produtoEntity =
+      this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
     return produtoEntity;
   }
 
@@ -35,7 +36,9 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations, // Especifica a relação que você deseja incluir
     });
 
-    const produtoEntity = this.produtoEntityFactory.criarEntidadeProduto(produtoModelAtualizado);
+    const produtoEntity = this.produtoEntityFactory.criarEntidadeProduto(
+      produtoModelAtualizado,
+    );
     return produtoEntity;
   }
 
@@ -49,7 +52,8 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations,
     });
     if (produtoModel) {
-      const produtoEntity = this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
+      const produtoEntity =
+        this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
       return produtoEntity;
     }
     return null;
@@ -63,7 +67,8 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations,
     });
     if (produtoModel) {
-      const produtoEntity = this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
+      const produtoEntity =
+        this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
       return produtoEntity;
     }
     return null;
@@ -73,11 +78,9 @@ export class ProdutoRepository implements IProdutoRepository {
     const produtos = await this.produtoRepository.find({
       relations: this.relations,
     });
-    const listaProdutoEntity = produtos.map(
-      (produtoModel: ProdutoModel) => {
-        return this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
-      },
-    );
+    const listaProdutoEntity = produtos.map((produtoModel: ProdutoModel) => {
+      return this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
+    });
 
     return listaProdutoEntity;
   }
@@ -89,11 +92,9 @@ export class ProdutoRepository implements IProdutoRepository {
       where: { categoria: { id: categoriaId } },
       relations: this.relations,
     });
-    const listaProdutoEntity = produtos.map(
-      (produtoModel: ProdutoModel) => {
-        return this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
-      },
-    );
+    const listaProdutoEntity = produtos.map((produtoModel: ProdutoModel) => {
+      return this.produtoEntityFactory.criarEntidadeProduto(produtoModel);
+    });
 
     return listaProdutoEntity;
   }

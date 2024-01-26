@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutoDTOFactory } from './produto.dto.factory';
-import { produtoDTOMock, produtoEntityMock, produtoEntityNotIdMock, produtoModelMock } from 'src/mocks/produto.mock';
+import { produtoDTOMock, produtoEntityMock } from 'src/mocks/produto.mock';
 import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
 import {
   categoriaDTOFactoryMock,
