@@ -71,7 +71,6 @@ export class GatewayPagamentoService implements IGatewayPagamentoService {
 
     try {
       const response = await axios.request(config);
-      //console.log(JSON.stringify(response.data));
       if (response.data.qr_data) {
         const qr_data = response.data.qr_data;
         return qr_data;
