@@ -28,6 +28,27 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 
+![Mercado Pago](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/599a72b7-a108-4877-b490-b8efea6bbfda)
+
+## Executar a aplicação
+
+1. Baixe e instale o Node.js v18.18.0 (LTS) em https://nodejs.org/en/download
+2. Faça uma cópia do arquivo `.env.template` com o nome `.env` e preencha as variáveis de ambiente dentro dele.
+3. Execute o comando `npm install` para instalar os pacotes npm;
+4. Execute o comando `npm build` para compilar a aplicação;
+5. Execute o comando  `npm run start` para iniciar a aplicação;
+
+## Executar a aplicação usando o Kubernetes do Docker Desktop
+
+1. Clone este repositório;
+2. Navegue até a pasta raiz do projeto;
+3. Use o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
+4. Use o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
+5. Use o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/metrics-server.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
+6. Acesse o Swagger em http://localhost:3000/swagger/
+
+> Para remover a aplicação do Kubernetes, use o comando `kubectl delete namespace rms`
+
 <details>
 
 <summary>Como testar o pagamento de pedidos através do QR Code do Mercado Pago?</summary>
@@ -43,22 +64,10 @@ Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai pr
 5. Clique em "Credenciais de teste" no menu do lado esquerdo da tela e anote o `Access Token` da aplicação de testes do Vendedor;
 6. Cadastre uma Loja e um Caixa (POS) na aplicação de testes do Vendedor através da API do Mercado Pago, usando o [Postman](https://www.postman.com/). Anote o `id` da Loja e o `external_id` do Caixa que você acabou de cadastrar;
 7. Com o `User ID` e `Access Token` da aplicação de testes do Vendedor e com o `id` da Loja e o `external_id` do Caixa que você acabou de cadastrar, preencha as variáveis de ambiente no arquivo `.env`
-8. Execute a aplicação.
+8. Ative a feature flag `ENABLE_MERCADOPAGO=true` no arquivo `.env`
+9. Execute a aplicação.
 
 </details>
-
-## Executar a aplicação usando o Kubernetes do Docker Desktop
-
-1. Clone este repositório;
-2. Navegue até a pasta raiz do projeto;
-3. Use o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
-4. Use o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
-5. Use o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/metrics-server.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
-6. Acesse o Swagger em http://localhost:3000/swagger/
-
-> Os arquivos yaml dos manifestos do Kubernetes devem ser aplicados na ordem especificada acima.
-
-> Para remover a aplicação do Kubernetes, use o comando `kubectl delete namespace rms`
 
 <details>
 
@@ -66,13 +75,10 @@ Para testar o pagamento de pedidos usando o QR Code do Mercado Pago você vai pr
 
 ## Executar a aplicação usando o Docker Compose
 
-1. Clonar este repositório;
-2. Abra o arquivo `docker-compose.yml` e preencha o Acess Token e User ID do Mercado Pago;
-3. Navegar até a pasta raiz do projeto;
-4. Usar o comando `docker-compose up --build --force-recreate --renew-anon-volumes`
-5. Acessar o Swagger em http://localhost:3000/swagger/
-
-> DICA: Não esqueça de remover imagens e volumes antigos antes de executar a imagem Docker do projeto através do Docker Compose.
+1. Clone este repositório;
+2. Navegue até a pasta raiz do projeto;
+3. Execute o comando `docker-compose up`
+4. Acesse o Swagger em http://localhost:3000/swagger/
 
 </details>
 
@@ -92,13 +98,16 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 
 ## Arquitetura
 
-*Architectural Pattern: [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) + [Screaming Architecture](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)*.
+Architectural Pattern: [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) + [Screaming Architecture](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)
 
-![Clean Architecture](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/bd905801-03d6-48d8-8836-d065e22f1036)
+![uml-clean-arch drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/ea5f347a-b49d-4019-a299-5e1ddd149a73)
+*Clique na imagem para ampliar.*
 
-### Arquitetura Cloud
+## Diagrama de arquitetura cloud
 
-![Diagrama de arquitetura cloud drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/eabeb29a-95bb-4391-8a5d-a62ca327a26e)
+Cloud provider: AWS
+
+![Diagrama de arquitetura cloud drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/7cf5b858-5c7e-47d6-9def-2cda7e470134)
 *Clique na imagem para ampliar.*
 
 ## Como contribuir
@@ -137,8 +146,23 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Métricas de código
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
+
 ## Requisitos
 
-*Node.js v18.18.0 (LTS), Docker Engine 24.0.6 e Kubernetes v1.28*
+*Node.js v18.18.0 (LTS), Docker Engine 24.0.6 e Kubernetes v1.28*\
+*Pagamentos processados por Mercado Pago.*
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-backend)
