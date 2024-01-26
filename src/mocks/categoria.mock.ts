@@ -21,7 +21,8 @@ categoriaModelMock.excluidoEm = new Date().toISOString();
 // Mock para simular dados da entidade categoria
 export const categoriaEntityMock = new CategoriaEntity(
   'Lanche',
-  'Lanche x tudo',
+  'Lanche X Tudo',
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar uma categoria
