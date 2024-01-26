@@ -1,6 +1,6 @@
 import {
   produtoDTOMock,
-  produtoEntityMock,
+  produtoEntityNotIdMock,
   produtoModelMock,
 } from './produto.mock';
 import { pedidoModelMock } from './pedido.mock';
@@ -22,7 +22,10 @@ itemPedidoModelMock.criadoEm = new Date().toISOString();
 itemPedidoModelMock.atualizadoEm = new Date().toISOString();
 
 // Mock para simular dados da entidade item pedido
-export const itemPedidoEntityMock = new ItemPedidoEntity(produtoEntityMock, 2);
+export const itemPedidoEntityMock = new ItemPedidoEntity(
+  produtoEntityNotIdMock,
+  2,
+);
 
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar um pedido
 export const criaItemPedidoDTOMock = new CriaItemPedidoDTO();

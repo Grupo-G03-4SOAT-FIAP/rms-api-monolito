@@ -14,7 +14,7 @@ import {
   criaProdutoDTOMock,
   produtoDTOFactoryMock,
   produtoDTOMock,
-  produtoEntityMock,
+  produtoEntityNotIdMock,
   produtoFactoryMock,
   produtoModelMock,
   produtoRepositoryMock,
@@ -62,7 +62,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve criar um produto com sucesso', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.criarProduto.mockReturnValue(produtoModelMock);
     produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
 
@@ -72,7 +74,7 @@ describe('ProdutoUseCase', () => {
       criaProdutoDTOMock,
     );
     expect(produtoRepositoryMock.criarProduto).toHaveBeenCalledWith(
-      produtoEntityMock,
+      produtoEntityNotIdMock,
     );
     expect(produtoDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
@@ -84,7 +86,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve retornar erro ao criar um produto com nome duplicado', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorNome.mockReturnValue(
       produtoModelMock,
     );
@@ -98,12 +102,14 @@ describe('ProdutoUseCase', () => {
       criaProdutoDTOMock,
     );
     expect(produtoRepositoryMock.buscarProdutoPorNome).toHaveBeenCalledWith(
-      produtoEntityMock.nome,
+      produtoEntityNotIdMock.nome,
     );
   });
 
   it('deve editar um produto com sucesso', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
     produtoRepositoryMock.buscarProdutoPorNome.mockReturnValue(null);
     produtoRepositoryMock.editarProduto.mockReturnValue(produtoModelMock);
@@ -121,11 +127,11 @@ describe('ProdutoUseCase', () => {
       produtoId,
     );
     expect(produtoRepositoryMock.buscarProdutoPorNome).toHaveBeenCalledWith(
-      produtoEntityMock.nome,
+      produtoEntityNotIdMock.nome,
     );
     expect(produtoRepositoryMock.editarProduto).toHaveBeenCalledWith(
       produtoId,
-      produtoEntityMock,
+      produtoEntityNotIdMock,
     );
     expect(produtoDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
@@ -137,7 +143,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve retornar erro ao editar um produto que não existe', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(null);
 
     await expect(
@@ -154,7 +162,9 @@ describe('ProdutoUseCase', () => {
   });
 
   it('deve retornar erro ao editar um produto com nome duplicado', async () => {
-    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(produtoEntityMock);
+    produtoFactoryMock.criarEntidadeProduto.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
     produtoRepositoryMock.buscarProdutoPorNome.mockReturnValue(
       produtoModelMock,
@@ -172,7 +182,7 @@ describe('ProdutoUseCase', () => {
       produtoId,
     );
     expect(produtoRepositoryMock.buscarProdutoPorNome).toHaveBeenCalledWith(
-      produtoEntityMock.nome,
+      produtoEntityNotIdMock.nome,
     );
   });
 

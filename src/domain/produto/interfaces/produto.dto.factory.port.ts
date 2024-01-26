@@ -1,9 +1,9 @@
-import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
 import { ProdutoDTO } from 'src/presentation/rest/v1/presenters/produto/produto.dto';
+import { ProdutoEntity } from '../entities/produto.entity';
 
 export interface IProdutoDTOFactory {
-  criarProdutoDTO(produto: ProdutoModel): ProdutoDTO;
-  criarListaProdutoDTO(produtos: ProdutoModel[]): ProdutoDTO[] | [];
+  criarProdutoDTO(produto: ProdutoEntity): ProdutoDTO;
+  criarListaProdutoDTO(produtos: ProdutoEntity[]): ProdutoDTO[] | [];
 }
 
 export const IProdutoDTOFactory = Symbol('IProdutoDTOFactory');
