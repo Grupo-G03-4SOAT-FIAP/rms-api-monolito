@@ -19,7 +19,7 @@ describe('Categoria Factory', () => {
 
     categoriaFactory = module.get<CategoriaFactory>(CategoriaFactory);
     nome = 'Lanche';
-    descricao = 'Lanche x tudo';
+    descricao = 'Lanche X Tudo';
     id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });
 

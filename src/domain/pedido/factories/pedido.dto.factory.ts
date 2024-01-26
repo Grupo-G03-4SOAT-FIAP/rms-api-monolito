@@ -9,6 +9,7 @@ import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
 import { ItemPedidoModel } from 'src/infrastructure/sql/models/item_pedido.model';
 import { ItemPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
+import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 
 @Injectable()
 export class PedidoDTOFactory implements IPedidoDTOFactory {
@@ -71,7 +72,7 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     const listaItensPedidoDTO = itemPedidos.map(
       (itemPedido: ItemPedidoModel) => {
         const produto = this.produtoDTOFactory.criarProdutoDTO(
-          itemPedido.produto,
+          itemPedido.produto as unknown as ProdutoEntity,
         );
 
         const itemPedidoDTO = new ItemPedidoDTO();

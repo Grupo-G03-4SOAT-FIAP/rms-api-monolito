@@ -10,7 +10,7 @@ import {
 import {
   atualizaProdutoDTOMock,
   criaProdutoDTOMock,
-  produtoEntityMock,
+  produtoEntityNotIdMock,
 } from 'src/mocks/produto.mock';
 
 describe('ProdutoFactory', () => {
@@ -38,7 +38,7 @@ describe('ProdutoFactory', () => {
   });
 
   it('deve criar a entidade produto com criaProdutoDTO', async () => {
-    produtoEntityMock.categoria = categoriaEntityMock;
+    produtoEntityNotIdMock.categoria = categoriaEntityMock;
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
       categoriaModelMock,
     );
@@ -49,11 +49,11 @@ describe('ProdutoFactory', () => {
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,
     );
-    expect(result).toStrictEqual(produtoEntityMock);
+    expect(result).toStrictEqual(produtoEntityNotIdMock);
   });
 
   it('deve criar a entidade produto com atualizaProdutoDTO', async () => {
-    produtoEntityMock.categoria = categoriaEntityMock;
+    produtoEntityNotIdMock.categoria = categoriaEntityMock;
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
       categoriaModelMock,
     );
@@ -65,7 +65,7 @@ describe('ProdutoFactory', () => {
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,
     );
-    expect(result).toStrictEqual(produtoEntityMock);
+    expect(result).toStrictEqual(produtoEntityNotIdMock);
   });
 
   it('deve criar a entidade categoria de uma entidade produto', async () => {

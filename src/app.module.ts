@@ -54,6 +54,8 @@ import { ClienteEntityFactory } from './domain/cliente/factories/cliente.entity.
 import { IClienteEntityFactory } from './domain/cliente/interfaces/cliente.entity.factory.port';
 import { PedidoEntityFactory } from './domain/pedido/factories/pedido.entity.factory';
 import { IPedidoEntityFactory } from './domain/pedido/interfaces/pedido.entity.factory.port';
+import { ProdutoEntityFactory } from './domain/produto/factories/produto.entity.factory';
+import { IProdutoEntityFactory } from './domain/produto/interfaces/produto.entity.factory.port';
 
 @Module({
   imports: [
@@ -110,6 +112,10 @@ import { IPedidoEntityFactory } from './domain/pedido/interfaces/pedido.entity.f
     {
       provide: IProdutoFactory,
       useClass: ProdutoFactory,
+    },
+    {
+      provide: IProdutoEntityFactory,
+      useClass: ProdutoEntityFactory,
     },
     {
       provide: IProdutoDTOFactory,

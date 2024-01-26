@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IProdutoDTOFactory } from '../interfaces/produto.dto.factory.port';
 import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
-import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
 import { ProdutoDTO } from 'src/presentation/rest/v1/presenters/produto/produto.dto';
-import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
+import { ProdutoEntity } from '../entities/produto.entity';
 
 @Injectable()
 export class ProdutoDTOFactory implements IProdutoDTOFactory {
@@ -12,9 +11,9 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
     private readonly categoriaDTOFactory: ICategoriaDTOFactory,
   ) {}
 
-  criarProdutoDTO(produto: ProdutoModel): ProdutoDTO {
+  criarProdutoDTO(produto: ProdutoEntity): ProdutoDTO {
     const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(
-      produto.categoria as unknown as CategoriaEntity,
+      produto.categoria,
     );
 
     const produtoDTO = new ProdutoDTO();
@@ -28,10 +27,10 @@ export class ProdutoDTOFactory implements IProdutoDTOFactory {
     return produtoDTO;
   }
 
-  criarListaProdutoDTO(produtos: ProdutoModel[]): ProdutoDTO[] | [] {
-    const listaProdutosDTO = produtos.map((produto: ProdutoModel) => {
+  criarListaProdutoDTO(produtos: ProdutoEntity[]): ProdutoDTO[] | [] {
+    const listaProdutosDTO = produtos.map((produto: ProdutoEntity) => {
       const categoriaDTO = this.categoriaDTOFactory.criarCategoriaDTO(
-        produto.categoria as unknown as CategoriaEntity,
+        produto.categoria,
       );
 
       const produtoDTO = new ProdutoDTO();
