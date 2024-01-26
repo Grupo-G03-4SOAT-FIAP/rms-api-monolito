@@ -13,6 +13,7 @@ import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.
 import { CriaPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { StatusPedido } from '../enums/pedido.enum';
+import { IPedidoEntityFactory } from '../interfaces/pedido.entity.factory.port';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
@@ -22,6 +23,8 @@ export class PedidoFactory implements IPedidoFactory {
     private readonly clienteRepository: IClienteRepository,
     @Inject(IProdutoRepository)
     private readonly produtoRepository: IProdutoRepository,
+    @Inject(IPedidoEntityFactory)
+    private readonly pedidoEntityFactory: IPedidoEntityFactory,
   ) {}
 
   async criarItemPedido(
@@ -53,10 +56,11 @@ export class PedidoFactory implements IPedidoFactory {
           buscaProduto.id,
         );
 
-        const itemPedidoEntity = new ItemPedidoEntity(
-          produtoEntity,
-          item.quantidade,
-        );
+        const itemPedidoEntity =
+          this.pedidoEntityFactory.criarEntidadeItemPedido(
+            produtoEntity,
+            item.quantidade,
+          );
         return itemPedidoEntity;
       }),
     );
@@ -82,12 +86,14 @@ export class PedidoFactory implements IPedidoFactory {
     const itensPedido = await this.criarItemPedido(pedido.itensPedido);
     const clienteEntity = await this.criarEntidadeCliente(pedido.cpfCliente);
 
-    return new PedidoEntity(
+    const pedidoEntity = this.pedidoEntityFactory.criarEntidadePedido(
       itensPedido,
       StatusPedido.RECEBIDO,
       numeroPedido,
       false,
       clienteEntity,
     );
+
+    return pedidoEntity;
   }
 }

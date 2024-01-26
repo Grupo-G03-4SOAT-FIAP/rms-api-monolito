@@ -43,10 +43,10 @@ export class PedidoUseCase implements IPedidoUseCase {
   }
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-    const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
+    const pedidoFactory = await this.pedidoFactory.criarEntidadePedido(pedido);
 
-    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
-    pedidoEntity.id = result.id;
+    const result = await this.pedidoRepository.criarPedido(pedidoFactory);
+    pedidoFactory.id = result.id;
 
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
@@ -56,7 +56,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     if (mercadoPagoIsEnabled) {
       const qrData =
-        await this.gatewayPagamentoService.criarPedido(pedidoEntity);
+        await this.gatewayPagamentoService.criarPedido(pedidoFactory);
       pedidoDTO.qrCode = qrData;
     }
 

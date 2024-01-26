@@ -1,19 +1,18 @@
-import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
 import { PedidoEntity } from '../entities/pedido.entity';
 
 export interface IPedidoRepository {
-  criarPedido(pedido: PedidoEntity): Promise<PedidoModel>;
-  buscarPedido(pedidoId: string): Promise<PedidoModel | null>;
+  criarPedido(pedido: PedidoEntity): Promise<PedidoEntity>;
+  buscarPedido(pedidoId: string): Promise<PedidoEntity | null>;
   editarStatusPedido(
     pedidoId: string,
     statusPedido: string,
-  ): Promise<PedidoModel | null>;
+  ): Promise<PedidoEntity | null>;
   editarStatusPagamento(
     pedidoId: string,
     statusPagamento: boolean,
-  ): Promise<PedidoModel | null>;
-  listarPedidos(): Promise<PedidoModel[] | []>;
-  listarPedidosRecebido(): Promise<PedidoModel[] | []>;
+  ): Promise<PedidoEntity | null>;
+  listarPedidos(): Promise<PedidoEntity[] | []>;
+  listarPedidosRecebido(): Promise<PedidoEntity[] | []>;
 }
 
 export const IPedidoRepository = Symbol('IPedidoRepository');

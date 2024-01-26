@@ -34,13 +34,31 @@ pedidoModelMock.statusPedido = 'recebido';
 pedidoModelMock.criadoEm = '2024-01-25T00:05:04.941Z';
 pedidoModelMock.atualizadoEm = '2024-01-25T00:05:04.941Z';
 
-// Mock para simular dados da entidade pedido
+// Mock para simular dados da entidade pedido com todos os itens
 export const pedidoEntityMock = new PedidoEntity(
   [itemPedidoEntityMock],
   StatusPedido.RECEBIDO,
   '05012024',
   false,
   clienteEntityMock,
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
+
+// Mock para simular dados da entidade pedido sem id
+export const pedidoEntityNotIdMock = new PedidoEntity(
+  [itemPedidoEntityMock],
+  StatusPedido.RECEBIDO,
+  '05012024',
+  false,
+  clienteEntityMock,
+);
+
+// Mock para simular dados da entidade pedido sem cliente
+export const pedidoEntityNotClienteMock = new PedidoEntity(
+  [itemPedidoEntityMock],
+  StatusPedido.RECEBIDO,
+  '05012024',
+  false,
 );
 
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar um pedido
@@ -121,6 +139,12 @@ export const pedidoFactoryMock = {
   criarItemPedido: jest.fn(),
   criarEntidadeCliente: jest.fn(),
   criarEntidadePedido: jest.fn(),
+};
+
+// Mock jest das funções da factory que cria entidade pedido
+export const pedidoEntityFactoryMock = {
+  criarEntidadePedido: jest.fn(),
+  criarEntidadeItemPedido: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria DTO pedido

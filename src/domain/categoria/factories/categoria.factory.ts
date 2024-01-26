@@ -6,7 +6,7 @@ import { CategoriaEntity } from '../entities/categoria.entity';
 export class CategoriaFactory implements ICategoriaFactory {
   criarEntidadeCategoria(
     nome: string,
-    descricao: string,
+    descricao?: string,
     id?: string,
   ): CategoriaEntity {
     const categoriaEntity = new CategoriaEntity(nome, descricao, id);

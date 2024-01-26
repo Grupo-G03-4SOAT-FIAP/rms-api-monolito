@@ -21,8 +21,18 @@ itemPedidoModelMock.quantidade = 2;
 itemPedidoModelMock.criadoEm = new Date().toISOString();
 itemPedidoModelMock.atualizadoEm = new Date().toISOString();
 
-// Mock para simular dados da entidade item pedido
-export const itemPedidoEntityMock = new ItemPedidoEntity(produtoEntityMock, 2);
+// Mock para simular dados da entidade item pedido com todos os itens
+export const itemPedidoEntityMock = new ItemPedidoEntity(
+  produtoEntityMock,
+  2,
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
+);
+
+// Mock para simular dados da entidade item pedido sem id
+export const itemPedidoEntityNotIdMock = new ItemPedidoEntity(
+  produtoEntityMock,
+  2,
+);
 
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar um pedido
 export const criaItemPedidoDTOMock = new CriaItemPedidoDTO();
