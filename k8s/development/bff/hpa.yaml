@@ -10,4 +10,4 @@ spec:
     name: rms-bff # name do Deployment a ser escalado automaticamente pelo HPA
   minReplicas: 1
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 75
+  targetCPUUtilizationPercentage: 50
