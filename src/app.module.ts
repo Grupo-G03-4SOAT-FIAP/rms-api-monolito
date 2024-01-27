@@ -47,7 +47,7 @@ import { IPedidoRepository } from './domain/pedido/interfaces/pedido.repository.
 import { IPedidoFactory } from './domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoDTOFactory } from './domain/pedido/interfaces/pedido.dto.factory.port';
 import { IGatewayPagamentoService } from './domain/pedido/interfaces/gatewaypag.service.port';
-import { GatewayPagamentoService } from './infrastructure/services/gateway_pagamentos/gatewaypag.service';
+import { GatewayMercadoPagoService } from './infrastructure/services/gateway_pagamentos/gatewaypag.service';
 import { ClienteEntityFactory } from './domain/cliente/factories/cliente.entity.factory';
 import { IClienteEntityFactory } from './domain/cliente/interfaces/cliente.entity.factory.port';
 import { PedidoEntityFactory } from './domain/pedido/factories/pedido.entity.factory';
@@ -175,7 +175,7 @@ import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria
     },
     {
       provide: IGatewayPagamentoService,
-      useClass: GatewayPagamentoService,
+      useClass: GatewayMercadoPagoService,
     },
   ],
 })

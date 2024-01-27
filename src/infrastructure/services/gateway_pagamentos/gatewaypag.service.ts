@@ -12,7 +12,7 @@ import axios from 'axios';
 import BigNumber from 'bignumber.js';
 
 @Injectable()
-export class GatewayPagamentoService implements IGatewayPagamentoService {
+export class GatewayMercadoPagoService implements IGatewayPagamentoService {
   private _accessToken: string;
   private _user_id: string;
   private _external_pos_id: string;
