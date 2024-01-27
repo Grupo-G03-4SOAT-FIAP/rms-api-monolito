@@ -32,11 +32,10 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 
 ## Executar a aplicação
 
-1. Baixe e instale o Node.js v18.18.0 (LTS) em https://nodejs.org/en/download
+1. Baixe e instale o Node.js em https://nodejs.org/en/download
 2. Faça uma cópia do arquivo `.env.template` com o nome `.env` e preencha as variáveis de ambiente dentro dele.
 3. Execute o comando `npm install` para instalar os pacotes npm;
-4. Execute o comando `npm build` para compilar a aplicação;
-5. Execute o comando  `npm run start` para iniciar a aplicação;
+4. Use o comando `npm run start` para iniciar a aplicação.
 
 ## Executar a aplicação usando o Kubernetes do Docker Desktop
 
