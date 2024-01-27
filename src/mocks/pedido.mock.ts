@@ -42,6 +42,18 @@ export const pedidoEntityMock = new PedidoEntity(
   false,
   clienteEntityMock,
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
+  '2024-01-25T00:05:04.941Z',
+  '2024-01-25T00:05:04.941Z',
+);
+
+// Mock para simular dados da entidade pedido sem data criação e atualização
+export const pedidoEntityNotDateMock = new PedidoEntity(
+  [itemPedidoEntityMock],
+  StatusPedido.RECEBIDO,
+  '05012024',
+  false,
+  clienteEntityMock,
+  '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
 // Mock para simular dados da entidade pedido sem id

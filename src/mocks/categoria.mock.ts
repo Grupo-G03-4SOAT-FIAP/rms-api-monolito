@@ -78,7 +78,7 @@ export const categoriaRepositoryDTOMock = {
 };
 
 // Mock jest das funções da factory que cria entidade categoria
-export const categoriaFactoryMock = {
+export const categoriaEntityFactoryMock = {
   criarEntidadeCategoria: jest.fn(),
 };
 

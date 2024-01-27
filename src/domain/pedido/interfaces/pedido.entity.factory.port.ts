@@ -12,6 +12,8 @@ export interface IPedidoEntityFactory {
     pago: boolean,
     cliente?: ClienteEntity,
     id?: string,
+    criadoEm?: string,
+    atualizadoEm?: string,
   ): PedidoEntity;
 
   criarEntidadeItemPedido(

@@ -5,6 +5,7 @@ import { clienteEntityMock } from 'src/mocks/cliente.mock';
 import {
   pedidoEntityMock,
   pedidoEntityNotClienteMock,
+  pedidoEntityNotDateMock,
   pedidoEntityNotIdMock,
 } from 'src/mocks/pedido.mock';
 import { ItemPedidoEntity } from '../entities/item_pedido.entity';
@@ -26,6 +27,8 @@ describe('PedidoEntityFactory', () => {
   let id: string;
   let produto: ProdutoEntity;
   let quantidade: number;
+  let criadoEm: string;
+  let atualizadoEm: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -41,6 +44,8 @@ describe('PedidoEntityFactory', () => {
     id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     produto = produtoEntityMock;
     quantidade = 2;
+    criadoEm = '2024-01-25T00:05:04.941Z';
+    atualizadoEm = '2024-01-25T00:05:04.941Z';
   });
 
   it('deve criar uma entidade pedido', () => {
@@ -51,8 +56,22 @@ describe('PedidoEntityFactory', () => {
       pago,
       cliente,
       id,
+      criadoEm,
+      atualizadoEm,
     );
     expect(result).toStrictEqual(pedidoEntityMock);
+  });
+
+  it('deve criar uma entidade pedido sem data de criação e atualização', () => {
+    const result = pedidoEntityFactory.criarEntidadePedido(
+      itensPedido,
+      statusPedido,
+      numeroPedido,
+      pago,
+      cliente,
+      id,
+    );
+    expect(result).toStrictEqual(pedidoEntityNotDateMock);
   });
 
   it('deve criar uma entidade pedido sem id', () => {

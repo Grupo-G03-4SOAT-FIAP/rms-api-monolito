@@ -74,6 +74,8 @@ export class RepositoryDTO {
       pedido.pago,
       clienteEntity,
       pedido.id,
+      pedido.criadoEm,
+      pedido.atualizadoEm,
     );
   }
 }

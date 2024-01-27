@@ -6,7 +6,7 @@ import {
   CategoriaNaoLocalizadaErro,
 } from 'src/domain/categoria/exceptions/categoria.exception';
 import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
-import { ICategoriaFactory } from 'src/domain/categoria/interfaces/categoria.factory.port';
+import { ICategoriaEntityFactory } from 'src/domain/categoria/interfaces/categoria.entity.factory.port';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { ICategoriaUseCase } from 'src/domain/categoria/interfaces/categoria.use_case.port';
 import {
@@ -20,8 +20,8 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   constructor(
     @Inject(ICategoriaRepository)
     private readonly categoriaRepository: ICategoriaRepository,
-    @Inject(ICategoriaFactory)
-    private readonly categoriaFactory: ICategoriaFactory,
+    @Inject(ICategoriaEntityFactory)
+    private readonly categoriaEntityFactory: ICategoriaEntityFactory,
     @Inject(ICategoriaDTOFactory)
     private readonly categoriaDTOFactory: ICategoriaDTOFactory,
   ) {}
@@ -51,7 +51,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   async criarCategoria(
     categoria: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = this.categoriaFactory.criarEntidadeCategoria(
+    const categoriaEntity = this.categoriaEntityFactory.criarEntidadeCategoria(
       categoria.nome,
       categoria.descricao,
     );
@@ -70,7 +70,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     categoriaId: string,
     categoria: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = this.categoriaFactory.criarEntidadeCategoria(
+    const categoriaEntity = this.categoriaEntityFactory.criarEntidadeCategoria(
       categoria.nome,
       categoria.descricao,
     );

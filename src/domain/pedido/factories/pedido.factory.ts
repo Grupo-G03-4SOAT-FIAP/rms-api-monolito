@@ -6,8 +6,6 @@ import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.reposi
 import { CriaItemPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
 import { ItemPedidoEntity } from '../entities/item_pedido.entity';
 import { ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.exception';
-import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
-import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
 import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.exception';
 import { CriaPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
@@ -32,33 +30,18 @@ export class PedidoFactory implements IPedidoFactory {
   ): Promise<ItemPedidoEntity[]> {
     const itensPedido = await Promise.all(
       itens.map(async (item) => {
-        const buscaProduto = await this.produtoRepository.buscarProdutoPorId(
+        const produto = await this.produtoRepository.buscarProdutoPorId(
           item.produto,
         );
-        if (!buscaProduto) {
+        if (!produto) {
           throw new ProdutoNaoLocalizadoErro(
             `Produto informado não existe ${item.produto}`,
           );
         }
 
-        const categoriaEntity = new CategoriaEntity(
-          buscaProduto.categoria.nome,
-          buscaProduto.categoria.descricao,
-          buscaProduto.categoria.id,
-        );
-
-        const produtoEntity = new ProdutoEntity(
-          buscaProduto.nome,
-          categoriaEntity,
-          buscaProduto.valorUnitario,
-          buscaProduto.imagemUrl,
-          buscaProduto.descricao,
-          buscaProduto.id,
-        );
-
         const itemPedidoEntity =
           this.pedidoEntityFactory.criarEntidadeItemPedido(
-            produtoEntity,
+            produto,
             item.quantidade,
           );
         return itemPedidoEntity;
@@ -71,12 +54,12 @@ export class PedidoFactory implements IPedidoFactory {
     cpfCliente?: string,
   ): Promise<ClienteEntity | null> {
     if (cpfCliente) {
-      const buscaCliente =
+      const cliente =
         await this.clienteRepository.buscarClientePorCPF(cpfCliente);
-      if (!buscaCliente) {
+      if (!cliente) {
         throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
       }
-      return buscaCliente;
+      return cliente;
     }
     return null;
   }

@@ -15,6 +15,8 @@ export class PedidoEntityFactory implements IPedidoEntityFactory {
     pago: boolean,
     cliente?: ClienteEntity,
     id?: string,
+    criadoEm?: string,
+    atualizadoEm?: string,
   ): PedidoEntity {
     const pedidoEntity = new PedidoEntity(
       itensPedido,
@@ -23,6 +25,8 @@ export class PedidoEntityFactory implements IPedidoEntityFactory {
       pago,
       cliente,
       id,
+      criadoEm,
+      atualizadoEm,
     );
     return pedidoEntity;
   }
