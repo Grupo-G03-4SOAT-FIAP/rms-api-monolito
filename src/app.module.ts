@@ -180,4 +180,4 @@ import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}
