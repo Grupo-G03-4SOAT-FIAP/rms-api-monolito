@@ -18,12 +18,21 @@ categoriaModelMock.criadoEm = new Date().toISOString();
 categoriaModelMock.atualizadoEm = new Date().toISOString();
 categoriaModelMock.excluidoEm = new Date().toISOString();
 
-// Mock para simular dados da entidade categoria
+// Mock para simular dados da entidade categoria com todos os itens
 export const categoriaEntityMock = new CategoriaEntity(
   'Lanche',
   'Lanche X Tudo',
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
+
+// Mock para simular dados da entidade categoria sem id
+export const categoriaEntityNotIdMock = new CategoriaEntity(
+  'Lanche',
+  'Lanche X Tudo',
+);
+
+// Mock para simular dados da entidade categoria sem descricao
+export const categoriaEntityNotDescricaoMock = new CategoriaEntity('Lanche');
 
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar uma categoria
 export const criaCategoriaDTOMock = new CriaCategoriaDTO();
@@ -63,8 +72,13 @@ export const categoriaRepositoryMock = {
   listarCategorias: jest.fn(),
 };
 
+// Mock jest da função do repository dto de categoria
+export const categoriaRepositoryDTOMock = {
+  criarCategoriaDTO: jest.fn(),
+};
+
 // Mock jest das funções da factory que cria entidade categoria
-export const categoriaFactoryMock = {
+export const categoriaEntityFactoryMock = {
   criarEntidadeCategoria: jest.fn(),
 };
 

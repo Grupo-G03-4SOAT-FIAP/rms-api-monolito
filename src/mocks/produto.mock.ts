@@ -24,7 +24,7 @@ produtoModelMock.criadoEm = new Date().toISOString();
 produtoModelMock.atualizadoEm = new Date().toISOString();
 produtoModelMock.excluidoEm = new Date().toISOString();
 
-// Mock para simular dados da entidade produto com todos itens
+// Mock para simular dados da entidade produto com todos os itens
 export const produtoEntityMock = new ProdutoEntity(
   'Produto X',
   categoriaEntityMock,
@@ -41,6 +41,14 @@ export const produtoEntityNotIdMock = new ProdutoEntity(
   5.0,
   'http://',
   'Teste Produto X',
+);
+
+// Mock para simular dados da entidade produto sem descricao
+export const produtoEntityNotDescricaoMock = new ProdutoEntity(
+  'Produto X',
+  categoriaEntityMock,
+  5.0,
+  'http://',
 );
 
 // Mock para simular o DTO com os dados recebidos pelo usuario ao criar um produto
@@ -89,6 +97,11 @@ export const produtoRepositoryMock = {
   buscarProdutoPorNome: jest.fn(),
   listarProdutos: jest.fn(),
   listarProdutosPorCategoria: jest.fn(),
+};
+
+// Mock jest da função do repository dto de produto
+export const produtoRepositoryDTOMock = {
+  criarProdutoDTO: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria entidade produto

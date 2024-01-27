@@ -3,14 +3,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClienteModel } from '../../models/cliente.model';
 import { ClienteRepository } from './cliente.repository';
 import {
-  clienteEntityFactoryMock,
+  clienteRepositoryDTOMock,
   clienteEntityMock,
   clienteEntityNotCpfMock,
   clienteEntityNotIdMock,
   clienteModelMock,
   clienteTypeORMMock,
 } from 'src/mocks/cliente.mock';
-import { IClienteEntityFactory } from 'src/domain/cliente/interfaces/cliente.entity.factory.port';
+import { RepositoryDTO } from '../repository.dto';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
@@ -33,8 +33,8 @@ describe('ClienteRepository', () => {
           useValue: clienteTypeORMMock,
         },
         {
-          provide: IClienteEntityFactory,
-          useValue: clienteEntityFactoryMock,
+          provide: RepositoryDTO,
+          useValue: clienteRepositoryDTOMock,
         },
       ],
     }).compile();
@@ -54,9 +54,7 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.save.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityMock,
-    );
+    clienteRepositoryDTOMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
 
     const result = await clienteRepository.criarCliente(clienteEntityNotIdMock);
 
@@ -64,11 +62,8 @@ describe('ClienteRepository', () => {
       clienteEntityNotIdMock,
     );
     expect(clienteTypeORMMock.save).toHaveBeenCalledWith(clienteModelMock);
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      clienteModelMock.nome,
-      clienteModelMock.email,
-      clienteModelMock.cpf,
-      clienteModelMock.id,
+    expect(clienteRepositoryDTOMock.criarClienteDTO).toHaveBeenCalledWith(
+      clienteModelMock,
     );
     expect(result).toStrictEqual(clienteEntityMock);
   });
@@ -78,9 +73,7 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityMock,
-    );
+    clienteRepositoryDTOMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
 
     const result = await clienteRepository.editarCliente(
       clienteId,
@@ -97,11 +90,8 @@ describe('ClienteRepository', () => {
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      clienteModelMock.nome,
-      clienteModelMock.email,
-      clienteModelMock.cpf,
-      clienteModelMock.id,
+    expect(clienteRepositoryDTOMock.criarClienteDTO).toHaveBeenCalledWith(
+      clienteModelMock,
     );
     expect(result).toStrictEqual(clienteEntityMock);
   });
@@ -110,8 +100,8 @@ describe('ClienteRepository', () => {
     clienteSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const clienteService = new ClienteRepository(
+      clienteRepositoryDTOMock as any,
       clienteSoftDeleteMock as any,
-      clienteEntityFactoryMock,
     ); // Usar "any" para evitar problemas de tipo
 
     await clienteService.excluirCliente(clienteId);
@@ -125,20 +115,15 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityMock,
-    );
+    clienteRepositoryDTOMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
 
     const result = await clienteRepository.buscarClientePorId(clienteId);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      clienteModelMock.nome,
-      clienteModelMock.email,
-      clienteModelMock.cpf,
-      clienteModelMock.id,
+    expect(clienteRepositoryDTOMock.criarClienteDTO).toHaveBeenCalledWith(
+      clienteModelMock,
     );
     expect(result).toStrictEqual(clienteEntityMock);
   });
@@ -158,20 +143,15 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityMock,
-    );
+    clienteRepositoryDTOMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
 
     const result = await clienteRepository.buscarClientePorCPF(cpfCliente);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { cpf: cpfCliente },
     });
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      clienteModelMock.nome,
-      clienteModelMock.email,
-      clienteModelMock.cpf,
-      clienteModelMock.id,
+    expect(clienteRepositoryDTOMock.criarClienteDTO).toHaveBeenCalledWith(
+      clienteModelMock,
     );
     expect(result).toStrictEqual(clienteEntityMock);
   });
@@ -191,20 +171,15 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityMock,
-    );
+    clienteRepositoryDTOMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
 
     const result = await clienteRepository.buscarClientePorEmail(emailCliente);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { email: emailCliente },
     });
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      clienteModelMock.nome,
-      clienteModelMock.email,
-      clienteModelMock.cpf,
-      clienteModelMock.id,
+    expect(clienteRepositoryDTOMock.criarClienteDTO).toHaveBeenCalledWith(
+      clienteModelMock,
     );
     expect(result).toStrictEqual(clienteEntityMock);
   });
@@ -234,18 +209,13 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.find.mockResolvedValue(
       Promise.resolve(listaClienteModel),
     );
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityMock,
-    );
+    clienteRepositoryDTOMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
 
     const result = await clienteRepository.listarClientes();
 
     expect(clienteTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      clienteModelMock.nome,
-      clienteModelMock.email,
-      clienteModelMock.cpf,
-      clienteModelMock.id,
+    expect(clienteRepositoryDTOMock.criarClienteDTO).toHaveBeenCalledWith(
+      clienteModelMock,
     );
     expect(result).toStrictEqual(listaClienteEntity);
   });

@@ -6,14 +6,17 @@ import { PedidoModel } from '../../models/pedido.model';
 import { ItemPedidoModel } from '../../models/item_pedido.model';
 import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
 import {
+  pedidoRepositoryDTOMock,
   pedidoEntityMock,
   pedidoModelMock,
   pedidoTypeORMMock,
+  pedidoEntityNotIdMock,
 } from 'src/mocks/pedido.mock';
 import {
   itemPedidoModelMock,
   itemPedidoTypeORMMock,
 } from 'src/mocks/item_pedido.mock';
+import { RepositoryDTO } from '../repository.dto';
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
@@ -31,6 +34,10 @@ describe('PedidoRepository', () => {
         {
           provide: getRepositoryToken(ItemPedidoModel),
           useValue: itemPedidoTypeORMMock,
+        },
+        {
+          provide: RepositoryDTO,
+          useValue: pedidoRepositoryDTOMock,
         },
       ],
     }).compile();
@@ -68,9 +75,13 @@ describe('PedidoRepository', () => {
       Promise.resolve(pedidoModelMock),
     );
 
-    const result = await pedidoRepository.criarPedido(pedidoEntityMock);
+    pedidoRepositoryDTOMock.criarPedidoDTO.mockReturnValue(pedidoEntityMock);
 
-    expect(pedidoTypeORMMock.create).toHaveBeenCalledWith(pedidoEntityMock);
+    const result = await pedidoRepository.criarPedido(pedidoEntityNotIdMock);
+
+    expect(pedidoTypeORMMock.create).toHaveBeenCalledWith(
+      pedidoEntityNotIdMock,
+    );
     expect(pedidoTypeORMMock.save).toHaveBeenCalledWith(pedidoModelMock);
     expect(itemPedidoTypeORMMock.create).toHaveBeenCalledWith(itensPedido);
     expect(itemPedidoTypeORMMock.save).toHaveBeenCalledWith([
@@ -80,7 +91,10 @@ describe('PedidoRepository', () => {
       where: { id: pedidoId },
       relations: relations,
     });
-    expect(result).toBe(pedidoModelMock);
+    expect(pedidoRepositoryDTOMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
+    expect(result).toStrictEqual(pedidoEntityMock);
   });
 
   it('deve alterar o status de pagamento do pedido', async () => {
@@ -89,6 +103,8 @@ describe('PedidoRepository', () => {
     pedidoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(pedidoModelMock),
     );
+
+    pedidoRepositoryDTOMock.criarPedidoDTO.mockReturnValue(pedidoEntityMock);
 
     const result = await pedidoRepository.editarStatusPagamento(
       pedidoId,
@@ -102,7 +118,10 @@ describe('PedidoRepository', () => {
       where: { id: pedidoId },
       relations: relations,
     });
-    expect(result).toBe(pedidoModelMock);
+    expect(pedidoRepositoryDTOMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
+    expect(result).toStrictEqual(pedidoEntityMock);
   });
 
   it('deve editar o status de um pedido', async () => {
@@ -111,6 +130,8 @@ describe('PedidoRepository', () => {
     pedidoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(pedidoModelMock),
     );
+
+    pedidoRepositoryDTOMock.criarPedidoDTO.mockReturnValue(pedidoEntityMock);
 
     const result = await pedidoRepository.editarStatusPedido(
       pedidoId,
@@ -124,7 +145,10 @@ describe('PedidoRepository', () => {
       where: { id: pedidoId },
       relations: relations,
     });
-    expect(result).toBe(pedidoModelMock);
+    expect(pedidoRepositoryDTOMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
+    expect(result).toStrictEqual(pedidoEntityMock);
   });
 
   it('deve buscar um pedido por id', async () => {
@@ -132,13 +156,18 @@ describe('PedidoRepository', () => {
       Promise.resolve(pedidoModelMock),
     );
 
+    pedidoRepositoryDTOMock.criarPedidoDTO.mockReturnValue(pedidoEntityMock);
+
     const result = await pedidoRepository.buscarPedido(pedidoId);
 
     expect(pedidoTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: pedidoId },
       relations: relations,
     });
-    expect(result).toBe(pedidoModelMock);
+    expect(pedidoRepositoryDTOMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
+    expect(result).toStrictEqual(pedidoEntityMock);
   });
 
   it('deve buscar um pedido por id e retornar nulo', async () => {
@@ -150,12 +179,22 @@ describe('PedidoRepository', () => {
       where: { id: pedidoId },
       relations: relations,
     });
-    expect(result).toBe(null);
+    expect(result).toStrictEqual(null);
   });
 
   it('deve listar pedidos', async () => {
-    const listaPedidos = [pedidoModelMock, pedidoModelMock, pedidoModelMock];
-    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
+    const listaPedidoMocel = [
+      pedidoModelMock,
+      pedidoModelMock,
+      pedidoModelMock,
+    ];
+    const listaPedidoEntity = [
+      pedidoEntityMock,
+      pedidoEntityMock,
+      pedidoEntityMock,
+    ];
+    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidoMocel));
+    pedidoRepositoryDTOMock.criarPedidoDTO.mockReturnValue(pedidoEntityMock);
 
     const result = await pedidoRepository.listarPedidos();
 
@@ -173,7 +212,10 @@ describe('PedidoRepository', () => {
       },
       relations: relations,
     });
-    expect(result).toBe(listaPedidos);
+    expect(pedidoRepositoryDTOMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
+    expect(result).toStrictEqual(listaPedidoEntity);
   });
 
   it('deve retornar uma lista vazia de pedidos', async () => {
@@ -196,12 +238,22 @@ describe('PedidoRepository', () => {
       },
       relations: relations,
     });
-    expect(result).toBe(listaPedidos);
+    expect(result).toStrictEqual(listaPedidos);
   });
 
   it('deve listar fila de pedidos recebidos', async () => {
-    const listaPedidos = [pedidoModelMock, pedidoModelMock, pedidoModelMock];
-    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidos));
+    const listaPedidoMocel = [
+      pedidoModelMock,
+      pedidoModelMock,
+      pedidoModelMock,
+    ];
+    const listaPedidoEntity = [
+      pedidoEntityMock,
+      pedidoEntityMock,
+      pedidoEntityMock,
+    ];
+    pedidoTypeORMMock.find.mockResolvedValue(Promise.resolve(listaPedidoMocel));
+    pedidoRepositoryDTOMock.criarPedidoDTO.mockReturnValue(pedidoEntityMock);
 
     const result = await pedidoRepository.listarPedidosRecebido();
 
@@ -214,7 +266,10 @@ describe('PedidoRepository', () => {
       },
       relations: relations,
     });
-    expect(result).toBe(listaPedidos);
+    expect(pedidoRepositoryDTOMock.criarPedidoDTO).toHaveBeenCalledWith(
+      pedidoModelMock,
+    );
+    expect(result).toStrictEqual(listaPedidoEntity);
   });
 
   it('deve retornar uma lista vazia de pedidos recebidos', async () => {
@@ -232,6 +287,6 @@ describe('PedidoRepository', () => {
       },
       relations: relations,
     });
-    expect(result).toBe(listaPedidos);
+    expect(result).toStrictEqual(listaPedidos);
   });
 });
