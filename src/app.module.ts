@@ -22,7 +22,6 @@ import { ProdutoFactory } from './domain/produto/factories/produto.factory';
 import { ProdutoDTOFactory } from './domain/produto/factories/produto.dto.factory';
 import { CategoriaUseCase } from './application/use_cases/categoria/categoria.use_case';
 import { CategoriaRepository } from './infrastructure/sql/repositories/categoria/categoria.repository';
-import { CategoriaFactory } from './domain/categoria/factories/categoria.factory';
 import { ClienteUseCase } from './application/use_cases/cliente/cliente.use_case';
 import { ClienteRepository } from './infrastructure/sql/repositories/cliente/cliente.repository';
 import { ClienteDTOFactory } from './domain/cliente/factories/cliente.dto.factory';
@@ -38,7 +37,6 @@ import { IProdutoFactory } from './domain/produto/interfaces/produto.factory.por
 import { IProdutoDTOFactory } from './domain/produto/interfaces/produto.dto.factory.port';
 import { ICategoriaUseCase } from './domain/categoria/interfaces/categoria.use_case.port';
 import { ICategoriaRepository } from './domain/categoria/interfaces/categoria.repository.port';
-import { ICategoriaFactory } from './domain/categoria/interfaces/categoria.factory.port';
 import { ICategoriaDTOFactory } from './domain/categoria/interfaces/categoria.dto.factory.port';
 import { IClienteUseCase } from './domain/cliente/interfaces/cliente.use_case.port';
 import { CategoriaDTOFactory } from './domain/categoria/factories/categoria.dto.factory';
@@ -56,6 +54,8 @@ import { PedidoEntityFactory } from './domain/pedido/factories/pedido.entity.fac
 import { IPedidoEntityFactory } from './domain/pedido/interfaces/pedido.entity.factory.port';
 import { ProdutoEntityFactory } from './domain/produto/factories/produto.entity.factory';
 import { IProdutoEntityFactory } from './domain/produto/interfaces/produto.entity.factory.port';
+import { CategoriaEntityFactory } from './domain/categoria/factories/categoria.entity.factory';
+import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria.entity.factory.port';
 
 @Module({
   imports: [
@@ -90,7 +90,7 @@ import { IProdutoEntityFactory } from './domain/produto/interfaces/produto.entit
     ProdutoDTOFactory,
     CategoriaUseCase,
     CategoriaRepository,
-    CategoriaFactory,
+    CategoriaEntityFactory,
     ClienteUseCase,
     ClienteRepository,
     ClienteDTOFactory,
@@ -130,8 +130,8 @@ import { IProdutoEntityFactory } from './domain/produto/interfaces/produto.entit
       useClass: CategoriaRepository,
     },
     {
-      provide: ICategoriaFactory,
-      useClass: CategoriaFactory,
+      provide: ICategoriaEntityFactory,
+      useClass: CategoriaEntityFactory,
     },
     {
       provide: ICategoriaDTOFactory,

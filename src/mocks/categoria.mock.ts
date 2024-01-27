@@ -72,6 +72,11 @@ export const categoriaRepositoryMock = {
   listarCategorias: jest.fn(),
 };
 
+// Mock jest da função do repository dto de categoria
+export const categoriaRepositoryDTOMock = {
+  criarCategoriaDTO: jest.fn(),
+};
+
 // Mock jest das funções da factory que cria entidade categoria
 export const categoriaFactoryMock = {
   criarEntidadeCategoria: jest.fn(),

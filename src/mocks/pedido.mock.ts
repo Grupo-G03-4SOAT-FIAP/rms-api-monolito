@@ -128,6 +128,11 @@ export const pedidoRepositoryMock = {
   listarPedidosRecebido: jest.fn(),
 };
 
+// Mock jest da função do repository dto de pedido
+export const pedidoRepositoryDTOMock = {
+  criarPedidoDTO: jest.fn(),
+};
+
 // Mock jest das funções do service gateway pagamento
 export const gatewayPagamentoServiceMock = {
   criarPedido: jest.fn(),

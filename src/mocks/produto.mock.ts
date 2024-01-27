@@ -30,20 +30,20 @@ export const produtoEntityMock = new ProdutoEntity(
   categoriaEntityMock,
   5.0,
   'http://',
-  'Teste produto x',
+  'Teste Produto X',
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
 
-// Mock para simular dados da entidade produto
+// Mock para simular dados da entidade produto sem id
 export const produtoEntityNotIdMock = new ProdutoEntity(
   'Produto X',
   categoriaEntityMock,
   5.0,
   'http://',
-  'Teste produto x',
+  'Teste Produto X',
 );
 
-// Mock para simular dados da entidade produto
+// Mock para simular dados da entidade produto sem descricao
 export const produtoEntityNotDescricaoMock = new ProdutoEntity(
   'Produto X',
   categoriaEntityMock,
@@ -97,6 +97,11 @@ export const produtoRepositoryMock = {
   buscarProdutoPorNome: jest.fn(),
   listarProdutos: jest.fn(),
   listarProdutosPorCategoria: jest.fn(),
+};
+
+// Mock jest da função do repository dto de produto
+export const produtoRepositoryDTOMock = {
+  criarProdutoDTO: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria entidade produto

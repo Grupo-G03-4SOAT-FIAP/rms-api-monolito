@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriaFactory } from './categoria.factory';
+import { CategoriaFactory } from './categoria.entity.factory';
 import {
   categoriaEntityMock,
   categoriaEntityNotDescricaoMock,

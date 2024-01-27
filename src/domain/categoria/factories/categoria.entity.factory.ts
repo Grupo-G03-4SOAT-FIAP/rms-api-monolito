@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ICategoriaFactory } from '../interfaces/categoria.factory.port';
+import { ICategoriaEntityFactory } from '../interfaces/categoria.entity.factory.port';
 import { CategoriaEntity } from '../entities/categoria.entity';
 
 @Injectable()
-export class CategoriaFactory implements ICategoriaFactory {
+export class CategoriaEntityFactory implements ICategoriaEntityFactory {
   criarEntidadeCategoria(
     nome: string,
     descricao?: string,
