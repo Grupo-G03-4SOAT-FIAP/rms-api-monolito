@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { IProdutoEntityFactory } from '../interfaces/produto.entity.factory.port';
-import { ProdutoEntity } from '../entities/produto.entity';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
+import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
+import { IProdutoEntityFactory } from 'src/domain/produto/interfaces/produto.entity.factory.port';
 
 @Injectable()
 export class ProdutoEntityFactory implements IProdutoEntityFactory {

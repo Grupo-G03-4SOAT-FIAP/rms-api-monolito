@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PedidoEntityFactory } from './pedido.entity.factory';
-import { StatusPedido } from '../enums/pedido.enum';
+import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
 import { clienteEntityMock } from 'src/mocks/cliente.mock';
 import {
   pedidoEntityMock,
@@ -8,7 +8,7 @@ import {
   pedidoEntityNotDateMock,
   pedidoEntityNotIdMock,
 } from 'src/mocks/pedido.mock';
-import { ItemPedidoEntity } from '../entities/item_pedido.entity';
+import { ItemPedidoEntity } from 'src/domain/pedido/entities/item_pedido.entity';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
 import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 import { produtoEntityMock } from 'src/mocks/produto.mock';

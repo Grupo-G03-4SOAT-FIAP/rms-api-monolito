@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IPedidoEntityFactory } from '../interfaces/pedido.entity.factory.port';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
-import { ItemPedidoEntity } from '../entities/item_pedido.entity';
-import { PedidoEntity } from '../entities/pedido.entity';
-import { StatusPedido } from '../enums/pedido.enum';
+import { ItemPedidoEntity } from 'src/domain/pedido/entities/item_pedido.entity';
+import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
+import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
+import { IPedidoEntityFactory } from 'src/domain/pedido/interfaces/pedido.entity.factory.port';
 import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 
 @Injectable()

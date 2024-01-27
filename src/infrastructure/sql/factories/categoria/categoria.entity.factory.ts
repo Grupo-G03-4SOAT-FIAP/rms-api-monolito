@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ICategoriaEntityFactory } from '../interfaces/categoria.entity.factory.port';
-import { CategoriaEntity } from '../entities/categoria.entity';
+import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
+import { ICategoriaEntityFactory } from 'src/domain/categoria/interfaces/categoria.entity.factory.port';
 
 @Injectable()
 export class CategoriaEntityFactory implements ICategoriaEntityFactory {

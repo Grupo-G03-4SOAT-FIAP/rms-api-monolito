@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IClienteEntityFactory } from '../interfaces/cliente.entity.factory.port';
-import { ClienteEntity } from '../entities/cliente.entity';
+import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
+import { IClienteEntityFactory } from 'src/domain/cliente/interfaces/cliente.entity.factory.port';
 
 @Injectable()
 export class ClienteEntityFactory implements IClienteEntityFactory {

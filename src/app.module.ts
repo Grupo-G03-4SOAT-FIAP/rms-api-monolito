@@ -48,13 +48,13 @@ import { IPedidoFactory } from './domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoDTOFactory } from './domain/pedido/interfaces/pedido.dto.factory.port';
 import { IGatewayPagamentoService } from './domain/pedido/interfaces/gatewaypag.service.port';
 import { GatewayMercadoPagoService } from './infrastructure/services/gateway_pagamentos/gatewaypag.service';
-import { ClienteEntityFactory } from './domain/cliente/factories/cliente.entity.factory';
+import { ClienteEntityFactory } from './infrastructure/sql/factories/cliente/cliente.entity.factory';
 import { IClienteEntityFactory } from './domain/cliente/interfaces/cliente.entity.factory.port';
-import { PedidoEntityFactory } from './domain/pedido/factories/pedido.entity.factory';
+import { PedidoEntityFactory } from './infrastructure/sql/factories/pedido/pedido.entity.factory';
 import { IPedidoEntityFactory } from './domain/pedido/interfaces/pedido.entity.factory.port';
-import { ProdutoEntityFactory } from './domain/produto/factories/produto.entity.factory';
+import { ProdutoEntityFactory } from './infrastructure/sql/factories/produto/produto.entity.factory';
 import { IProdutoEntityFactory } from './domain/produto/interfaces/produto.entity.factory.port';
-import { CategoriaEntityFactory } from './domain/categoria/factories/categoria.entity.factory';
+import { CategoriaEntityFactory } from './infrastructure/sql/factories/categoria/categoria.entity.factory';
 import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria.entity.factory.port';
 
 @Module({
@@ -87,6 +87,7 @@ import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria
     ProdutoUseCase,
     ProdutoRepository,
     ProdutoFactory,
+    ProdutoEntityFactory,
     ProdutoDTOFactory,
     CategoriaUseCase,
     CategoriaRepository,
@@ -179,4 +180,4 @@ import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
