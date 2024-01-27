@@ -7,12 +7,13 @@ import { ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.
 import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.exception';
 import {
   criaPedidoDTOMock,
-  pedidoEntityMock,
+  pedidoEntityFactoryMock,
+  pedidoEntityNotIdMock,
   pedidoServiceMock,
 } from 'src/mocks/pedido.mock';
 import {
+  produtoEntityMock,
   produtoEntityNotIdMock,
-  produtoModelMock,
   produtoRepositoryMock,
 } from 'src/mocks/produto.mock';
 import {
@@ -22,8 +23,9 @@ import {
 import { categoriaEntityMock } from 'src/mocks/categoria.mock';
 import {
   criaItemPedidoDTOMock,
-  itemPedidoEntityMock,
+  itemPedidoEntityNotIdMock,
 } from 'src/mocks/item_pedido.mock';
+import { IPedidoEntityFactory } from '../interfaces/pedido.entity.factory.port';
 
 describe('PedidoFactory', () => {
   let pedidoFactory: PedidoFactory;
@@ -37,12 +39,16 @@ describe('PedidoFactory', () => {
           useValue: pedidoServiceMock,
         },
         {
+          provide: IClienteRepository,
+          useValue: clienteRepositoryMock,
+        },
+        {
           provide: IProdutoRepository,
           useValue: produtoRepositoryMock,
         },
         {
-          provide: IClienteRepository,
-          useValue: clienteRepositoryMock,
+          provide: IPedidoEntityFactory,
+          useValue: pedidoEntityFactoryMock,
         },
       ],
     }).compile();
@@ -59,9 +65,15 @@ describe('PedidoFactory', () => {
 
   it('deve criar a entidade pedido', async () => {
     pedidoServiceMock.gerarNumeroPedido.mockReturnValue('05012024');
-    produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
+    produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoEntityMock);
     clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
       clienteEntityMock,
+    );
+    pedidoEntityFactoryMock.criarEntidadeItemPedido.mockReturnValue(
+      itemPedidoEntityNotIdMock,
+    );
+    pedidoEntityFactoryMock.criarEntidadePedido.mockReturnValue(
+      pedidoEntityNotIdMock,
     );
 
     const result = await pedidoFactory.criarEntidadePedido(criaPedidoDTOMock);
@@ -69,11 +81,14 @@ describe('PedidoFactory', () => {
     expect(pedidoServiceMock.gerarNumeroPedido).toHaveBeenCalled();
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalled();
     expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalled();
-    expect(result).toStrictEqual(pedidoEntityMock);
+    expect(result).toStrictEqual(pedidoEntityNotIdMock);
   });
 
   it('deve criar itens do pedido', async () => {
-    produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoModelMock);
+    produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoEntityMock);
+    pedidoEntityFactoryMock.criarEntidadeItemPedido.mockReturnValue(
+      itemPedidoEntityNotIdMock,
+    );
 
     const result = await pedidoFactory.criarItemPedido(
       criaPedidoDTOMock.itensPedido,
@@ -82,7 +97,7 @@ describe('PedidoFactory', () => {
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
       criaPedidoDTOMock.itensPedido[0].produto,
     );
-    expect(result).toStrictEqual([itemPedidoEntityMock]);
+    expect(result).toStrictEqual([itemPedidoEntityNotIdMock]);
   });
 
   it('deve criar itens do pedido e retornar ProdutoNaoLocalizadoErro', async () => {

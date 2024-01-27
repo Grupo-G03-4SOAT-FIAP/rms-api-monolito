@@ -2,14 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IPedidoDTOFactory } from '../interfaces/pedido.dto.factory.port';
 import { IProdutoDTOFactory } from 'src/domain/produto/interfaces/produto.dto.factory.port';
 import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
-import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
 import { PedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
-import { ItemPedidoModel } from 'src/infrastructure/sql/models/item_pedido.model';
 import { ItemPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
-import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
-import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
+import { PedidoEntity } from '../entities/pedido.entity';
+import { ItemPedidoEntity } from '../entities/item_pedido.entity';
 
 @Injectable()
 export class PedidoDTOFactory implements IPedidoDTOFactory {
@@ -20,14 +18,12 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     private readonly clienteDTOFactory: IClienteDTOFactory,
   ) {}
 
-  criarPedidoDTO(pedido: PedidoModel): PedidoDTO {
+  criarPedidoDTO(pedido: PedidoEntity): PedidoDTO {
     const itensPedido = this.criarListaItemPedidoDTO(pedido.itensPedido);
 
     let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
     if (cliente) {
-      cliente = this.clienteDTOFactory.criarClienteDTO(
-        pedido.cliente as unknown as ClienteEntity,
-      );
+      cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
     }
 
     const pedidoDTO = new PedidoDTO();
@@ -42,15 +38,13 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     return pedidoDTO;
   }
 
-  criarListaPedidoDTO(pedidos: PedidoModel[]): PedidoDTO[] | [] {
-    const listaPedidosDTO = pedidos.map((pedido: PedidoModel) => {
+  criarListaPedidoDTO(pedidos: PedidoEntity[]): PedidoDTO[] | [] {
+    const listaPedidosDTO = pedidos.map((pedido: PedidoEntity) => {
       const itensPedido = this.criarListaItemPedidoDTO(pedido.itensPedido);
 
       let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
       if (cliente) {
-        cliente = this.clienteDTOFactory.criarClienteDTO(
-          pedido.cliente as unknown as ClienteEntity,
-        );
+        cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
       }
 
       const pedidoDTO = new PedidoDTO();
@@ -68,11 +62,11 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     return listaPedidosDTO;
   }
 
-  criarListaItemPedidoDTO(itemPedidos: ItemPedidoModel[]): ItemPedidoDTO[] {
+  criarListaItemPedidoDTO(itemPedidos: ItemPedidoEntity[]): ItemPedidoDTO[] {
     const listaItensPedidoDTO = itemPedidos.map(
-      (itemPedido: ItemPedidoModel) => {
+      (itemPedido: ItemPedidoEntity) => {
         const produto = this.produtoDTOFactory.criarProdutoDTO(
-          itemPedido.produto as unknown as ProdutoEntity,
+          itemPedido.produto,
         );
 
         const itemPedidoDTO = new ItemPedidoDTO();

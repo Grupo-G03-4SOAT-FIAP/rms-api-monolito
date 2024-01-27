@@ -84,6 +84,11 @@ export const clienteRepositoryMock = {
   listarClientes: jest.fn(),
 };
 
+// Mock jest da função do repository dto de cliente
+export const clienteRepositoryDTOMock = {
+  criarClienteDTO: jest.fn(),
+};
+
 // Mock jest das funções da factory que cria entidade cliente
 export const clienteEntityFactoryMock = {
   criarEntidadeCliente: jest.fn(),

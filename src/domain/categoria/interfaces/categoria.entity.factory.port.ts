@@ -1,6 +1,6 @@
 import { CategoriaEntity } from '../entities/categoria.entity';
 
-export interface ICategoriaFactory {
+export interface ICategoriaEntityFactory {
   criarEntidadeCategoria(
     nome: string,
     descricao: string,
@@ -8,4 +8,4 @@ export interface ICategoriaFactory {
   ): CategoriaEntity;
 }
 
-export const ICategoriaFactory = Symbol('ICategoriaFactory');
+export const ICategoriaEntityFactory = Symbol('ICategoriaEntityFactory');

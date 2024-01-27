@@ -18,7 +18,7 @@ describe('PedidoEntity', () => {
     itensPedido = [itemPedidoEntityMock];
     statusPedido = StatusPedido.RECEBIDO;
     numeroPedido = '05012024';
-    pago = true;
+    pago = false;
     cliente = clienteEntityMock;
     id = '0a14aa4e-75e7-405f-8301-81f60646c93d';
   });

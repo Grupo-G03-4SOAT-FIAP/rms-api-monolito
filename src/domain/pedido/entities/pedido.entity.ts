@@ -9,6 +9,8 @@ export class PedidoEntity {
   private _pago: boolean;
   private _cliente?: ClienteEntity;
   private _id?: string;
+  private _criadoEm?: string;
+  private _atualizadoEm?: string;
 
   constructor(
     itensPedido: ItemPedidoEntity[],
@@ -17,6 +19,8 @@ export class PedidoEntity {
     pago: boolean,
     cliente?: ClienteEntity,
     id?: string,
+    criadoEm?: string,
+    atualizadoEm?: string,
   ) {
     this.id = id;
     this.numeroPedido = numeroPedido;
@@ -24,6 +28,8 @@ export class PedidoEntity {
     this.itensPedido = itensPedido;
     this.cliente = cliente;
     this.statusPedido = statusPedido;
+    this.criadoEm = criadoEm;
+    this.atualizadoEm = atualizadoEm;
   }
 
   get itensPedido(): ItemPedidoEntity[] {
@@ -72,5 +78,21 @@ export class PedidoEntity {
 
   set id(id: string | undefined) {
     this._id = id;
+  }
+
+  get criadoEm(): string | undefined {
+    return this._criadoEm;
+  }
+
+  set criadoEm(criadoEm: string | undefined) {
+    this._criadoEm = criadoEm;
+  }
+
+  get atualizadoEm(): string | undefined {
+    return this._atualizadoEm;
+  }
+
+  set atualizadoEm(atualizadoEm: string | undefined) {
+    this._atualizadoEm = atualizadoEm;
   }
 }
