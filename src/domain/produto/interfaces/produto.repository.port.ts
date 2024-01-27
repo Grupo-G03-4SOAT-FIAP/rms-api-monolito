@@ -5,7 +5,7 @@ export interface IProdutoRepository {
   editarProduto(
     produtoId: string,
     produto: ProdutoEntity,
-  ): Promise<ProdutoEntity>;
+  ): Promise<ProdutoEntity | null>;
   excluirProduto(produtoId: string): Promise<void>;
   buscarProdutoPorId(produtoId: string): Promise<ProdutoEntity | null>;
   buscarProdutoPorNome(nomeProduto: string): Promise<ProdutoEntity | null>;

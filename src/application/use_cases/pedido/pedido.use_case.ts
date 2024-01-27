@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
+import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
 import { PedidoNaoLocalizadoErro } from 'src/domain/pedido/exceptions/pedido.exception';
 import { IGatewayPagamentoService } from 'src/domain/pedido/interfaces/gatewaypag.service.port';
 import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.factory.port';
 import { IPedidoFactory } from 'src/domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
-import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
 import {
   MensagemGatewayPagamentoDTO,
   PedidoGatewayPagamentoDTO,
@@ -34,19 +34,19 @@ export class PedidoUseCase implements IPedidoUseCase {
 
   private async validarPedidoPorId(
     pedidoId: string,
-  ): Promise<PedidoModel | null> {
-    const pedidoModel = await this.pedidoRepository.buscarPedido(pedidoId);
-    if (!pedidoModel) {
+  ): Promise<PedidoEntity | null> {
+    const pedido = await this.pedidoRepository.buscarPedido(pedidoId);
+    if (!pedido) {
       throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
     }
-    return pedidoModel;
+    return pedido;
   }
 
   async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-    const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(pedido);
+    const pedidoFactory = await this.pedidoFactory.criarEntidadePedido(pedido);
 
-    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
-    pedidoEntity.id = result.id;
+    const result = await this.pedidoRepository.criarPedido(pedidoFactory);
+    pedidoFactory.id = result.id;
 
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
@@ -56,7 +56,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     if (mercadoPagoIsEnabled) {
       const qrData =
-        await this.gatewayPagamentoService.criarPedido(pedidoEntity);
+        await this.gatewayPagamentoService.criarPedido(pedidoFactory);
       pedidoDTO.qrCode = qrData;
     }
 

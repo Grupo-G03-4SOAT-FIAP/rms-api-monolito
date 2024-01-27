@@ -4,10 +4,9 @@ import { IProdutoDTOFactory } from 'src/domain/produto/interfaces/produto.dto.fa
 import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
 import { produtoDTOFactoryMock, produtoDTOMock } from 'src/mocks/produto.mock';
 import { clienteDTOFactoryMock, clienteDTOMock } from 'src/mocks/cliente.mock';
-import { pedidoDTOMock, pedidoModelMock } from 'src/mocks/pedido.mock';
+import { pedidoDTOMock, pedidoEntityMock } from 'src/mocks/pedido.mock';
 import {
-  itemPedidoDTOMock,
-  itemPedidoModelMock,
+  itemPedidoDTOMock, itemPedidoEntityMock,
 } from 'src/mocks/item_pedido.mock';
 
 describe('PedidoDTOFactory', () => {
@@ -39,10 +38,10 @@ describe('PedidoDTOFactory', () => {
     produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
 
-    const result = pedidoDTOFactory.criarPedidoDTO(pedidoModelMock);
+    const result = pedidoDTOFactory.criarPedidoDTO(pedidoEntityMock);
 
     expect(clienteDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      pedidoModelMock.cliente,
+      pedidoEntityMock.cliente,
     );
     expect(result).toStrictEqual(pedidoDTOMock);
   });
@@ -51,10 +50,10 @@ describe('PedidoDTOFactory', () => {
     produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
 
-    const result = pedidoDTOFactory.criarListaPedidoDTO([pedidoModelMock]);
+    const result = pedidoDTOFactory.criarListaPedidoDTO([pedidoEntityMock]);
 
     expect(clienteDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      pedidoModelMock.cliente,
+      pedidoEntityMock.cliente,
     );
     expect(result).toStrictEqual([pedidoDTOMock]);
   });
@@ -68,11 +67,11 @@ describe('PedidoDTOFactory', () => {
     produtoDTOFactoryMock.criarProdutoDTO.mockReturnValue(produtoDTOMock);
 
     const result = pedidoDTOFactory.criarListaItemPedidoDTO(
-      pedidoModelMock.itensPedido,
+      pedidoEntityMock.itensPedido,
     );
 
     expect(produtoDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
-      itemPedidoModelMock.produto,
+      itemPedidoEntityMock.produto,
     );
     expect(result).toStrictEqual([itemPedidoDTOMock]);
   });

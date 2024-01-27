@@ -4,18 +4,17 @@ import { CategoriaModel } from '../../models/categoria.model';
 import { CategoriaRepository } from './categoria.repository';
 import {
   categoriaEntityMock,
-  categoriaFactoryMock,
   categoriaModelMock,
+  categoriaRepositoryDTOMock,
   categoriaTypeORMMock,
 } from 'src/mocks/categoria.mock';
-import { ICategoriaFactory } from 'src/domain/categoria/interfaces/categoria.factory.port';
+import { RepositoryDTO } from '../repository.dto';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
 }
 
 const categoriaSoftDeleteMock = new softDeleteMock();
-let categoriaEntidadeFactory: ICategoriaFactory;
 
 describe('CategoriaRepository', () => {
   let categoriaRepository: CategoriaRepository;
@@ -31,8 +30,8 @@ describe('CategoriaRepository', () => {
           useValue: categoriaTypeORMMock,
         },
         {
-          provide: ICategoriaFactory,
-          useValue: categoriaFactoryMock,
+          provide: RepositoryDTO,
+          useValue: categoriaRepositoryDTOMock,
         },
       ],
     }).compile();
@@ -51,7 +50,7 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.save.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -62,7 +61,10 @@ describe('CategoriaRepository', () => {
       categoriaEntityMock,
     );
     expect(categoriaTypeORMMock.save).toHaveBeenCalledWith(categoriaModelMock);
-    expect(result).toBe(categoriaEntityMock);
+    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual(categoriaEntityMock);
   });
 
   it('deve editar uma categoria', async () => {
@@ -70,7 +72,7 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -89,16 +91,19 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
     });
-    expect(result).toBe(categoriaEntityMock);
+    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual(categoriaEntityMock);
   });
 
   it('deve excluir uma categoria no formato softdelete', async () => {
     categoriaSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const categoriaService = new CategoriaRepository(
-      categoriaSoftDeleteMock as any, // Usar "any" para evitar problemas de tipo
-      categoriaEntidadeFactory,
-    );
+      categoriaRepositoryDTOMock as any,
+      categoriaSoftDeleteMock as any,
+    ); // Usar "any" para evitar problemas de tipo
 
     await categoriaService.excluirCategoria(categoriaId);
 
@@ -111,7 +116,7 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -120,7 +125,10 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
     });
-    expect(result).toBe(categoriaEntityMock);
+    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual(categoriaEntityMock);
   });
 
   it('deve buscar uma categoria por id e retornar nulo', async () => {
@@ -131,14 +139,14 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
     });
-    expect(result).toBe(null);
+    expect(result).toStrictEqual(null);
   });
 
   it('deve buscar uma categoria por nome', async () => {
     categoriaTypeORMMock.findOne.mockReturnValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -148,7 +156,10 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { nome: nomeCategoria },
     });
-    expect(result).toBe(categoriaEntityMock);
+    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual(categoriaEntityMock);
   });
 
   it('deve buscar uma categoria por nome e retornar nulo', async () => {
@@ -160,7 +171,7 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { nome: nomeCategoria },
     });
-    expect(result).toBe(null);
+    expect(result).toStrictEqual(null);
   });
 
   it('deve listar todas categorias', async () => {
@@ -177,13 +188,16 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.find.mockReturnValue(
       Promise.resolve(listaCategoriaModel),
     );
-    categoriaFactoryMock.criarEntidadeCategoria.mockReturnValue(
+    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
     const result = await categoriaRepository.listarCategorias();
 
     expect(categoriaTypeORMMock.find).toHaveBeenCalledWith({});
+    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
     expect(result).toStrictEqual(listaCategoriaEntity);
   });
 
@@ -196,6 +210,6 @@ describe('CategoriaRepository', () => {
     const result = await categoriaRepository.listarCategorias();
 
     expect(categoriaTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(result).toEqual(listaCategorias);
+    expect(result).toStrictEqual(listaCategorias);
   });
 });

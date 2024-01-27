@@ -6,6 +6,7 @@ import { ItemPedidoModel } from '../../models/item_pedido.model';
 import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
 import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
 import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
+import { RepositoryDTO } from '../repository.dto';
 
 @Injectable()
 export class PedidoRepository implements IPedidoRepository {
@@ -17,16 +18,14 @@ export class PedidoRepository implements IPedidoRepository {
   ];
 
   constructor(
+    private readonly repositoryDTO: RepositoryDTO,
     @InjectRepository(PedidoModel)
     private readonly pedidoRepository: Repository<PedidoModel>,
     @InjectRepository(ItemPedidoModel)
     private readonly itemPedidoRepository: Repository<ItemPedidoModel>,
   ) {}
 
-  async criarPedido(pedido: PedidoEntity): Promise<PedidoModel> {
-    const pedidoModel = this.pedidoRepository.create(pedido);
-    await this.pedidoRepository.save(pedidoModel);
-
+  async criarItemPedido(pedidoModel: PedidoModel): Promise<ItemPedidoModel[]> {
     const itensPedido = pedidoModel.itensPedido.map((itemPedido) => {
       const itemPedidoModel = this.itemPedidoRepository.create({
         pedido: { id: pedidoModel.id },
@@ -36,50 +35,69 @@ export class PedidoRepository implements IPedidoRepository {
       return itemPedidoModel;
     });
     await this.itemPedidoRepository.save(itensPedido);
+    return itensPedido;
+  }
 
-    const pedidoComItens = await this.pedidoRepository.findOne({
+  async criarPedido(pedido: PedidoEntity): Promise<PedidoEntity> {
+    const pedidoModel = this.pedidoRepository.create(pedido);
+    await this.pedidoRepository.save(pedidoModel);
+    await this.criarItemPedido(pedidoModel);
+    const pedidoComItemModel = await this.pedidoRepository.findOne({
       where: { id: pedidoModel.id },
       relations: this.relations,
     });
-    return pedidoComItens;
+    return this.repositoryDTO.criarPedidoDTO(pedidoComItemModel);
   }
 
   async editarStatusPedido(
     pedidoId: string,
     statusPedido: string,
-  ): Promise<PedidoModel> {
+  ): Promise<PedidoEntity> {
     await this.pedidoRepository.update(pedidoId, {
       statusPedido: statusPedido,
     });
 
-    return await this.pedidoRepository.findOne({
+    const pedidoModelAtualizado = await this.pedidoRepository.findOne({
       where: { id: pedidoId },
       relations: this.relations,
     });
+    if (pedidoModelAtualizado) {
+      return this.repositoryDTO.criarPedidoDTO(pedidoModelAtualizado);
+    }
+    return null;
   }
 
   async editarStatusPagamento(
     pedidoId: string,
     statusPagamento: boolean,
-  ): Promise<PedidoModel> {
+  ): Promise<PedidoEntity> {
     await this.pedidoRepository.update(pedidoId, {
       pago: statusPagamento,
     });
 
-    return await this.pedidoRepository.findOne({
+    const pedidoModelAtualizado = await this.pedidoRepository.findOne({
       where: { id: pedidoId },
       relations: this.relations,
     });
+    if (pedidoModelAtualizado) {
+      return this.repositoryDTO.criarPedidoDTO(pedidoModelAtualizado);
+    }
+    return null;
   }
 
-  async buscarPedido(pedidoId: string): Promise<PedidoModel | null> {
-    return await this.pedidoRepository.findOne({
+  async buscarPedido(pedidoId: string): Promise<PedidoEntity | null> {
+    const pedidoModel = await this.pedidoRepository.findOne({
       where: { id: pedidoId },
       relations: this.relations,
     });
+
+    if (pedidoModel) {
+      return this.repositoryDTO.criarPedidoDTO(pedidoModel);
+    }
+    return null;
   }
 
-  async listarPedidos(): Promise<PedidoModel[] | []> {
+  async listarPedidos(): Promise<PedidoEntity[] | []> {
     const statusPedidoOrder = {
       pronto: 1,
       em_preparacao: 2,
@@ -108,10 +126,14 @@ export class PedidoRepository implements IPedidoRepository {
       );
     }
 
-    return pedidos;
+    const produtoEntityList = pedidos.map((pedido: PedidoModel) => {
+      return this.repositoryDTO.criarPedidoDTO(pedido);
+    });
+
+    return produtoEntityList;
   }
 
-  async listarPedidosRecebido(): Promise<PedidoModel[] | []> {
+  async listarPedidosRecebido(): Promise<PedidoEntity[] | []> {
     const pedidos = await this.pedidoRepository.find({
       where: {
         statusPedido: StatusPedido.RECEBIDO,
@@ -122,6 +144,10 @@ export class PedidoRepository implements IPedidoRepository {
       relations: this.relations,
     });
 
-    return pedidos;
+    const produtoEntityList = pedidos.map((pedido: PedidoModel) => {
+      return this.repositoryDTO.criarPedidoDTO(pedido);
+    });
+
+    return produtoEntityList;
   }
 }

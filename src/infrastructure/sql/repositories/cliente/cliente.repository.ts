@@ -1,29 +1,23 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ClienteModel } from '../../models/cliente.model';
 import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
-import { IClienteEntityFactory } from 'src/domain/cliente/interfaces/cliente.entity.factory.port';
+import { RepositoryDTO } from '../repository.dto';
 
 @Injectable()
 export class ClienteRepository implements IClienteRepository {
   constructor(
+    private readonly repositoryDTO: RepositoryDTO,
     @InjectRepository(ClienteModel)
     private readonly clienteRepository: Repository<ClienteModel>,
-    @Inject(IClienteEntityFactory)
-    private readonly clienteEntityFactory: IClienteEntityFactory,
   ) {}
 
   async criarCliente(cliente: ClienteEntity): Promise<ClienteEntity> {
     const clienteModel = this.clienteRepository.create(cliente);
     await this.clienteRepository.save(clienteModel);
-    return this.clienteEntityFactory.criarEntidadeCliente(
-      clienteModel.nome,
-      clienteModel.email,
-      clienteModel.cpf,
-      clienteModel.id,
-    );
+    return this.repositoryDTO.criarClienteDTO(clienteModel);
   }
 
   async editarCliente(
@@ -32,16 +26,11 @@ export class ClienteRepository implements IClienteRepository {
   ): Promise<ClienteEntity | null> {
     const clienteModel = this.clienteRepository.create(cliente);
     await this.clienteRepository.update(clienteId, clienteModel);
-    const clienteModelEditado = await this.clienteRepository.findOne({
+    const clienteModelAtualizado = await this.clienteRepository.findOne({
       where: { id: clienteId },
     });
-    if (clienteModel) {
-      return this.clienteEntityFactory.criarEntidadeCliente(
-        clienteModelEditado.nome,
-        clienteModelEditado.email,
-        clienteModelEditado.cpf,
-        clienteModelEditado.id,
-      );
+    if (clienteModelAtualizado) {
+      return this.repositoryDTO.criarClienteDTO(clienteModelAtualizado);
     }
     return null;
   }
@@ -55,12 +44,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { id: clienteId },
     });
     if (clienteModel) {
-      return this.clienteEntityFactory.criarEntidadeCliente(
-        clienteModel.nome,
-        clienteModel.email,
-        clienteModel.cpf,
-        clienteModel.id,
-      );
+      return this.repositoryDTO.criarClienteDTO(clienteModel);
     }
     return null;
   }
@@ -70,12 +54,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { cpf: cpfCliente },
     });
     if (clienteModel) {
-      return this.clienteEntityFactory.criarEntidadeCliente(
-        clienteModel.nome,
-        clienteModel.email,
-        clienteModel.cpf,
-        clienteModel.id,
-      );
+      return this.repositoryDTO.criarClienteDTO(clienteModel);
     }
     return null;
   }
@@ -87,29 +66,17 @@ export class ClienteRepository implements IClienteRepository {
       where: { email: emailCliente },
     });
     if (clienteModel) {
-      return this.clienteEntityFactory.criarEntidadeCliente(
-        clienteModel.nome,
-        clienteModel.email,
-        clienteModel.cpf,
-        clienteModel.id,
-      );
+      return this.repositoryDTO.criarClienteDTO(clienteModel);
     }
     return null;
   }
 
   async listarClientes(): Promise<[] | ClienteEntity[]> {
     const listaClienteModel = await this.clienteRepository.find({});
-    const listaClienteEntity = listaClienteModel.map(
-      (cliente: ClienteModel) => {
-        return this.clienteEntityFactory.criarEntidadeCliente(
-          cliente.nome,
-          cliente.email,
-          cliente.cpf,
-          cliente.id,
-        );
-      },
-    );
+    const clienteEntityList = listaClienteModel.map((cliente: ClienteModel) => {
+      return this.repositoryDTO.criarClienteDTO(cliente);
+    });
 
-    return listaClienteEntity;
+    return clienteEntityList;
   }
 }
