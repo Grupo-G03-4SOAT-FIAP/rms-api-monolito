@@ -56,6 +56,7 @@ import { ProdutoEntityFactory } from './domain/produto/factories/produto.entity.
 import { IProdutoEntityFactory } from './domain/produto/interfaces/produto.entity.factory.port';
 import { CategoriaEntityFactory } from './domain/categoria/factories/categoria.entity.factory';
 import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria.entity.factory.port';
+import { RepositoryDTO } from './infrastructure/sql/repositories/repository.dto';
 
 @Module({
   imports: [
@@ -101,6 +102,7 @@ import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria
     PedidoEntityFactory,
     PedidoDTOFactory,
     PedidoService,
+    RepositoryDTO,
     {
       provide: IProdutoUseCase,
       useClass: ProdutoUseCase,
