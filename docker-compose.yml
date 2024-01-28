@@ -41,13 +41,13 @@ services:
     env_file:
       - .env
     environment:
-      DB_HOST: ${DB_USERNAME:-db}
-      DB_PORT: ${DB_USERNAME:-5432}
+      DB_HOST: db
+      DB_PORT: 5432
       DB_USER: ${DB_USERNAME:-pguser}
       DB_PASSWORD: ${DB_PASSWORD:-pgpwd}
       DB_NAME: ${DB_NAME:-rms}
-      DB_SSL=: ${DB_SSL:-false}
-      ENABLE_MERCADOPAGO=: ${ENABLE_MERCADOPAGO:-false}
+      DB_SSL: ${DB_SSL:-false}
+      ENABLE_MERCADOPAGO: ${ENABLE_MERCADOPAGO:-false}
       ACCESS_TOKEN_MERCADOPAGO: ${ACCESS_TOKEN_MERCADOPAGO:-}
       USER_ID_MERCADOPAGO: ${USER_ID_MERCADOPAGO:-}
       EXTERNAL_POS_ID_MERCADOPAGO: ${EXTERNAL_POS_ID_MERCADOPAGO:-}
