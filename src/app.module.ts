@@ -48,15 +48,7 @@ import { IPedidoFactory } from './domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoDTOFactory } from './domain/pedido/interfaces/pedido.dto.factory.port';
 import { IGatewayPagamentoService } from './domain/pedido/interfaces/gatewaypag.service.port';
 import { GatewayMercadoPagoService } from './infrastructure/services/gateway_pagamentos/gatewaypag.service';
-import { ClienteEntityFactory } from './domain/cliente/factories/cliente.entity.factory';
-import { IClienteEntityFactory } from './domain/cliente/interfaces/cliente.entity.factory.port';
-import { PedidoEntityFactory } from './domain/pedido/factories/pedido.entity.factory';
-import { IPedidoEntityFactory } from './domain/pedido/interfaces/pedido.entity.factory.port';
-import { ProdutoEntityFactory } from './domain/produto/factories/produto.entity.factory';
-import { IProdutoEntityFactory } from './domain/produto/interfaces/produto.entity.factory.port';
-import { CategoriaEntityFactory } from './domain/categoria/factories/categoria.entity.factory';
-import { ICategoriaEntityFactory } from './domain/categoria/interfaces/categoria.entity.factory.port';
-import { RepositoryDTO } from './infrastructure/sql/repositories/repository.dto';
+import { SQLDTOFactory } from './infrastructure/sql/factories/sql.dto.factory';
 
 @Module({
   imports: [
@@ -91,18 +83,15 @@ import { RepositoryDTO } from './infrastructure/sql/repositories/repository.dto'
     ProdutoDTOFactory,
     CategoriaUseCase,
     CategoriaRepository,
-    CategoriaEntityFactory,
     ClienteUseCase,
     ClienteRepository,
     ClienteDTOFactory,
-    ClienteEntityFactory,
     PedidoUseCase,
     PedidoRepository,
     PedidoFactory,
-    PedidoEntityFactory,
     PedidoDTOFactory,
     PedidoService,
-    RepositoryDTO,
+    SQLDTOFactory,
     {
       provide: IProdutoUseCase,
       useClass: ProdutoUseCase,
@@ -116,10 +105,6 @@ import { RepositoryDTO } from './infrastructure/sql/repositories/repository.dto'
       useClass: ProdutoFactory,
     },
     {
-      provide: IProdutoEntityFactory,
-      useClass: ProdutoEntityFactory,
-    },
-    {
       provide: IProdutoDTOFactory,
       useClass: ProdutoDTOFactory,
     },
@@ -130,10 +115,6 @@ import { RepositoryDTO } from './infrastructure/sql/repositories/repository.dto'
     {
       provide: ICategoriaRepository,
       useClass: CategoriaRepository,
-    },
-    {
-      provide: ICategoriaEntityFactory,
-      useClass: CategoriaEntityFactory,
     },
     {
       provide: ICategoriaDTOFactory,
@@ -152,10 +133,6 @@ import { RepositoryDTO } from './infrastructure/sql/repositories/repository.dto'
       useClass: ClienteDTOFactory,
     },
     {
-      provide: IClienteEntityFactory,
-      useClass: ClienteEntityFactory,
-    },
-    {
       provide: IPedidoUseCase,
       useClass: PedidoUseCase,
     },
@@ -166,10 +143,6 @@ import { RepositoryDTO } from './infrastructure/sql/repositories/repository.dto'
     {
       provide: IPedidoFactory,
       useClass: PedidoFactory,
-    },
-    {
-      provide: IPedidoEntityFactory,
-      useClass: PedidoEntityFactory,
     },
     {
       provide: IPedidoDTOFactory,

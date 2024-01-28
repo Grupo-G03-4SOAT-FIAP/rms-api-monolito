@@ -7,7 +7,6 @@ import { ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.
 import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.exception';
 import {
   criaPedidoDTOMock,
-  pedidoEntityFactoryMock,
   pedidoEntityNotIdMock,
   pedidoServiceMock,
 } from 'src/mocks/pedido.mock';
@@ -25,7 +24,6 @@ import {
   criaItemPedidoDTOMock,
   itemPedidoEntityNotIdMock,
 } from 'src/mocks/item_pedido.mock';
-import { IPedidoEntityFactory } from '../interfaces/pedido.entity.factory.port';
 
 describe('PedidoFactory', () => {
   let pedidoFactory: PedidoFactory;
@@ -46,10 +44,6 @@ describe('PedidoFactory', () => {
           provide: IProdutoRepository,
           useValue: produtoRepositoryMock,
         },
-        {
-          provide: IPedidoEntityFactory,
-          useValue: pedidoEntityFactoryMock,
-        },
       ],
     }).compile();
 
@@ -69,12 +63,6 @@ describe('PedidoFactory', () => {
     clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
       clienteEntityMock,
     );
-    pedidoEntityFactoryMock.criarEntidadeItemPedido.mockReturnValue(
-      itemPedidoEntityNotIdMock,
-    );
-    pedidoEntityFactoryMock.criarEntidadePedido.mockReturnValue(
-      pedidoEntityNotIdMock,
-    );
 
     const result = await pedidoFactory.criarEntidadePedido(criaPedidoDTOMock);
 
@@ -86,9 +74,6 @@ describe('PedidoFactory', () => {
 
   it('deve criar itens do pedido', async () => {
     produtoRepositoryMock.buscarProdutoPorId.mockReturnValue(produtoEntityMock);
-    pedidoEntityFactoryMock.criarEntidadeItemPedido.mockReturnValue(
-      itemPedidoEntityNotIdMock,
-    );
 
     const result = await pedidoFactory.criarItemPedido(
       criaPedidoDTOMock.itensPedido,
@@ -125,16 +110,6 @@ describe('PedidoFactory', () => {
 
     expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalled();
     expect(result).toStrictEqual(clienteEntityMock);
-  });
-
-  it('deve criar a entidade cliente com cliente undefined', async () => {
-    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
-      clienteEntityMock,
-    );
-
-    const result = await pedidoFactory.criarEntidadeCliente();
-
-    expect(result).toStrictEqual(null);
   });
 
   it('deve criar a entidade cliente e retornar ClienteNaoLocalizadoErro', async () => {

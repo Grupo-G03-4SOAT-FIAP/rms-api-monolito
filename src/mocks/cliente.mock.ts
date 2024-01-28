@@ -49,11 +49,6 @@ export const atualizaClienteDTOMock = new AtualizaClienteDTO();
 atualizaClienteDTOMock.nome = clienteModelMock.nome;
 atualizaClienteDTOMock.email = clienteModelMock.email;
 
-// Mock para simular o DTO com os dados recebidos pelo usuario ao atualizar um cliente sem nome
-export const atualizaClienteDTONomeNullMock = new AtualizaClienteDTO();
-atualizaClienteDTONomeNullMock.nome = null;
-atualizaClienteDTONomeNullMock.email = clienteModelMock.email;
-
 // Mock para simular o DTO com dados de cliente enviados para o usuario ao responder uma requisição
 export const clienteDTOMock = new ClienteDTO();
 clienteDTOMock.id = clienteModelMock.id;
@@ -84,14 +79,9 @@ export const clienteRepositoryMock = {
   listarClientes: jest.fn(),
 };
 
-// Mock jest da função do repository dto de cliente
-export const clienteRepositoryDTOMock = {
+// Mock jest da função do factory sql dto de cliente
+export const clienteSQLDTOFactoryMock = {
   criarClienteDTO: jest.fn(),
-};
-
-// Mock jest das funções da factory que cria entidade cliente
-export const clienteEntityFactoryMock = {
-  criarEntidadeCliente: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria DTO cliente

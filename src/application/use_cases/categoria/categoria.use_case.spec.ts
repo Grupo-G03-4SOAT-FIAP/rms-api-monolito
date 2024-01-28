@@ -9,12 +9,11 @@ import {
 import {
   categoriaDTOFactoryMock,
   categoriaDTOMock,
-  categoriaEntityFactoryMock,
   categoriaEntityMock,
+  categoriaEntityNotIdMock,
   categoriaRepositoryMock,
   criaCategoriaDTOMock,
 } from 'src/mocks/categoria.mock';
-import { ICategoriaEntityFactory } from 'src/domain/categoria/interfaces/categoria.entity.factory.port';
 
 describe('CategoriaUseCase', () => {
   let categoriaUseCase: CategoriaUseCase;
@@ -27,10 +26,6 @@ describe('CategoriaUseCase', () => {
         {
           provide: ICategoriaRepository,
           useValue: categoriaRepositoryMock,
-        },
-        {
-          provide: ICategoriaEntityFactory,
-          useValue: categoriaEntityFactoryMock,
         },
         {
           provide: ICategoriaDTOFactory,
@@ -48,23 +43,14 @@ describe('CategoriaUseCase', () => {
   });
 
   it('deve criar uma categoria com sucesso', async () => {
-    categoriaEntityFactoryMock.criarEntidadeCategoria.mockReturnValue(
-      categoriaEntityMock,
-    );
     categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(null);
     categoriaRepositoryMock.criarCategoria.mockReturnValue(categoriaEntityMock);
     categoriaDTOFactoryMock.criarCategoriaDTO.mockReturnValue(categoriaDTOMock);
 
     const result = await categoriaUseCase.criarCategoria(criaCategoriaDTOMock);
 
-    expect(
-      categoriaEntityFactoryMock.criarEntidadeCategoria,
-    ).toHaveBeenCalledWith(
-      categoriaEntityMock.nome,
-      categoriaEntityMock.descricao,
-    );
     expect(categoriaRepositoryMock.criarCategoria).toHaveBeenCalledWith(
-      categoriaEntityMock,
+      categoriaEntityNotIdMock,
     );
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaEntityMock,
@@ -76,9 +62,6 @@ describe('CategoriaUseCase', () => {
   });
 
   it('deve retornar erro ao criar uma categoria com nome duplicado', async () => {
-    categoriaEntityFactoryMock.criarEntidadeCategoria.mockReturnValue(
-      categoriaEntityMock,
-    );
     categoriaRepositoryMock.buscarCategoriaPorNome.mockReturnValue(
       categoriaEntityMock,
     );
@@ -88,21 +71,12 @@ describe('CategoriaUseCase', () => {
     ).rejects.toThrow(
       new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
     );
-    expect(
-      categoriaEntityFactoryMock.criarEntidadeCategoria,
-    ).toHaveBeenCalledWith(
-      categoriaEntityMock.nome,
-      categoriaEntityMock.descricao,
-    );
     expect(categoriaRepositoryMock.buscarCategoriaPorNome).toHaveBeenCalledWith(
       categoriaEntityMock.nome,
     );
   });
 
   it('deve editar uma categoria com sucesso', async () => {
-    categoriaEntityFactoryMock.criarEntidadeCategoria.mockReturnValue(
-      categoriaEntityMock,
-    );
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
       categoriaEntityMock,
     );
@@ -117,18 +91,12 @@ describe('CategoriaUseCase', () => {
       criaCategoriaDTOMock,
     );
 
-    expect(
-      categoriaEntityFactoryMock.criarEntidadeCategoria,
-    ).toHaveBeenCalledWith(
-      categoriaEntityMock.nome,
-      categoriaEntityMock.descricao,
-    );
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,
     );
     expect(categoriaRepositoryMock.editarCategoria).toHaveBeenCalledWith(
       categoriaId,
-      categoriaEntityMock,
+      categoriaEntityNotIdMock,
     );
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaEntityMock,
@@ -140,9 +108,6 @@ describe('CategoriaUseCase', () => {
   });
 
   it('deve retornar erro ao editar uma categoria com nome duplicado', async () => {
-    categoriaEntityFactoryMock.criarEntidadeCategoria.mockReturnValue(
-      categoriaEntityMock,
-    );
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(
       categoriaEntityMock,
     );
@@ -155,12 +120,6 @@ describe('CategoriaUseCase', () => {
     ).rejects.toThrow(
       new CategoriaDuplicadaErro('Existe uma categoria com esse nome'),
     );
-    expect(
-      categoriaEntityFactoryMock.criarEntidadeCategoria,
-    ).toHaveBeenCalledWith(
-      categoriaEntityMock.nome,
-      categoriaEntityMock.descricao,
-    );
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,
     );
@@ -170,21 +129,12 @@ describe('CategoriaUseCase', () => {
   });
 
   it('deve retornar erro ao editar uma categoria que não existe', async () => {
-    categoriaEntityFactoryMock.criarEntidadeCategoria.mockReturnValue(
-      categoriaEntityMock,
-    );
     categoriaRepositoryMock.buscarCategoriaPorId.mockReturnValue(null);
 
     await expect(
       categoriaUseCase.editarCategoria(categoriaId, criaCategoriaDTOMock),
     ).rejects.toThrow(
       new CategoriaNaoLocalizadaErro('Categoria informada não existe'),
-    );
-    expect(
-      categoriaEntityFactoryMock.criarEntidadeCategoria,
-    ).toHaveBeenCalledWith(
-      categoriaEntityMock.nome,
-      categoriaEntityMock.descricao,
     );
     expect(categoriaRepositoryMock.buscarCategoriaPorId).toHaveBeenCalledWith(
       categoriaId,

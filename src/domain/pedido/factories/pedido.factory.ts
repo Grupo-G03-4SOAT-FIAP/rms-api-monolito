@@ -11,7 +11,6 @@ import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.
 import { CriaPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { StatusPedido } from '../enums/pedido.enum';
-import { IPedidoEntityFactory } from '../interfaces/pedido.entity.factory.port';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
@@ -21,8 +20,6 @@ export class PedidoFactory implements IPedidoFactory {
     private readonly clienteRepository: IClienteRepository,
     @Inject(IProdutoRepository)
     private readonly produtoRepository: IProdutoRepository,
-    @Inject(IPedidoEntityFactory)
-    private readonly pedidoEntityFactory: IPedidoEntityFactory,
   ) {}
 
   async criarItemPedido(
@@ -39,11 +36,7 @@ export class PedidoFactory implements IPedidoFactory {
           );
         }
 
-        const itemPedidoEntity =
-          this.pedidoEntityFactory.criarEntidadeItemPedido(
-            produto,
-            item.quantidade,
-          );
+        const itemPedidoEntity = new ItemPedidoEntity(produto, item.quantidade);
         return itemPedidoEntity;
       }),
     );
@@ -53,30 +46,36 @@ export class PedidoFactory implements IPedidoFactory {
   async criarEntidadeCliente(
     cpfCliente?: string,
   ): Promise<ClienteEntity | null> {
-    if (cpfCliente) {
-      const cliente =
-        await this.clienteRepository.buscarClientePorCPF(cpfCliente);
-      if (!cliente) {
-        throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
-      }
-      return cliente;
+    const cliente =
+      await this.clienteRepository.buscarClientePorCPF(cpfCliente);
+    if (!cliente) {
+      throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
-    return null;
+    return cliente;
   }
 
   async criarEntidadePedido(pedido: CriaPedidoDTO): Promise<PedidoEntity> {
     const numeroPedido = this.pedidoService.gerarNumeroPedido();
     const itensPedido = await this.criarItemPedido(pedido.itensPedido);
-    const clienteEntity = await this.criarEntidadeCliente(pedido.cpfCliente);
 
-    const pedidoEntity = this.pedidoEntityFactory.criarEntidadePedido(
+    let clienteEntity = null;
+    if (pedido.cpfCliente) {
+      clienteEntity = await this.criarEntidadeCliente(pedido.cpfCliente);
+
+      return new PedidoEntity(
+        itensPedido,
+        StatusPedido.RECEBIDO,
+        numeroPedido,
+        false,
+        clienteEntity,
+      );
+    }
+
+    return new PedidoEntity(
       itensPedido,
       StatusPedido.RECEBIDO,
       numeroPedido,
       false,
-      clienteEntity,
     );
-
-    return pedidoEntity;
   }
 }

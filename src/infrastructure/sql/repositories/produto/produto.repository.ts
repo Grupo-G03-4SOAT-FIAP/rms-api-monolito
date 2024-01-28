@@ -4,13 +4,13 @@ import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.reposi
 import { Repository } from 'typeorm';
 import { ProdutoModel } from '../../models/produto.model';
 import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
-import { RepositoryDTO } from '../repository.dto';
+import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
 @Injectable()
 export class ProdutoRepository implements IProdutoRepository {
   readonly relations: string[] = ['categoria'];
   constructor(
-    private readonly repositoryDTO: RepositoryDTO,
+    private readonly sqlDTOFactory: SQLDTOFactory,
     @InjectRepository(ProdutoModel)
     private readonly produtoRepository: Repository<ProdutoModel>,
   ) {}
@@ -18,7 +18,7 @@ export class ProdutoRepository implements IProdutoRepository {
   async criarProduto(produto: ProdutoEntity): Promise<ProdutoEntity> {
     const produtoModel = this.produtoRepository.create(produto);
     await this.produtoRepository.save(produtoModel);
-    return this.repositoryDTO.criarProdutoDTO(produtoModel);
+    return this.sqlDTOFactory.criarProdutoDTO(produtoModel);
   }
 
   async editarProduto(
@@ -33,7 +33,7 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations, // Especifica a relação que você deseja incluir
     });
     if (produtoModelAtualizado) {
-      return this.repositoryDTO.criarProdutoDTO(produtoModelAtualizado);
+      return this.sqlDTOFactory.criarProdutoDTO(produtoModelAtualizado);
     }
     return null;
   }
@@ -48,7 +48,7 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations,
     });
     if (produtoModel) {
-      return this.repositoryDTO.criarProdutoDTO(produtoModel);
+      return this.sqlDTOFactory.criarProdutoDTO(produtoModel);
     }
     return null;
   }
@@ -61,7 +61,7 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations,
     });
     if (produtoModel) {
-      return this.repositoryDTO.criarProdutoDTO(produtoModel);
+      return this.sqlDTOFactory.criarProdutoDTO(produtoModel);
     }
     return null;
   }
@@ -71,7 +71,7 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations,
     });
     const produtoEntityList = listaProdutoModel.map((produto: ProdutoModel) => {
-      return this.repositoryDTO.criarProdutoDTO(produto);
+      return this.sqlDTOFactory.criarProdutoDTO(produto);
     });
 
     return produtoEntityList;
@@ -85,7 +85,7 @@ export class ProdutoRepository implements IProdutoRepository {
       relations: this.relations,
     });
     const produtoEntityList = listaProdutoModel.map((produto: ProdutoModel) => {
-      return this.repositoryDTO.criarProdutoDTO(produto);
+      return this.sqlDTOFactory.criarProdutoDTO(produto);
     });
 
     return produtoEntityList;

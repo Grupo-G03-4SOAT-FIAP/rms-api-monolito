@@ -4,12 +4,14 @@ import {
   IsOptional,
   IsEmail,
   MaxLength,
+  IsDefined,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CriaClienteDTO {
   @IsString()
   @IsNotEmpty({ message: 'Nome do Cliente não pode ser vazio' })
+  @IsDefined({ each: true, message: 'Nome não pode ser nulo' })
   @ApiProperty({ description: 'Nome do cliente' })
   nome: string;
 
@@ -17,6 +19,7 @@ export class CriaClienteDTO {
   @IsNotEmpty({
     message: 'Email não pode ser vazio',
   })
+  @IsDefined({ each: true, message: 'Email não pode ser nulo' })
   @ApiProperty({ description: 'Endereço de e-mail do cliente' })
   email: string;
 
@@ -27,6 +30,7 @@ export class CriaClienteDTO {
   @MaxLength(11, {
     message: 'CPF precisa ter 11 dígitos',
   })
+  @IsDefined({ each: true, message: 'CPF não pode ser nulo' })
   @ApiProperty({ description: 'CPF do cliente' })
   cpf: string;
 }
@@ -34,11 +38,13 @@ export class CriaClienteDTO {
 export class AtualizaClienteDTO {
   @IsString()
   @IsOptional()
+  @IsDefined({ each: true, message: 'Nome não pode ser nulo' })
   @ApiProperty({ description: 'Nome do cliente', required: false })
   nome?: string;
 
   @IsEmail()
   @IsOptional()
+  @IsDefined({ each: true, message: 'Nome não pode ser nulo' })
   @ApiProperty({
     description: 'Endereço de e-mail do cliente',
     required: false,

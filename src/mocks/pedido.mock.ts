@@ -7,6 +7,7 @@ import {
 import {
   itemPedidoDTOMock,
   itemPedidoEntityMock,
+  itemPedidoEntityNotIdMock,
   itemPedidoModelMock,
 } from './item_pedido.mock';
 import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
@@ -58,7 +59,7 @@ export const pedidoEntityNotDateMock = new PedidoEntity(
 
 // Mock para simular dados da entidade pedido sem id
 export const pedidoEntityNotIdMock = new PedidoEntity(
-  [itemPedidoEntityMock],
+  [itemPedidoEntityNotIdMock],
   StatusPedido.RECEBIDO,
   '05012024',
   false,
@@ -140,8 +141,8 @@ export const pedidoRepositoryMock = {
   listarPedidosRecebido: jest.fn(),
 };
 
-// Mock jest da função do repository dto de pedido
-export const pedidoRepositoryDTOMock = {
+// Mock jest da função do factory sql dto de pedido
+export const pedidoSQLDTOFactoryMock = {
   criarPedidoDTO: jest.fn(),
 };
 
@@ -156,12 +157,6 @@ export const pedidoFactoryMock = {
   criarItemPedido: jest.fn(),
   criarEntidadeCliente: jest.fn(),
   criarEntidadePedido: jest.fn(),
-};
-
-// Mock jest das funções da factory que cria entidade pedido
-export const pedidoEntityFactoryMock = {
-  criarEntidadePedido: jest.fn(),
-  criarEntidadeItemPedido: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria DTO pedido

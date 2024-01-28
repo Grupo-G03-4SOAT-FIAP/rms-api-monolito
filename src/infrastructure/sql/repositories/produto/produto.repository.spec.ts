@@ -3,12 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutoRepository } from './produto.repository';
 import { ProdutoModel } from '../../models/produto.model';
 import {
-  produtoRepositoryDTOMock,
+  produtoSQLDTOFactoryMock,
   produtoEntityNotIdMock,
   produtoModelMock,
   produtoTypeORMMock,
 } from 'src/mocks/produto.mock';
-import { RepositoryDTO } from '../repository.dto';
+import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
@@ -32,8 +32,8 @@ describe('ProdutoRepository', () => {
           useValue: produtoTypeORMMock,
         },
         {
-          provide: RepositoryDTO,
-          useValue: produtoRepositoryDTOMock,
+          provide: SQLDTOFactory,
+          useValue: produtoSQLDTOFactoryMock,
         },
       ],
     }).compile();
@@ -54,7 +54,7 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.save.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
-    produtoRepositoryDTOMock.criarProdutoDTO.mockReturnValue(
+    produtoSQLDTOFactoryMock.criarProdutoDTO.mockReturnValue(
       produtoEntityNotIdMock,
     );
 
@@ -64,7 +64,7 @@ describe('ProdutoRepository', () => {
       produtoEntityNotIdMock,
     );
     expect(produtoTypeORMMock.save).toHaveBeenCalledWith(produtoModelMock);
-    expect(produtoRepositoryDTOMock.criarProdutoDTO).toHaveBeenCalledWith(
+    expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
     );
     expect(result).toStrictEqual(produtoEntityNotIdMock);
@@ -75,7 +75,7 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
-    produtoRepositoryDTOMock.criarProdutoDTO.mockReturnValue(
+    produtoSQLDTOFactoryMock.criarProdutoDTO.mockReturnValue(
       produtoEntityNotIdMock,
     );
 
@@ -95,7 +95,7 @@ describe('ProdutoRepository', () => {
       where: { id: produtoId },
       relations: relations,
     });
-    expect(produtoRepositoryDTOMock.criarProdutoDTO).toHaveBeenCalledWith(
+    expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
     );
     expect(result).toStrictEqual(produtoEntityNotIdMock);
@@ -105,7 +105,7 @@ describe('ProdutoRepository', () => {
     produtoSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const clienteService = new ProdutoRepository(
-      produtoRepositoryDTOMock as any,
+      produtoSQLDTOFactoryMock as any,
       produtoSoftDeleteMock as any,
     ); // Usar "any" para evitar problemas de tipo
 
@@ -120,7 +120,7 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
-    produtoRepositoryDTOMock.criarProdutoDTO.mockReturnValue(
+    produtoSQLDTOFactoryMock.criarProdutoDTO.mockReturnValue(
       produtoEntityNotIdMock,
     );
 
@@ -130,7 +130,7 @@ describe('ProdutoRepository', () => {
       where: { id: produtoId },
       relations: relations,
     });
-    expect(produtoRepositoryDTOMock.criarProdutoDTO).toHaveBeenCalledWith(
+    expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
     );
     expect(result).toStrictEqual(produtoEntityNotIdMock);
@@ -152,7 +152,7 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(produtoModelMock),
     );
-    produtoRepositoryDTOMock.criarProdutoDTO.mockReturnValue(
+    produtoSQLDTOFactoryMock.criarProdutoDTO.mockReturnValue(
       produtoEntityNotIdMock,
     );
 
@@ -162,7 +162,7 @@ describe('ProdutoRepository', () => {
       where: { nome: nomeProduto },
       relations: relations,
     });
-    expect(produtoRepositoryDTOMock.criarProdutoDTO).toHaveBeenCalledWith(
+    expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
     );
     expect(result).toStrictEqual(produtoEntityNotIdMock);
@@ -194,7 +194,7 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.find.mockResolvedValue(
       Promise.resolve(listaProdutoModel),
     );
-    produtoRepositoryDTOMock.criarProdutoDTO.mockReturnValue(
+    produtoSQLDTOFactoryMock.criarProdutoDTO.mockReturnValue(
       produtoEntityNotIdMock,
     );
 
@@ -203,7 +203,7 @@ describe('ProdutoRepository', () => {
     expect(produtoTypeORMMock.find).toHaveBeenCalledWith({
       relations: relations,
     });
-    expect(produtoRepositoryDTOMock.criarProdutoDTO).toHaveBeenCalledWith(
+    expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
     );
     expect(result).toStrictEqual(listaProdutoEntity);
@@ -235,7 +235,7 @@ describe('ProdutoRepository', () => {
     produtoTypeORMMock.find.mockResolvedValue(
       Promise.resolve(listaProdutoModel),
     );
-    produtoRepositoryDTOMock.criarProdutoDTO.mockReturnValue(
+    produtoSQLDTOFactoryMock.criarProdutoDTO.mockReturnValue(
       produtoEntityNotIdMock,
     );
 
@@ -246,7 +246,7 @@ describe('ProdutoRepository', () => {
       where: { categoria: { id: categoriaId } },
       relations: relations,
     });
-    expect(produtoRepositoryDTOMock.criarProdutoDTO).toHaveBeenCalledWith(
+    expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
     );
     expect(result).toStrictEqual(listaProdutoEntity);

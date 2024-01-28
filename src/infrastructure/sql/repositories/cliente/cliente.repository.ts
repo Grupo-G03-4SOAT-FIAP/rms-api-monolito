@@ -4,12 +4,12 @@ import { Injectable } from '@nestjs/common';
 import { ClienteModel } from '../../models/cliente.model';
 import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
-import { RepositoryDTO } from '../repository.dto';
+import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
 @Injectable()
 export class ClienteRepository implements IClienteRepository {
   constructor(
-    private readonly repositoryDTO: RepositoryDTO,
+    private readonly sqlDTOFactory: SQLDTOFactory,
     @InjectRepository(ClienteModel)
     private readonly clienteRepository: Repository<ClienteModel>,
   ) {}
@@ -17,7 +17,7 @@ export class ClienteRepository implements IClienteRepository {
   async criarCliente(cliente: ClienteEntity): Promise<ClienteEntity> {
     const clienteModel = this.clienteRepository.create(cliente);
     await this.clienteRepository.save(clienteModel);
-    return this.repositoryDTO.criarClienteDTO(clienteModel);
+    return this.sqlDTOFactory.criarClienteDTO(clienteModel);
   }
 
   async editarCliente(
@@ -30,7 +30,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { id: clienteId },
     });
     if (clienteModelAtualizado) {
-      return this.repositoryDTO.criarClienteDTO(clienteModelAtualizado);
+      return this.sqlDTOFactory.criarClienteDTO(clienteModelAtualizado);
     }
     return null;
   }
@@ -44,7 +44,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { id: clienteId },
     });
     if (clienteModel) {
-      return this.repositoryDTO.criarClienteDTO(clienteModel);
+      return this.sqlDTOFactory.criarClienteDTO(clienteModel);
     }
     return null;
   }
@@ -54,7 +54,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { cpf: cpfCliente },
     });
     if (clienteModel) {
-      return this.repositoryDTO.criarClienteDTO(clienteModel);
+      return this.sqlDTOFactory.criarClienteDTO(clienteModel);
     }
     return null;
   }
@@ -66,7 +66,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { email: emailCliente },
     });
     if (clienteModel) {
-      return this.repositoryDTO.criarClienteDTO(clienteModel);
+      return this.sqlDTOFactory.criarClienteDTO(clienteModel);
     }
     return null;
   }
@@ -74,7 +74,7 @@ export class ClienteRepository implements IClienteRepository {
   async listarClientes(): Promise<[] | ClienteEntity[]> {
     const listaClienteModel = await this.clienteRepository.find({});
     const clienteEntityList = listaClienteModel.map((cliente: ClienteModel) => {
-      return this.repositoryDTO.criarClienteDTO(cliente);
+      return this.sqlDTOFactory.criarClienteDTO(cliente);
     });
 
     return clienteEntityList;

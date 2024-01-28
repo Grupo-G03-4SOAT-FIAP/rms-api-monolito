@@ -4,12 +4,12 @@ import { Repository } from 'typeorm';
 import { CategoriaModel } from '../../models/categoria.model';
 import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
-import { RepositoryDTO } from '../repository.dto';
+import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
 @Injectable()
 export class CategoriaRepository implements ICategoriaRepository {
   constructor(
-    private readonly repositoryDTO: RepositoryDTO,
+    private readonly sqlDTOFactory: SQLDTOFactory,
     @InjectRepository(CategoriaModel)
     private readonly categoriaRepository: Repository<CategoriaModel>,
   ) {}
@@ -17,7 +17,7 @@ export class CategoriaRepository implements ICategoriaRepository {
   async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaEntity> {
     const categoriaModel = this.categoriaRepository.create(categoria);
     await this.categoriaRepository.save(categoriaModel);
-    return this.repositoryDTO.criarCategoriaDTO(categoriaModel);
+    return this.sqlDTOFactory.criarCategoriaDTO(categoriaModel);
   }
 
   async editarCategoria(
@@ -30,7 +30,7 @@ export class CategoriaRepository implements ICategoriaRepository {
       where: { id: categoriaId },
     });
     if (categoriaModelAtualizado) {
-      return this.repositoryDTO.criarCategoriaDTO(categoriaModelAtualizado);
+      return this.sqlDTOFactory.criarCategoriaDTO(categoriaModelAtualizado);
     }
     return null;
   }
@@ -46,7 +46,7 @@ export class CategoriaRepository implements ICategoriaRepository {
       where: { id: categoriaId },
     });
     if (categoriaModel) {
-      return this.repositoryDTO.criarCategoriaDTO(categoriaModel);
+      return this.sqlDTOFactory.criarCategoriaDTO(categoriaModel);
     }
     return null;
   }
@@ -58,7 +58,7 @@ export class CategoriaRepository implements ICategoriaRepository {
       where: { nome: nomeCategoria },
     });
     if (categoriaModel) {
-      return this.repositoryDTO.criarCategoriaDTO(categoriaModel);
+      return this.sqlDTOFactory.criarCategoriaDTO(categoriaModel);
     }
     return null;
   }
@@ -67,7 +67,7 @@ export class CategoriaRepository implements ICategoriaRepository {
     const listaCategoriaModel = await this.categoriaRepository.find({});
     const categoriaEntityList = listaCategoriaModel.map(
       (categoria: CategoriaModel) => {
-        return this.repositoryDTO.criarCategoriaDTO(categoria);
+        return this.sqlDTOFactory.criarCategoriaDTO(categoria);
       },
     );
 
