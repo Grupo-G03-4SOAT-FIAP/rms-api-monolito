@@ -51,7 +51,7 @@ export class PedidoUseCase implements IPedidoUseCase {
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
     const mercadoPagoIsEnabled =
-      this.configService.get<string>('ENABLE_MERCADOPAGO').toLowerCase() ===
+      this.configService.get<string>('ENABLE_MERCADOPAGO')?.toLowerCase() ===
       'true';
 
     if (mercadoPagoIsEnabled) {
