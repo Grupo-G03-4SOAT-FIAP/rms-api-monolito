@@ -10,6 +10,7 @@ import {
   categoriaDTOFactoryMock,
   categoriaDTOMock,
   categoriaEntityMock,
+  categoriaEntityNotIdMock,
   categoriaRepositoryMock,
   criaCategoriaDTOMock,
 } from 'src/mocks/categoria.mock';
@@ -49,7 +50,7 @@ describe('CategoriaUseCase', () => {
     const result = await categoriaUseCase.criarCategoria(criaCategoriaDTOMock);
 
     expect(categoriaRepositoryMock.criarCategoria).toHaveBeenCalledWith(
-      categoriaEntityMock,
+      categoriaEntityNotIdMock,
     );
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaEntityMock,
@@ -95,7 +96,7 @@ describe('CategoriaUseCase', () => {
     );
     expect(categoriaRepositoryMock.editarCategoria).toHaveBeenCalledWith(
       categoriaId,
-      categoriaEntityMock,
+      categoriaEntityNotIdMock,
     );
     expect(categoriaDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaEntityMock,

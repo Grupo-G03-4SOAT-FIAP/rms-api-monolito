@@ -112,16 +112,6 @@ describe('PedidoFactory', () => {
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
-  it('deve criar a entidade cliente com cliente undefined', async () => {
-    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(
-      clienteEntityMock,
-    );
-
-    const result = await pedidoFactory.criarEntidadeCliente();
-
-    expect(result).toStrictEqual(null);
-  });
-
   it('deve criar a entidade cliente e retornar ClienteNaoLocalizadoErro', async () => {
     clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(null);
 

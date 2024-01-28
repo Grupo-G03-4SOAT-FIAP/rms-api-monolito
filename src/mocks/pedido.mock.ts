@@ -7,6 +7,7 @@ import {
 import {
   itemPedidoDTOMock,
   itemPedidoEntityMock,
+  itemPedidoEntityNotIdMock,
   itemPedidoModelMock,
 } from './item_pedido.mock';
 import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
@@ -58,7 +59,7 @@ export const pedidoEntityNotDateMock = new PedidoEntity(
 
 // Mock para simular dados da entidade pedido sem id
 export const pedidoEntityNotIdMock = new PedidoEntity(
-  [itemPedidoEntityMock],
+  [itemPedidoEntityNotIdMock],
   StatusPedido.RECEBIDO,
   '05012024',
   false,
