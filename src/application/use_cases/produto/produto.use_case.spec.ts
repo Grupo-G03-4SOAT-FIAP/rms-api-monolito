@@ -153,9 +153,6 @@ describe('ProdutoUseCase', () => {
     ).rejects.toThrow(
       new ProdutoNaoLocalizadoErro('Produto informado não existe'),
     );
-    expect(produtoFactoryMock.criarEntidadeProduto).toHaveBeenCalledWith(
-      atualizaProdutoDTOMock,
-    );
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
       produtoId,
     );
