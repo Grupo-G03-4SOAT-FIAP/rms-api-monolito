@@ -73,10 +73,10 @@ export class ProdutoUseCase implements IProdutoUseCase {
     produtoId: string,
     produto: AtualizaProdutoDTO,
   ): Promise<HTTPResponse<ProdutoDTO>> {
+    await this.validarProdutoPorId(produtoId);
+    
     const produtoEntity =
       await this.produtoFactory.criarEntidadeProduto(produto);
-
-    await this.validarProdutoPorId(produtoId);
 
     if (produtoEntity.nome) {
       await this.validarProdutoPorNome(produtoEntity.nome);
