@@ -17,24 +17,25 @@ export class ProdutoFactory implements IProdutoFactory {
   ) {}
 
   async criarEntidadeCategoria(categoriaId: string): Promise<CategoriaEntity> {
-    const buscaCategoria =
+    const categoria =
       await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-    if (!buscaCategoria) {
+    if (!categoria) {
       throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
 
-    const { nome, descricao, id } = buscaCategoria;
-    const categoriaEntity = new CategoriaEntity(nome, descricao, id);
-    return categoriaEntity;
+    return new CategoriaEntity(
+      categoria.nome,
+      categoria.descricao,
+      categoria.id,
+    );
   }
 
   async criarEntidadeProduto(
     produto: CriaProdutoDTO | AtualizaProdutoDTO,
   ): Promise<ProdutoEntity> {
-    let categoriaEntity = undefined;
-    if (produto.categoriaId) {
-      categoriaEntity = await this.criarEntidadeCategoria(produto.categoriaId);
-    }
+    const categoriaEntity = await this.criarEntidadeCategoria(
+      produto.categoriaId,
+    );
 
     return new ProdutoEntity(
       produto.nome,

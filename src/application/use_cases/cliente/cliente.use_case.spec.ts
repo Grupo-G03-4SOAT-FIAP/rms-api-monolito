@@ -4,17 +4,14 @@ import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.reposi
 import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
 import {
   atualizaClienteDTOMock,
-  atualizaClienteDTONomeNullMock,
   clienteDTOFactoryMock,
   clienteDTOMock,
-  clienteEntityFactoryMock,
   clienteEntityMock,
   clienteEntityNotCpfMock,
   clienteEntityNotIdMock,
   clienteRepositoryMock,
   criaClienteDTOMock,
 } from 'src/mocks/cliente.mock';
-import { IClienteEntityFactory } from 'src/domain/cliente/interfaces/cliente.entity.factory.port';
 
 describe('ClienteUseCase', () => {
   let clienteUseCase: ClienteUseCase;
@@ -28,10 +25,6 @@ describe('ClienteUseCase', () => {
         {
           provide: IClienteRepository,
           useValue: clienteRepositoryMock,
-        },
-        {
-          provide: IClienteEntityFactory,
-          useValue: clienteEntityFactoryMock,
         },
         {
           provide: IClienteDTOFactory,
@@ -52,9 +45,6 @@ describe('ClienteUseCase', () => {
   it('deve criar um cliente com sucesso', async () => {
     clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(null);
     clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(null);
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityNotIdMock,
-    );
     clienteRepositoryMock.criarCliente.mockReturnValue(clienteEntityMock);
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
 
@@ -64,11 +54,6 @@ describe('ClienteUseCase', () => {
       criaClienteDTOMock.email,
     );
     expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalledWith(
-      criaClienteDTOMock.cpf,
-    );
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      criaClienteDTOMock.nome,
-      criaClienteDTOMock.email,
       criaClienteDTOMock.cpf,
     );
     expect(clienteRepositoryMock.criarCliente).toHaveBeenCalledWith(
@@ -117,9 +102,6 @@ describe('ClienteUseCase', () => {
   it('deve editar um cliente com sucesso', async () => {
     clienteRepositoryMock.buscarClientePorId.mockReturnValue(clienteEntityMock);
     clienteRepositoryMock.buscarClientePorEmail.mockReturnValue(null);
-    clienteEntityFactoryMock.criarEntidadeCliente.mockReturnValue(
-      clienteEntityNotCpfMock,
-    );
     clienteRepositoryMock.editarCliente.mockReturnValue(clienteEntityMock);
     clienteDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteDTOMock);
 
@@ -134,10 +116,6 @@ describe('ClienteUseCase', () => {
     expect(clienteRepositoryMock.buscarClientePorEmail).toHaveBeenCalledWith(
       atualizaClienteDTOMock.email,
     );
-    expect(clienteEntityFactoryMock.criarEntidadeCliente).toHaveBeenCalledWith(
-      atualizaClienteDTOMock.nome,
-      atualizaClienteDTOMock.email,
-    );
     expect(clienteRepositoryMock.editarCliente).toHaveBeenCalledWith(
       clienteId,
       clienteEntityNotCpfMock,
@@ -149,12 +127,6 @@ describe('ClienteUseCase', () => {
       mensagem: 'Cliente atualizado com sucesso',
       body: clienteDTOMock,
     });
-  });
-
-  it('deve retornar erro ao editar um cliente com nome nulo', async () => {
-    await expect(
-      clienteUseCase.editarCliente(clienteId, atualizaClienteDTONomeNullMock),
-    ).rejects.toThrow('Nome não pode ser nulo');
   });
 
   it('deve retornar erro ao editar um cliente que não existe', async () => {

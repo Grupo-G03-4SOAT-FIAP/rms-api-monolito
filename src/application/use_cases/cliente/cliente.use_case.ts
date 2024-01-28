@@ -4,10 +4,8 @@ import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
 import {
   ClienteDuplicadoErro,
   ClienteNaoLocalizadoErro,
-  ClienteNomeUndefinedErro,
 } from 'src/domain/cliente/exceptions/cliente.exception';
 import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
-import { IClienteEntityFactory } from 'src/domain/cliente/interfaces/cliente.entity.factory.port';
 import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 import { IClienteUseCase } from 'src/domain/cliente/interfaces/cliente.use_case.port';
 import {
@@ -21,8 +19,6 @@ export class ClienteUseCase implements IClienteUseCase {
   constructor(
     @Inject(IClienteRepository)
     private readonly clienteRepository: IClienteRepository,
-    @Inject(IClienteEntityFactory)
-    private readonly clienteEntityFactory: IClienteEntityFactory,
     @Inject(IClienteDTOFactory)
     private readonly clienteDTOFactory: IClienteDTOFactory,
   ) {}
@@ -70,11 +66,7 @@ export class ClienteUseCase implements IClienteUseCase {
       await this.validarClientePorCPF(cpf);
     }
 
-    const clienteEntity = this.clienteEntityFactory.criarEntidadeCliente(
-      nome,
-      email,
-      cpf,
-    );
+    const clienteEntity = new ClienteEntity(nome, email, cpf);
     const result = await this.clienteRepository.criarCliente(clienteEntity);
     const clienteDTO = this.clienteDTOFactory.criarClienteDTO(result);
 
@@ -90,20 +82,13 @@ export class ClienteUseCase implements IClienteUseCase {
   ): Promise<HTTPResponse<ClienteDTO>> {
     const { nome, email } = cliente;
 
-    if (nome == null) {
-      throw new ClienteNomeUndefinedErro('Nome não pode ser nulo');
-    }
-
     await this.validarClientePorId(clienteId);
 
     if (email) {
       await this.validarClientePorEmail(email);
     }
 
-    const clienteEntity = this.clienteEntityFactory.criarEntidadeCliente(
-      nome,
-      email,
-    );
+    const clienteEntity = new ClienteEntity(nome, email);
     const result = await this.clienteRepository.editarCliente(
       clienteId,
       clienteEntity,

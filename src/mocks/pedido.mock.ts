@@ -140,8 +140,8 @@ export const pedidoRepositoryMock = {
   listarPedidosRecebido: jest.fn(),
 };
 
-// Mock jest da função do repository dto de pedido
-export const pedidoRepositoryDTOMock = {
+// Mock jest da função do factory sql dto de pedido
+export const pedidoSQLDTOFactoryMock = {
   criarPedidoDTO: jest.fn(),
 };
 
@@ -156,12 +156,6 @@ export const pedidoFactoryMock = {
   criarItemPedido: jest.fn(),
   criarEntidadeCliente: jest.fn(),
   criarEntidadePedido: jest.fn(),
-};
-
-// Mock jest das funções da factory que cria entidade pedido
-export const pedidoEntityFactoryMock = {
-  criarEntidadePedido: jest.fn(),
-  criarEntidadeItemPedido: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria DTO pedido

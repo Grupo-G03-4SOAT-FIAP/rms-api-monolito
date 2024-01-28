@@ -41,6 +41,10 @@ run:
 run-dev:
 	@npm run start:dev
 
+.PHONY: run-debug ## Run server with debug settings
+run-debug:
+	@npm run start:debug
+
 
 ###
 # Docker section

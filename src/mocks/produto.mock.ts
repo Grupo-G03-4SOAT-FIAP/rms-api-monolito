@@ -99,8 +99,8 @@ export const produtoRepositoryMock = {
   listarProdutosPorCategoria: jest.fn(),
 };
 
-// Mock jest da função do repository dto de produto
-export const produtoRepositoryDTOMock = {
+// Mock jest da função do factory sql dto de produto
+export const produtoSQLDTOFactoryMock = {
   criarProdutoDTO: jest.fn(),
 };
 
@@ -124,10 +124,4 @@ export const produtoUseCaseMock = {
   buscarProduto: jest.fn(),
   listarProdutos: jest.fn(),
   listarProdutosPorCategoria: jest.fn(),
-};
-
-// Mock jest das funções da factory que cria entidade produto
-export const produtoEntityFactoryMock = {
-  criarEntidadeCategoria: jest.fn(),
-  criarEntidadeProduto: jest.fn(),
 };

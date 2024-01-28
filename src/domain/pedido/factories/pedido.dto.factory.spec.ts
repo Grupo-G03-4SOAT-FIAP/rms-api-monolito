@@ -6,7 +6,8 @@ import { produtoDTOFactoryMock, produtoDTOMock } from 'src/mocks/produto.mock';
 import { clienteDTOFactoryMock, clienteDTOMock } from 'src/mocks/cliente.mock';
 import { pedidoDTOMock, pedidoEntityMock } from 'src/mocks/pedido.mock';
 import {
-  itemPedidoDTOMock, itemPedidoEntityMock,
+  itemPedidoDTOMock,
+  itemPedidoEntityMock,
 } from 'src/mocks/item_pedido.mock';
 
 describe('PedidoDTOFactory', () => {

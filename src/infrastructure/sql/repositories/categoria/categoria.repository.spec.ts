@@ -5,10 +5,10 @@ import { CategoriaRepository } from './categoria.repository';
 import {
   categoriaEntityMock,
   categoriaModelMock,
-  categoriaRepositoryDTOMock,
+  categoriaSQLDTOFactoryMock,
   categoriaTypeORMMock,
 } from 'src/mocks/categoria.mock';
-import { RepositoryDTO } from '../repository.dto';
+import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
 class softDeleteMock {
   softDelete: jest.Mock = jest.fn();
@@ -30,8 +30,8 @@ describe('CategoriaRepository', () => {
           useValue: categoriaTypeORMMock,
         },
         {
-          provide: RepositoryDTO,
-          useValue: categoriaRepositoryDTOMock,
+          provide: SQLDTOFactory,
+          useValue: categoriaSQLDTOFactoryMock,
         },
       ],
     }).compile();
@@ -50,7 +50,7 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.save.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
+    categoriaSQLDTOFactoryMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -61,7 +61,7 @@ describe('CategoriaRepository', () => {
       categoriaEntityMock,
     );
     expect(categoriaTypeORMMock.save).toHaveBeenCalledWith(categoriaModelMock);
-    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+    expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaModelMock,
     );
     expect(result).toStrictEqual(categoriaEntityMock);
@@ -72,7 +72,7 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
+    categoriaSQLDTOFactoryMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -91,7 +91,7 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
     });
-    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+    expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaModelMock,
     );
     expect(result).toStrictEqual(categoriaEntityMock);
@@ -101,7 +101,7 @@ describe('CategoriaRepository', () => {
     categoriaSoftDeleteMock.softDelete.mockResolvedValue({ affected: 1 });
 
     const categoriaService = new CategoriaRepository(
-      categoriaRepositoryDTOMock as any,
+      categoriaSQLDTOFactoryMock as any,
       categoriaSoftDeleteMock as any,
     ); // Usar "any" para evitar problemas de tipo
 
@@ -116,7 +116,7 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
+    categoriaSQLDTOFactoryMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -125,7 +125,7 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: categoriaId },
     });
-    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+    expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaModelMock,
     );
     expect(result).toStrictEqual(categoriaEntityMock);
@@ -146,7 +146,7 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.findOne.mockReturnValue(
       Promise.resolve(categoriaModelMock),
     );
-    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
+    categoriaSQLDTOFactoryMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
@@ -156,7 +156,7 @@ describe('CategoriaRepository', () => {
     expect(categoriaTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { nome: nomeCategoria },
     });
-    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+    expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaModelMock,
     );
     expect(result).toStrictEqual(categoriaEntityMock);
@@ -188,14 +188,14 @@ describe('CategoriaRepository', () => {
     categoriaTypeORMMock.find.mockReturnValue(
       Promise.resolve(listaCategoriaModel),
     );
-    categoriaRepositoryDTOMock.criarCategoriaDTO.mockReturnValue(
+    categoriaSQLDTOFactoryMock.criarCategoriaDTO.mockReturnValue(
       categoriaEntityMock,
     );
 
     const result = await categoriaRepository.listarCategorias();
 
     expect(categoriaTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(categoriaRepositoryDTOMock.criarCategoriaDTO).toHaveBeenCalledWith(
+    expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaModelMock,
     );
     expect(result).toStrictEqual(listaCategoriaEntity);

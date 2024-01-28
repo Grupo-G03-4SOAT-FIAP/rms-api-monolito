@@ -1,33 +1,19 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CategoriaModel } from '../models/categoria.model';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
-import { ICategoriaEntityFactory } from 'src/domain/categoria/interfaces/categoria.entity.factory.port';
-import { IProdutoEntityFactory } from 'src/domain/produto/interfaces/produto.entity.factory.port';
 import { ProdutoModel } from '../models/produto.model';
 import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
-import { IClienteEntityFactory } from 'src/domain/cliente/interfaces/cliente.entity.factory.port';
 import { ClienteModel } from '../models/cliente.model';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
 import { PedidoModel } from '../models/pedido.model';
 import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
 import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
-import { IPedidoEntityFactory } from 'src/domain/pedido/interfaces/pedido.entity.factory.port';
+import { ItemPedidoEntity } from 'src/domain/pedido/entities/item_pedido.entity';
 
 @Injectable()
-export class RepositoryDTO {
-  constructor(
-    @Inject(ICategoriaEntityFactory)
-    private readonly categoriaEntityFactory: ICategoriaEntityFactory,
-    @Inject(IProdutoEntityFactory)
-    private readonly produtoEntityFactory: IProdutoEntityFactory,
-    @Inject(IClienteEntityFactory)
-    private readonly clienteEntityFactory: IClienteEntityFactory,
-    @Inject(IPedidoEntityFactory)
-    private readonly pedidoEntityFactory: IPedidoEntityFactory,
-  ) {}
-
+export class SQLDTOFactory {
   criarCategoriaDTO(categoria: CategoriaModel): CategoriaEntity {
-    return this.categoriaEntityFactory.criarEntidadeCategoria(
+    return new CategoriaEntity(
       categoria.nome,
       categoria.descricao,
       categoria.id,
@@ -36,7 +22,7 @@ export class RepositoryDTO {
 
   criarProdutoDTO(produto: ProdutoModel): ProdutoEntity {
     const categoriaEntity = this.criarCategoriaDTO(produto.categoria);
-    return this.produtoEntityFactory.criarEntidadeProduto(
+    return new ProdutoEntity(
       produto.nome,
       categoriaEntity,
       produto.valorUnitario,
@@ -47,7 +33,10 @@ export class RepositoryDTO {
   }
 
   criarClienteDTO(cliente: ClienteModel): ClienteEntity {
-    return this.clienteEntityFactory.criarEntidadeCliente(
+    if (!cliente) {
+      return null;
+    }
+    return new ClienteEntity(
       cliente.nome,
       cliente.email,
       cliente.cpf,
@@ -60,14 +49,14 @@ export class RepositoryDTO {
 
     const itensPedido = pedido.itensPedido.map((itemPedidoModel) => {
       const produtoEntity = this.criarProdutoDTO(itemPedidoModel.produto);
-      return this.pedidoEntityFactory.criarEntidadeItemPedido(
+      return new ItemPedidoEntity(
         produtoEntity,
         itemPedidoModel.quantidade,
         itemPedidoModel.id,
       );
     });
 
-    return this.pedidoEntityFactory.criarEntidadePedido(
+    return new PedidoEntity(
       itensPedido,
       StatusPedido[pedido.statusPedido],
       pedido.numeroPedido,

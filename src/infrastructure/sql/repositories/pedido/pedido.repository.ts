@@ -6,7 +6,7 @@ import { ItemPedidoModel } from '../../models/item_pedido.model';
 import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
 import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
 import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
-import { RepositoryDTO } from '../repository.dto';
+import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
 @Injectable()
 export class PedidoRepository implements IPedidoRepository {
@@ -18,7 +18,7 @@ export class PedidoRepository implements IPedidoRepository {
   ];
 
   constructor(
-    private readonly repositoryDTO: RepositoryDTO,
+    private readonly sqlDTOFactory: SQLDTOFactory,
     @InjectRepository(PedidoModel)
     private readonly pedidoRepository: Repository<PedidoModel>,
     @InjectRepository(ItemPedidoModel)
@@ -46,7 +46,7 @@ export class PedidoRepository implements IPedidoRepository {
       where: { id: pedidoModel.id },
       relations: this.relations,
     });
-    return this.repositoryDTO.criarPedidoDTO(pedidoComItemModel);
+    return this.sqlDTOFactory.criarPedidoDTO(pedidoComItemModel);
   }
 
   async editarStatusPedido(
@@ -62,7 +62,7 @@ export class PedidoRepository implements IPedidoRepository {
       relations: this.relations,
     });
     if (pedidoModelAtualizado) {
-      return this.repositoryDTO.criarPedidoDTO(pedidoModelAtualizado);
+      return this.sqlDTOFactory.criarPedidoDTO(pedidoModelAtualizado);
     }
     return null;
   }
@@ -80,7 +80,7 @@ export class PedidoRepository implements IPedidoRepository {
       relations: this.relations,
     });
     if (pedidoModelAtualizado) {
-      return this.repositoryDTO.criarPedidoDTO(pedidoModelAtualizado);
+      return this.sqlDTOFactory.criarPedidoDTO(pedidoModelAtualizado);
     }
     return null;
   }
@@ -92,7 +92,7 @@ export class PedidoRepository implements IPedidoRepository {
     });
 
     if (pedidoModel) {
-      return this.repositoryDTO.criarPedidoDTO(pedidoModel);
+      return this.sqlDTOFactory.criarPedidoDTO(pedidoModel);
     }
     return null;
   }
@@ -127,7 +127,7 @@ export class PedidoRepository implements IPedidoRepository {
     }
 
     const produtoEntityList = pedidos.map((pedido: PedidoModel) => {
-      return this.repositoryDTO.criarPedidoDTO(pedido);
+      return this.sqlDTOFactory.criarPedidoDTO(pedido);
     });
 
     return produtoEntityList;
@@ -145,7 +145,7 @@ export class PedidoRepository implements IPedidoRepository {
     });
 
     const produtoEntityList = pedidos.map((pedido: PedidoModel) => {
-      return this.repositoryDTO.criarPedidoDTO(pedido);
+      return this.sqlDTOFactory.criarPedidoDTO(pedido);
     });
 
     return produtoEntityList;
