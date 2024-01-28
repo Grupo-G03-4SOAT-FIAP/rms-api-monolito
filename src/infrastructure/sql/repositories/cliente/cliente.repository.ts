@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository, Not } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { ClienteModel } from '../../models/cliente.model';
 import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
@@ -16,13 +16,13 @@ export class ClienteRepository implements IClienteRepository {
 
   async criarCliente(cliente: ClienteEntity): Promise<ClienteEntity> {
     const clienteExistente = await this.clienteRepository.findOne({
-      where: { cpf: cliente.cpf},
-      withDeleted: true
+      where: { cpf: cliente.cpf },
+      withDeleted: true,
     });
-    console.log(clienteExistente)
+    console.log(clienteExistente);
 
     if (clienteExistente) {
-        this.clienteRepository.restore({
+      this.clienteRepository.restore({
         id: clienteExistente.id,
       });
       return this.sqlDTOFactory.criarClienteDTO(clienteExistente);
