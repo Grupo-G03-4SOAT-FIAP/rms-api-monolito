@@ -58,7 +58,7 @@ export class SQLDTOFactory {
 
     return new PedidoEntity(
       itensPedido,
-      StatusPedido[pedido.statusPedido],
+      pedido.statusPedido as StatusPedido,
       pedido.numeroPedido,
       pedido.pago,
       clienteEntity,
