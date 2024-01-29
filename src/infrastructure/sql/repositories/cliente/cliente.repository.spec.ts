@@ -50,6 +50,10 @@ describe('ClienteRepository', () => {
   });
 
   it('deve criar um cliente', async () => {
+    clienteTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(clienteModelMock),
+    );
+    clienteTypeORMMock.findOne.mockReturnValue(null);
     clienteTypeORMMock.create.mockReturnValue(clienteModelMock);
     clienteTypeORMMock.save.mockResolvedValue(
       Promise.resolve(clienteModelMock),
@@ -62,6 +66,32 @@ describe('ClienteRepository', () => {
       clienteEntityNotIdMock,
     );
     expect(clienteTypeORMMock.save).toHaveBeenCalledWith(clienteModelMock);
+    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
+      clienteModelMock,
+    );
+    expect(result).toStrictEqual(clienteEntityMock);
+  });
+
+  it('deve restaurar um cliente', async () => {
+    clienteTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(clienteModelMock),
+    );
+    clienteTypeORMMock.findOne.mockReturnValue(
+      Promise.resolve(clienteModelMock),
+    );
+
+    clienteTypeORMMock.restore.mockResolvedValue({
+      affected: 1,
+      raw: [{clienteModelMock}],
+      generatedMaps: [{}],
+    });
+    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+
+    const result = await clienteRepository.criarCliente(clienteEntityNotIdMock);
+
+    expect(clienteTypeORMMock.restore).toHaveBeenCalledWith({
+      id: clienteModelMock.id,
+    });
     expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
       clienteModelMock,
     );
