@@ -27,9 +27,9 @@ export class PedidoUseCase implements IPedidoUseCase {
     private readonly pedidoFactory: IPedidoFactory,
     @Inject(IGatewayPagamentoService)
     private readonly gatewayPagamentoService: IGatewayPagamentoService,
-    private configService: ConfigService,
     @Inject(IPedidoDTOFactory)
     private readonly pedidoDTOFactory: IPedidoDTOFactory,
+    private configService: ConfigService,
   ) {}
 
   private async validarPedidoPorId(
@@ -42,11 +42,11 @@ export class PedidoUseCase implements IPedidoUseCase {
     return pedido;
   }
 
-  async criarPedido(pedido: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-    const pedidoFactory = await this.pedidoFactory.criarEntidadePedido(pedido);
+  async criarPedido(criaPedidoDTO: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
+    const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);
 
-    const result = await this.pedidoRepository.criarPedido(pedidoFactory);
-    pedidoFactory.id = result.id;
+    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
+    pedidoEntity.id = result.id;
 
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
 
@@ -56,7 +56,7 @@ export class PedidoUseCase implements IPedidoUseCase {
 
     if (mercadoPagoIsEnabled) {
       const qrData =
-        await this.gatewayPagamentoService.criarPedido(pedidoFactory);
+        await this.gatewayPagamentoService.criarPedido(pedidoEntity);
       pedidoDTO.qrCode = qrData;
     }
 
