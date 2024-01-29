@@ -23,7 +23,6 @@ export class ProdutoRepository implements IProdutoRepository {
 
     if (produtoExistente) {
       await this.produtoRepository.restore({ id: produtoExistente.id });
-
       const produtoRestaurado = await this.produtoRepository.findOne({
         where: { id: produtoExistente.id },
         relations: this.relations
