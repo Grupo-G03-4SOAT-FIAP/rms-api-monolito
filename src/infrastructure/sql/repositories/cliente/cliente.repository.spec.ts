@@ -50,10 +50,7 @@ describe('ClienteRepository', () => {
   });
 
   it('deve criar um cliente', async () => {
-    clienteTypeORMMock.findOne.mockResolvedValue(
-      Promise.resolve(clienteModelMock),
-    );
-    clienteTypeORMMock.findOne.mockReturnValue(null);
+    clienteTypeORMMock.findOne.mockResolvedValue(null);
     clienteTypeORMMock.create.mockReturnValue(clienteModelMock);
     clienteTypeORMMock.save.mockResolvedValue(
       Promise.resolve(clienteModelMock),
@@ -76,10 +73,6 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteTypeORMMock.findOne.mockReturnValue(
-      Promise.resolve(clienteModelMock),
-    );
-
     clienteTypeORMMock.restore.mockResolvedValue({
       affected: 1,
       raw: [{clienteModelMock}],
