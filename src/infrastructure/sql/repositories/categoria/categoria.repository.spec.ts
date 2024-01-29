@@ -46,6 +46,7 @@ describe('CategoriaRepository', () => {
   });
 
   it('deve criar uma categoria', async () => {
+    categoriaTypeORMMock.findOne.mockReturnValue(null);
     categoriaTypeORMMock.create.mockReturnValue(categoriaModelMock);
     categoriaTypeORMMock.save.mockResolvedValue(
       Promise.resolve(categoriaModelMock),
@@ -61,6 +62,32 @@ describe('CategoriaRepository', () => {
       categoriaEntityMock,
     );
     expect(categoriaTypeORMMock.save).toHaveBeenCalledWith(categoriaModelMock);
+    expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
+      categoriaModelMock,
+    );
+    expect(result).toStrictEqual(categoriaEntityMock);
+  });
+
+  it('deve restaurar uma categoria', async () => {
+    categoriaTypeORMMock.findOne.mockReturnValue(
+      Promise.resolve(categoriaModelMock),
+    );
+
+    categoriaTypeORMMock.restore.mockResolvedValue({
+      affected: 1,
+      raw: [{ categoriaModelMock }],
+      generatedMaps: [{}],
+    });
+    categoriaSQLDTOFactoryMock.criarCategoriaDTO.mockReturnValue(
+      categoriaEntityMock,
+    );
+
+    const result =
+      await categoriaRepository.criarCategoria(categoriaEntityMock);
+
+    expect(categoriaTypeORMMock.restore).toHaveBeenCalledWith({
+      id: categoriaModelMock.id
+    });
     expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaModelMock,
     );

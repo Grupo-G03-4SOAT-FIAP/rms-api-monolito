@@ -58,6 +58,7 @@ export const categoriaTypeORMMock: jest.Mocked<Repository<CategoriaModel>> = {
   delete: jest.fn(),
   findOne: jest.fn(),
   find: jest.fn(),
+  restore: jest.fn(),
 } as Partial<jest.Mocked<Repository<CategoriaModel>>> as jest.Mocked<
   Repository<CategoriaModel>
 >;

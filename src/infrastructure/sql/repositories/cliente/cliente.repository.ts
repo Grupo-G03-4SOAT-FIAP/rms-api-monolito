@@ -19,8 +19,6 @@ export class ClienteRepository implements IClienteRepository {
       where: { cpf: cliente.cpf },
       withDeleted: true,
     });
-    console.log(clienteExistente);
-
     if (clienteExistente) {
       this.clienteRepository.restore({
         id: clienteExistente.id,

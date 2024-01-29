@@ -16,9 +16,24 @@ export class ProdutoRepository implements IProdutoRepository {
   ) {}
 
   async criarProduto(produto: ProdutoEntity): Promise<ProdutoEntity> {
-    const produtoModel = this.produtoRepository.create(produto);
-    await this.produtoRepository.save(produtoModel);
-    return this.sqlDTOFactory.criarProdutoDTO(produtoModel);
+    const produtoExistente = await this.produtoRepository.findOne({
+      where: { nome: produto.nome },
+      withDeleted: true,
+    });
+
+    if (produtoExistente) {
+      await this.produtoRepository.restore({ id: produtoExistente.id });
+      const produtoRestaurado = await this.produtoRepository.findOne({
+        where: { id: produtoExistente.id },
+        relations: this.relations
+      });
+
+      return this.sqlDTOFactory.criarProdutoDTO(produtoRestaurado);
+    } else {
+      const produtoModel = this.produtoRepository.create(produto);
+      await this.produtoRepository.save(produtoModel);
+      return this.sqlDTOFactory.criarProdutoDTO(produtoModel);
+    }
   }
 
   async editarProduto(

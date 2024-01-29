@@ -64,6 +64,7 @@ export const clienteTypeORMMock: jest.Mocked<Repository<ClienteModel>> = {
   delete: jest.fn(),
   findOne: jest.fn(),
   find: jest.fn(),
+  restore: jest.fn(),
 } as Partial<jest.Mocked<Repository<ClienteModel>>> as jest.Mocked<
   Repository<ClienteModel>
 >;

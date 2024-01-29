@@ -7,6 +7,7 @@ import {
   produtoEntityNotIdMock,
   produtoModelMock,
   produtoTypeORMMock,
+  produtoEntityMock,
 } from 'src/mocks/produto.mock';
 import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
@@ -50,6 +51,7 @@ describe('ProdutoRepository', () => {
   });
 
   it('deve criar um produto', async () => {
+    produtoTypeORMMock.findOne.mockResolvedValue(null);
     produtoTypeORMMock.create.mockReturnValue(produtoModelMock);
     produtoTypeORMMock.save.mockResolvedValue(
       Promise.resolve(produtoModelMock),
@@ -64,6 +66,45 @@ describe('ProdutoRepository', () => {
       produtoEntityNotIdMock,
     );
     expect(produtoTypeORMMock.save).toHaveBeenCalledWith(produtoModelMock);
+    expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
+      produtoModelMock,
+    );
+    expect(result).toStrictEqual(produtoEntityNotIdMock);
+  });
+
+  it('deve restaurar um produto', async () => {
+    produtoTypeORMMock.findOne
+      .mockResolvedValue(Promise.resolve(produtoModelMock))
+      .mockResolvedValue(Promise.resolve(produtoModelMock));
+    produtoTypeORMMock.restore.mockResolvedValue({
+      affected: 1,
+      raw: [{ produtoModelMock }],
+      generatedMaps: [{}],
+    });
+    produtoTypeORMMock.findOne.mockResolvedValue(
+      Promise.resolve(produtoModelMock),
+    );
+    produtoSQLDTOFactoryMock.criarProdutoDTO.mockReturnValue(
+      produtoEntityNotIdMock,
+    );
+
+    const result = await produtoRepository.criarProduto(produtoEntityNotIdMock);
+
+    expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
+      where: {
+        nome: produtoEntityMock.nome,
+      },
+      withDeleted: true,
+    });
+    expect(produtoTypeORMMock.restore).toHaveBeenCalledWith({
+      id: produtoModelMock.id,
+    });
+    expect(produtoTypeORMMock.findOne).toHaveBeenCalledWith({
+      where: {
+        id: produtoModelMock.id,
+      },
+      relations: ['categoria']
+    });
     expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,
     );

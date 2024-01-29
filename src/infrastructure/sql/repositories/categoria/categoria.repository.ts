@@ -15,9 +15,21 @@ export class CategoriaRepository implements ICategoriaRepository {
   ) {}
 
   async criarCategoria(categoria: CategoriaEntity): Promise<CategoriaEntity> {
-    const categoriaModel = this.categoriaRepository.create(categoria);
-    await this.categoriaRepository.save(categoriaModel);
-    return this.sqlDTOFactory.criarCategoriaDTO(categoriaModel);
+    const categoriaExistente = await this.categoriaRepository.findOne({
+      where: { nome: categoria.nome },
+      withDeleted: true,
+    });
+
+    if (categoriaExistente) {
+      await this.categoriaRepository.restore({
+        id: categoriaExistente.id
+      });
+      return this.sqlDTOFactory.criarCategoriaDTO(categoriaExistente)
+    } else {
+      const categoriaModel = this.categoriaRepository.create(categoria);
+      await this.categoriaRepository.save(categoriaModel);
+      return this.sqlDTOFactory.criarCategoriaDTO(categoriaModel);
+    }
   }
 
   async editarCategoria(
