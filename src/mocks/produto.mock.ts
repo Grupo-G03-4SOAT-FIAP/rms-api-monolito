@@ -84,6 +84,7 @@ export const produtoTypeORMMock: jest.Mocked<Repository<ProdutoModel>> = {
   delete: jest.fn(),
   findOne: jest.fn(),
   find: jest.fn(),
+  restore: jest.fn(),
 } as Partial<jest.Mocked<Repository<ProdutoModel>>> as jest.Mocked<
   Repository<ProdutoModel>
 >;
