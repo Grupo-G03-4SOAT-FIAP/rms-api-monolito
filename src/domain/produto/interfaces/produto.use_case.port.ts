@@ -6,15 +6,15 @@ import {
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
 
 export interface IProdutoUseCase {
-  criarProduto(produto: CriaProdutoDTO): Promise<HTTPResponse<ProdutoDTO>>;
-  editarProduto(
-    produtoId: string,
-    produto: AtualizaProdutoDTO,
-  ): Promise<HTTPResponse<ProdutoDTO>>;
-  excluirProduto(produtoId: string): Promise<Omit<HTTPResponse<void>, 'body'>>;
-  buscarProduto(produtoId: string): Promise<ProdutoDTO>;
   listarProdutos(): Promise<ProdutoDTO[] | []>;
-  listarProdutosPorCategoria(categoriaId: string): Promise<ProdutoDTO[] | []>;
+  listarProdutosPorCategoria(idCategoria: string): Promise<ProdutoDTO[] | []>;
+  buscarProduto(idProduto: string): Promise<ProdutoDTO>;
+  criarProduto(criaProdutoDTO: CriaProdutoDTO): Promise<HTTPResponse<ProdutoDTO>>;
+  editarProduto(
+    idProduto: string,
+    atualizaProdutoDTO: AtualizaProdutoDTO,
+  ): Promise<HTTPResponse<ProdutoDTO>>;
+  excluirProduto(idProduto: string): Promise<Omit<HTTPResponse<void>, 'body'>>;
 }
 
 export const IProdutoUseCase = Symbol('IProdutoUseCase');

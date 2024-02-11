@@ -21,42 +21,34 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     private readonly categoriaRepository: ICategoriaRepository,
     @Inject(ICategoriaDTOFactory)
     private readonly categoriaDTOFactory: ICategoriaDTOFactory,
-  ) {}
+  ) { }
 
-  private async validarCategoriaPorNome(
-    nomeCategoria: string,
-  ): Promise<CategoriaEntity | null> {
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
-    if (buscaCategoria) {
-      throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
-    }
-    return buscaCategoria;
+  async listarCategorias(): Promise<CategoriaDTO[] | []> {
+    const categorias = await this.categoriaRepository.listarCategorias();
+    const listaCategoriasDTO =
+      this.categoriaDTOFactory.criarListaCategoriaDTO(categorias);
+    return listaCategoriasDTO;
   }
 
-  private async validarCategoriaPorId(
-    categoriaId: string,
-  ): Promise<CategoriaEntity | null> {
-    const buscaCategoriaPorId =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-    if (!buscaCategoriaPorId) {
-      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
-    }
-    return buscaCategoriaPorId;
+  async buscarCategoria(idCategoria: string): Promise<CategoriaDTO> {
+    const categoriaEncontrada = await this.validarCategoriaPorId(idCategoria);
+    const categoriaDTO =
+      this.categoriaDTOFactory.criarCategoriaDTO(categoriaEncontrada);
+    return categoriaDTO;
   }
 
   async criarCategoria(
-    categoria: CriaCategoriaDTO,
+    criaCategoriaDTO: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
+    const categoria = new CategoriaEntity(
+      criaCategoriaDTO.nome,
+      criaCategoriaDTO.descricao,
     );
-    await this.validarCategoriaPorNome(categoriaEntity.nome);
-    const categoriaEntidade =
-      await this.categoriaRepository.criarCategoria(categoriaEntity);
+    await this.validarCategoriaPorNome(categoria.nome);
+    const categoriaCriada =
+      await this.categoriaRepository.criarCategoria(categoria);
     const categoriaDTO =
-      this.categoriaDTOFactory.criarCategoriaDTO(categoriaEntidade);
+      this.categoriaDTOFactory.criarCategoriaDTO(categoriaCriada);
     return {
       mensagem: 'Categoria criada com sucesso',
       body: categoriaDTO,
@@ -64,24 +56,22 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   }
 
   async editarCategoria(
-    categoriaId: string,
-    categoria: AtualizaCategoriaDTO,
+    idCategoria: string,
+    atualizaCategoriaDTO: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>> {
-    const categoriaEntity = new CategoriaEntity(
-      categoria.nome,
-      categoria.descricao,
+    const categoria = new CategoriaEntity(
+      atualizaCategoriaDTO.nome,
+      atualizaCategoriaDTO.descricao,
     );
-    await this.validarCategoriaPorId(categoriaId);
-
-    if (categoriaEntity.nome)
-      await this.validarCategoriaPorNome(categoriaEntity.nome);
-
-    const categoriaModel = await this.categoriaRepository.editarCategoria(
-      categoriaId,
-      categoriaEntity,
+    await this.validarCategoriaPorId(idCategoria);
+    if (categoria.nome)
+      await this.validarCategoriaPorNome(categoria.nome);
+    const categoriaEditada = await this.categoriaRepository.editarCategoria(
+      idCategoria,
+      categoria,
     );
     const categoriaDTO =
-      this.categoriaDTOFactory.criarCategoriaDTO(categoriaModel);
+      this.categoriaDTOFactory.criarCategoriaDTO(categoriaEditada);
     return {
       mensagem: 'Categoria atualizada com sucesso',
       body: categoriaDTO,
@@ -89,26 +79,34 @@ export class CategoriaUseCase implements ICategoriaUseCase {
   }
 
   async excluirCategoria(
-    categoriaId: string,
+    idCategoria: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
-    await this.validarCategoriaPorId(categoriaId);
-    await this.categoriaRepository.excluirCategoria(categoriaId);
+    await this.validarCategoriaPorId(idCategoria);
+    await this.categoriaRepository.excluirCategoria(idCategoria);
     return {
       mensagem: 'Categoria excluída com sucesso',
     };
   }
 
-  async buscarCategoria(categoriaId: string): Promise<CategoriaDTO> {
-    const categoriaModel = await this.validarCategoriaPorId(categoriaId);
-    const categoriaDTO =
-      this.categoriaDTOFactory.criarCategoriaDTO(categoriaModel);
-    return categoriaDTO;
+  private async validarCategoriaPorNome(
+    nomeCategoria: string,
+  ): Promise<CategoriaEntity | null> {
+    const categoriaEncontrada =
+      await this.categoriaRepository.buscarCategoriaPorNome(nomeCategoria);
+    if (categoriaEncontrada) {
+      throw new CategoriaDuplicadaErro('Existe uma categoria com esse nome');
+    }
+    return categoriaEncontrada;
   }
 
-  async listarCategorias(): Promise<CategoriaDTO[] | []> {
-    const categorias = await this.categoriaRepository.listarCategorias();
-    const listaCategoriasDTO =
-      this.categoriaDTOFactory.criarListaCategoriaDTO(categorias);
-    return listaCategoriasDTO;
+  private async validarCategoriaPorId(
+    idCategoria: string,
+  ): Promise<CategoriaEntity | null> {
+    const categoriaEncontrada =
+      await this.categoriaRepository.buscarCategoriaPorId(idCategoria);
+    if (!categoriaEncontrada) {
+      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+    }
+    return categoriaEncontrada;
   }
 }
