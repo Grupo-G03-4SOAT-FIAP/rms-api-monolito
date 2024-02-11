@@ -22,9 +22,9 @@ export class CategoriaRepository implements ICategoriaRepository {
 
     if (categoriaExistente) {
       await this.categoriaRepository.restore({
-        id: categoriaExistente.id
+        id: categoriaExistente.id,
       });
-      return this.sqlDTOFactory.criarCategoriaDTO(categoriaExistente)
+      return this.sqlDTOFactory.criarCategoriaDTO(categoriaExistente);
     } else {
       const categoriaModel = this.categoriaRepository.create(categoria);
       await this.categoriaRepository.save(categoriaModel);

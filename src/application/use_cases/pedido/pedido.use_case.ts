@@ -30,16 +30,20 @@ export class PedidoUseCase implements IPedidoUseCase {
     @Inject(IPedidoDTOFactory)
     private readonly pedidoDTOFactory: IPedidoDTOFactory,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   async listarPedidos(): Promise<[] | PedidoDTO[]> {
     const listaPedidos = await this.pedidoRepository.listarPedidos();
-    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(listaPedidos);
+    const listaPedidosDTO =
+      this.pedidoDTOFactory.criarListaPedidoDTO(listaPedidos);
     return listaPedidosDTO;
   }
   async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
-    const listaPedidosRecebidos = await this.pedidoRepository.listarPedidosRecebido();
-    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(listaPedidosRecebidos);
+    const listaPedidosRecebidos =
+      await this.pedidoRepository.listarPedidosRecebido();
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(
+      listaPedidosRecebidos,
+    );
     return listaPedidosDTO;
   }
 
@@ -49,7 +53,9 @@ export class PedidoUseCase implements IPedidoUseCase {
     return pedidoDTO;
   }
 
-  async criarPedido(criaPedidoDTO: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
+  async criarPedido(
+    criaPedidoDTO: CriaPedidoDTO,
+  ): Promise<HTTPResponse<PedidoDTO>> {
     const pedido = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);
     const pedidoCriado = await this.pedidoRepository.criarPedido(pedido);
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(pedidoCriado);
@@ -122,8 +128,10 @@ export class PedidoUseCase implements IPedidoUseCase {
   }
 
   private mercadoPagoIsEnabled(): boolean {
-    return this.configService.get<string>('ENABLE_MERCADOPAGO')?.toLowerCase() ===
-      'true';
+    return (
+      this.configService.get<string>('ENABLE_MERCADOPAGO')?.toLowerCase() ===
+      'true'
+    );
   }
 
   private verificarPagamento(

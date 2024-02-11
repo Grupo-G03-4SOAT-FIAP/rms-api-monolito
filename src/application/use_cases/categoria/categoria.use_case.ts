@@ -21,7 +21,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
     private readonly categoriaRepository: ICategoriaRepository,
     @Inject(ICategoriaDTOFactory)
     private readonly categoriaDTOFactory: ICategoriaDTOFactory,
-  ) { }
+  ) {}
 
   async listarCategorias(): Promise<CategoriaDTO[] | []> {
     const categorias = await this.categoriaRepository.listarCategorias();
@@ -64,8 +64,7 @@ export class CategoriaUseCase implements ICategoriaUseCase {
       atualizaCategoriaDTO.descricao,
     );
     await this.validarCategoriaPorId(idCategoria);
-    if (categoria.nome)
-      await this.validarCategoriaPorNome(categoria.nome);
+    if (categoria.nome) await this.validarCategoriaPorNome(categoria.nome);
     const categoriaEditada = await this.categoriaRepository.editarCategoria(
       idCategoria,
       categoria,

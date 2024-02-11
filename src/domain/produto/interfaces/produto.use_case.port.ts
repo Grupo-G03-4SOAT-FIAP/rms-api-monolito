@@ -9,7 +9,9 @@ export interface IProdutoUseCase {
   listarProdutos(): Promise<ProdutoDTO[] | []>;
   listarProdutosPorCategoria(idCategoria: string): Promise<ProdutoDTO[] | []>;
   buscarProduto(idProduto: string): Promise<ProdutoDTO>;
-  criarProduto(criaProdutoDTO: CriaProdutoDTO): Promise<HTTPResponse<ProdutoDTO>>;
+  criarProduto(
+    criaProdutoDTO: CriaProdutoDTO,
+  ): Promise<HTTPResponse<ProdutoDTO>>;
   editarProduto(
     idProduto: string,
     atualizaProdutoDTO: AtualizaProdutoDTO,

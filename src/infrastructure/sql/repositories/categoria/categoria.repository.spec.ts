@@ -86,7 +86,7 @@ describe('CategoriaRepository', () => {
       await categoriaRepository.criarCategoria(categoriaEntityMock);
 
     expect(categoriaTypeORMMock.restore).toHaveBeenCalledWith({
-      id: categoriaModelMock.id
+      id: categoriaModelMock.id,
     });
     expect(categoriaSQLDTOFactoryMock.criarCategoriaDTO).toHaveBeenCalledWith(
       categoriaModelMock,

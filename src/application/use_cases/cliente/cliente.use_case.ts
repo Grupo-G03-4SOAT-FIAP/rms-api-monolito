@@ -25,22 +25,26 @@ export class ClienteUseCase implements IClienteUseCase {
 
   async listarClientes(): Promise<ClienteDTO[] | []> {
     const listaClientes = await this.clienteRepository.listarClientes();
-    const listaClientesDTO = this.clienteDTOFactory.criarListaClienteDTO(listaClientes);
+    const listaClientesDTO =
+      this.clienteDTOFactory.criarListaClienteDTO(listaClientes);
     return listaClientesDTO;
   }
 
   async buscarClientePorId(idCliente: string): Promise<ClienteDTO> {
     const clienteEncontrado = await this.validarClientePorId(idCliente);
-    const clienteDTO = this.clienteDTOFactory.criarClienteDTO(clienteEncontrado);
+    const clienteDTO =
+      this.clienteDTOFactory.criarClienteDTO(clienteEncontrado);
     return clienteDTO;
   }
 
   async buscarClientePorCPF(cpfCliente: string): Promise<ClienteDTO> {
-    const clienteEncontrado = await this.clienteRepository.buscarClientePorCPF(cpfCliente);
+    const clienteEncontrado =
+      await this.clienteRepository.buscarClientePorCPF(cpfCliente);
     if (!clienteEncontrado) {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }
-    const clienteDTO = this.clienteDTOFactory.criarClienteDTO(clienteEncontrado);
+    const clienteDTO =
+      this.clienteDTOFactory.criarClienteDTO(clienteEncontrado);
     return clienteDTO;
   }
 
@@ -53,7 +57,11 @@ export class ClienteUseCase implements IClienteUseCase {
     if (criaClienteDTO.cpf) {
       await this.validarClientePorCPF(criaClienteDTO.cpf);
     }
-    const cliente = new ClienteEntity(criaClienteDTO.nome, criaClienteDTO.email, criaClienteDTO.cpf);
+    const cliente = new ClienteEntity(
+      criaClienteDTO.nome,
+      criaClienteDTO.email,
+      criaClienteDTO.cpf,
+    );
     const clienteCriado = await this.clienteRepository.criarCliente(cliente);
     const clienteDTO = this.clienteDTOFactory.criarClienteDTO(clienteCriado);
     return {
@@ -70,7 +78,10 @@ export class ClienteUseCase implements IClienteUseCase {
     if (atualizaClienteDTO.email) {
       await this.validarClientePorEmail(atualizaClienteDTO.email);
     }
-    const cliente = new ClienteEntity(atualizaClienteDTO.nome, atualizaClienteDTO.email);
+    const cliente = new ClienteEntity(
+      atualizaClienteDTO.nome,
+      atualizaClienteDTO.email,
+    );
     const clienteEditado = await this.clienteRepository.editarCliente(
       idCliente,
       cliente,
@@ -93,7 +104,8 @@ export class ClienteUseCase implements IClienteUseCase {
   }
 
   private async validarClientePorId(idCliente: string): Promise<ClienteEntity> {
-    const clienteEncontrado = await this.clienteRepository.buscarClientePorId(idCliente);
+    const clienteEncontrado =
+      await this.clienteRepository.buscarClientePorId(idCliente);
     if (!clienteEncontrado) {
       throw new ClienteNaoLocalizadoErro('Cliente informado não existe');
     }

@@ -28,7 +28,7 @@ export class ProdutoUseCase implements IProdutoUseCase {
     private readonly produtoFactory: IProdutoFactory,
     @Inject(IProdutoDTOFactory)
     private readonly produtoDTOFactory: IProdutoDTOFactory,
-  ) { }
+  ) {}
 
   async listarProdutos(): Promise<ProdutoDTO[] | []> {
     const listaProdutos = await this.produtoRepository.listarProdutos();
@@ -55,7 +55,8 @@ export class ProdutoUseCase implements IProdutoUseCase {
 
   async buscarProduto(idProduto: string): Promise<ProdutoDTO> {
     const produtoEncontrado = await this.validarProdutoPorId(idProduto);
-    const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(produtoEncontrado);
+    const produtoDTO =
+      this.produtoDTOFactory.criarProdutoDTO(produtoEncontrado);
     return produtoDTO;
   }
 

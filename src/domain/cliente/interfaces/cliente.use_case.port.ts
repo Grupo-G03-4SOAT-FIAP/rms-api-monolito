@@ -9,7 +9,9 @@ export interface IClienteUseCase {
   listarClientes(): Promise<ClienteDTO[] | []>;
   buscarClientePorId(idCliente: string): Promise<ClienteDTO>;
   buscarClientePorCPF(cpfCliente: string): Promise<ClienteDTO>;
-  criarCliente(criaClienteDTO: CriaClienteDTO): Promise<HTTPResponse<ClienteDTO>>;
+  criarCliente(
+    criaClienteDTO: CriaClienteDTO,
+  ): Promise<HTTPResponse<ClienteDTO>>;
   editarCliente(
     idCliente: string,
     atualizaClienteDTO: AtualizaClienteDTO,
