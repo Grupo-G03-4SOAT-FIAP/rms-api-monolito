@@ -30,39 +30,44 @@ export class ProdutoUseCase implements IProdutoUseCase {
     private readonly produtoDTOFactory: IProdutoDTOFactory,
   ) {}
 
-  private async validarProdutoPorNome(
-    nomeProduto: string,
-  ): Promise<ProdutoEntity | null> {
-    const produtoModel =
-      await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
-    if (produtoModel) {
-      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
-    }
-    return produtoModel;
+  async listarProdutos(): Promise<ProdutoDTO[] | []> {
+    const listaProdutos = await this.produtoRepository.listarProdutos();
+    const listaProdutosDTO =
+      this.produtoDTOFactory.criarListaProdutoDTO(listaProdutos);
+
+    return listaProdutosDTO;
   }
 
-  private async validarProdutoPorId(
-    produtoId: string,
-  ): Promise<ProdutoEntity | null> {
-    const produtoModel =
-      await this.produtoRepository.buscarProdutoPorId(produtoId);
-    if (!produtoModel) {
-      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
+  async listarProdutosPorCategoria(
+    idCategoria: string,
+  ): Promise<ProdutoDTO[] | []> {
+    const categoriaEncontrada =
+      await this.categoriaRepository.buscarCategoriaPorId(idCategoria);
+    if (!categoriaEncontrada) {
+      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
     }
-    return produtoModel;
+    const listaProdutos =
+      await this.produtoRepository.listarProdutosPorCategoria(idCategoria);
+    const listaProdutosDTO =
+      this.produtoDTOFactory.criarListaProdutoDTO(listaProdutos);
+    return listaProdutosDTO;
+  }
+
+  async buscarProduto(idProduto: string): Promise<ProdutoDTO> {
+    const produtoEncontrado = await this.validarProdutoPorId(idProduto);
+    const produtoDTO =
+      this.produtoDTOFactory.criarProdutoDTO(produtoEncontrado);
+    return produtoDTO;
   }
 
   async criarProduto(
-    produto: CriaProdutoDTO,
+    criaProdutoDTO: CriaProdutoDTO,
   ): Promise<HTTPResponse<ProdutoDTO>> {
-    const produtoEntity =
-      await this.produtoFactory.criarEntidadeProduto(produto);
-
-    await this.validarProdutoPorNome(produtoEntity.nome);
-
-    const result = await this.produtoRepository.criarProduto(produtoEntity);
-    const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(result);
-
+    await this.validarProdutoPorNome(criaProdutoDTO.nome);
+    const produto =
+      await this.produtoFactory.criarEntidadeProduto(criaProdutoDTO);
+    const produtoCriado = await this.produtoRepository.criarProduto(produto);
+    const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(produtoCriado);
     return {
       mensagem: 'Produto criado com sucesso',
       body: produtoDTO,
@@ -70,24 +75,18 @@ export class ProdutoUseCase implements IProdutoUseCase {
   }
 
   async editarProduto(
-    produtoId: string,
-    produto: AtualizaProdutoDTO,
+    idProduto: string,
+    atualizaProdutoDTO: AtualizaProdutoDTO,
   ): Promise<HTTPResponse<ProdutoDTO>> {
-    await this.validarProdutoPorId(produtoId);
-    
-    const produtoEntity =
-      await this.produtoFactory.criarEntidadeProduto(produto);
-
-    if (produtoEntity.nome) {
-      await this.validarProdutoPorNome(produtoEntity.nome);
-    }
-
-    const result = await this.produtoRepository.editarProduto(
-      produtoId,
-      produtoEntity,
+    await this.validarProdutoPorId(idProduto);
+    await this.validarProdutoPorNome(atualizaProdutoDTO.nome);
+    const produto =
+      await this.produtoFactory.criarEntidadeProduto(atualizaProdutoDTO);
+    const produtoEditado = await this.produtoRepository.editarProduto(
+      idProduto,
+      produto,
     );
-    const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(result);
-
+    const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(produtoEditado);
     return {
       mensagem: 'Produto atualizado com sucesso',
       body: produtoDTO,
@@ -95,43 +94,34 @@ export class ProdutoUseCase implements IProdutoUseCase {
   }
 
   async excluirProduto(
-    produtoId: string,
+    idProduto: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>> {
-    await this.validarProdutoPorId(produtoId);
-    await this.produtoRepository.excluirProduto(produtoId);
+    await this.validarProdutoPorId(idProduto);
+    await this.produtoRepository.excluirProduto(idProduto);
     return {
       mensagem: 'Produto excluído com sucesso',
     };
   }
 
-  async buscarProduto(produtoId: string): Promise<ProdutoDTO> {
-    const result = await this.validarProdutoPorId(produtoId);
-    const produtoDTO = this.produtoDTOFactory.criarProdutoDTO(result);
-    return produtoDTO;
-  }
-
-  async listarProdutos(): Promise<ProdutoDTO[] | []> {
-    const result = await this.produtoRepository.listarProdutos();
-    const listaProdutosDTO =
-      this.produtoDTOFactory.criarListaProdutoDTO(result);
-
-    return listaProdutosDTO;
-  }
-
-  async listarProdutosPorCategoria(
-    categoriaId: string,
-  ): Promise<ProdutoDTO[] | []> {
-    const buscaCategoria =
-      await this.categoriaRepository.buscarCategoriaPorId(categoriaId);
-    if (!buscaCategoria) {
-      throw new CategoriaNaoLocalizadaErro('Categoria informada não existe');
+  private async validarProdutoPorNome(
+    nomeProduto: string,
+  ): Promise<ProdutoEntity | null> {
+    const produtoEncontrado =
+      await this.produtoRepository.buscarProdutoPorNome(nomeProduto);
+    if (produtoEncontrado) {
+      throw new ProdutoDuplicadoErro('Existe um produto com esse nome');
     }
+    return produtoEncontrado;
+  }
 
-    const result =
-      await this.produtoRepository.listarProdutosPorCategoria(categoriaId);
-    const listaProdutosDTO =
-      this.produtoDTOFactory.criarListaProdutoDTO(result);
-
-    return listaProdutosDTO;
+  private async validarProdutoPorId(
+    idProduto: string,
+  ): Promise<ProdutoEntity | null> {
+    const produtoEncontrado =
+      await this.produtoRepository.buscarProdutoPorId(idProduto);
+    if (!produtoEncontrado) {
+      throw new ProdutoNaoLocalizadoErro('Produto informado não existe');
+    }
+    return produtoEncontrado;
   }
 }

@@ -9,7 +9,7 @@ import { IPedidoFactory } from 'src/domain/pedido/interfaces/pedido.factory.port
 import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
 import {
-  MensagemGatewayPagamentoDTO,
+  MensagemMercadoPagoDTO,
   PedidoGatewayPagamentoDTO,
 } from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
 import {
@@ -32,34 +32,38 @@ export class PedidoUseCase implements IPedidoUseCase {
     private configService: ConfigService,
   ) {}
 
-  private async validarPedidoPorId(
-    pedidoId: string,
-  ): Promise<PedidoEntity | null> {
-    const pedido = await this.pedidoRepository.buscarPedido(pedidoId);
-    if (!pedido) {
-      throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
-    }
-    return pedido;
+  async listarPedidos(): Promise<[] | PedidoDTO[]> {
+    const listaPedidos = await this.pedidoRepository.listarPedidos();
+    const listaPedidosDTO =
+      this.pedidoDTOFactory.criarListaPedidoDTO(listaPedidos);
+    return listaPedidosDTO;
+  }
+  async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
+    const listaPedidosRecebidos =
+      await this.pedidoRepository.listarPedidosRecebido();
+    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(
+      listaPedidosRecebidos,
+    );
+    return listaPedidosDTO;
   }
 
-  async criarPedido(criaPedidoDTO: CriaPedidoDTO): Promise<HTTPResponse<PedidoDTO>> {
-    const pedidoEntity = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);
+  async buscarPedido(idPedido: string): Promise<PedidoDTO> {
+    const pedidoEncontrado = await this.validarPedidoPorId(idPedido);
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(pedidoEncontrado);
+    return pedidoDTO;
+  }
 
-    const result = await this.pedidoRepository.criarPedido(pedidoEntity);
-    pedidoEntity.id = result.id;
-
-    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
-
-    const mercadoPagoIsEnabled =
-      this.configService.get<string>('ENABLE_MERCADOPAGO')?.toLowerCase() ===
-      'true';
-
-    if (mercadoPagoIsEnabled) {
+  async criarPedido(
+    criaPedidoDTO: CriaPedidoDTO,
+  ): Promise<HTTPResponse<PedidoDTO>> {
+    const pedido = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);
+    const pedidoCriado = await this.pedidoRepository.criarPedido(pedido);
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(pedidoCriado);
+    if (this.mercadoPagoIsEnabled()) {
       const qrData =
-        await this.gatewayPagamentoService.criarPedido(pedidoEntity);
+        await this.gatewayPagamentoService.criarPedido(pedidoCriado);
       pedidoDTO.qrCode = qrData;
     }
-
     return {
       mensagem: 'Pedido criado com sucesso',
       body: pedidoDTO,
@@ -67,47 +71,25 @@ export class PedidoUseCase implements IPedidoUseCase {
   }
 
   async editarPedido(
-    pedidoId: string,
-    pedido: AtualizaPedidoDTO,
+    idPedido: string,
+    atualizaPedidoDTO: AtualizaPedidoDTO,
   ): Promise<HTTPResponse<PedidoDTO>> {
-    const { statusPedido } = pedido;
-
-    await this.validarPedidoPorId(pedidoId);
-
-    const result = await this.pedidoRepository.editarStatusPedido(
-      pedidoId,
-      statusPedido,
+    await this.validarPedidoPorId(idPedido);
+    const pedidoEditado = await this.pedidoRepository.editarStatusPedido(
+      idPedido,
+      atualizaPedidoDTO.statusPedido,
     );
-    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
-
+    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(pedidoEditado);
     return {
       mensagem: 'Pedido atualizado com sucesso',
       body: pedidoDTO,
     };
   }
 
-  async buscarPedido(pedidoId: string): Promise<PedidoDTO> {
-    const result = await this.validarPedidoPorId(pedidoId);
-    const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(result);
-    return pedidoDTO;
-  }
-
-  async listarPedidos(): Promise<[] | PedidoDTO[]> {
-    const result = await this.pedidoRepository.listarPedidos();
-    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
-    return listaPedidosDTO;
-  }
-
-  async listarPedidosRecebido(): Promise<[] | PedidoDTO[]> {
-    const result = await this.pedidoRepository.listarPedidosRecebido();
-    const listaPedidosDTO = this.pedidoDTOFactory.criarListaPedidoDTO(result);
-    return listaPedidosDTO;
-  }
-
   async webhookPagamento(
     id: string,
     topic: string,
-    mensagem: MensagemGatewayPagamentoDTO,
+    mensagem: MensagemMercadoPagoDTO,
   ): Promise<any> {
     if (id && topic === 'merchant_order') {
       console.log(mensagem);
@@ -133,6 +115,23 @@ export class PedidoUseCase implements IPedidoUseCase {
         mensagem: 'Mensagem consumida com sucesso',
       };
     }
+  }
+
+  private async validarPedidoPorId(
+    idPedido: string,
+  ): Promise<PedidoEntity | null> {
+    const pedidoEncontrado = await this.pedidoRepository.buscarPedido(idPedido);
+    if (!pedidoEncontrado) {
+      throw new PedidoNaoLocalizadoErro('Pedido informado não existe');
+    }
+    return pedidoEncontrado;
+  }
+
+  private mercadoPagoIsEnabled(): boolean {
+    return (
+      this.configService.get<string>('ENABLE_MERCADOPAGO')?.toLowerCase() ===
+      'true'
+    );
   }
 
   private verificarPagamento(
