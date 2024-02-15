@@ -79,7 +79,8 @@ export class ProdutoUseCase implements IProdutoUseCase {
     atualizaProdutoDTO: AtualizaProdutoDTO,
   ): Promise<HTTPResponse<ProdutoDTO>> {
     await this.validarProdutoPorId(idProduto);
-    await this.validarProdutoPorNome(atualizaProdutoDTO.nome);
+    if (atualizaProdutoDTO.nome)
+      await this.validarProdutoPorNome(atualizaProdutoDTO.nome);
     const produto =
       await this.produtoFactory.criarEntidadeProduto(atualizaProdutoDTO);
     const produtoEditado = await this.produtoRepository.editarProduto(
