@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-27T01:46:08.084Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="kaSEPVBiAtUchLoLuqZA" scale="1" border="0" version="23.0.2" type="device">
+<mxfile host="app.diagrams.net" modified="2024-02-16T02:25:35.499Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="TDDqtlP2ftGAHvaHxSQh" scale="1" border="0" version="23.0.2" type="device">
   <diagram name="Page-1" id="b5b7bab2-c9e2-2cf4-8b2a-24fd1a2a6d21">
     <mxGraphModel dx="2074" dy="1098" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
       <root>
@@ -246,7 +246,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="nvwnlEwFlLKaPRoTBn40-71" value="DIAGRAMA UML" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Lucida Console;fontSize=16;shadow=1;fontStyle=1" parent="1" vertex="1">
+        <mxCell id="nvwnlEwFlLKaPRoTBn40-71" value="DIAGRAMA UML (SIMPLIFICADO)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Lucida Console;fontSize=16;shadow=1;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="160" y="40" width="1240" height="40" as="geometry" />
         </mxCell>
         <mxCell id="dzLeR_utrmkmIb1Fz9iY-1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#d79b00;strokeWidth=2;shadow=0;" parent="1" vertex="1">
