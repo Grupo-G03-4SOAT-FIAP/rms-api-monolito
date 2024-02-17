@@ -12,6 +12,10 @@
     "collectCoverageFrom": [
         "**/*.(t|j)s"
     ],
+    "coveragePathIgnorePatterns": [
+        "/node_modules/",
+        "modules"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
