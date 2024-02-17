@@ -42,8 +42,8 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 1. Clone este repositório;
 2. Navegue até a pasta raiz do projeto;
 3. Use o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
-4. Use o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
-5. Use o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/metrics-server.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
+4. Use o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/secrets.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
+5. Use o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/secrets.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/metrics-server.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
 6. Acesse o Swagger em http://localhost:3000/swagger/
 
 > Para remover a aplicação do Kubernetes, use o comando `kubectl delete namespace rms`

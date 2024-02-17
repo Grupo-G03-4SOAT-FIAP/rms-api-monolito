@@ -21,6 +21,22 @@ spec:
         envFrom:
           - configMapRef:
               name: rms-bff-config
+        env:
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: rms-bff-secret
+                key: DB_USERNAME
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: rms-bff-secret
+                key: DB_PASSWORD
+          - name: ACCESS_TOKEN_MERCADOPAGO
+            valueFrom:
+              secretKeyRef:
+                name: rms-bff-secret
+                key: ACCESS_TOKEN_MERCADOPAGO
         ports:
         - containerPort: 3000
         resources:
