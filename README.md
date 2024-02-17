@@ -36,6 +36,7 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 2. Faça uma cópia do arquivo `.env.template` com o nome `.env` e preencha as variáveis de ambiente dentro dele.
 3. Execute o comando `npm install` para instalar os pacotes npm;
 4. Use o comando `npm run start` para iniciar a aplicação.
+5. Acesse o Swagger em http://localhost:3000/swagger/
 
 ## Executar a aplicação usando o Kubernetes do Docker Desktop
 
