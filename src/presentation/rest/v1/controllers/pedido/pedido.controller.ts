@@ -20,7 +20,7 @@ import {
 } from '../../presenters/pedido/pedido.dto';
 import { BadRequestError } from '../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swagger';
-import { MensagemGatewayPagamentoDTO } from '../../presenters/pedido/gatewaypag.dto';
+import { MensagemMercadoPagoDTO } from '../../presenters/pedido/gatewaypag.dto';
 
 @Controller('pedido')
 @ApiTags('Pedido')
@@ -157,7 +157,7 @@ export class PedidoController {
   async consumirMensagem(
     @Query('id') id: string,
     @Query('topic') topic: string,
-    @Body() mensagem: MensagemGatewayPagamentoDTO,
+    @Body() mensagem: MensagemMercadoPagoDTO,
   ) {
     try {
       return await this.pedidoUseCase.webhookPagamento(id, topic, mensagem);

@@ -103,7 +103,7 @@ describe('ProdutoRepository', () => {
       where: {
         id: produtoModelMock.id,
       },
-      relations: ['categoria']
+      relations: ['categoria'],
     });
     expect(produtoSQLDTOFactoryMock.criarProdutoDTO).toHaveBeenCalledWith(
       produtoModelMock,

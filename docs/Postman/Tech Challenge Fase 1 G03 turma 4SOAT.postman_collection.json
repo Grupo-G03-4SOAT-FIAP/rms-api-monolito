@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "70004c7c-5ed4-4c5f-be46-5bdc82fe0a06",
+		"_postman_id": "d47002de-be94-4932-a7ca-14c92af180d8",
 		"name": "Tech Challenge Fase 1 G03 turma 4SOAT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4241772"
@@ -340,7 +340,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"X-Tudo\",\r\n    \"valorUnitario\": 12,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg\",\r\n    \"categoriaId\": \"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4\" // Colocar o UUID da categoria aqui\r\n}",
+							"raw": "{\r\n    \"nome\": \"X-Tudo\",\r\n    \"valorUnitario\": 29.9,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://conteudo.imguol.com.br/c/entretenimento/17/2023/05/24/x-tudo-brasileiro-tem-variedade-de-ingredientes-de-acordo-com-preferencias-regionais-aqui-versao-com-carne-bovina-tomato-salsicha-presunto-bacon-e-queijo-no-pao-1684938396547_v2_1x1.jpg\",\r\n    \"categoriaId\": \"9fbc614b-9b44-4d35-8ec7-36e55ba7f0f4\" // Colocar o UUID da categoria aqui\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -368,7 +368,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"X-Salada\",\r\n    \"valorUnitario\": 15,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://anamariabraga.globo.com/wp-content/uploads/2016/11/x-salada-classico.jpg\",\r\n    \"categoriaId\": \"e5f99bae-0a90-4ca0-b6f8-ab9efb41e721\" // Colocar o UUID da categoria aqui\r\n}",
+							"raw": "{\r\n    \"nome\": \"X-Salada\",\r\n    \"valorUnitario\": 16,\r\n    \"descricao\": \"Ingredientes: 1 hambúrguer, 50 g de bacon picados, 1 ovo, 2 fatias de presunto, 2 fatias de mussarela (cheddar), 1 folha de alface, 1 rodela de tomate, 1 pão de hambúrguer, 1 colher de maionese, Catchup a gosto (opcional)\",\r\n    \"imagemUrl\": \"https://anamariabraga.globo.com/wp-content/uploads/2016/11/x-salada-classico.jpg\",\r\n    \"categoriaId\": \"e5f99bae-0a90-4ca0-b6f8-ab9efb41e721\" // Colocar o UUID da categoria aqui\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

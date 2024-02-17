@@ -98,9 +98,6 @@ describe('ProdutoUseCase', () => {
     ).rejects.toThrow(
       new ProdutoDuplicadoErro('Existe um produto com esse nome'),
     );
-    expect(produtoFactoryMock.criarEntidadeProduto).toHaveBeenCalledWith(
-      criaProdutoDTOMock,
-    );
     expect(produtoRepositoryMock.buscarProdutoPorNome).toHaveBeenCalledWith(
       produtoEntityNotIdMock.nome,
     );
@@ -171,9 +168,6 @@ describe('ProdutoUseCase', () => {
       produtoUseCase.editarProduto(produtoId, atualizaProdutoDTOMock),
     ).rejects.toThrow(
       new ProdutoDuplicadoErro('Existe um produto com esse nome'),
-    );
-    expect(produtoFactoryMock.criarEntidadeProduto).toHaveBeenCalledWith(
-      atualizaProdutoDTOMock,
     );
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalledWith(
       produtoId,

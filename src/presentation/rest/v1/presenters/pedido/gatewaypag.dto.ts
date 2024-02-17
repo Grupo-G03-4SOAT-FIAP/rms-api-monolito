@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsUrl } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class MensagemGatewayPagamentoDTO {
+export class MensagemMercadoPagoDTO {
   @IsUrl(undefined, { message: 'URL do recurso inválida' })
   @IsNotEmpty({ message: 'O URL do recurso deve ser informado' })
   @ApiProperty({ description: 'URL do recurso' })

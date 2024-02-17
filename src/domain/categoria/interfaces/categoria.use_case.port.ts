@@ -6,18 +6,18 @@ import {
 } from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
 
 export interface ICategoriaUseCase {
+  listarCategorias(): Promise<CategoriaDTO[] | []>;
+  buscarCategoria(idCategoria: string): Promise<CategoriaDTO>;
   criarCategoria(
-    categoria: CriaCategoriaDTO,
+    criaCategoriaDTO: CriaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>>;
   editarCategoria(
-    categoriaId: string,
-    categoria: AtualizaCategoriaDTO,
+    idCategoria: string,
+    atualizaCategoriaDTO: AtualizaCategoriaDTO,
   ): Promise<HTTPResponse<CategoriaDTO>>;
   excluirCategoria(
-    categoriaId: string,
+    idCategoria: string,
   ): Promise<Omit<HTTPResponse<void>, 'body'>>;
-  buscarCategoria(categoriaId: string): Promise<CategoriaDTO>;
-  listarCategorias(): Promise<CategoriaDTO[] | []>;
 }
 
 export const ICategoriaUseCase = Symbol('ICategoriaUseCase');

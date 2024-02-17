@@ -19,7 +19,7 @@ import {
   PedidoDTO,
 } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 import {
-  MensagemGatewayPagamentoDTO,
+  MensagemMercadoPagoDTO,
   PaymentDTO,
   PedidoGatewayPagamentoDTO,
 } from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
@@ -97,7 +97,7 @@ pedidoDTOMock.atualizadoEm = '2024-01-25T00:05:04.941Z';
 pedidoDTOMock.cliente = clienteDTOMock;
 pedidoDTOMock.qrCode = null;
 
-export const mensagemGatewayPagamentoDTO = new MensagemGatewayPagamentoDTO();
+export const mensagemGatewayPagamentoDTO = new MensagemMercadoPagoDTO();
 mensagemGatewayPagamentoDTO.resource =
   'https://api.mercadolibre.com/merchant_orders/15171882961';
 mensagemGatewayPagamentoDTO.topic = 'merchant_order';

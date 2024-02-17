@@ -75,7 +75,7 @@ describe('ClienteRepository', () => {
     );
     clienteTypeORMMock.restore.mockResolvedValue({
       affected: 1,
-      raw: [{clienteModelMock}],
+      raw: [{ clienteModelMock }],
       generatedMaps: [{}],
     });
     clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
