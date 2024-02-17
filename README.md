@@ -99,7 +99,7 @@ A documentação do projeto está disponível no [GitHub Wiki](https://github.co
 
 Architectural Pattern: [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) + [Screaming Architecture](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)
 
-![uml-clean-arch drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/ea5f347a-b49d-4019-a299-5e1ddd149a73)
+![uml-clean-arch drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/assets/5115895/c19b37cb-5d1a-4328-8611-f9321a95e068)
 *Clique na imagem para ampliar.*
 
 ## Diagrama de arquitetura cloud
