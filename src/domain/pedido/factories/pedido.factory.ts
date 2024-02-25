@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IPedidoFactory } from '../interfaces/pedido.factory.port';
 import { PedidoService } from '../services/pedido.service';
-import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
-import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.repository.port';
-import { CriaItemPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
+import { IClienteRepository } from '../../../domain/cliente/interfaces/cliente.repository.port';
+import { IProdutoRepository } from '../../../domain/produto/interfaces/produto.repository.port';
+import { CriaItemPedidoDTO } from '../../../presentation/rest/v1/presenters/pedido/item_pedido.dto';
 import { ItemPedidoEntity } from '../entities/item_pedido.entity';
-import { ProdutoNaoLocalizadoErro } from 'src/domain/produto/exceptions/produto.exception';
-import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
-import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.exception';
-import { CriaPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
+import { ProdutoNaoLocalizadoErro } from '../../../domain/produto/exceptions/produto.exception';
+import { ClienteEntity } from '../../../domain/cliente/entities/cliente.entity';
+import { ClienteNaoLocalizadoErro } from '../../../domain/cliente/exceptions/cliente.exception';
+import { CriaPedidoDTO } from '../../../presentation/rest/v1/presenters/pedido/pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { StatusPedido } from '../enums/pedido.enum';
 

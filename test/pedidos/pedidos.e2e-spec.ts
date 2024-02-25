@@ -12,14 +12,14 @@ import { CriaItemPedidoDTO } from '../../src/presentation/rest/v1/presenters/ped
 import { HTTPResponse } from '../../src/application/common/HTTPResponse';
 import { ProdutoDTO } from '../../src/presentation/rest/v1/presenters/produto/produto.dto';
 import { ClienteDTO } from '../../src/presentation/rest/v1/presenters/cliente/cliente.dto';
-import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.factory.port';
+// import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.factory.port';
 
 describe('Pedido (e2e)', () => {
   let app: INestApplication;
   let categoriaController: CategoriaController;
   let produtoController: ProdutoController;
   let clienteController: ClienteController;
-  let pedidoDTOFactory: IPedidoDTOFactory;
+  // let pedidoDTOFactory: IPedidoDTOFactory;
   let produtoTest: HTTPResponse<ProdutoDTO>;
   let clientTest: HTTPResponse<ClienteDTO>;
 

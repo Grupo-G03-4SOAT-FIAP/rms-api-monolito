@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { faker } from '@faker-js/faker';
 import {
   categoriaDTOMock,
   categoriaEntityMock,

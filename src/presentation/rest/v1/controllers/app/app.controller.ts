@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AppUseCase } from 'src/application/use_cases/app/app.use_case';
+import { AppUseCase } from '../../../../../application/use_cases/app/app.use_case';
 
 @Controller()
 @ApiTags('API')

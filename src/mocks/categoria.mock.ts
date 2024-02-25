@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { faker } from '@faker-js/faker';
 import { produtoModelMock } from './produto.mock';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 import {

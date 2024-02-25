@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { HTTPResponse } from 'src/application/common/HTTPResponse';
-import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
-import { PedidoNaoLocalizadoErro } from 'src/domain/pedido/exceptions/pedido.exception';
-import { IGatewayPagamentoService } from 'src/domain/pedido/interfaces/gatewaypag.service.port';
-import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.factory.port';
-import { IPedidoFactory } from 'src/domain/pedido/interfaces/pedido.factory.port';
-import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
-import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
+import { HTTPResponse } from '../../../application/common/HTTPResponse';
+import { PedidoEntity } from '../../../domain/pedido/entities/pedido.entity';
+import { PedidoNaoLocalizadoErro } from '../../../domain/pedido/exceptions/pedido.exception';
+import { IGatewayPagamentoService } from '../../../domain/pedido/interfaces/gatewaypag.service.port';
+import { IPedidoDTOFactory } from '../../../domain/pedido/interfaces/pedido.dto.factory.port';
+import { IPedidoFactory } from '../../../domain/pedido/interfaces/pedido.factory.port';
+import { IPedidoRepository } from '../../../domain/pedido/interfaces/pedido.repository.port';
+import { IPedidoUseCase } from '../../../domain/pedido/interfaces/pedido.use_case.port';
 import {
   MensagemMercadoPagoDTO,
   PedidoGatewayPagamentoDTO,

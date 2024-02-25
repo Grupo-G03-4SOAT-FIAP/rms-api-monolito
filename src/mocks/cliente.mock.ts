@@ -1,10 +1,12 @@
-import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
-import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
+import { faker } from '@faker-js/faker';
+import { ClienteEntity } from '../../src/domain/cliente/entities/cliente.entity';
+import { gerarFakeCpf } from '../../src/domain/common/utils/document_generate';
+import { ClienteModel } from '../../src/infrastructure/sql/models/cliente.model';
 import {
   AtualizaClienteDTO,
   ClienteDTO,
   CriaClienteDTO,
-} from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
+} from '../../src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import { Repository } from 'typeorm';
 
 // Mock para simular dados da tabela cliente no banco de dados

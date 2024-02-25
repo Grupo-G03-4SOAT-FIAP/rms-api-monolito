@@ -12,7 +12,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IProdutoUseCase } from 'src/domain/produto/interfaces/produto.use_case.port';
+import { IProdutoUseCase } from '../../../../../domain/produto/interfaces/produto.use_case.port';
 import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,

@@ -13,7 +13,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IClienteUseCase } from 'src/domain/cliente/interfaces/cliente.use_case.port';
+import { IClienteUseCase } from '../../../../../domain/cliente/interfaces/cliente.use_case.port';
 import {
   AtualizaClienteDTO,
   ClienteDTO,

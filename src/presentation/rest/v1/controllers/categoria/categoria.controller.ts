@@ -11,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ICategoriaUseCase } from 'src/domain/categoria/interfaces/categoria.use_case.port';
+import { ICategoriaUseCase } from '../../../../../domain/categoria/interfaces/categoria.use_case.port';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
@@ -22,7 +22,7 @@ import { ConflictError } from '../../helpers/swagger/status-codes/conflict.swagg
 import {
   CategoriaDuplicadaErro,
   CategoriaNaoLocalizadaErro,
-} from 'src/domain/categoria/exceptions/categoria.exception';
+} from '../../../../../domain/categoria/exceptions/categoria.exception';
 import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swagger';
 
 @Controller('categoria')

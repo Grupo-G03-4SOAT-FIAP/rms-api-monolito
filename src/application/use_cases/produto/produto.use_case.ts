@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { HTTPResponse } from 'src/application/common/HTTPResponse';
-import { CategoriaNaoLocalizadaErro } from 'src/domain/categoria/exceptions/categoria.exception';
-import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
-import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
+import { HTTPResponse } from '../../../application/common/HTTPResponse';
+import { CategoriaNaoLocalizadaErro } from '../../../domain/categoria/exceptions/categoria.exception';
+import { ICategoriaRepository } from '../../../domain/categoria/interfaces/categoria.repository.port';
+import { ProdutoEntity } from '../../../domain/produto/entities/produto.entity';
 import {
   ProdutoDuplicadoErro,
   ProdutoNaoLocalizadoErro,
-} from 'src/domain/produto/exceptions/produto.exception';
-import { IProdutoDTOFactory } from 'src/domain/produto/interfaces/produto.dto.factory.port';
-import { IProdutoFactory } from 'src/domain/produto/interfaces/produto.factory.port';
-import { IProdutoRepository } from 'src/domain/produto/interfaces/produto.repository.port';
-import { IProdutoUseCase } from 'src/domain/produto/interfaces/produto.use_case.port';
+} from '../../../domain/produto/exceptions/produto.exception';
+import { IProdutoDTOFactory } from '../../../domain/produto/interfaces/produto.dto.factory.port';
+import { IProdutoFactory } from '../../../domain/produto/interfaces/produto.factory.port';
+import { IProdutoRepository } from '../../../domain/produto/interfaces/produto.repository.port';
+import { IProdutoUseCase } from '../../../domain/produto/interfaces/produto.use_case.port';
 import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,

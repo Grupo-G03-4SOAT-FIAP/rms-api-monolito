@@ -4,10 +4,10 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { MercadoPagoConfig, MerchantOrder } from 'mercadopago';
 import { DateTime } from 'luxon';
-import { IGatewayPagamentoService } from 'src/domain/pedido/interfaces/gatewaypag.service.port';
-import { PedidoGatewayPagamentoDTO } from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
-import { PedidoModel } from 'src/infrastructure/sql/models/pedido.model';
-import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
+import { IGatewayPagamentoService } from '../../../domain/pedido/interfaces/gatewaypag.service.port';
+import { PedidoGatewayPagamentoDTO } from '../../../presentation/rest/v1/presenters/pedido/gatewaypag.dto';
+import { PedidoModel } from '../../../infrastructure/sql/models/pedido.model';
+import { PedidoEntity } from '../../../domain/pedido/entities/pedido.entity';
 import axios from 'axios';
 import BigNumber from 'bignumber.js';
 

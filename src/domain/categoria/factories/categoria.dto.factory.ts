@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICategoriaDTOFactory } from '../interfaces/categoria.dto.factory.port';
-import { CategoriaDTO } from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
+import { CategoriaDTO } from '../../../presentation/rest/v1/presenters/categoria/categoria.dto';
 import { CategoriaEntity } from '../entities/categoria.entity';
 
 @Injectable()

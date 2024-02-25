@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
-import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
+import { CategoriaEntity } from '../../../domain/categoria/entities/categoria.entity';
 import {
   CategoriaDuplicadaErro,
   CategoriaNaoLocalizadaErro,
-} from 'src/domain/categoria/exceptions/categoria.exception';
-import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
-import { ICategoriaRepository } from 'src/domain/categoria/interfaces/categoria.repository.port';
-import { ICategoriaUseCase } from 'src/domain/categoria/interfaces/categoria.use_case.port';
+} from '../../../domain/categoria/exceptions/categoria.exception';
+import { ICategoriaDTOFactory } from '../../../domain/categoria/interfaces/categoria.dto.factory.port';
+import { ICategoriaRepository } from '../../../domain/categoria/interfaces/categoria.repository.port';
+import { ICategoriaUseCase } from '../../../domain/categoria/interfaces/categoria.use_case.port';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
   CriaCategoriaDTO,
-} from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
+} from '../../../presentation/rest/v1/presenters/categoria/categoria.dto';
 
 @Injectable()
 export class CategoriaUseCase implements ICategoriaUseCase {

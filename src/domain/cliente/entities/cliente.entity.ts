@@ -1,4 +1,4 @@
-import { ToCapitalizeString } from 'src/domain/common/utils/capitalize_string';
+import { ToCapitalizeString } from '../../../domain/common/utils/capitalize_string';
 import { CPF } from '../value_objects/cpf';
 
 export class ClienteEntity {

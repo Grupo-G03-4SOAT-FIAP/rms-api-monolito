@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IProdutoDTOFactory } from '../interfaces/produto.dto.factory.port';
-import { ICategoriaDTOFactory } from 'src/domain/categoria/interfaces/categoria.dto.factory.port';
-import { ProdutoDTO } from 'src/presentation/rest/v1/presenters/produto/produto.dto';
+import { ICategoriaDTOFactory } from '../../../domain/categoria/interfaces/categoria.dto.factory.port';
+import { ProdutoDTO } from '../../../presentation/rest/v1/presenters/produto/produto.dto';
 import { ProdutoEntity } from '../entities/produto.entity';
 
 @Injectable()
