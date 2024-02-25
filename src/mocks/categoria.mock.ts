@@ -92,3 +92,10 @@ export const categoriaUseCaseMock = {
   buscarCategoria: jest.fn(),
   listarCategorias: jest.fn(),
 };
+
+export const criarFakeCategoriaDTO = (): CriaCategoriaDTO => {
+  const criaCategoriaDTO = new CriaCategoriaDTO();
+  criaCategoriaDTO.nome = `Categoria ${faker.string.uuid()}`;
+  criaCategoriaDTO.descricao = `Descricão ${faker.string.uuid()}`;
+  return criaCategoriaDTO;
+};

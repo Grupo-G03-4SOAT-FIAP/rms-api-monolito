@@ -126,3 +126,14 @@ export const produtoUseCaseMock = {
   listarProdutos: jest.fn(),
   listarProdutosPorCategoria: jest.fn(),
 };
+
+export const criarFakeProdutoDTO = (categoriaId: string): CriaProdutoDTO => {
+  const criaProdutoDTO = new CriaProdutoDTO();
+  criaProdutoDTO.nome = `${faker.commerce.product()} - ${faker.string.uuid()}`;
+  criaProdutoDTO.descricao = faker.commerce.productDescription();
+  criaProdutoDTO.valorUnitario = parseFloat(faker.commerce.price());
+  criaProdutoDTO.imagemUrl = faker.image.url();
+  criaProdutoDTO.categoriaId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
+  criaProdutoDTO.categoriaId = categoriaId;
+  return criaProdutoDTO;
+};

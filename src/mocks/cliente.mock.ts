@@ -100,3 +100,11 @@ export const clienteUseCaseMock = {
   buscarClientePorCPF: jest.fn(),
   listarClientes: jest.fn(),
 };
+
+export const criarFakeClienteDTO = (): CriaClienteDTO => {
+  const client = new CriaClienteDTO();
+  client.nome = faker.person.fullName();
+  client.email = faker.internet.email();
+  client.cpf = gerarFakeCpf();
+  return client;
+};
