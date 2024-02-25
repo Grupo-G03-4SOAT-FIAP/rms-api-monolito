@@ -1,38 +1,28 @@
 # Welcome to the contributing guide
 
-Confira abaixo algumas dicas de convenções e boas práticas a serem consideradas ao contribuir com o projeto.
+Confira abaixo algumas dicas, orientações e boas práticas a serem consideradas ao contribuir com o projeto.
 
 ## Source-control branching model
 
-Após [votação realizada no Discord](https://discord.com/channels/1144422985294418001/1145747355929432214/1145879680298254376), o grupo escolheu trabalhar seguindo o modelo de controle de versão "Trunk-based development", o mesmo modelo [adotado pelo Google](https://trunkbaseddevelopment.com/#:~:text=Google%20does%20Trunk%2DBased%20Development).
+O grupo escolheu trabalhar seguindo o branching model [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow).
+> Para mais informaçoes sobre o GitHub Flow, visite https://docs.github.com/en/get-started/using-github/github-flow
 
-### Trunk-Based Development
+### GitHub Flow
 
-O Trunk-based development funciona, em palavras simples, da seguinte forma:
+O GitHub Flow funciona, em palavras simples, da seguinte forma:
 
-1. O dev cria uma branch pra ele trabalhar, a partir da branch `main`
+1. O desenvolvedor cria uma branch, a partir da branch `main`;
 
-2. O dev faz commits na branch criada no Passo 1
+2. O desenvolvedor faz commits na branch criada no Passo 1;
 
-3. Qdo terminar, o dev abre uma **Pull Request** da branch que ele criou no Passo 1 para branch `main`
+3. Qdo terminar, o desenvolvedor abre uma **Pull Request** da branch criada por ele no Passo 1 para branch `main`;
 
-4. [OPCIONAL] Após a abertura da PR no Passo 3 o GitHub Actions executa os testes unitários (se houver) e faz a análise estática do código que o dev criou, usando o [SonarCloud](https://www.sonarsource.com/products/sonarcloud/) _(print screen abaixo)_. Se houver problemas no código, como bugs ou falhas de segurança por exemplo, o GitHub Actions impede a aprovação da PR aberta no Passo 3 até que o dev faça as devidas correções
-<img width="686" alt="image" src="https://github.com/Grupo-G03-4SOAT-FIAP/RMS-backend-fase01/assets/5115895/d5ccc9f0-ccb1-4606-9cb8-4872a43b4ecb">
+> Ao abrir PR no Passo 3 o GitHub Actions executará os testes unitários (se houver) e fará a análise estática do código usando o [SonarCloud](https://www.sonarsource.com/products/sonarcloud/). Se houverem problemas no código, como falta de testes unitários, bugs ou falhas de segurança por exemplo, o GitHub Actions impede a aprovação da PR até que o dev faça as devidas correções.
+> <img width="686" alt="image" src="https://github.com/Grupo-G03-4SOAT-FIAP/RMS-backend-fase01/assets/5115895/d5ccc9f0-ccb1-4606-9cb8-4872a43b4ecb">
 
-5. Qdo a PR for aprovada pelo(s) demais membro(s) do grupo, o código que o dev fez na branch criada no Passo 1 vai para a branch `main`
+4. Qdo a Pull Request for aprovada pelo(s) demais membro(s) do grupo, o código na branch criada no Passo 1 será integrado com a branch `main`.
 
-6. [OPCIONAL] Se houver um pipeline de CI/CD configurado, após o merge com a `main` o código na `main` será compilado pelo GitHub Actions, uma imagem de container será gerada e um deploy será realizado em produção, no Kubernetes ou no [ECS da AWS](https://aws.amazon.com/ecs/)
-
-#### Dúvidas sobre o Trunk-based development
-
-<details><summary>Estou trabalhando em uma feature muito grande que vai levar vários dias para ser finalizada. Como lidar com esse cenário na Trunk-based development?</summary>
-<p>
-Resposta: De acordo com a Trunk-based development você pode utilizar Feature Flags para manter desativada novas funcionalidades incompletas que ainda estão em desenvolvimento, até que elas estejam prontas para serem habilitadas em produção.<br>
-Fonte: https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development#:~:text=Feature%20flags%20nicely%20complement%20trunk%2Dbased%20development%20by%20enabling%20developers%20to%20wrap%20new%20changes%20in%20an%20inactive%20code%20path%20and%20activate%20it%20at%20a%20later%20time.
-</p>
-</details>
-
-Para mais informações sobre o Trunk-based development visite https://cursos.alura.com.br/extra/alura-mais/git-flow-versus-trunk-based-development-c1401
+> Se houver um pipeline de CI/CD configurado, após o merge com a `main` o código na `main` será compilado pelo GitHub Actions, uma imagem de container será gerada e um deploy será realizado em produção.
 
 # Boas Práticas
 
@@ -101,6 +91,6 @@ Procure fazer [commits atômicos](https://dev.to/samuelfaure/how-atomic-git-comm
 
 Para mais informações sobre commits atômicos visite o artigo [How atomic Git commits dramatically increased my productivity - and will increase yours too](https://dev.to/samuelfaure/how-atomic-git-commits-dramatically-increased-my-productivity-and-will-increase-yours-too-4a84#why-should-you-write-atomic-git-commits) no dev.to
 
-#### Dica
+#### Dicas
 
-Você pode usar o comando `squash` do Git para unificar um ou mais commits em um único commit. Para mais informações, visite https://www.git-tower.com/learn/git/faq/git-squash
+> Você pode usar o comando `squash` do Git para unificar um ou mais commits em um único commit. Para mais informações, visite https://www.git-tower.com/learn/git/faq/git-squash
