@@ -2,10 +2,16 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IPedidoDTOFactory } from '../interfaces/pedido.dto.factory.port';
 import { IProdutoDTOFactory } from '../../../domain/produto/interfaces/produto.dto.factory.port';
 import { IClienteDTOFactory } from '../../../domain/cliente/interfaces/cliente.dto.factory.port';
-import { PedidoDTO } from '../../../presentation/rest/v1/presenters/pedido/pedido.dto';
+import {
+  CriaPedidoDTO,
+  PedidoDTO,
+} from '../../../presentation/rest/v1/presenters/pedido/pedido.dto';
 import { ClienteDTO } from '../../../presentation/rest/v1/presenters/cliente/cliente.dto';
 import { ClienteModel } from '../../../infrastructure/sql/models/cliente.model';
-import { ItemPedidoDTO } from '../../../presentation/rest/v1/presenters/pedido/item_pedido.dto';
+import {
+  CriaItemPedidoDTO,
+  ItemPedidoDTO,
+} from '../../../presentation/rest/v1/presenters/pedido/item_pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { ItemPedidoEntity } from '../entities/item_pedido.entity';
 
@@ -62,21 +68,33 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
     return listaPedidosDTO;
   }
 
+  criarItemPedidoDTO(itemPedido: ItemPedidoEntity): ItemPedidoDTO {
+    const produto = this.produtoDTOFactory.criarProdutoDTO(itemPedido.produto);
+    const itemPedidoDTO = new ItemPedidoDTO();
+    itemPedidoDTO.id = itemPedido.id;
+    itemPedidoDTO.quantidade = itemPedido.quantidade;
+    itemPedidoDTO.produto = produto;
+    return itemPedidoDTO;
+  }
+
   criarListaItemPedidoDTO(itemPedidos: ItemPedidoEntity[]): ItemPedidoDTO[] {
     const listaItensPedidoDTO = itemPedidos.map(
       (itemPedido: ItemPedidoEntity) => {
-        const produto = this.produtoDTOFactory.criarProdutoDTO(
-          itemPedido.produto,
-        );
-
-        const itemPedidoDTO = new ItemPedidoDTO();
-        itemPedidoDTO.id = itemPedido.id;
-        itemPedidoDTO.quantidade = itemPedido.quantidade;
-        itemPedidoDTO.produto = produto;
+        const itemPedidoDTO = this.criarItemPedidoDTO(itemPedido);
         return itemPedidoDTO;
       },
     );
 
     return listaItensPedidoDTO;
+  }
+
+  criarCriaPedidoDTO(
+    cpfCliente: string,
+    itensPedido: CriaItemPedidoDTO[],
+  ): CriaPedidoDTO {
+    const criaPedidoDTO = new CriaPedidoDTO();
+    criaPedidoDTO.cpfCliente = cpfCliente;
+    criaPedidoDTO.itensPedido = itensPedido;
+    return criaPedidoDTO;
   }
 }

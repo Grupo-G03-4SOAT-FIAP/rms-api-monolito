@@ -8,24 +8,42 @@ import { ProdutoController } from '../../src/presentation/rest/v1/controllers/pr
 import { criarFakeCategoriaDTO } from '../../src/mocks/categoria.mock';
 import { criarFakeProdutoDTO } from '../../src/mocks/produto.mock';
 import { criarFakeClienteDTO } from '../../src/mocks/cliente.mock';
-import { CriaItemPedidoDTO } from '../../src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
 import { HTTPResponse } from '../../src/application/common/HTTPResponse';
 import { ProdutoDTO } from '../../src/presentation/rest/v1/presenters/produto/produto.dto';
 import { ClienteDTO } from '../../src/presentation/rest/v1/presenters/cliente/cliente.dto';
-// import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.factory.port';
+import { ItemPedidoDTOFactory } from '../../src/domain/pedido/factories/item_pedido.dto.factory';
+import { PedidoDTOFactory } from '../../src/domain/pedido/factories/pedido.dto.factory';
+import { IProdutoDTOFactory } from '../../src/domain/produto/interfaces/produto.dto.factory.port';
+import { IClienteDTOFactory } from '../../src/domain/cliente/interfaces/cliente.dto.factory.port';
+import { CategoriaDTO } from '../../src/presentation/rest/v1/presenters/categoria/categoria.dto';
+import { PedidoModel } from '../../src/infrastructure/sql/models/pedido.model';
 
 describe('Pedido (e2e)', () => {
   let app: INestApplication;
   let categoriaController: CategoriaController;
   let produtoController: ProdutoController;
   let clienteController: ClienteController;
-  // let pedidoDTOFactory: IPedidoDTOFactory;
-  let produtoTest: HTTPResponse<ProdutoDTO>;
-  let clientTest: HTTPResponse<ClienteDTO>;
+  let categoriaDTO: HTTPResponse<CategoriaDTO>;
+  let produtoDTO: HTTPResponse<ProdutoDTO>;
+  let clientDTO: HTTPResponse<ClienteDTO>;
+  let itemPedidoFactory: ItemPedidoDTOFactory;
+  let pedidoDTOFactory: PedidoDTOFactory;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
+      providers: [
+        ItemPedidoDTOFactory,
+        PedidoDTOFactory,
+        {
+          provide: IProdutoDTOFactory,
+          useValue: criarFakeProdutoDTO,
+        },
+        {
+          provide: IClienteDTOFactory,
+          useValue: criarFakeClienteDTO,
+        },
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -33,7 +51,16 @@ describe('Pedido (e2e)', () => {
       moduleFixture.get<CategoriaController>(CategoriaController);
     produtoController = moduleFixture.get<ProdutoController>(ProdutoController);
     clienteController = moduleFixture.get<ClienteController>(ClienteController);
+    itemPedidoFactory =
+      moduleFixture.get<ItemPedidoDTOFactory>(ItemPedidoDTOFactory);
+    pedidoDTOFactory = moduleFixture.get<PedidoDTOFactory>(PedidoDTOFactory);
     await app.init();
+
+    categoriaDTO = await categoriaController.criar(criarFakeCategoriaDTO());
+    produtoDTO = await produtoController.criar(
+      criarFakeProdutoDTO(categoriaDTO.body.id),
+    );
+    clientDTO = await clienteController.criar(criarFakeClienteDTO());
   });
 
   afterAll(async () => {
@@ -42,44 +69,29 @@ describe('Pedido (e2e)', () => {
 
   describe('POST /pedido', () => {
     it('Deve ser possível realizar o checkout de um pedido', async () => {
-      // Criar categoria
-      const categoriaTest = await categoriaController.criar(
-        criarFakeCategoriaDTO(),
-      );
+      const item = itemPedidoFactory.criarItemPedidoDTO(produtoDTO.body.id, 1);
+      const pedido = pedidoDTOFactory.criarCriaPedidoDTO(clientDTO.body.cpf, [
+        item,
+      ]);
 
-      // Criar produto
-      produtoTest = await produtoController.criar(
-        criarFakeProdutoDTO(categoriaTest.body.id),
-      );
-
-      // Criar cliente
-      clientTest = await clienteController.criar(criarFakeClienteDTO());
-
-      // Itens do pedido
-      // const item = pedidoDTOFactory.criarItemPedidoDTO(produtoTest.body.id, 1);
-      const item = new CriaItemPedidoDTO();
-      item.produto = produtoTest.body.id;
-      item.quantidade = 1;
-      const itensPedido: CriaItemPedidoDTO[] = [];
-      itensPedido.push(item);
-
-      // pedido
-      // const pedidoTest = pedidoDTOFactory.criarPedidoDTOFromData(
-      //   clientTest.body.cpf,
-      //   itensPedido,
-      // );
-      const pedidoTest = {
-        cpfCliente: clientTest.body.cpf,
-        itensPedido: itensPedido,
-      };
-
-      request(app.getHttpServer())
+      const pedidoRegistrado = await request(app.getHttpServer())
         .post('/pedido')
-        .send(pedidoTest)
+        .send(pedido)
         .expect(HttpStatus.CREATED)
         .then((response) => {
-          console.log(response.body.data);
+          return response.body;
         });
+
+      const pedidoModel: PedidoModel = pedidoRegistrado.body;
+      expect(pedidoRegistrado.mensagem).toBe('Pedido criado com sucesso');
+      expect(pedidoModel.pago).toBeFalsy();
+      expect(pedidoModel.statusPedido).toBe('recebido');
+
+      expect(pedidoModel.cliente).toEqual(clientDTO.body);
+
+      expect(pedidoModel.itensPedido).toHaveLength(1);
+      expect(pedidoModel.itensPedido[0].produto.id).toBe(produtoDTO.body.id);
+      console.log(pedidoModel.itensPedido[0]);
     });
   });
 });
