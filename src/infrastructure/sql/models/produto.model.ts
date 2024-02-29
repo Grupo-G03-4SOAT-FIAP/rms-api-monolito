@@ -21,7 +21,7 @@ export class ProdutoModel {
   @Column({ name: 'descricao', length: 255, nullable: true })
   descricao: string;
 
-  @Column({ type: "money", name: 'valor_unitario', nullable: false })
+  @Column({ type: 'money', name: 'valor_unitario', nullable: false })
   valorUnitario: number;
 
   @Column({ name: 'imagem_url', length: 2048, nullable: false })
