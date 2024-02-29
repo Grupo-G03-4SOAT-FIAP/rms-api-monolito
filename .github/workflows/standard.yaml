@@ -18,11 +18,34 @@ on:
     paths-ignore:
       - '**/*.md'
       - .scafflater/**
-      - docs/** 
+      - docs/**
+
+env:
+  app_name: "rms-bff"
+  aws_region: "us-east-1"
+  dockerfile_path: "./Dockerfile"
+  database_name: "rms"
 
 jobs:
+
   ci:
-    name: CI
+    name: CI - Build and Test
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_PASSWORD: pgpwd
+          POSTGRES_USER: pguser
+          POSTGRES_DB: rms
+          POSTGRES_HOST: localhost
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,6 +72,20 @@ jobs:
         run: npm run test:cov
       - name: Sonar Analysis
         uses: SonarSource/sonarcloud-github-action@master
+        if: ${{ vars.SONAR_ENABLED == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    # ci_docker:
+    #   name: CI - Docker
+    #   steps:
+    #   - name: Docker Build and Push
+
+    # cd:
+    #   name: CD
+    #   if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    #   needs: [ci, ci_docker]
+    #   steps:
+    #     - name: Deploy Infra
+    #     - name: Deploy App
