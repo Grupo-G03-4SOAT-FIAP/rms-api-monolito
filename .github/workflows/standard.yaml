@@ -18,11 +18,27 @@ on:
     paths-ignore:
       - '**/*.md'
       - .scafflater/**
-      - docs/** 
+      - docs/**
 
 jobs:
+
   ci:
     name: CI
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_PASSWORD: pgpwd
+          POSTGRES_USER: pguser
+          POSTGRES_DB: rms
+          POSTGRES_HOST: localhost
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +48,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '20.x'
       - name: Node Cache
         uses: actions/cache@v2
         id: cache
@@ -52,3 +68,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    # ci_docker:
+    #   name: CI - Docker
+    #   steps:
+    #   - name: Docker Build and Push
+
+    # cd:
+    #   name: CD
+    #   if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    #   needs: [ci, ci_docker]
+    #   steps:
+    #     - name: Deploy Infra
+    #     - name: Deploy App
