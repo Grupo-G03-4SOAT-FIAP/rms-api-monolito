@@ -17,6 +17,7 @@ import { IProdutoDTOFactory } from '../../src/domain/produto/interfaces/produto.
 import { IClienteDTOFactory } from '../../src/domain/cliente/interfaces/cliente.dto.factory.port';
 import { CategoriaDTO } from '../../src/presentation/rest/v1/presenters/categoria/categoria.dto';
 import { PedidoModel } from '../../src/infrastructure/sql/models/pedido.model';
+import { PedidoController } from '../../src/presentation/rest/v1/controllers/pedido/pedido.controller';
 
 describe('Pedido (e2e)', () => {
   let app: INestApplication;
@@ -28,6 +29,7 @@ describe('Pedido (e2e)', () => {
   let clientDTO: HTTPResponse<ClienteDTO>;
   let itemPedidoFactory: ItemPedidoDTOFactory;
   let pedidoDTOFactory: PedidoDTOFactory;
+  let pedidoController: PedidoController;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -54,12 +56,17 @@ describe('Pedido (e2e)', () => {
     itemPedidoFactory =
       moduleFixture.get<ItemPedidoDTOFactory>(ItemPedidoDTOFactory);
     pedidoDTOFactory = moduleFixture.get<PedidoDTOFactory>(PedidoDTOFactory);
+    pedidoController = moduleFixture.get<PedidoController>(PedidoController);
+
     await app.init();
 
+    // Criar categoria
     categoriaDTO = await categoriaController.criar(criarFakeCategoriaDTO());
+    // Criar produto
     produtoDTO = await produtoController.criar(
       criarFakeProdutoDTO(categoriaDTO.body.id),
     );
+    // Criar cliente
     clientDTO = await clienteController.criar(criarFakeClienteDTO());
   });
 
@@ -82,16 +89,21 @@ describe('Pedido (e2e)', () => {
           return response.body;
         });
 
+      // validar retorno da request
       const pedidoModel: PedidoModel = pedidoRegistrado.body;
       expect(pedidoRegistrado.mensagem).toBe('Pedido criado com sucesso');
       expect(pedidoModel.pago).toBeFalsy();
       expect(pedidoModel.statusPedido).toBe('recebido');
-
+      expect(pedidoModel.statusPedido).toBe('recebido');
       expect(pedidoModel.cliente).toEqual(clientDTO.body);
-
       expect(pedidoModel.itensPedido).toHaveLength(1);
       expect(pedidoModel.itensPedido[0].produto.id).toBe(produtoDTO.body.id);
-      console.log(pedidoModel.itensPedido[0]);
+
+      // Validar dado registrado no banco
+      const result = await pedidoController.buscar(pedidoModel.id);
+      expect(pedidoModel.numeroPedido).toEqual(result.numeroPedido);
+      expect(pedidoModel.cliente).toEqual(result.cliente);
+      expect(pedidoModel.itensPedido).toEqual(result.itensPedido);
     });
   });
 });
