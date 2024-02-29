@@ -23,7 +23,7 @@ on:
 jobs:
 
   ci:
-    name: CI - Build and Test
+    name: CI
     services:
       postgres:
         image: postgres:latest
