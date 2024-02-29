@@ -2,22 +2,22 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../../src/app.module';
+import { HTTPResponse } from '../../src/application/common/HTTPResponse';
 import { CategoriaController } from '../../src/presentation/rest/v1/controllers/categoria/categoria.controller';
 import { ClienteController } from '../../src/presentation/rest/v1/controllers/cliente/cliente.controller';
 import { ProdutoController } from '../../src/presentation/rest/v1/controllers/produto/produto.controller';
+import { PedidoController } from '../../src/presentation/rest/v1/controllers/pedido/pedido.controller';
+import { ProdutoDTO } from '../../src/presentation/rest/v1/presenters/produto/produto.dto';
+import { ClienteDTO } from '../../src/presentation/rest/v1/presenters/cliente/cliente.dto';
+import { CategoriaDTO } from '../../src/presentation/rest/v1/presenters/categoria/categoria.dto';
 import { criarFakeCategoriaDTO } from '../../src/mocks/categoria.mock';
 import { criarFakeProdutoDTO } from '../../src/mocks/produto.mock';
 import { criarFakeClienteDTO } from '../../src/mocks/cliente.mock';
-import { HTTPResponse } from '../../src/application/common/HTTPResponse';
-import { ProdutoDTO } from '../../src/presentation/rest/v1/presenters/produto/produto.dto';
-import { ClienteDTO } from '../../src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import { ItemPedidoDTOFactory } from '../../src/domain/pedido/factories/item_pedido.dto.factory';
 import { PedidoDTOFactory } from '../../src/domain/pedido/factories/pedido.dto.factory';
 import { IProdutoDTOFactory } from '../../src/domain/produto/interfaces/produto.dto.factory.port';
 import { IClienteDTOFactory } from '../../src/domain/cliente/interfaces/cliente.dto.factory.port';
-import { CategoriaDTO } from '../../src/presentation/rest/v1/presenters/categoria/categoria.dto';
 import { PedidoModel } from '../../src/infrastructure/sql/models/pedido.model';
-import { PedidoController } from '../../src/presentation/rest/v1/controllers/pedido/pedido.controller';
 
 describe('Pedido (e2e)', () => {
   let app: INestApplication;
