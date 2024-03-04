@@ -5,6 +5,7 @@
 	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
 		"donebd.rest-client-api",
+		"ms-azuretools.vscode-docker",
 		"GitHub.vscode-github-actions",
 		"contextmapper.context-mapper-vscode-extension"
 	],
