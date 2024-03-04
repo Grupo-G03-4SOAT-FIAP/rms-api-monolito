@@ -164,6 +164,9 @@ $ npm run test:cov
 
 ## Projetos relacionados
 
+AWS API Gateway Lambda authorizer\
+https://github.com/Grupo-G03-4SOAT-FIAP/rms-lambda-authorizer
+
 IaC do cluster Kubernetes\
 https://github.com/Grupo-G03-4SOAT-FIAP/rms-k8s-iac
 
