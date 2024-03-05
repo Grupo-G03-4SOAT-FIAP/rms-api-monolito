@@ -6,7 +6,8 @@ metadata:
   labels:
     app: rms-bff
 spec:
-  replicas: 3
+  # replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: rms-bff
@@ -15,17 +16,37 @@ spec:
       labels:
         app: rms-bff
     spec:
+      serviceAccountName: rms-bff-secretmanager-sa # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
       containers:
-      - name: rms-bff
-        image: dannevesdantas/rms-bff:latest # Obtem a imagem a partir do Docker Hub
-        envFrom:
-          - configMapRef:
-              name: rms-bff-config
-        ports:
-        - containerPort: 3000
-        resources:
-          # You must specify requests for CPU to autoscale
-          # based on CPU utilization
-          requests:
-            cpu: "250m"
-            memory: "512Mi"
+        - name: rms-bff
+          image: dannevesdantas/rms-bff:latest # Obtem a imagem a partir do Docker Hub
+          envFrom:
+            - configMapRef:
+                name: rms-bff-config
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-bff-secret
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-bff-secret
+                  key: password
+            - name: ACCESS_TOKEN_MERCADOPAGO
+              valueFrom:
+                secretKeyRef:
+                  name: mercadopago-secret
+                  key: ACCESS_TOKEN_MERCADOPAGO
+          ports:
+            - containerPort: 3000
+          resources:
+            # You must specify requests for CPU to autoscale
+            # based on CPU utilization
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "0.5"
+              memory: "512Mi"
