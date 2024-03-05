@@ -43,5 +43,5 @@ spec:
           # You must specify requests for CPU to autoscale
           # based on CPU utilization
           requests:
-            cpu: "250m"
-            memory: "512Mi"
+            cpu: "200m"
+            memory: "256Mi"
