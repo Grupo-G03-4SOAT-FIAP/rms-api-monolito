@@ -16,32 +16,35 @@ spec:
         app: rms-bff
     spec:
       containers:
-      - name: rms-bff
-        image: dannevesdantas/rms-bff:latest # Obtem a imagem a partir do Docker Hub
-        envFrom:
-          - configMapRef:
-              name: rms-bff-config
-        env:
-          - name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: rms-bff-secret
-                key: DB_USERNAME
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: rms-bff-secret
-                key: DB_PASSWORD
-          - name: ACCESS_TOKEN_MERCADOPAGO
-            valueFrom:
-              secretKeyRef:
-                name: rms-bff-secret
-                key: ACCESS_TOKEN_MERCADOPAGO
-        ports:
-        - containerPort: 3000
-        resources:
-          # You must specify requests for CPU to autoscale
-          # based on CPU utilization
-          requests:
-            cpu: "200m"
-            memory: "256Mi"
+        - name: rms-bff
+          image: dannevesdantas/rms-bff:latest # Obtem a imagem a partir do Docker Hub
+          envFrom:
+            - configMapRef:
+                name: rms-bff-config
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rms-bff-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rms-bff-secret
+                  key: DB_PASSWORD
+            - name: ACCESS_TOKEN_MERCADOPAGO
+              valueFrom:
+                secretKeyRef:
+                  name: rms-bff-secret
+                  key: ACCESS_TOKEN_MERCADOPAGO
+          ports:
+            - containerPort: 3000
+          resources:
+            # You must specify requests for CPU to autoscale
+            # based on CPU utilization
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "0.5"
+              memory: "512Mi"
