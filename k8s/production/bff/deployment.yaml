@@ -16,6 +16,7 @@ spec:
       labels:
         app: rms-bff
     spec:
+      serviceAccountName: rms-bff-secretmanager-sa # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
       containers:
         - name: rms-bff
           image: dannevesdantas/rms-bff:latest # Obtem a imagem a partir do Docker Hub
@@ -26,17 +27,17 @@ spec:
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: rms-bff-secret
-                  key: DB_USERNAME
+                  name: db-bff-secret
+                  key: username
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: rms-bff-secret
-                  key: DB_PASSWORD
+                  name: db-bff-secret
+                  key: password
             - name: ACCESS_TOKEN_MERCADOPAGO
               valueFrom:
                 secretKeyRef:
-                  name: rms-bff-secret
+                  name: mercadopago-secret
                   key: ACCESS_TOKEN_MERCADOPAGO
           ports:
             - containerPort: 3000
