@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
@@ -21,6 +22,8 @@ import {
 import { BadRequestError } from '../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swagger';
 import { MensagemMercadoPagoDTO } from '../../presenters/pedido/gatewaypag.dto';
+import { AuthenticationGuard, CognitoUser } from '@nestjs-cognito/auth';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('pedido')
 @ApiTags('Pedido')
@@ -28,7 +31,8 @@ export class PedidoController {
   constructor(
     @Inject(IPedidoUseCase)
     private readonly pedidoUseCase: IPedidoUseCase,
-  ) {}
+    private configService: ConfigService,
+  ) { }
 
   @Post()
   @HttpCode(201)
@@ -48,7 +52,14 @@ export class PedidoController {
     description: 'Pedido informado não existe',
     type: NotFoundError,
   })
-  async checkout(@Body() pedido: CriaPedidoDTO) {
+  @UseGuards(AuthenticationGuard)
+  async checkout(
+    @CognitoUser('username') username: string,
+    @Body() pedido: CriaPedidoDTO,
+  ) {
+    if (this.amazonCognitoIsEnabled()) {
+      pedido.cpfCliente = username;
+    }
     try {
       return await this.pedidoUseCase.criarPedido(pedido);
     } catch (error) {
@@ -167,5 +178,12 @@ export class PedidoController {
       }
       throw error;
     }
+  }
+
+  private amazonCognitoIsEnabled(): boolean {
+    return (
+      this.configService.get<string>('ENABLE_AMZ_COGNITO_CIAM')?.toLowerCase() ===
+      'true'
+    );
   }
 }
