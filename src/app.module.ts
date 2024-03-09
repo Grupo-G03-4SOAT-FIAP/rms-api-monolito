@@ -30,9 +30,9 @@ import { PedidoModule } from './modules/pedido.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         jwtVerifier: {
-          userPoolId: configService.get("COGNITO_USER_POOL_ID") as string,
-          clientId: configService.get("COGNITO_CLIENT_ID"),
-          tokenUse: "id",
+          userPoolId: configService.get('COGNITO_USER_POOL_ID') as string,
+          clientId: configService.get('COGNITO_CLIENT_ID'),
+          tokenUse: 'id',
         },
       }),
       inject: [ConfigService],
@@ -41,4 +41,4 @@ import { PedidoModule } from './modules/pedido.module';
   controllers: [AppController],
   providers: [AppUseCase],
 })
-export class AppModule { }
+export class AppModule {}

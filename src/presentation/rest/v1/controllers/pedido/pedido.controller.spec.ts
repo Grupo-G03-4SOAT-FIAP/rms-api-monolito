@@ -23,9 +23,9 @@ describe('PedidoController', () => {
       imports: [
         CognitoTestingModule.register({
           identityProvider: {
-            region: "eu-west-1",
+            region: 'eu-west-1',
           },
-        })
+        }),
       ],
       providers: [
         PedidoController,

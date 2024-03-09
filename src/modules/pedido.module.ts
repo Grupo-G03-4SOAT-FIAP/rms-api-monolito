@@ -23,7 +23,7 @@ import { AuthenticationGuard } from '@nestjs-cognito/auth';
   imports: [
     ProdutoModule,
     ClienteModule,
-    TypeOrmModule.forFeature([PedidoModel, ItemPedidoModel])
+    TypeOrmModule.forFeature([PedidoModel, ItemPedidoModel]),
   ],
   controllers: [PedidoController],
   providers: [
@@ -54,8 +54,8 @@ import { AuthenticationGuard } from '@nestjs-cognito/auth';
     },
     SQLDTOFactory,
     PedidoService,
-    AuthenticationGuard
+    AuthenticationGuard,
   ],
   exports: [],
 })
-export class PedidoModule { }
+export class PedidoModule {}
