@@ -6,10 +6,13 @@ import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.
 import { PedidoNaoLocalizadoErro } from 'src/domain/pedido/exceptions/pedido.exception';
 import {
   atualizaPedidoDTOMock,
+  configServiceMock,
   criaPedidoDTOMock,
   pedidoDTOMock,
   pedidoUseCaseMock,
 } from 'src/mocks/pedido.mock';
+import { CognitoTestingModule } from '@nestjs-cognito/testing';
+import { ConfigService } from '@nestjs/config';
 
 describe('PedidoController', () => {
   let pedidoController: PedidoController;
@@ -17,11 +20,22 @@ describe('PedidoController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        CognitoTestingModule.register({
+          identityProvider: {
+            region: 'eu-west-1',
+          },
+        }),
+      ],
       providers: [
         PedidoController,
         {
           provide: IPedidoUseCase,
           useValue: pedidoUseCaseMock,
+        },
+        {
+          provide: ConfigService,
+          useValue: configServiceMock,
         },
       ],
     }).compile();
@@ -42,7 +56,7 @@ describe('PedidoController', () => {
 
     pedidoUseCaseMock.criarPedido.mockReturnValue(HTTPResponse);
 
-    const result = await pedidoController.checkout(criaPedidoDTOMock);
+    const result = await pedidoController.checkout(undefined, criaPedidoDTOMock);
 
     expect(pedidoUseCaseMock.criarPedido).toHaveBeenCalledWith(
       criaPedidoDTOMock,
@@ -55,9 +69,9 @@ describe('PedidoController', () => {
       new ClienteNaoLocalizadoErro('Cliente informado não existe'),
     );
 
-    await expect(pedidoController.checkout(criaPedidoDTOMock)).rejects.toThrow(
-      new NotFoundException('Cliente informado não existe'),
-    );
+    await expect(
+      pedidoController.checkout(undefined, criaPedidoDTOMock),
+    ).rejects.toThrow(new NotFoundException('Cliente informado não existe'));
     expect(pedidoUseCaseMock.criarPedido).toHaveBeenCalledWith(
       criaPedidoDTOMock,
     );
