@@ -125,6 +125,9 @@ export const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
 
 export const configServiceMock = {
   get: jest.fn((key: string) => {
+    if (key === 'ENABLE_AMZ_COGNITO_CIAM') {
+      return 'false';
+    }
     if (key === 'ENABLE_MERCADOPAGO') {
       return 'false';
     }

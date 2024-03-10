@@ -45,11 +45,25 @@ Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da
 1. Clone este repositório;
 2. Navegue até a pasta raiz do projeto;
 3. Use o comando `docker build -t rms-bff:latest .` para gerar a imagem de container da aplicação;
-4. Use o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
-5. Use o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/metrics-server.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
+4. Use o comando `kubectl apply -f k8s/development/postgres/namespace.yaml -f k8s/development/postgres/pvc-pv.yaml -f k8s/development/postgres/config.yaml -f k8s/development/postgres/secrets.yaml -f k8s/development/postgres/deployment.yaml -f k8s/development/postgres/service.yaml` para fazer deploy do banco de dados;
+5. Use o comando `kubectl apply -f k8s/development/bff/namespace.yaml -f k8s/development/bff/config.yaml -f k8s/development/bff/secrets.yaml -f k8s/development/bff/deployment.yaml -f k8s/development/bff/service.yaml -f k8s/development/bff/hpa.yaml` para fazer deploy da aplicação;
 6. Acesse o Swagger em http://localhost:3000/swagger/
 
 > Para remover a aplicação do Kubernetes, use o comando `kubectl delete namespace rms`
+
+<details>
+
+<summary>Sobre os Secrets do Kubernetes</summary>
+
+<br>
+
+Em seu ambiente de desenvolvimento, por questão de segurança, abra os arquivos `/k8s/development/postgres/secrets.yaml` e `/k8s/development/bff/secrets.yaml` na pasta `/k8s/development` e preencha os valores sensíveis manualmente.
+
+> No ambiente de produção os Secrets do Kubernetes são gerenciados pelo AWS Secrets Manager.
+
+Para mais informações visite a página [Boas práticas para secrets do Kubernetes](https://kubernetes.io/docs/concepts/security/secrets-good-practices/#avoid-sharing-secret-manifests).
+
+</details>
 
 <details>
 
@@ -164,14 +178,14 @@ $ npm run test:cov
 
 ## Projetos relacionados
 
-IaC do cluster Kubernetes\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-k8s-iac
+Amazon Cognito Lambda triggers\
+https://github.com/Grupo-G03-4SOAT-FIAP/rms-cognito-triggers
 
-IaC do Banco de Dados\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-db-iac
+Amazon SNS Lambda subscribers\
+https://github.com/Grupo-G03-4SOAT-FIAP/rms-sns-subscribers
 
-IaC do Key Management Service - KMS\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-kms-iac
+Infrastructure as code (IaC) com Terraform\
+https://github.com/Grupo-G03-4SOAT-FIAP/rms-iac
 
 ## Requisitos
 

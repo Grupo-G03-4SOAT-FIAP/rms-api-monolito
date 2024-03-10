@@ -7,5 +7,3 @@ metadata:
     app: postgres
 data:
   POSTGRES_DB: rms
-  POSTGRES_USER: pguser
-  POSTGRES_PASSWORD: pgpwd
