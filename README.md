@@ -178,17 +178,14 @@ $ npm run test:cov
 
 ## Projetos relacionados
 
-AWS API Gateway Lambda authorizer\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-lambda-authorizer
+Amazon Cognito Lambda triggers\
+https://github.com/Grupo-G03-4SOAT-FIAP/rms-cognito-triggers
 
-IaC do cluster Kubernetes\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-k8s-iac
+Amazon SNS Lambda subscribers\
+https://github.com/Grupo-G03-4SOAT-FIAP/rms-sns-subscribers
 
-IaC do Banco de Dados\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-db-iac
-
-IaC do Key Management Service - KMS\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-kms-iac
+Infrastructure as code (IaC) com Terraform\
+https://github.com/Grupo-G03-4SOAT-FIAP/rms-iac
 
 ## Requisitos
 
