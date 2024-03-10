@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { ClienteEntity } from '../../src/domain/cliente/entities/cliente.entity';
-import { gerarFakeCpf } from '../../src/domain/common/utils/document_generate';
+import { gerarFakeCpf } from '../domain/common/utils/generate_document';
 import { ClienteModel } from '../../src/infrastructure/sql/models/cliente.model';
 import {
   AtualizaClienteDTO,

@@ -1,13 +1,10 @@
 const create_array = (total: number, numero: number): number[] =>
   Array.from(Array(total), () => number_random(numero));
+const num_random = Math.random();
 const number_random = (number: number): number =>
-  Math.round(Math.random() * number);
+  Math.round(num_random * number);
 const mod = (dividendo: number, divisor: number): number =>
   Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);
-
-export function gera(document_type: string, mask: boolean = false): void {
-  document_type == 'cpf' ? gerarFakeCpf(mask) : gerarFakeCnpj(mask);
-}
 
 export function gerarFakeCpf(mask: boolean = false): string {
   const total_array: number = 9;
