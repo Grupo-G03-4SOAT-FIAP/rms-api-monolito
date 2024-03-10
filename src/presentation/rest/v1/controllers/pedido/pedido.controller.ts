@@ -32,7 +32,7 @@ export class PedidoController {
     @Inject(IPedidoUseCase)
     private readonly pedidoUseCase: IPedidoUseCase,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   @Post()
   @HttpCode(201)
@@ -182,8 +182,9 @@ export class PedidoController {
 
   private amazonCognitoIsEnabled(): boolean {
     return (
-      this.configService.get<string>('ENABLE_AMZ_COGNITO_CIAM')?.toLowerCase() ===
-      'true'
+      this.configService
+        .get<string>('ENABLE_AMZ_COGNITO_CIAM')
+        ?.toLowerCase() === 'true'
     );
   }
 }

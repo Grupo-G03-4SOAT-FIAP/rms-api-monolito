@@ -1,20 +1,15 @@
-const create_array = (total: number, numero: number): number[] =>
+const create_array = (total, numero) =>
   Array.from(Array(total), () => number_random(numero));
-const num_random = Math.random();
-const number_random = (number: number): number =>
-  Math.round(num_random * number);
-const mod = (dividendo: number, divisor: number): number =>
+const number_random = (number) => Math.round(Math.random() * number);
+const mod = (dividendo, divisor) =>
   Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);
 
-export function gerarFakeCpf(mask: boolean = false): string {
-  const total_array: number = 9;
-  const n: number = 9;
-  const [n1, n2, n3, n4, n5, n6, n7, n8, n9]: number[] = create_array(
-    total_array,
-    n,
-  );
+export function gerarFakeCpf(mask: boolean = true) {
+  const total_array = 9;
+  const n = 9;
+  const [n1, n2, n3, n4, n5, n6, n7, n8, n9] = create_array(total_array, n);
 
-  let d1: number =
+  let d1 =
     n9 * 2 +
     n8 * 3 +
     n7 * 4 +
@@ -27,7 +22,7 @@ export function gerarFakeCpf(mask: boolean = false): string {
   d1 = 11 - mod(d1, 11);
   if (d1 >= 10) d1 = 0;
 
-  let d2: number =
+  let d2 =
     d1 * 2 +
     n9 * 3 +
     n8 * 4 +
@@ -45,19 +40,16 @@ export function gerarFakeCpf(mask: boolean = false): string {
   else return `${n1}${n2}${n3}${n4}${n5}${n6}${n7}${n8}${n9}${d1}${d2}`;
 }
 
-export function gerarFakeCnpj(mask: boolean = false): string {
-  const total_array: number = 8;
-  const n: number = 9;
-  const [n1, n2, n3, n4, n5, n6, n7, n8]: number[] = create_array(
-    total_array,
-    n,
-  );
-  const n9: number = 0;
-  const n10: number = 0;
-  const n11: number = 0;
-  const n12: number = 1;
+export function gerarFakecCnpj(mask: boolean = true) {
+  const total_array = 8;
+  const n = 9;
+  const [n1, n2, n3, n4, n5, n6, n7, n8] = create_array(total_array, n);
+  const n9 = 0;
+  const n10 = 0;
+  const n11 = 0;
+  const n12 = 1;
 
-  let d1: number =
+  let d1 =
     n12 * 2 +
     n11 * 3 +
     n10 * 4 +
@@ -73,7 +65,7 @@ export function gerarFakeCnpj(mask: boolean = false): string {
   d1 = 11 - mod(d1, 11);
   if (d1 >= 10) d1 = 0;
 
-  let d2: number =
+  let d2 =
     d1 * 2 +
     n12 * 3 +
     n11 * 4 +
