@@ -10,7 +10,6 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
@@ -22,7 +21,7 @@ import {
 import { BadRequestError } from '../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swagger';
 import { MensagemMercadoPagoDTO } from '../../presenters/pedido/gatewaypag.dto';
-import { AuthenticationGuard, CognitoUser } from '@nestjs-cognito/auth';
+import { CognitoUser } from '@nestjs-cognito/auth';
 import { ConfigService } from '@nestjs/config';
 
 @Controller('pedido')
@@ -52,7 +51,7 @@ export class PedidoController {
     description: 'Pedido informado não existe',
     type: NotFoundError,
   })
-  @UseGuards(AuthenticationGuard)
+  //@UseGuards(AuthenticationGuard)
   async checkout(
     @CognitoUser('username') username: string,
     @Body() pedido: CriaPedidoDTO,
