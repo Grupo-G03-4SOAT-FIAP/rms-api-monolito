@@ -67,15 +67,10 @@ jobs:
       id: update-kubeconfig
       run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
 
-    - name: kubectl-apply namespace
-    # https://docs.aws.amazon.com/pt_br/eks/latest/userguide/create-kubeconfig.html
-      id: kubectl-apply-namespace
-      run: kubectl apply -f k8s/production/bff/namespace.yaml
-
     - name: kubectl-apply
     # https://docs.aws.amazon.com/pt_br/eks/latest/userguide/create-kubeconfig.html
       id: kubectl-apply
-      run: kubectl apply -f k8s/production/ -R
+      run: kubectl apply -f k8s/production/bff/namespace.yaml -f k8s/production/bff/config.yaml -f k8s/production/bff/service-account.yaml -f k8s/production/bff/secret-provider.yaml -f k8s/production/bff/deployment.yaml -f k8s/production/bff/service.yaml -f k8s/production/bff/hpa.yaml
 
     # - name: Fill in the new image ID in the Amazon ECS task definition
     #   id: task-def
