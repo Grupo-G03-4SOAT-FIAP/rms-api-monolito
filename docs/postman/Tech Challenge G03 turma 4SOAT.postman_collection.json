@@ -532,6 +532,180 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Amazon Cognito",
+			"item": [
+				{
+					"name": "AdminCreateUser",
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "secretKey",
+									"value": "<Ver no Console da AWS>",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "<Ver no Console da AWS>",
+									"type": "string"
+								},
+								{
+									"key": "region",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "cognito-idp",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Amz-Target",
+								"value": "AWSCognitoIdentityProviderService.AdminCreateUser"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-amz-json-1.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserPoolId\": \"???\", // Você pode consultar o User pool ID no Console da AWS\r\n    \"Username\": \"74993021801\", // CPF do Cliente aqui\r\n    \"TemporaryPassword\": \"cr!8mh*KNj#f\", // Senha temporária. Deverá ser trocada pelo próprio cliente no futuro caso haja necessidade. Também poderá ser redefinda pelo Admin.\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://cognito-idp.us-east-1.amazonaws.com",
+							"protocol": "https",
+							"host": [
+								"cognito-idp",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1 SignUp",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Amz-Target",
+								"value": "AWSCognitoIdentityProviderService.SignUp"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-amz-json-1.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"Username\": \"74993021801\", // CPF do Cliente aqui\r\n    \"Password\": \"cr!8mh*KNj#f\", // Senha padrão, nunca precisará ser informada ao fazer login e poderá ser redefinida pelo Admin no futuro caso eventualmente haja necessidade\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://cognito-idp.us-east-1.amazonaws.com",
+							"protocol": "https",
+							"host": [
+								"cognito-idp",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. InitiateAuth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Amz-Target",
+								"value": "AWSCognitoIdentityProviderService.InitiateAuth"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-amz-json-1.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"AuthFlow\": \"CUSTOM_AUTH\",\r\n    \"AuthParameters\": {\r\n        \"USERNAME\": \"74993021801\" // CPF do Cliente aqui\r\n    },\r\n    \"ClientId\": \"???\" // Informe o Client ID da sua aplicação aqui\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://cognito-idp.us-east-1.amazonaws.com",
+							"protocol": "https",
+							"host": [
+								"cognito-idp",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.1 RespondToAuthChallenge",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Amz-Target",
+								"value": "AWSCognitoIdentityProviderService.RespondToAuthChallenge"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-amz-json-1.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Consulte o campo \"IdToken\" na resposta para obter o seu \"Authorization\"\r\n{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"ChallengeName\": \"CUSTOM_CHALLENGE\",\r\n    // Para obter uma Session execute primeiro o InitiateAuth\r\n    \"Session\": \"???\",\r\n    \"ChallengeResponses\": {\r\n        \"ANSWER\": \"answer\",\r\n        \"USERNAME\": \"74993021801\" // CPF do Cliente aqui\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://cognito-idp.us-east-1.amazonaws.com",
+							"protocol": "https",
+							"host": [
+								"cognito-idp",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
