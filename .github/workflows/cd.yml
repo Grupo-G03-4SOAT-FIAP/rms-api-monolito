@@ -75,7 +75,7 @@ jobs:
     - name: kubectl-apply
     # https://docs.aws.amazon.com/pt_br/eks/latest/userguide/create-kubeconfig.html
       id: kubectl-apply
-      run: kubectl apply -f k8s/production/
+      run: kubectl apply -f k8s/production/ -R
 
     # - name: Fill in the new image ID in the Amazon ECS task definition
     #   id: task-def
