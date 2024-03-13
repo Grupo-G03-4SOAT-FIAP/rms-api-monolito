@@ -42,6 +42,7 @@ export const pedidoEntityMock = new PedidoEntity(
   '05012024',
   false,
   clienteEntityMock,
+  clienteEntityMock,
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
   '2024-01-25T00:05:04.941Z',
   '2024-01-25T00:05:04.941Z',
@@ -53,6 +54,7 @@ export const pedidoEntityNotDateMock = new PedidoEntity(
   StatusPedido.RECEBIDO,
   '05012024',
   false,
+  clienteEntityMock,
   clienteEntityMock,
   '0a14aa4e-75e7-405f-8301-81f60646c93d',
 );
@@ -126,7 +128,7 @@ export const pedidoTypeORMMock: jest.Mocked<Repository<PedidoModel>> = {
 export const configServiceMock = {
   get: jest.fn((key: string) => {
     if (key === 'ENABLE_AMZ_COGNITO_CIAM') {
-      return 'false';
+      return 'true';
     }
     if (key === 'ENABLE_MERCADOPAGO') {
       return 'false';

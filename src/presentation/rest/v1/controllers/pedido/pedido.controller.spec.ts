@@ -13,6 +13,7 @@ import {
 } from 'src/mocks/pedido.mock';
 import { CognitoTestingModule } from '@nestjs-cognito/testing';
 import { ConfigService } from '@nestjs/config';
+import { clienteDTOMock, clienteDTONotIdMock } from 'src/mocks/cliente.mock';
 
 describe('PedidoController', () => {
   let pedidoController: PedidoController;
@@ -56,9 +57,15 @@ describe('PedidoController', () => {
 
     pedidoUseCaseMock.criarPedido.mockReturnValue(HTTPResponse);
 
-    const result = await pedidoController.checkout(undefined, criaPedidoDTOMock);
+    const result = await pedidoController.checkout(
+      clienteDTOMock.cpf,
+      clienteDTOMock.nome,
+      clienteDTOMock.email,
+      criaPedidoDTOMock,
+    );
 
     expect(pedidoUseCaseMock.criarPedido).toHaveBeenCalledWith(
+      clienteDTONotIdMock,
       criaPedidoDTOMock,
     );
     expect(result).toStrictEqual(HTTPResponse);
@@ -70,9 +77,15 @@ describe('PedidoController', () => {
     );
 
     await expect(
-      pedidoController.checkout(undefined, criaPedidoDTOMock),
+      pedidoController.checkout(
+        clienteDTOMock.cpf,
+        clienteDTOMock.nome,
+        clienteDTOMock.email,
+        criaPedidoDTOMock,
+      ),
     ).rejects.toThrow(new NotFoundException('Cliente informado não existe'));
     expect(pedidoUseCaseMock.criarPedido).toHaveBeenCalledWith(
+      clienteDTONotIdMock,
       criaPedidoDTOMock,
     );
   });

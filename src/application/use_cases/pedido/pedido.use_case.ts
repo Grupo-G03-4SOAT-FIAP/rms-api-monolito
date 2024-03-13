@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
+import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
+import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
 import { PedidoNaoLocalizadoErro } from 'src/domain/pedido/exceptions/pedido.exception';
 import { IGatewayPagamentoService } from 'src/domain/pedido/interfaces/gatewaypag.service.port';
@@ -8,6 +10,7 @@ import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.facto
 import { IPedidoFactory } from 'src/domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
+import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import {
   MensagemMercadoPagoDTO,
   PedidoGatewayPagamentoDTO,
@@ -23,6 +26,8 @@ export class PedidoUseCase implements IPedidoUseCase {
   constructor(
     @Inject(IPedidoRepository)
     private readonly pedidoRepository: IPedidoRepository,
+    @Inject(IClienteRepository)
+    private readonly clienteRepository: IClienteRepository,
     @Inject(IPedidoFactory)
     private readonly pedidoFactory: IPedidoFactory,
     @Inject(IGatewayPagamentoService)
@@ -54,9 +59,15 @@ export class PedidoUseCase implements IPedidoUseCase {
   }
 
   async criarPedido(
+    clienteDTO: ClienteDTO,
     criaPedidoDTO: CriaPedidoDTO,
   ): Promise<HTTPResponse<PedidoDTO>> {
     const pedido = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);
+    const cliente = await this.pedidoFactory.criarEntidadeCliente(clienteDTO);
+    const clienteCriadoOuAtualizado =
+      await this.criarOuAtualizarCliente(cliente);
+    pedido.cliente = clienteCriadoOuAtualizado;
+    pedido.clientePedido = this.copiarDadosCliente(clienteCriadoOuAtualizado);
     const pedidoCriado = await this.pedidoRepository.criarPedido(pedido);
     const pedidoDTO = this.pedidoDTOFactory.criarPedidoDTO(pedidoCriado);
     if (this.mercadoPagoIsEnabled()) {
@@ -68,6 +79,35 @@ export class PedidoUseCase implements IPedidoUseCase {
       mensagem: 'Pedido criado com sucesso',
       body: pedidoDTO,
     };
+  }
+
+  private copiarDadosCliente(
+    clienteOrigem: ClienteEntity,
+  ): ClienteEntity | null {
+    const clienteCopia = new ClienteEntity(
+      clienteOrigem.nome,
+      clienteOrigem.email,
+      clienteOrigem.cpf,
+    );
+    return clienteCopia;
+  }
+
+  private async criarOuAtualizarCliente(
+    cliente: ClienteEntity,
+  ): Promise<ClienteEntity | null> {
+    const clienteAntigoEncontrado =
+      await this.clienteRepository.buscarClientePorCPF(cliente.cpf);
+    let clienteCriadoOuAtualizado;
+    if (clienteAntigoEncontrado) {
+      clienteCriadoOuAtualizado = await this.clienteRepository.editarCliente(
+        clienteAntigoEncontrado.id,
+        cliente,
+      );
+    } else {
+      clienteCriadoOuAtualizado =
+        await this.clienteRepository.criarCliente(cliente);
+    }
+    return clienteCriadoOuAtualizado;
   }
 
   async editarPedido(

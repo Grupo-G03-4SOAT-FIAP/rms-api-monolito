@@ -9,6 +9,7 @@ import { PedidoModel } from '../models/pedido.model';
 import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
 import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
 import { ItemPedidoEntity } from 'src/domain/pedido/entities/item_pedido.entity';
+import { ClientePedidoModel } from '../models/cliente_pedido.model';
 
 @Injectable()
 export class SQLDTOFactory {
@@ -32,7 +33,7 @@ export class SQLDTOFactory {
     );
   }
 
-  criarClienteDTO(cliente: ClienteModel): ClienteEntity {
+  criarClienteDTOFromClienteModel(cliente: ClienteModel): ClienteEntity {
     if (!cliente) {
       return null;
     }
@@ -44,8 +45,25 @@ export class SQLDTOFactory {
     );
   }
 
+  criarClienteDTOFromClientePedidoModel(
+    clientePedido: ClientePedidoModel,
+  ): ClienteEntity {
+    if (!clientePedido) {
+      return null;
+    }
+    return new ClienteEntity(
+      clientePedido.nome,
+      clientePedido.email,
+      clientePedido.cpf,
+      clientePedido.id,
+    );
+  }
+
   criarPedidoDTO(pedido: PedidoModel): PedidoEntity {
-    const clienteEntity = this.criarClienteDTO(pedido.cliente);
+    const clienteEntity = this.criarClienteDTOFromClienteModel(pedido.cliente);
+    const clientePedidoEntity = this.criarClienteDTOFromClientePedidoModel(
+      pedido.clientePedido,
+    );
 
     const itensPedido = pedido.itensPedido.map((itemPedidoModel) => {
       const produtoEntity = this.criarProdutoDTO(itemPedidoModel.produto);
@@ -62,6 +80,7 @@ export class SQLDTOFactory {
       pedido.numeroPedido,
       pedido.pago,
       clienteEntity,
+      clientePedidoEntity,
       pedido.id,
       pedido.criadoEm,
       pedido.atualizadoEm,

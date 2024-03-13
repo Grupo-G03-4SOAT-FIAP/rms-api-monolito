@@ -13,10 +13,12 @@ import {
   pedidoEntityNotIdMock,
 } from 'src/mocks/pedido.mock';
 import {
+  clientePedidoTypeORMMock,
   itemPedidoModelMock,
   itemPedidoTypeORMMock,
 } from 'src/mocks/item_pedido.mock';
 import { SQLDTOFactory } from '../../factories/sql.dto.factory';
+import { ClientePedidoModel } from '../../models/cliente_pedido.model';
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
@@ -36,6 +38,10 @@ describe('PedidoRepository', () => {
           useValue: itemPedidoTypeORMMock,
         },
         {
+          provide: getRepositoryToken(ClientePedidoModel),
+          useValue: clientePedidoTypeORMMock,
+        },
+        {
           provide: SQLDTOFactory,
           useValue: pedidoSQLDTOFactoryMock,
         },
@@ -46,6 +52,7 @@ describe('PedidoRepository', () => {
     pedidoId = '0a14aa4e-75e7-405f-8301-81f60646c93d';
     relations = [
       'cliente',
+      'clientePedido',
       'itensPedido',
       'itensPedido.produto',
       'itensPedido.produto.categoria',
