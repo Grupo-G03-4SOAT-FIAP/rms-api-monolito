@@ -20,6 +20,12 @@ import {
   pedidoModelMock,
   pedidoRepositoryMock,
 } from 'src/mocks/pedido.mock';
+import {
+  clienteDTOMock,
+  clienteModelMock,
+  clienteRepositoryMock,
+} from 'src/mocks/cliente.mock';
+import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
 
 describe('PedidoUseCase', () => {
   let pedidoUseCase: PedidoUseCase;
@@ -32,6 +38,10 @@ describe('PedidoUseCase', () => {
         {
           provide: IPedidoRepository,
           useValue: pedidoRepositoryMock,
+        },
+        {
+          provide: IClienteRepository,
+          useValue: clienteRepositoryMock,
         },
         {
           provide: IPedidoFactory,
@@ -65,8 +75,15 @@ describe('PedidoUseCase', () => {
     pedidoRepositoryMock.criarPedido.mockReturnValue(pedidoModelMock);
     gatewayPagamentoServiceMock.criarPedido.mockReturnValue(null);
     pedidoDTOFactoryMock.criarPedidoDTO.mockReturnValue(pedidoDTOMock);
+    pedidoFactoryMock.criarEntidadeCliente.mockReturnValue(pedidoEntityMock);
+    clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(clienteModelMock);
+    clienteRepositoryMock.criarCliente.mockReturnValue(clienteModelMock);
+    clienteRepositoryMock.editarCliente.mockReturnValue(clienteModelMock);
 
-    const result = await pedidoUseCase.criarPedido(criaPedidoDTOMock);
+    const result = await pedidoUseCase.criarPedido(
+      clienteDTOMock,
+      criaPedidoDTOMock,
+    );
 
     expect(pedidoFactoryMock.criarEntidadePedido).toHaveBeenCalledWith(
       criaPedidoDTOMock,

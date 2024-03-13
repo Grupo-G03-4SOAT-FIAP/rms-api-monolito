@@ -21,8 +21,9 @@ import {
 import { BadRequestError } from '../../helpers/swagger/status-codes/bad_requests.swagger';
 import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swagger';
 import { MensagemMercadoPagoDTO } from '../../presenters/pedido/gatewaypag.dto';
-import { CognitoUser } from '@nestjs-cognito/auth';
+import { Authentication, CognitoUser } from '@nestjs-cognito/auth';
 import { ConfigService } from '@nestjs/config';
+import { ClienteDTO } from '../../presenters/cliente/cliente.dto';
 
 @Controller('pedido')
 @ApiTags('Pedido')
@@ -31,7 +32,7 @@ export class PedidoController {
     @Inject(IPedidoUseCase)
     private readonly pedidoUseCase: IPedidoUseCase,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   @Post()
   @HttpCode(201)
@@ -51,16 +52,22 @@ export class PedidoController {
     description: 'Pedido informado não existe',
     type: NotFoundError,
   })
-  //@UseGuards(AuthenticationGuard)
+  @Authentication()
   async checkout(
     @CognitoUser('username') username: string,
-    @Body() pedido: CriaPedidoDTO,
+    @CognitoUser('name') name: string,
+    @CognitoUser('email') email: string,
+    @Body() criaPedidoDTO: CriaPedidoDTO,
   ) {
+    const clienteDTO = new ClienteDTO();
     if (this.amazonCognitoIsEnabled()) {
-      pedido.cpfCliente = username;
+      criaPedidoDTO.cpfCliente = username;
+      clienteDTO.nome = name;
+      clienteDTO.email = email;
+      clienteDTO.cpf = username;
     }
     try {
-      return await this.pedidoUseCase.criarPedido(pedido);
+      return await this.pedidoUseCase.criarPedido(clienteDTO, criaPedidoDTO);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
@@ -181,8 +188,9 @@ export class PedidoController {
 
   private amazonCognitoIsEnabled(): boolean {
     return (
-      this.configService.get<string>('ENABLE_AMZ_COGNITO_CIAM')?.toLowerCase() ===
-      'true'
+      this.configService
+        .get<string>('ENABLE_AMZ_COGNITO_CIAM')
+        ?.toLowerCase() === 'true'
     );
   }
 }

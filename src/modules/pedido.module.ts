@@ -18,12 +18,17 @@ import { ProdutoModule } from './produto.module';
 import { ClienteModule } from './client.module';
 import { PedidoService } from '../domain/pedido/services/pedido.service';
 import { AuthenticationGuard } from '@nestjs-cognito/auth';
+import { ClientePedidoModel } from 'src/infrastructure/sql/models/cliente_pedido.model';
 
 @Module({
   imports: [
     ProdutoModule,
     ClienteModule,
-    TypeOrmModule.forFeature([PedidoModel, ItemPedidoModel]),
+    TypeOrmModule.forFeature([
+      PedidoModel,
+      ItemPedidoModel,
+      ClientePedidoModel,
+    ]),
   ],
   controllers: [PedidoController],
   providers: [
