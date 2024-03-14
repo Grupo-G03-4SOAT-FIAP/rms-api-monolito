@@ -55,7 +55,9 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.save.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+    clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.criarCliente(clienteEntityNotIdMock);
 
@@ -63,9 +65,9 @@ describe('ClienteRepository', () => {
       clienteEntityNotIdMock,
     );
     expect(clienteTypeORMMock.save).toHaveBeenCalledWith(clienteModelMock);
-    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock,
-    );
+    expect(
+      clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel,
+    ).toHaveBeenCalledWith(clienteModelMock);
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
@@ -78,16 +80,18 @@ describe('ClienteRepository', () => {
       raw: [{ clienteModelMock }],
       generatedMaps: [{}],
     });
-    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+    clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.criarCliente(clienteEntityNotIdMock);
 
     expect(clienteTypeORMMock.restore).toHaveBeenCalledWith({
       id: clienteModelMock.id,
     });
-    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock,
-    );
+    expect(
+      clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel,
+    ).toHaveBeenCalledWith(clienteModelMock);
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
@@ -96,7 +100,9 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+    clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.editarCliente(
       clienteId,
@@ -113,9 +119,9 @@ describe('ClienteRepository', () => {
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock,
-    );
+    expect(
+      clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel,
+    ).toHaveBeenCalledWith(clienteModelMock);
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
@@ -138,16 +144,18 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+    clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.buscarClientePorId(clienteId);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { id: clienteId },
     });
-    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock,
-    );
+    expect(
+      clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel,
+    ).toHaveBeenCalledWith(clienteModelMock);
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
@@ -166,16 +174,18 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+    clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.buscarClientePorCPF(cpfCliente);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { cpf: cpfCliente },
     });
-    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock,
-    );
+    expect(
+      clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel,
+    ).toHaveBeenCalledWith(clienteModelMock);
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
@@ -194,16 +204,18 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.findOne.mockResolvedValue(
       Promise.resolve(clienteModelMock),
     );
-    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+    clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.buscarClientePorEmail(emailCliente);
 
     expect(clienteTypeORMMock.findOne).toHaveBeenCalledWith({
       where: { email: emailCliente },
     });
-    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock,
-    );
+    expect(
+      clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel,
+    ).toHaveBeenCalledWith(clienteModelMock);
     expect(result).toStrictEqual(clienteEntityMock);
   });
 
@@ -232,14 +244,16 @@ describe('ClienteRepository', () => {
     clienteTypeORMMock.find.mockResolvedValue(
       Promise.resolve(listaClienteModel),
     );
-    clienteSQLDTOFactoryMock.criarClienteDTO.mockReturnValue(clienteEntityMock);
+    clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel.mockReturnValue(
+      clienteEntityMock,
+    );
 
     const result = await clienteRepository.listarClientes();
 
     expect(clienteTypeORMMock.find).toHaveBeenCalledWith({});
-    expect(clienteSQLDTOFactoryMock.criarClienteDTO).toHaveBeenCalledWith(
-      clienteModelMock,
-    );
+    expect(
+      clienteSQLDTOFactoryMock.criarClienteDTOFromClienteModel,
+    ).toHaveBeenCalledWith(clienteModelMock);
     expect(result).toStrictEqual(listaClienteEntity);
   });
 

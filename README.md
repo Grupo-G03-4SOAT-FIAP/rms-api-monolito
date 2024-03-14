@@ -2,7 +2,7 @@
 
 # Restaurant Management System
 
-[badge do CD aqui]
+[![Deploy to Amazon EKS](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/actions/workflows/deploy.yml/badge.svg)](https://github.com/Grupo-G03-4SOAT-FIAP/rms-bff/actions/workflows/deploy.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-bff&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-bff)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-G03-4SOAT-FIAP_rms-bff&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-G03-4SOAT-FIAP_rms-bff)
 
@@ -180,9 +180,6 @@ $ npm run test:cov
 
 Amazon Cognito Lambda triggers\
 https://github.com/Grupo-G03-4SOAT-FIAP/rms-cognito-triggers
-
-Amazon SNS Lambda subscribers\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-sns-subscribers
 
 Infrastructure as code (IaC) com Terraform\
 https://github.com/Grupo-G03-4SOAT-FIAP/rms-iac

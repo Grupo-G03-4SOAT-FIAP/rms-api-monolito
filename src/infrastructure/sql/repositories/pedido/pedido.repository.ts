@@ -12,6 +12,7 @@ import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 export class PedidoRepository implements IPedidoRepository {
   readonly relations = [
     'cliente',
+    'clientePedido',
     'itensPedido',
     'itensPedido.produto',
     'itensPedido.produto.categoria',

@@ -104,7 +104,7 @@ describe('PedidoFactory', () => {
       clienteEntityMock,
     );
 
-    const result = await pedidoFactory.criarEntidadeCliente(
+    const result = await pedidoFactory.criarEntidadeClienteDoCPF(
       criaPedidoDTOMock.cpfCliente,
     );
 
@@ -116,7 +116,7 @@ describe('PedidoFactory', () => {
     clienteRepositoryMock.buscarClientePorCPF.mockReturnValue(null);
 
     await expect(
-      pedidoFactory.criarEntidadeCliente(criaPedidoDTOMock.cpfCliente),
+      pedidoFactory.criarEntidadeClienteDoCPF(criaPedidoDTOMock.cpfCliente),
     ).rejects.toThrow(
       new ClienteNaoLocalizadoErro('Cliente informado não existe'),
     );

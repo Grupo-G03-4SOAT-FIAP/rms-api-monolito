@@ -8,6 +8,7 @@ export class PedidoEntity {
   private _numeroPedido: string;
   private _pago: boolean;
   private _cliente?: ClienteEntity;
+  private _clientePedido?: ClienteEntity;
   private _id?: string;
   private _criadoEm?: string;
   private _atualizadoEm?: string;
@@ -18,6 +19,7 @@ export class PedidoEntity {
     numeroPedido: string,
     pago: boolean,
     cliente?: ClienteEntity,
+    clientePedido?: ClienteEntity,
     id?: string,
     criadoEm?: string,
     atualizadoEm?: string,
@@ -27,6 +29,7 @@ export class PedidoEntity {
     this.pago = pago;
     this.itensPedido = itensPedido;
     this.cliente = cliente;
+    this.clientePedido = clientePedido;
     this.statusPedido = statusPedido;
     this.criadoEm = criadoEm;
     this.atualizadoEm = atualizadoEm;
@@ -70,6 +73,14 @@ export class PedidoEntity {
 
   set cliente(cliente: ClienteEntity | undefined) {
     this._cliente = cliente;
+  }
+
+  get clientePedido(): ClienteEntity | undefined {
+    return this._clientePedido;
+  }
+
+  set clientePedido(clientePedido: ClienteEntity | undefined) {
+    this._clientePedido = clientePedido;
   }
 
   get id(): string | undefined {

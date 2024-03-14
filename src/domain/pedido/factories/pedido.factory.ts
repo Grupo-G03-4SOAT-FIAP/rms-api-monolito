@@ -11,6 +11,7 @@ import { ClienteNaoLocalizadoErro } from '../../../domain/cliente/exceptions/cli
 import { CriaPedidoDTO } from '../../../presentation/rest/v1/presenters/pedido/pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { StatusPedido } from '../enums/pedido.enum';
+import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
@@ -21,6 +22,15 @@ export class PedidoFactory implements IPedidoFactory {
     @Inject(IProdutoRepository)
     private readonly produtoRepository: IProdutoRepository,
   ) {}
+
+  async criarEntidadeCliente(clienteDTO: ClienteDTO): Promise<ClienteEntity> {
+    return new ClienteEntity(
+      clienteDTO.nome,
+      clienteDTO.email,
+      clienteDTO.cpf,
+      clienteDTO.id,
+    );
+  }
 
   async criarItemPedido(
     itens: CriaItemPedidoDTO[],
@@ -43,7 +53,7 @@ export class PedidoFactory implements IPedidoFactory {
     return itensPedido;
   }
 
-  async criarEntidadeCliente(
+  async criarEntidadeClienteDoCPF(
     cpfCliente?: string,
   ): Promise<ClienteEntity | null> {
     const cliente =
@@ -60,7 +70,7 @@ export class PedidoFactory implements IPedidoFactory {
 
     let clienteEntity = null;
     if (pedido.cpfCliente) {
-      clienteEntity = await this.criarEntidadeCliente(pedido.cpfCliente);
+      clienteEntity = await this.criarEntidadeClienteDoCPF(pedido.cpfCliente);
 
       return new PedidoEntity(
         itensPedido,

@@ -58,6 +58,12 @@ clienteDTOMock.nome = clienteModelMock.nome;
 clienteDTOMock.email = clienteModelMock.email;
 clienteDTOMock.cpf = clienteModelMock.cpf;
 
+// Mock para simular o DTO com dados de cliente enviados para o usuario ao responder uma requisição
+export const clienteDTONotIdMock = new ClienteDTO();
+clienteDTONotIdMock.nome = clienteDTOMock.nome;
+clienteDTONotIdMock.email = clienteDTOMock.email;
+clienteDTONotIdMock.cpf = clienteDTOMock.cpf;
+
 // Mock jest das funções do typeORM interagindo com a tabela cliente
 export const clienteTypeORMMock: jest.Mocked<Repository<ClienteModel>> = {
   create: jest.fn(),
@@ -84,7 +90,8 @@ export const clienteRepositoryMock = {
 
 // Mock jest da função do factory sql dto de cliente
 export const clienteSQLDTOFactoryMock = {
-  criarClienteDTO: jest.fn(),
+  criarClienteDTOFromClienteModel: jest.fn(),
+  criarClienteDTOFromClientePedidoModel: jest.fn(),
 };
 
 // Mock jest das funções da factory que cria DTO cliente

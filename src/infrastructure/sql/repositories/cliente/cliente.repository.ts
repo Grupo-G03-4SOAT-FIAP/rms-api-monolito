@@ -23,11 +23,13 @@ export class ClienteRepository implements IClienteRepository {
       this.clienteRepository.restore({
         id: clienteExistente.id,
       });
-      return this.sqlDTOFactory.criarClienteDTO(clienteExistente);
+      return this.sqlDTOFactory.criarClienteDTOFromClienteModel(
+        clienteExistente,
+      );
     } else {
       const clienteModel = this.clienteRepository.create(cliente);
       await this.clienteRepository.save(clienteModel);
-      return this.sqlDTOFactory.criarClienteDTO(clienteModel);
+      return this.sqlDTOFactory.criarClienteDTOFromClienteModel(clienteModel);
     }
   }
 
@@ -41,7 +43,9 @@ export class ClienteRepository implements IClienteRepository {
       where: { id: clienteId },
     });
     if (clienteModelAtualizado) {
-      return this.sqlDTOFactory.criarClienteDTO(clienteModelAtualizado);
+      return this.sqlDTOFactory.criarClienteDTOFromClienteModel(
+        clienteModelAtualizado,
+      );
     }
     return null;
   }
@@ -55,7 +59,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { id: clienteId },
     });
     if (clienteModel) {
-      return this.sqlDTOFactory.criarClienteDTO(clienteModel);
+      return this.sqlDTOFactory.criarClienteDTOFromClienteModel(clienteModel);
     }
     return null;
   }
@@ -65,7 +69,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { cpf: cpfCliente },
     });
     if (clienteModel) {
-      return this.sqlDTOFactory.criarClienteDTO(clienteModel);
+      return this.sqlDTOFactory.criarClienteDTOFromClienteModel(clienteModel);
     }
     return null;
   }
@@ -77,7 +81,7 @@ export class ClienteRepository implements IClienteRepository {
       where: { email: emailCliente },
     });
     if (clienteModel) {
-      return this.sqlDTOFactory.criarClienteDTO(clienteModel);
+      return this.sqlDTOFactory.criarClienteDTOFromClienteModel(clienteModel);
     }
     return null;
   }
@@ -85,7 +89,7 @@ export class ClienteRepository implements IClienteRepository {
   async listarClientes(): Promise<[] | ClienteEntity[]> {
     const listaClienteModel = await this.clienteRepository.find({});
     const clienteEntityList = listaClienteModel.map((cliente: ClienteModel) => {
-      return this.sqlDTOFactory.criarClienteDTO(cliente);
+      return this.sqlDTOFactory.criarClienteDTOFromClienteModel(cliente);
     });
 
     return clienteEntityList;

@@ -11,6 +11,7 @@ import {
   CriaItemPedidoDTO,
   ItemPedidoDTO,
 } from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
+import { ClientePedidoModel } from 'src/infrastructure/sql/models/cliente_pedido.model';
 
 // Mock para simular dados da tabela item pedido no banco de dados
 export const itemPedidoModelMock = new ItemPedidoModel();
@@ -51,4 +52,14 @@ export const itemPedidoTypeORMMock: jest.Mocked<Repository<ItemPedidoModel>> = {
   save: jest.fn(),
 } as Partial<jest.Mocked<Repository<ItemPedidoModel>>> as jest.Mocked<
   Repository<ItemPedidoModel>
+>;
+
+// Mock jest das funções do typeORM interagindo com a tabela cliente pedido
+export const clientePedidoTypeORMMock: jest.Mocked<
+  Repository<ClientePedidoModel>
+> = {
+  create: jest.fn(),
+  save: jest.fn(),
+} as Partial<jest.Mocked<Repository<ClientePedidoModel>>> as jest.Mocked<
+  Repository<ClientePedidoModel>
 >;
