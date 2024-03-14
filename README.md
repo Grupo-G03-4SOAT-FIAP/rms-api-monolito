@@ -181,9 +181,6 @@ $ npm run test:cov
 Amazon Cognito Lambda triggers\
 https://github.com/Grupo-G03-4SOAT-FIAP/rms-cognito-triggers
 
-Amazon SNS Lambda subscribers\
-https://github.com/Grupo-G03-4SOAT-FIAP/rms-sns-subscribers
-
 Infrastructure as code (IaC) com Terraform\
 https://github.com/Grupo-G03-4SOAT-FIAP/rms-iac
 
