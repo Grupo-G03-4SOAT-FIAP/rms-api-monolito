@@ -25,7 +25,7 @@ spec:
               secretProviderClass: "aws-secrets"
       containers:
         - name: rms-bff
-          image: dannevesdantas/rms-bff:latest # Obtem a imagem a partir do Docker Hub
+          image: 900534935988.dkr.ecr.us-east-1.amazonaws.com/rms:latest
           envFrom:
             - configMapRef:
                 name: rms-bff-config
