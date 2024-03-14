@@ -15,8 +15,8 @@ export interface IPedidoDTOFactory {
   criarListaItemPedidoDTO(itemPedidos: ItemPedidoEntity[]): ItemPedidoDTO[];
   criarItemPedidoDTO(itemPedido: ItemPedidoEntity): ItemPedidoDTO;
   criarCriaPedidoDTO(
-    cpfCliente: string,
     itensPedido: CriaItemPedidoDTO[],
+    cpfCliente?: string,
   ): CriaPedidoDTO;
 }
 

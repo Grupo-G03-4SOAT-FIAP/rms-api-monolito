@@ -89,8 +89,8 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
   }
 
   criarCriaPedidoDTO(
-    cpfCliente: string,
     itensPedido: CriaItemPedidoDTO[],
+    cpfCliente?: string,
   ): CriaPedidoDTO {
     const criaPedidoDTO = new CriaPedidoDTO();
     criaPedidoDTO.cpfCliente = cpfCliente;

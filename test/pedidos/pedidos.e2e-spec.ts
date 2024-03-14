@@ -77,9 +77,7 @@ describe('Pedido (e2e)', () => {
   describe('POST /pedido', () => {
     it('Deve ser possível realizar o checkout de um pedido', async () => {
       const item = itemPedidoFactory.criarItemPedidoDTO(produtoDTO.body.id, 1);
-      const pedido = pedidoDTOFactory.criarCriaPedidoDTO(clientDTO.body.cpf, [
-        item,
-      ]);
+      const pedido = pedidoDTOFactory.criarCriaPedidoDTO([item]);
 
       const pedidoRegistrado = await request(app.getHttpServer())
         .post('/pedido')
