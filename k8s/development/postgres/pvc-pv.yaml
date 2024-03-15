@@ -1,10 +1,10 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgres-pv-volume  # Sets PV's name
+  name: postgres-pv-volume # Sets PV's name
   namespace: rms
   labels:
-    type: local  # Sets PV's type to local
+    type: local # Sets PV's type to local
     app: postgres
 spec:
   storageClassName: manual
@@ -18,14 +18,14 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: postgres-pv-claim  # Sets name of PVC
+  name: postgres-pv-claim # Sets name of PVC
   namespace: rms
   labels:
     app: postgres
 spec:
   storageClassName: manual
   accessModes:
-    - ReadWriteMany  # Sets read and write access
+    - ReadWriteMany # Sets read and write access
   resources:
     requests:
-      storage: 1Gi  # Sets volume size
+      storage: 1Gi # Sets volume size

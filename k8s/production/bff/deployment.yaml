@@ -34,6 +34,16 @@ spec:
               mountPath: "/mnt/secrets-store"
               readOnly: true
           env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-bff-secret
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: db-bff-secret
+                  key: port
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -64,11 +74,6 @@ spec:
                 secretKeyRef:
                   name: mercadopago-secret
                   key: WEBHOOK_URL_MERCADOPAGO
-            - name: IDEMPOTENCY_KEY_MERCADOPAGO
-              valueFrom:
-                secretKeyRef:
-                  name: mercadopago-secret
-                  key: IDEMPOTENCY_KEY_MERCADOPAGO
             - name: COGNITO_USER_POOL_ID
               valueFrom:
                 secretKeyRef:
