@@ -15,14 +15,14 @@ spec:
       labels:
         app: rms-bff
     spec:
-      serviceAccountName: eksdemo-secretmanager-sa # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
+      serviceAccountName: aws-iam-serviceaccount # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
       volumes:
         - name: secrets-store-inline
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: "aws-secrets"
+              secretProviderClass: aws-secrets
       containers:
         - name: rms-bff
           image: 900534935988.dkr.ecr.us-east-1.amazonaws.com/rms:latest
