@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION: us-east-1                         # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: ${{ secrets.AWS_REGION }}         # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # set this to your Amazon ECR repository name
   CONTAINER_NAME: rms-bff                       # set this to the name of the container in the
                                                 # containerDefinitions section of your task definition
@@ -56,6 +56,7 @@ jobs:
         # push it to ECR so that it can
         # be deployed to ECS.
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
