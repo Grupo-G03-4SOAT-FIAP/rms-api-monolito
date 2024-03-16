@@ -65,7 +65,6 @@ export const pedidoEntityNotIdMock = new PedidoEntity(
   StatusPedido.RECEBIDO,
   '05012024',
   false,
-  clienteEntityMock,
 );
 
 // Mock para simular dados da entidade pedido sem cliente
