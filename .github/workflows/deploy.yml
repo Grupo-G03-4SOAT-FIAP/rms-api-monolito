@@ -55,17 +55,16 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Criar arquivo kubeconfig
-    # https://docs.aws.amazon.com/pt_br/eks/latest/userguide/create-kubeconfig.html
+      # https://docs.aws.amazon.com/pt_br/eks/latest/userguide/create-kubeconfig.html
       run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
 
     - name: kubectl-apply
-    # A ordem dos arquivos importa no Kubernetes
+      # A ordem dos arquivos importa no Kubernetes
       run: |
         kubectl apply \
         -f k8s/production/bff/namespace.yaml \

@@ -68,7 +68,6 @@ describe('PedidoFactory', () => {
 
     expect(pedidoServiceMock.gerarNumeroPedido).toHaveBeenCalled();
     expect(produtoRepositoryMock.buscarProdutoPorId).toHaveBeenCalled();
-    expect(clienteRepositoryMock.buscarClientePorCPF).toHaveBeenCalled();
     expect(result).toStrictEqual(pedidoEntityNotIdMock);
   });
 

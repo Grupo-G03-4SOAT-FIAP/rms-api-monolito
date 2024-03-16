@@ -22,7 +22,12 @@ export class ProdutoModel {
   @Column({ name: 'descricao', length: 255, nullable: true })
   descricao: string;
 
-  @Column({ type: 'numeric', name: 'valor_unitario', nullable: false, transformer: new ColumnNumericTransformer(), })
+  @Column({
+    type: 'numeric',
+    name: 'valor_unitario',
+    nullable: false,
+    transformer: new ColumnNumericTransformer(),
+  })
   valorUnitario: number;
 
   @Column({ name: 'imagem_url', length: 2048, nullable: false })
