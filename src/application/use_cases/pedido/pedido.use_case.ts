@@ -10,7 +10,7 @@ import { IPedidoDTOFactory } from 'src/domain/pedido/interfaces/pedido.dto.facto
 import { IPedidoFactory } from 'src/domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
 import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
-import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
+import { CriaClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import {
   MensagemMercadoPagoDTO,
   PedidoGatewayPagamentoDTO,
@@ -59,7 +59,7 @@ export class PedidoUseCase implements IPedidoUseCase {
   }
 
   async criarPedido(
-    clienteDTO: ClienteDTO,
+    clienteDTO: CriaClienteDTO,
     criaPedidoDTO: CriaPedidoDTO,
   ): Promise<HTTPResponse<PedidoDTO>> {
     const pedido = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);

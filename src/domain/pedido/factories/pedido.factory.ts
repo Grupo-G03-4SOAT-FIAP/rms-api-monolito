@@ -11,7 +11,7 @@ import { ClienteNaoLocalizadoErro } from 'src/domain/cliente/exceptions/cliente.
 import { CriaPedidoDTO } from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { StatusPedido } from '../enums/pedido.enum';
-import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
+import { ClienteDTO, CriaClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 
 @Injectable()
 export class PedidoFactory implements IPedidoFactory {
@@ -21,14 +21,13 @@ export class PedidoFactory implements IPedidoFactory {
     private readonly clienteRepository: IClienteRepository,
     @Inject(IProdutoRepository)
     private readonly produtoRepository: IProdutoRepository,
-  ) {}
+  ) { }
 
-  async criarEntidadeCliente(clienteDTO: ClienteDTO): Promise<ClienteEntity> {
+  async criarEntidadeCliente(criaClienteDTO: CriaClienteDTO): Promise<ClienteEntity> {
     return new ClienteEntity(
-      clienteDTO.nome,
-      clienteDTO.email,
-      clienteDTO.cpf,
-      clienteDTO.id,
+      criaClienteDTO.nome,
+      criaClienteDTO.email,
+      criaClienteDTO.cpf,
     );
   }
 

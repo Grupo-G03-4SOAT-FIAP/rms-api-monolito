@@ -23,7 +23,7 @@ import { NotFoundError } from '../../helpers/swagger/status-codes/not_found.swag
 import { MensagemMercadoPagoDTO } from '../../presenters/pedido/gatewaypag.dto';
 import { Authentication, CognitoUser } from '@nestjs-cognito/auth';
 import { ConfigService } from '@nestjs/config';
-import { ClienteDTO } from '../../presenters/cliente/cliente.dto';
+import { ClienteDTO, CriaClienteDTO } from '../../presenters/cliente/cliente.dto';
 
 @Controller('pedido')
 @ApiTags('Pedido')
@@ -59,15 +59,15 @@ export class PedidoController {
     @CognitoUser('email') email: string,
     @Body() criaPedidoDTO: CriaPedidoDTO,
   ) {
-    const clienteDTO = new ClienteDTO();
+    const criaClienteDTO = new CriaClienteDTO();
     if (this.amazonCognitoIsEnabled()) {
       criaPedidoDTO.cpfCliente = username;
-      clienteDTO.nome = name;
-      clienteDTO.email = email;
-      clienteDTO.cpf = username;
+      criaClienteDTO.nome = name;
+      criaClienteDTO.email = email;
+      criaClienteDTO.cpf = username;
     }
     try {
-      return await this.pedidoUseCase.criarPedido(clienteDTO, criaPedidoDTO);
+      return await this.pedidoUseCase.criarPedido(criaClienteDTO, criaPedidoDTO);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
