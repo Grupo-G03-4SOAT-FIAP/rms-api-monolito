@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "007f7f15-22f1-4093-a2e5-4aa860506d36",
+		"_postman_id": "e3f9291e-8ffd-4cda-bf9a-8eb99f69e307",
 		"name": "Tech Challenge G03 turma 4SOAT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4241772"
@@ -458,11 +458,21 @@
 				{
 					"name": "Criar pedido",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "<Informe aqui o IdToken gerado pela API do Cognito>",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cpfCliente\": \"44470640735\", // Campo opcional // Aqui o CPF pode ser null caso o Cliente opte por não se identificar\r\n    \"itensPedido\": [\r\n        {\r\n            \"produto\": \"3ecd5148-c71f-412b-9a3a-0c1896375bf2\",\r\n            \"quantidade\": 1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"itensPedido\": [\r\n        {\r\n            \"produto\": \"3ecd5148-c71f-412b-9a3a-0c1896375bf2\",\r\n            \"quantidade\": 1\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -537,19 +547,19 @@
 			"name": "Amazon Cognito",
 			"item": [
 				{
-					"name": "AdminCreateUser",
+					"name": "1. AdminCreateUser",
 					"request": {
 						"auth": {
 							"type": "awsv4",
 							"awsv4": [
 								{
 									"key": "secretKey",
-									"value": "<Ver no Console da AWS>",
+									"value": "Ver no Console da AWS",
 									"type": "string"
 								},
 								{
 									"key": "accessKey",
-									"value": "<Ver no Console da AWS>",
+									"value": "Ver no Console da AWS",
 									"type": "string"
 								},
 								{
@@ -577,7 +587,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"UserPoolId\": \"???\", // Você pode consultar o User pool ID no Console da AWS\r\n    \"Username\": \"74993021801\", // CPF do Cliente aqui\r\n    \"TemporaryPassword\": \"cr!8mh*KNj#f\", // Senha temporária. Deverá ser trocada pelo próprio cliente no futuro caso haja necessidade. Também poderá ser redefinda pelo Admin.\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"UserPoolId\": \"???\", // Você pode consultar o User pool ID no Console da AWS\r\n    \"Username\": \"74993021802\", // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    // Você pode gerar CPFs válidos para testes em https://www.4devs.com.br/gerador_de_cpf\r\n    \"TemporaryPassword\": \"cr!8mh*KNj#f\", // Senha temporária. Deverá ser trocada pelo próprio cliente no futuro caso haja necessidade. Também poderá ser redefinda pelo Admin.\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulana da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulana@gmail.com\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -598,7 +608,7 @@
 					"response": []
 				},
 				{
-					"name": "1 SignUp",
+					"name": "SignUp",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -613,7 +623,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"Username\": \"74993021801\", // CPF do Cliente aqui\r\n    \"Password\": \"cr!8mh*KNj#f\", // Senha padrão, nunca precisará ser informada ao fazer login e poderá ser redefinida pelo Admin no futuro caso eventualmente haja necessidade\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"Username\": \"74993021802\", // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    \"Password\": \"cr!8mh*KNj#f\", // Senha padrão, nunca precisará ser informada ao fazer login e poderá ser redefinida pelo Admin no futuro caso eventualmente haja necessidade\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -649,7 +659,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"AuthFlow\": \"CUSTOM_AUTH\",\r\n    \"AuthParameters\": {\r\n        \"USERNAME\": \"74993021801\" // CPF do Cliente aqui\r\n    },\r\n    \"ClientId\": \"???\" // Informe o Client ID da sua aplicação aqui\r\n}",
+							"raw": "{\r\n    \"AuthFlow\": \"CUSTOM_AUTH\", // CUSTOM_AUTH requer a criação e configuração de Lambda triggers\r\n    \"AuthParameters\": {\r\n        \"USERNAME\": \"74993021802\" // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    },\r\n    \"ClientId\": \"???\" // Informe o Client ID da sua aplicação aqui\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -670,7 +680,7 @@
 					"response": []
 				},
 				{
-					"name": "2.1 RespondToAuthChallenge",
+					"name": "3. RespondToAuthChallenge",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -685,7 +695,43 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// Consulte o campo \"IdToken\" na resposta para obter o seu \"Authorization\"\r\n{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"ChallengeName\": \"CUSTOM_CHALLENGE\",\r\n    // Para obter uma Session execute primeiro o InitiateAuth\r\n    \"Session\": \"???\",\r\n    \"ChallengeResponses\": {\r\n        \"ANSWER\": \"answer\",\r\n        \"USERNAME\": \"74993021801\" // CPF do Cliente aqui\r\n    }\r\n}",
+							"raw": "// Consulte o campo \"IdToken\" na resposta para obter o seu \"Authorization\"\r\n{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"ChallengeName\": \"CUSTOM_CHALLENGE\", // CUSTOM_CHALLENGE requer a criação e configuração de Lambda triggers\r\n    // Para obter uma Session execute primeiro o InitiateAuth\r\n    \"Session\": \"???\",\r\n    \"ChallengeResponses\": {\r\n        \"ANSWER\": \"answer\",\r\n        \"USERNAME\": \"74993021802\" // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://cognito-idp.us-east-1.amazonaws.com",
+							"protocol": "https",
+							"host": [
+								"cognito-idp",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. REFRESH_TOKEN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Amz-Target",
+								"value": "AWSCognitoIdentityProviderService.InitiateAuth"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-amz-json-1.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"AuthFlow\": \"REFRESH_TOKEN\",\r\n    \"AuthParameters\": {\r\n        \"REFRESH_TOKEN\": \"???\"\r\n    },\r\n    \"ClientId\": \"???\" // Informe o Client ID da sua aplicação aqui\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
