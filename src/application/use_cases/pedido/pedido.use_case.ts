@@ -63,7 +63,8 @@ export class PedidoUseCase implements IPedidoUseCase {
     criaPedidoDTO: CriaPedidoDTO,
   ): Promise<HTTPResponse<PedidoDTO>> {
     const pedido = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);
-    const cliente = await this.pedidoFactory.criarEntidadeCliente(criaClienteDTO);
+    const cliente =
+      await this.pedidoFactory.criarEntidadeCliente(criaClienteDTO);
     const clienteCriadoOuAtualizado =
       await this.criarOuAtualizarCliente(cliente);
     pedido.cliente = clienteCriadoOuAtualizado;

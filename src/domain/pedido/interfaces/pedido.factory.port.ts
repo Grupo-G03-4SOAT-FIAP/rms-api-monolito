@@ -7,7 +7,9 @@ import { CriaClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/clie
 
 export interface IPedidoFactory {
   criarItemPedido(itens: CriaItemPedidoDTO[]): Promise<ItemPedidoEntity[]>;
-  criarEntidadeCliente(criaClienteDTO: CriaClienteDTO): Promise<ClienteEntity | null>;
+  criarEntidadeCliente(
+    criaClienteDTO: CriaClienteDTO,
+  ): Promise<ClienteEntity | null>;
   criarEntidadeClienteDoCPF(cpfCliente: string): Promise<ClienteEntity | null>;
   criarEntidadePedido(pedido: CriaPedidoDTO): Promise<PedidoEntity>;
 }
