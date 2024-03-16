@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "562a3d60-230b-485a-ab07-e94629eb8b40",
+		"_postman_id": "6eb7f5ab-3a1d-4dfc-b880-4310e713e1f9",
 		"name": "Tech Challenge G03 turma 4SOAT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4241772"
@@ -587,7 +587,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"UserPoolId\": \"???\", // Você pode consultar o User pool ID no Console da AWS\r\n    \"Username\": \"38742612047\", // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    // Você pode gerar CPFs válidos para testes em https://www.4devs.com.br/gerador_de_cpf\r\n    \"TemporaryPassword\": \"cr!8mh*KNj#f\", // Senha temporária. Deverá ser trocada pelo próprio cliente no futuro caso haja necessidade. Também poderá ser redefinda pelo Admin.\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"UserPoolId\": \"???\", // Você pode consultar o User pool ID no Console da AWS\r\n    \"Username\": \"38742612047\", // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 08763272008\r\n    // Você pode gerar CPFs válidos para testes em https://www.4devs.com.br/gerador_de_cpf\r\n    \"TemporaryPassword\": \"cr!8mh*KNj#f\", // Senha temporária. Deverá ser trocada pelo próprio cliente no futuro caso haja necessidade. Também poderá ser redefinda pelo Admin.\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -623,7 +623,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"Username\": \"38742612047\", // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    \"Password\": \"cr!8mh*KNj#f\", // Senha padrão, nunca precisará ser informada ao fazer login e poderá ser redefinida pelo Admin no futuro caso eventualmente haja necessidade\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"Username\": \"38742612047\", // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 08763272008\r\n    \"Password\": \"cr!8mh*KNj#f\", // Senha padrão, nunca precisará ser informada ao fazer login e poderá ser redefinida pelo Admin no futuro caso eventualmente haja necessidade\r\n    \"UserAttributes\": [\r\n        {\r\n            \"Name\": \"name\",\r\n            \"Value\": \"Fulano da Silva Santos\"\r\n        },\r\n        {\r\n            \"Name\": \"email\",\r\n            \"Value\": \"fulano@gmail.com\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -659,7 +659,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"AuthFlow\": \"CUSTOM_AUTH\", // CUSTOM_AUTH requer a criação e configuração de Lambda triggers\r\n    \"AuthParameters\": {\r\n        \"USERNAME\": \"38742612047\" // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    },\r\n    \"ClientId\": \"???\" // Informe o Client ID da sua aplicação aqui\r\n}",
+							"raw": "{\r\n    \"AuthFlow\": \"CUSTOM_AUTH\", // CUSTOM_AUTH requer a criação e configuração de Lambda triggers\r\n    \"AuthParameters\": {\r\n        \"USERNAME\": \"38742612047\" // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 08763272008\r\n    },\r\n    \"ClientId\": \"???\" // Informe o Client ID da sua aplicação aqui\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -695,7 +695,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// Consulte o campo \"IdToken\" na resposta para obter o seu \"Authorization\"\r\n{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"ChallengeName\": \"CUSTOM_CHALLENGE\", // CUSTOM_CHALLENGE requer a criação e configuração de Lambda triggers\r\n    // Para obter uma Session execute primeiro o InitiateAuth\r\n    \"Session\": \"???\",\r\n    \"ChallengeResponses\": {\r\n        \"ANSWER\": \"answer\",\r\n        \"USERNAME\": \"38742612047\" // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 00000000000\r\n    }\r\n}",
+							"raw": "// Consulte o campo \"IdToken\" na resposta para obter o seu \"Authorization\"\r\n{\r\n    \"ClientId\": \"???\", // Informe o Client ID da sua aplicação aqui\r\n    \"ChallengeName\": \"CUSTOM_CHALLENGE\", // CUSTOM_CHALLENGE requer a criação e configuração de Lambda triggers\r\n    // Para obter uma Session execute primeiro o InitiateAuth\r\n    \"Session\": \"???\",\r\n    \"ChallengeResponses\": {\r\n        \"ANSWER\": \"answer\",\r\n        \"USERNAME\": \"38742612047\" // CPF do Cliente aqui // O CPF do usuário guest/anônimo é 08763272008\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
