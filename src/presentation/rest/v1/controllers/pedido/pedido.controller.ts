@@ -54,6 +54,7 @@ export class PedidoController {
   })
   @Authentication()
   async checkout(
+    // Olá! Eu sou um comentário inútil, por favor me apagueee!!!
     @CognitoUser('username') username: string,
     @CognitoUser('name') name: string,
     @CognitoUser('email') email: string,
