@@ -8,10 +8,10 @@ export class ClienteEntity {
   private _id?: string;
 
   constructor(nome: string, email: string, cpf?: string, id?: string) {
-    this.id = id;
-    this.nome = nome;
-    this.email = email;
-    this.cpf = cpf;
+    this._id = id;
+    this._nome = nome;
+    this._email = email;
+    this._cpf = cpf;
   }
 
   get nome(): string {

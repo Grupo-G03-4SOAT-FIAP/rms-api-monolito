@@ -16,7 +16,7 @@ describe('ClienteEntity', () => {
   it('Deve criar uma instância de ClienteEntity', () => {
     const cliente = new ClienteEntity(nome, email, cpf, id);
 
-    expect(cliente.nome).toEqual('Jhon');
+    expect(cliente.nome).toEqual('jhon');
     expect(cliente.email).toEqual(email);
     expect(cliente.cpf).toEqual(cpf);
     expect(cliente.id).toEqual(id);
@@ -25,7 +25,7 @@ describe('ClienteEntity', () => {
   it('Deve criar uma instância de ClienteEntity', () => {
     const cliente = new ClienteEntity(nome, email);
 
-    expect(cliente.nome).toEqual('Jhon');
+    expect(cliente.nome).toEqual('jhon');
     expect(cliente.email).toEqual(email);
     expect(cliente.cpf).toBeUndefined();
     expect(cliente.id).toBeUndefined();
