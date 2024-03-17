@@ -68,19 +68,6 @@ export class PedidoFactory implements IPedidoFactory {
     const numeroPedido = this.pedidoService.gerarNumeroPedido();
     const itensPedido = await this.criarItemPedido(pedido.itensPedido);
 
-    let clienteEntity = null;
-    if (pedido.cpfCliente) {
-      clienteEntity = await this.criarEntidadeClienteDoCPF(pedido.cpfCliente);
-
-      return new PedidoEntity(
-        itensPedido,
-        StatusPedido.RECEBIDO,
-        numeroPedido,
-        false,
-        clienteEntity,
-      );
-    }
-
     return new PedidoEntity(
       itensPedido,
       StatusPedido.RECEBIDO,

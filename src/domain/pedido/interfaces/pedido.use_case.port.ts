@@ -1,5 +1,5 @@
 import { HTTPResponse } from 'src/application/common/HTTPResponse';
-import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
+import { CriaClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import { MensagemMercadoPagoDTO } from 'src/presentation/rest/v1/presenters/pedido/gatewaypag.dto';
 import {
   AtualizaPedidoDTO,
@@ -12,7 +12,7 @@ export interface IPedidoUseCase {
   listarPedidosRecebido(): Promise<PedidoDTO[] | []>;
   buscarPedido(idPedido: string): Promise<PedidoDTO>;
   criarPedido(
-    clienteDTO: ClienteDTO,
+    criaClienteDTO: CriaClienteDTO,
     criaPedidoDTO: CriaPedidoDTO,
   ): Promise<HTTPResponse<PedidoDTO>>;
   editarPedido(

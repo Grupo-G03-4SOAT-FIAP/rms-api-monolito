@@ -6,15 +6,8 @@ metadata:
   labels:
     app: rms-bff
 data:
-  DB_HOST: "" # Endpoint do banco de dados RDS (PostgreSQL) na AWS
-  DB_PORT: ""
-  DB_NAME: ""
-  DB_SSL: ""
-  ENABLE_AMZ_COGNITO_CIAM: "false"
-  COGNITO_USER_POOL_ID: ""
-  COGNITO_CLIENT_ID: ""
-  ENABLE_MERCADOPAGO: "false"
-  USER_ID_MERCADOPAGO: ""
-  EXTERNAL_POS_ID_MERCADOPAGO: ""
-  WEBHOOK_URL_MERCADOPAGO: ""
+  DB_NAME: "rms"
+  DB_SSL: "false"
+  ENABLE_AMZ_COGNITO_CIAM: "true"
+  ENABLE_MERCADOPAGO: "true"
   IDEMPOTENCY_KEY_MERCADOPAGO: "a005986e-f97c-4274-91cf-b32d2672824f"

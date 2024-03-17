@@ -15,14 +15,14 @@ spec:
       labels:
         app: rms-bff
     spec:
-      serviceAccountName: eksdemo-secretmanager-sa # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
+      serviceAccountName: aws-iam-serviceaccount # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
       volumes:
         - name: secrets-store-inline
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: "aws-secrets"
+              secretProviderClass: aws-secrets
       containers:
         - name: rms-bff
           image: 900534935988.dkr.ecr.us-east-1.amazonaws.com/rms:latest
@@ -34,6 +34,16 @@ spec:
               mountPath: "/mnt/secrets-store"
               readOnly: true
           env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-bff-secret
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: db-bff-secret
+                  key: port
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -64,11 +74,6 @@ spec:
                 secretKeyRef:
                   name: mercadopago-secret
                   key: WEBHOOK_URL_MERCADOPAGO
-            - name: IDEMPOTENCY_KEY_MERCADOPAGO
-              valueFrom:
-                secretKeyRef:
-                  name: mercadopago-secret
-                  key: IDEMPOTENCY_KEY_MERCADOPAGO
             - name: COGNITO_USER_POOL_ID
               valueFrom:
                 secretKeyRef:
