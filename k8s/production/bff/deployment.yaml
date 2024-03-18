@@ -94,4 +94,4 @@ spec:
               memory: "256Mi"
             limits:
               cpu: "0.5"
-              memory: "512Mi"
+              memory: "512Mi" # blalabla
