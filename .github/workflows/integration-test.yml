@@ -1,0 +1,39 @@
+name: Integration Test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    services:
+        postgres:
+          image: postgres:latest
+          env:
+            POSTGRES_PASSWORD: pgpwd
+            POSTGRES_USER: pguser
+            POSTGRES_DB: rms
+            POSTGRES_HOST: localhost
+          ports:
+            - 5432:5432
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+
+    # steps:
+    #     ci_docker:
+    #     name: CI - Docker
+    #     steps:
+    #     - name: Docker Build and Push
+
+    #     cd:
+    #     name: CD
+    #     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    #     needs: [ci, ci_docker]
+    #     steps:
+    #         - name: Deploy Infra
+    #         - name: Deploy App
