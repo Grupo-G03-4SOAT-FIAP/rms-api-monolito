@@ -10,7 +10,7 @@ import { IPedidoRepository } from '../../../domain/pedido/interfaces/pedido.repo
 import { IPedidoUseCase } from '../../../domain/pedido/interfaces/pedido.use_case.port';
 import { ClienteEntity } from '../../../domain/cliente/entities/cliente.entity';
 import { IClienteRepository } from '../../../domain/cliente/interfaces/cliente.repository.port';
-import { ClienteDTO } from '../../../presentation/rest/v1/presenters/cliente/cliente.dto';
+import { CriaClienteDTO } from '../../../presentation/rest/v1/presenters/cliente/cliente.dto';
 import {
   MensagemMercadoPagoDTO,
   PedidoGatewayPagamentoDTO,
@@ -59,11 +59,12 @@ export class PedidoUseCase implements IPedidoUseCase {
   }
 
   async criarPedido(
-    clienteDTO: ClienteDTO,
+    criaClienteDTO: CriaClienteDTO,
     criaPedidoDTO: CriaPedidoDTO,
   ): Promise<HTTPResponse<PedidoDTO>> {
     const pedido = await this.pedidoFactory.criarEntidadePedido(criaPedidoDTO);
-    const cliente = await this.pedidoFactory.criarEntidadeCliente(clienteDTO);
+    const cliente =
+      await this.pedidoFactory.criarEntidadeCliente(criaClienteDTO);
     const clienteCriadoOuAtualizado =
       await this.criarOuAtualizarCliente(cliente);
     pedido.cliente = clienteCriadoOuAtualizado;

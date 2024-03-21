@@ -16,33 +16,33 @@ spec:
         app: rms-bff
     spec:
       containers:
-      - name: rms-bff
-        image: rms-bff:latest # No Kubernetes do Docker Desktop a imagem deve já estar presente no cache de imagens do Docker na máquina local
-        imagePullPolicy: IfNotPresent # Necessário definir "IfNotPresent" ao utilizar o Kubernetes do Docker Desktop para evitar erros "ImagePullBackOff" ao criar os Pods
-        envFrom:
-          - configMapRef:
-              name: rms-bff-config
-        env:
-          - name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: rms-bff-secret
-                key: DB_USERNAME
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: rms-bff-secret
-                key: DB_PASSWORD
-          - name: ACCESS_TOKEN_MERCADOPAGO
-            valueFrom:
-              secretKeyRef:
-                name: rms-bff-secret
-                key: ACCESS_TOKEN_MERCADOPAGO
-        ports:
-        - containerPort: 3000
-        resources:
-          # You must specify requests for CPU to autoscale
-          # based on CPU utilization
-          requests:
-            cpu: "250m"
-            memory: "512Mi"
+        - name: rms-bff
+          image: rms-bff:latest # No Kubernetes do Docker Desktop a imagem deve já estar presente no cache de imagens do Docker na máquina local
+          imagePullPolicy: IfNotPresent # Necessário definir "IfNotPresent" ao utilizar o Kubernetes do Docker Desktop para evitar erros "ImagePullBackOff" ao criar os Pods
+          envFrom:
+            - configMapRef:
+                name: rms-bff-config
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rms-bff-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rms-bff-secret
+                  key: DB_PASSWORD
+            - name: ACCESS_TOKEN_MERCADOPAGO
+              valueFrom:
+                secretKeyRef:
+                  name: rms-bff-secret
+                  key: ACCESS_TOKEN_MERCADOPAGO
+          ports:
+            - containerPort: 3000
+          resources:
+            # You must specify requests for CPU to autoscale
+            # based on CPU utilization
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
