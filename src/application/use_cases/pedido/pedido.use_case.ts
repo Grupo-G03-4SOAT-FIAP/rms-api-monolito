@@ -8,9 +8,9 @@ import { IPedidoDTOFactory } from '../../../domain/pedido/interfaces/pedido.dto.
 import { IPedidoFactory } from '../../../domain/pedido/interfaces/pedido.factory.port';
 import { IPedidoRepository } from '../../../domain/pedido/interfaces/pedido.repository.port';
 import { IPedidoUseCase } from '../../../domain/pedido/interfaces/pedido.use_case.port';
-import { ClienteEntity } from '../../../../src/domain/cliente/entities/cliente.entity';
-import { IClienteRepository } from '../../../../src/domain/cliente/interfaces/cliente.repository.port';
-import { ClienteDTO } from '../../../../src/presentation/rest/v1/presenters/cliente/cliente.dto';
+import { ClienteEntity } from '../../../domain/cliente/entities/cliente.entity';
+import { IClienteRepository } from '../../../domain/cliente/interfaces/cliente.repository.port';
+import { ClienteDTO } from '../../../presentation/rest/v1/presenters/cliente/cliente.dto';
 import {
   MensagemMercadoPagoDTO,
   PedidoGatewayPagamentoDTO,
