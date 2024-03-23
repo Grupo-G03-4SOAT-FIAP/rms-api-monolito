@@ -9,13 +9,11 @@ import { ICategoriaRepository } from '../domain/categoria/interfaces/categoria.r
 import { ICategoriaDTOFactory } from '../domain/categoria/interfaces/categoria.dto.factory.port';
 import { CategoriaDTOFactory } from '../domain/categoria/factories/categoria.dto.factory';
 import { SQLDTOFactory } from '../infrastructure/sql/factories/sql.dto.factory';
-import { SeedsService } from 'src/infrastructure/sql/seeds/seed.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoriaModel])],
   controllers: [CategoriaController],
   providers: [
-    SeedsService,
     CategoriaUseCase,
     {
       provide: ICategoriaUseCase,
@@ -35,10 +33,4 @@ import { SeedsService } from 'src/infrastructure/sql/seeds/seed.service';
   ],
   exports: [ICategoriaRepository, ICategoriaDTOFactory, ICategoriaUseCase],
 })
-export class CategoriaModule {
-  constructor(private readonly seedsService: SeedsService) {}
-
-  async onModuleInit() {
-    await this.seedsService.createInitialData();
-  }
-}
+export class CategoriaModule {}
