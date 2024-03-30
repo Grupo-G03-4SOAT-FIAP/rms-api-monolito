@@ -18,6 +18,7 @@ import { PedidoDTOFactory } from '../../src/domain/pedido/factories/pedido.dto.f
 import { IProdutoDTOFactory } from '../../src/domain/produto/interfaces/produto.dto.factory.port';
 import { IClienteDTOFactory } from '../../src/domain/cliente/interfaces/cliente.dto.factory.port';
 import { PedidoModel } from '../../src/infrastructure/sql/models/pedido.model';
+import { CognitoAuth } from './cognito';
 
 describe('Pedido (e2e)', () => {
   let app: INestApplication;
@@ -30,6 +31,7 @@ describe('Pedido (e2e)', () => {
   let itemPedidoFactory: ItemPedidoDTOFactory;
   let pedidoDTOFactory: PedidoDTOFactory;
   let pedidoController: PedidoController;
+  let userBearerToken = '';
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -68,6 +70,14 @@ describe('Pedido (e2e)', () => {
     );
     // Criar cliente
     // clientDTO = await clienteController.criar(criarFakeClienteDTO());
+
+    // Autenticar o user
+    const cognitoAuth = new CognitoAuth();
+    const initiateAuth = await cognitoAuth.initiateAuth();
+    const responseToAuth = await cognitoAuth.respondToAuthChallenge(
+      initiateAuth.Session,
+    );
+    userBearerToken = responseToAuth.AuthenticationResult.IdToken;
   });
 
   afterAll(async () => {
@@ -75,13 +85,13 @@ describe('Pedido (e2e)', () => {
   });
 
   describe('POST /pedido', () => {
-    it('Deve ser possível realizar o checkout de um pedido', async () => {
+    it('Deve ser possível realizar o checkout de um pedido para usuário anônimo', async () => {
       const item = itemPedidoFactory.criarItemPedidoDTO(produtoDTO.body.id, 1);
       const pedido = pedidoDTOFactory.criarCriaPedidoDTO([item]);
-      console.log(pedido);
 
       const pedidoRegistrado = await request(app.getHttpServer())
         .post('/pedido')
+        .auth(userBearerToken, { type: 'bearer' })
         .send(pedido)
         .expect(HttpStatus.CREATED)
         .then((response) => {
@@ -94,14 +104,12 @@ describe('Pedido (e2e)', () => {
       expect(pedidoModel.pago).toBeFalsy();
       expect(pedidoModel.statusPedido).toBe('recebido');
       expect(pedidoModel.statusPedido).toBe('recebido');
-      // expect(pedidoModel.cliente).toEqual(clientDTO.body);
       expect(pedidoModel.itensPedido).toHaveLength(1);
       expect(pedidoModel.itensPedido[0].produto.id).toBe(produtoDTO.body.id);
 
       // Validar dado registrado no banco
       const result = await pedidoController.buscar(pedidoModel.id);
       expect(pedidoModel.numeroPedido).toEqual(result.numeroPedido);
-      // expect(pedidoModel.cliente).toEqual(result.cliente);
       expect(pedidoModel.itensPedido).toEqual(result.itensPedido);
     });
   });
