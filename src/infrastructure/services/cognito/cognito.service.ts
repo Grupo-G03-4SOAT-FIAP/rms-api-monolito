@@ -6,6 +6,7 @@ const baseUrl = 'https://cognito-idp.us-east-1.amazonaws.com';
 export class CognitoAuth implements ICognitoAuth {
   private _clientId = process.env.COGNITO_CLIENT_ID;
   private anonymous_user = process.env.ANONYMOUS_USER;
+  private default_password = process.env.DEFAULT_PASSWORD;
 
   async initiateAuth(userCpf = this.anonymous_user) {
     const initiateAuthResponse = await axios
@@ -67,5 +68,46 @@ export class CognitoAuth implements ICognitoAuth {
       });
 
     return responseToAuth;
+  }
+
+  async signUp(
+    name: string,
+    email: string,
+    userCpf: string,
+    password = this.default_password,
+  ) {
+    const sigUpResponse = await axios
+      .post(
+        baseUrl,
+        {
+          ClientId: this._clientId,
+          Username: userCpf,
+          Password: password,
+          UserAttributes: [
+            {
+              Name: 'name',
+              Value: name,
+            },
+            {
+              Name: 'email',
+              Value: email,
+            },
+          ],
+        },
+        {
+          headers: {
+            'X-Amz-Target': 'AWSCognitoIdentityProviderService.SignUp',
+            'Content-Type': 'application/x-amz-json-1.1',
+          },
+        },
+      )
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+
+    return sigUpResponse;
   }
 }

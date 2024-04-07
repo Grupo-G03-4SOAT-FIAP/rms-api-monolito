@@ -4,11 +4,9 @@ import * as request from 'supertest';
 import { AppModule } from '../../src/app.module';
 import { HTTPResponse } from '../../src/application/common/HTTPResponse';
 import { CategoriaController } from '../../src/presentation/rest/v1/controllers/categoria/categoria.controller';
-import { ClienteController } from '../../src/presentation/rest/v1/controllers/cliente/cliente.controller';
 import { ProdutoController } from '../../src/presentation/rest/v1/controllers/produto/produto.controller';
 import { PedidoController } from '../../src/presentation/rest/v1/controllers/pedido/pedido.controller';
 import { ProdutoDTO } from '../../src/presentation/rest/v1/presenters/produto/produto.dto';
-import { ClienteDTO } from '../../src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import { CategoriaDTO } from '../../src/presentation/rest/v1/presenters/categoria/categoria.dto';
 import { criarFakeCategoriaDTO } from '../../src/mocks/categoria.mock';
 import { criarFakeProdutoDTO } from '../../src/mocks/produto.mock';
@@ -24,10 +22,8 @@ describe('Pedido (e2e)', () => {
   let app: INestApplication;
   let categoriaController: CategoriaController;
   let produtoController: ProdutoController;
-  let clienteController: ClienteController;
   let categoriaDTO: HTTPResponse<CategoriaDTO>;
   let produtoDTO: HTTPResponse<ProdutoDTO>;
-  let clientDTO: HTTPResponse<ClienteDTO>;
   let itemPedidoFactory: ItemPedidoDTOFactory;
   let pedidoDTOFactory: PedidoDTOFactory;
   let pedidoController: PedidoController;
@@ -54,7 +50,6 @@ describe('Pedido (e2e)', () => {
     categoriaController =
       moduleFixture.get<CategoriaController>(CategoriaController);
     produtoController = moduleFixture.get<ProdutoController>(ProdutoController);
-    clienteController = moduleFixture.get<ClienteController>(ClienteController);
     itemPedidoFactory =
       moduleFixture.get<ItemPedidoDTOFactory>(ItemPedidoDTOFactory);
     pedidoDTOFactory = moduleFixture.get<PedidoDTOFactory>(PedidoDTOFactory);
@@ -68,21 +63,13 @@ describe('Pedido (e2e)', () => {
     produtoDTO = await produtoController.criar(
       criarFakeProdutoDTO(categoriaDTO.body.id),
     );
-    // Criar cliente
-    clientDTO = await clienteController.criar(criarFakeClienteDTO());
 
+    // Autenticar o user
+    // Por default autentica o user anônimo
     const cognitoAuth = new CognitoAuth();
-    // Criar usuário AWS
-    await cognitoAuth.signUp(
-      clientDTO.body.nome,
-      clientDTO.body.email,
-      clientDTO.body.cpf,
-    );
-    // Autenticar o usuário na AWS
-    const initiateAuth = await cognitoAuth.initiateAuth(clientDTO.body.cpf);
+    const initiateAuth = await cognitoAuth.initiateAuth();
     const responseToAuth = await cognitoAuth.respondToAuthChallenge(
       initiateAuth.Session,
-      clientDTO.body.cpf,
     );
     userBearerToken = responseToAuth.AuthenticationResult.IdToken;
   });
@@ -92,13 +79,9 @@ describe('Pedido (e2e)', () => {
   });
 
   describe('POST /pedido', () => {
-    it('Deve ser possível realizar o checkout de um pedido para usuário', async () => {
+    it('Deve ser possível realizar o checkout de um pedido para usuário anônimo', async () => {
       const item = itemPedidoFactory.criarItemPedidoDTO(produtoDTO.body.id, 1);
-      const pedido = pedidoDTOFactory.criarCriaPedidoDTO(
-        [item],
-        clientDTO.body.cpf,
-      );
-
+      const pedido = pedidoDTOFactory.criarCriaPedidoDTO([item]);
       const pedidoRegistrado = await request(app.getHttpServer())
         .post('/pedido')
         .auth(userBearerToken, { type: 'bearer' })
@@ -108,7 +91,7 @@ describe('Pedido (e2e)', () => {
           return response.body;
         });
 
-      // validar retorno da request
+      // Validar retorno da request
       const pedidoModel: PedidoModel = pedidoRegistrado.body;
       expect(pedidoRegistrado.mensagem).toBe('Pedido criado com sucesso');
       expect(pedidoModel.pago).toBeFalsy();
@@ -116,6 +99,8 @@ describe('Pedido (e2e)', () => {
       expect(pedidoModel.statusPedido).toBe('recebido');
       expect(pedidoModel.itensPedido).toHaveLength(1);
       expect(pedidoModel.itensPedido[0].produto.id).toBe(produtoDTO.body.id);
+
+      expect(pedidoModel.cliente.cpf).toBe('00000000191');
 
       // Validar dado registrado no banco
       const result = await pedidoController.buscar(pedidoModel.id);

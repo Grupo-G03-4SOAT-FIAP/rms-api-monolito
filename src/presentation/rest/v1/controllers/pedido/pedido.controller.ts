@@ -60,12 +60,12 @@ export class PedidoController {
     @Body() criaPedidoDTO: CriaPedidoDTO,
   ) {
     const criaClienteDTO = new CriaClienteDTO();
-    if (this.amazonCognitoIsEnabled()) {
-      criaPedidoDTO.cpfCliente = username;
-      criaClienteDTO.nome = name;
-      criaClienteDTO.email = email;
-      criaClienteDTO.cpf = username;
-    }
+    // if (this.amazonCognitoIsEnabled()) {
+    criaPedidoDTO.cpfCliente = username;
+    criaClienteDTO.nome = name;
+    criaClienteDTO.email = email;
+    criaClienteDTO.cpf = username;
+    // }
     try {
       return await this.pedidoUseCase.criarPedido(
         criaClienteDTO,
