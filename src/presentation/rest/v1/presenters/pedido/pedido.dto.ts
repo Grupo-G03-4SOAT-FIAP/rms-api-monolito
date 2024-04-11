@@ -12,7 +12,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { CriaItemPedidoDTO, ItemPedidoDTO } from './item_pedido.dto';
 import { ClienteDTO } from '../cliente/cliente.dto';
-import { StatusPedido } from '../../../../../domain/pedido/enums/pedido.enum';
+import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
 
 export class CriaPedidoDTO {
   @IsArray({ message: 'ItensPedido deve ser uma lista' })

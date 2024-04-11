@@ -1,17 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IPedidoDTOFactory } from '../interfaces/pedido.dto.factory.port';
-import { IProdutoDTOFactory } from '../../../domain/produto/interfaces/produto.dto.factory.port';
-import { IClienteDTOFactory } from '../../../domain/cliente/interfaces/cliente.dto.factory.port';
+import { IProdutoDTOFactory } from 'src/domain/produto/interfaces/produto.dto.factory.port';
+import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
 import {
   CriaPedidoDTO,
   PedidoDTO,
-} from '../../../presentation/rest/v1/presenters/pedido/pedido.dto';
-import { ClienteDTO } from '../../../presentation/rest/v1/presenters/cliente/cliente.dto';
-import { ClienteModel } from '../../../infrastructure/sql/models/cliente.model';
+} from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
+import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
+import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
 import {
   CriaItemPedidoDTO,
   ItemPedidoDTO,
-} from '../../../presentation/rest/v1/presenters/pedido/item_pedido.dto';
+} from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { ItemPedidoEntity } from '../entities/item_pedido.entity';
 

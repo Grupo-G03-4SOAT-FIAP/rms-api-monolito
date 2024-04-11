@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IPedidoUseCase } from '../../../../../domain/pedido/interfaces/pedido.use_case.port';
+import { IPedidoUseCase } from 'src/domain/pedido/interfaces/pedido.use_case.port';
 import {
   AtualizaPedidoDTO,
   CriaPedidoDTO,

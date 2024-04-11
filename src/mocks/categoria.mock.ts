@@ -1,13 +1,13 @@
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { produtoModelMock } from './produto.mock';
-import { CategoriaEntity } from '../domain/categoria/entities/categoria.entity';
+import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 import {
   AtualizaCategoriaDTO,
   CategoriaDTO,
   CriaCategoriaDTO,
-} from '../presentation/rest/v1/presenters/categoria/categoria.dto';
-import { CategoriaModel } from '../infrastructure/sql/models/categoria.model';
+} from 'src/presentation/rest/v1/presenters/categoria/categoria.dto';
+import { CategoriaModel } from 'src/infrastructure/sql/models/categoria.model';
 
 // Mock para simular dados da tabela categoria no banco de dados
 export const categoriaModelMock = new CategoriaModel();

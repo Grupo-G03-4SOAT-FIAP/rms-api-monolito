@@ -18,7 +18,7 @@ import { ProdutoModule } from './produto.module';
 import { ClienteModule } from './client.module';
 import { PedidoService } from '../domain/pedido/services/pedido.service';
 import { AuthenticationGuard } from '@nestjs-cognito/auth';
-import { ClientePedidoModel } from '../infrastructure/sql/models/cliente_pedido.model';
+import { ClientePedidoModel } from 'src/infrastructure/sql/models/cliente_pedido.model';
 
 @Module({
   imports: [

@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { HTTPResponse } from '../../../application/common/HTTPResponse';
-import { ClienteEntity } from '../../../domain/cliente/entities/cliente.entity';
+import { HTTPResponse } from 'src/application/common/HTTPResponse';
+import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
 import {
   ClienteDuplicadoErro,
   ClienteNaoLocalizadoErro,
-} from '../../../domain/cliente/exceptions/cliente.exception';
-import { IClienteDTOFactory } from '../../../domain/cliente/interfaces/cliente.dto.factory.port';
-import { IClienteRepository } from '../../../domain/cliente/interfaces/cliente.repository.port';
-import { IClienteUseCase } from '../../../domain/cliente/interfaces/cliente.use_case.port';
+} from 'src/domain/cliente/exceptions/cliente.exception';
+import { IClienteDTOFactory } from 'src/domain/cliente/interfaces/cliente.dto.factory.port';
+import { IClienteRepository } from 'src/domain/cliente/interfaces/cliente.repository.port';
+import { IClienteUseCase } from 'src/domain/cliente/interfaces/cliente.use_case.port';
 import {
   AtualizaClienteDTO,
   ClienteDTO,
   CriaClienteDTO,
-} from '../../../presentation/rest/v1/presenters/cliente/cliente.dto';
+} from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 
 @Injectable()
 export class ClienteUseCase implements IClienteUseCase {

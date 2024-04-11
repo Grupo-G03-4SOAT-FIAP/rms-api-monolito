@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { PedidoModel } from '../../models/pedido.model';
 import { ItemPedidoModel } from '../../models/item_pedido.model';
-import { IPedidoRepository } from '../../../../domain/pedido/interfaces/pedido.repository.port';
-import { PedidoEntity } from '../../../../domain/pedido/entities/pedido.entity';
-import { StatusPedido } from '../../../../domain/pedido/enums/pedido.enum';
+import { IPedidoRepository } from 'src/domain/pedido/interfaces/pedido.repository.port';
+import { PedidoEntity } from 'src/domain/pedido/entities/pedido.entity';
+import { StatusPedido } from 'src/domain/pedido/enums/pedido.enum';
 import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
 @Injectable()

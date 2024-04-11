@@ -1,11 +1,11 @@
 import {
   CriaItemPedidoDTO,
   ItemPedidoDTO,
-} from '../../../presentation/rest/v1/presenters/pedido/item_pedido.dto';
+} from 'src/presentation/rest/v1/presenters/pedido/item_pedido.dto';
 import {
   CriaPedidoDTO,
   PedidoDTO,
-} from '../../../presentation/rest/v1/presenters/pedido/pedido.dto';
+} from 'src/presentation/rest/v1/presenters/pedido/pedido.dto';
 import { PedidoEntity } from '../entities/pedido.entity';
 import { ItemPedidoEntity } from '../entities/item_pedido.entity';
 

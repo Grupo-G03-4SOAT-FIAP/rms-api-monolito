@@ -5,13 +5,13 @@ import {
   categoriaEntityMock,
   categoriaModelMock,
 } from './categoria.mock';
-import { ProdutoModel } from '../infrastructure/sql/models/produto.model';
-import { ProdutoEntity } from '../domain/produto/entities/produto.entity';
+import { ProdutoModel } from 'src/infrastructure/sql/models/produto.model';
+import { ProdutoEntity } from 'src/domain/produto/entities/produto.entity';
 import {
   AtualizaProdutoDTO,
   CriaProdutoDTO,
   ProdutoDTO,
-} from '../presentation/rest/v1/presenters/produto/produto.dto';
+} from 'src/presentation/rest/v1/presenters/produto/produto.dto';
 
 // Mock para simular dados da tabela produto no banco de dados
 export const produtoModelMock = new ProdutoModel();

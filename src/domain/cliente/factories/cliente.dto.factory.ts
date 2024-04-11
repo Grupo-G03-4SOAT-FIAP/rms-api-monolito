@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IClienteDTOFactory } from '../interfaces/cliente.dto.factory.port';
-import { ClienteDTO } from '../../../presentation/rest/v1/presenters/cliente/cliente.dto';
+import { ClienteDTO } from 'src/presentation/rest/v1/presenters/cliente/cliente.dto';
 import { ClienteEntity } from '../entities/cliente.entity';
 
 @Injectable()
