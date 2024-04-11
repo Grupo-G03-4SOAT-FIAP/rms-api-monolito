@@ -1,4 +1,6 @@
+import { faker } from '@faker-js/faker';
 import { ClienteEntity } from 'src/domain/cliente/entities/cliente.entity';
+import { gerarFakeCpf } from 'src/domain/common/utils/generate_document';
 import { ClienteModel } from 'src/infrastructure/sql/models/cliente.model';
 import {
   AtualizaClienteDTO,
@@ -106,4 +108,12 @@ export const clienteUseCaseMock = {
   buscarClientePorId: jest.fn(),
   buscarClientePorCPF: jest.fn(),
   listarClientes: jest.fn(),
+};
+
+export const criarFakeClienteDTO = (): CriaClienteDTO => {
+  const client = new CriaClienteDTO();
+  client.nome = faker.person.fullName();
+  client.email = faker.internet.email();
+  client.cpf = gerarFakeCpf();
+  return client;
 };

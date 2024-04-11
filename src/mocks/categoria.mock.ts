@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { faker } from '@faker-js/faker';
 import { produtoModelMock } from './produto.mock';
 import { CategoriaEntity } from 'src/domain/categoria/entities/categoria.entity';
 import {
@@ -91,4 +92,11 @@ export const categoriaUseCaseMock = {
   excluirCategoria: jest.fn(),
   buscarCategoria: jest.fn(),
   listarCategorias: jest.fn(),
+};
+
+export const criarFakeCategoriaDTO = (): CriaCategoriaDTO => {
+  const criaCategoriaDTO = new CriaCategoriaDTO();
+  criaCategoriaDTO.nome = `Categoria ${faker.string.uuid()}`;
+  criaCategoriaDTO.descricao = `Descricão ${faker.string.uuid()}`;
+  return criaCategoriaDTO;
 };
