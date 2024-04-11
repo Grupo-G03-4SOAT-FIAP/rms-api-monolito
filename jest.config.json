@@ -14,7 +14,8 @@
     ],
     "coveragePathIgnorePatterns": [
         "/node_modules/",
-        "modules"
+        ".module.ts",
+        "/src/mocks/"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
