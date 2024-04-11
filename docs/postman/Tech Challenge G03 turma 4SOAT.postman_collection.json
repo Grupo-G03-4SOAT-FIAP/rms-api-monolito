@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5ebff5da-50aa-4509-b9d2-2d44d590333e",
+		"_postman_id": "ae348b25-08a2-4a08-8809-7455430218df",
 		"name": "Tech Challenge G03 turma 4SOAT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4241772"
@@ -746,6 +746,29 @@
 								"us-east-1",
 								"amazonaws",
 								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JSON Web Key Set (JWKS)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://cognito-idp.us-east-1.amazonaws.com/{userPoolId}/.well-known/jwks.json",
+							"protocol": "https",
+							"host": [
+								"cognito-idp",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{userPoolId}",
+								".well-known",
+								"jwks.json"
 							]
 						}
 					},
