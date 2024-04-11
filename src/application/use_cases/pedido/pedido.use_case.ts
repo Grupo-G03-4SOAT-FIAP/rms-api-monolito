@@ -98,17 +98,24 @@ export class PedidoUseCase implements IPedidoUseCase {
   ): Promise<ClienteEntity | null> {
     const clienteAntigoEncontrado =
       await this.clienteRepository.buscarClientePorCPF(cliente.cpf);
-    let clienteCriadoOuAtualizado;
+    let clientePedido: ClienteEntity | null;
     if (clienteAntigoEncontrado) {
-      clienteCriadoOuAtualizado = await this.clienteRepository.editarCliente(
-        clienteAntigoEncontrado.id,
-        cliente,
-      );
+      if (
+        cliente.cpf !== clienteAntigoEncontrado.cpf ||
+        cliente.email !== clienteAntigoEncontrado.email ||
+        cliente.nome !== clienteAntigoEncontrado.nome
+      ) {
+        clientePedido = await this.clienteRepository.editarCliente(
+          clienteAntigoEncontrado.id,
+          cliente,
+        );
+      } else {
+        clientePedido = clienteAntigoEncontrado;
+      }
     } else {
-      clienteCriadoOuAtualizado =
-        await this.clienteRepository.criarCliente(cliente);
+      clientePedido = await this.clienteRepository.criarCliente(cliente);
     }
-    return clienteCriadoOuAtualizado;
+    return clientePedido;
   }
 
   async editarPedido(
