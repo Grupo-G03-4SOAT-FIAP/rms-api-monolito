@@ -12,11 +12,11 @@ import {
 } from 'src/mocks/cliente.mock';
 import { SQLDTOFactory } from '../../factories/sql.dto.factory';
 
-class softDeleteMock {
+class SoftDeleteMock {
   softDelete: jest.Mock = jest.fn();
 }
 
-const clienteSoftDeleteMock = new softDeleteMock();
+const clienteSoftDeleteMock = new SoftDeleteMock();
 
 describe('ClienteRepository', () => {
   let clienteRepository: ClienteRepository;
