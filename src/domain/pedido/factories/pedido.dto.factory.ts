@@ -46,22 +46,7 @@ export class PedidoDTOFactory implements IPedidoDTOFactory {
 
   criarListaPedidoDTO(pedidos: PedidoEntity[]): PedidoDTO[] | [] {
     const listaPedidosDTO = pedidos.map((pedido: PedidoEntity) => {
-      const itensPedido = this.criarListaItemPedidoDTO(pedido.itensPedido);
-
-      let cliente: ClienteDTO | ClienteModel | null = pedido.cliente;
-      if (cliente) {
-        cliente = this.clienteDTOFactory.criarClienteDTO(pedido.cliente);
-      }
-
-      const pedidoDTO = new PedidoDTO();
-      pedidoDTO.id = pedido.id;
-      pedidoDTO.numeroPedido = pedido.numeroPedido;
-      pedidoDTO.itensPedido = itensPedido;
-      pedidoDTO.pago = pedido.pago;
-      pedidoDTO.statusPedido = pedido.statusPedido;
-      pedidoDTO.criadoEm = pedido.criadoEm;
-      pedidoDTO.atualizadoEm = pedido.atualizadoEm;
-      pedidoDTO.cliente = cliente;
+      const pedidoDTO = this.criarPedidoDTO(pedido);
       return pedidoDTO;
     });
 
