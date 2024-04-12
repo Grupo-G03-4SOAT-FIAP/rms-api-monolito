@@ -15,6 +15,7 @@ spec:
       labels:
         app: rms-bff
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: rms-bff
           image: rms-bff:latest # No Kubernetes do Docker Desktop a imagem deve já estar presente no cache de imagens do Docker na máquina local
