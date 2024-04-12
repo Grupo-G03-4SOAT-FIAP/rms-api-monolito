@@ -137,10 +137,10 @@ export class PedidoUseCase implements IPedidoUseCase {
   async webhookPagamento(
     id: string,
     topic: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mensagem: MensagemMercadoPagoDTO,
   ): Promise<any> {
     if (id && topic === 'merchant_order') {
-      console.log(mensagem);
       const pedidoGatewayPag =
         await this.gatewayPagamentoService.consultarPedido(id);
       const idInternoPedido = pedidoGatewayPag.external_reference;
