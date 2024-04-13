@@ -16,6 +16,7 @@ spec:
         app: rms-bff
     spec:
       serviceAccountName: aws-iam-serviceaccount # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
+      automountServiceAccountToken: false
       volumes:
         - name: secrets-store-inline
           csi:
