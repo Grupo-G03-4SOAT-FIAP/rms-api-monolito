@@ -60,12 +60,10 @@ export class PedidoController {
     @Body() criaPedidoDTO: CriaPedidoDTO,
   ) {
     const criaClienteDTO = new CriaClienteDTO();
-    if (this.amazonCognitoIsEnabled()) {
       criaPedidoDTO.cpfCliente = username;
       criaClienteDTO.nome = name;
       criaClienteDTO.email = email;
       criaClienteDTO.cpf = username;
-    }
     try {
       return await this.pedidoUseCase.criarPedido(
         criaClienteDTO,
@@ -187,13 +185,5 @@ export class PedidoController {
       }
       throw error;
     }
-  }
-
-  private amazonCognitoIsEnabled(): boolean {
-    return (
-      this.configService
-        .get<string>('ENABLE_AMZ_COGNITO_CIAM')
-        ?.toLowerCase() === 'true'
-    );
   }
 }
