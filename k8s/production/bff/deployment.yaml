@@ -96,3 +96,4 @@ spec:
             limits:
               cpu: "0.5"
               memory: "1Gi"
+              ephemeral-storage: "2Gi"
