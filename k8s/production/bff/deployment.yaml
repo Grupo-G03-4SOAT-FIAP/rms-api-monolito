@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rms-bff
+  name: rms-api-monolito
   namespace: rms
   labels:
-    app: rms-bff
+    app: rms-api-monolito
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: rms-bff
+      app: rms-api-monolito
   template:
     metadata:
       labels:
-        app: rms-bff
+        app: rms-api-monolito
     spec:
       serviceAccountName: aws-iam-serviceaccount # ServiceAccount com Role que permite acesso ao AWS Secrets Manager
       automountServiceAccountToken: false
@@ -25,11 +25,11 @@ spec:
             volumeAttributes:
               secretProviderClass: aws-secrets
       containers:
-        - name: rms-bff
+        - name: rms-api-monolito
           image: 900534935988.dkr.ecr.us-east-1.amazonaws.com/rms:latest
           envFrom:
             - configMapRef:
-                name: rms-bff-config
+                name: rms-api-monolito-config
           volumeMounts:
             - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"

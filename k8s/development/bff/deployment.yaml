@@ -1,43 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rms-bff
+  name: rms-api-monolito
   namespace: rms
   labels:
-    app: rms-bff
+    app: rms-api-monolito
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: rms-bff
+      app: rms-api-monolito
   template:
     metadata:
       labels:
-        app: rms-bff
+        app: rms-api-monolito
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: rms-bff
-          image: rms-bff:latest # No Kubernetes do Docker Desktop a imagem deve já estar presente no cache de imagens do Docker na máquina local
+        - name: rms-api-monolito
+          image: rms-api-monolito:latest # No Kubernetes do Docker Desktop a imagem deve já estar presente no cache de imagens do Docker na máquina local
           imagePullPolicy: IfNotPresent # Necessário definir "IfNotPresent" ao utilizar o Kubernetes do Docker Desktop para evitar erros "ImagePullBackOff" ao criar os Pods
           envFrom:
             - configMapRef:
-                name: rms-bff-config
+                name: rms-api-monolito-config
           env:
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: rms-bff-secret
+                  name: rms-api-monolito-secret
                   key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: rms-bff-secret
+                  name: rms-api-monolito-secret
                   key: DB_PASSWORD
             - name: ACCESS_TOKEN_MERCADOPAGO
               valueFrom:
                 secretKeyRef:
-                  name: rms-bff-secret
+                  name: rms-api-monolito-secret
                   key: ACCESS_TOKEN_MERCADOPAGO
           ports:
             - containerPort: 3000
