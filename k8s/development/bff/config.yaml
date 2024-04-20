@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: rms-bff-config
+  name: rms-api-monolito-config
   namespace: rms
   labels:
-    app: rms-bff
+    app: rms-api-monolito
 data:
   DB_NAME: "rms"
   DB_SSL: "false"

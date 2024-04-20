@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: rms-bff
+  name: rms-api-monolito
   namespace: rms
   labels:
-    app: rms-bff
+    app: rms-api-monolito
 spec:
   selector:
-    app: rms-bff
+    app: rms-api-monolito
   type: LoadBalancer # O type "LoadBalancer" torna o service acessível fora do cluster, em localhost, no Kubernetes do Docker Desktop
   ports:
     - protocol: TCP

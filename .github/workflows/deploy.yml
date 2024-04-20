@@ -19,7 +19,7 @@ on:
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}         # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # set this to your Amazon ECR repository name
-  CONTAINER_NAME: rms-bff                       # set this to the name of the container in the
+  CONTAINER_NAME: rms-api-monolito                       # set this to the name of the container in the
                                                 # containerDefinitions section of your task definition
 
 permissions:
