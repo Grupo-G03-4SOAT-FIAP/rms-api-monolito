@@ -8,7 +8,10 @@
 
 Sistema de Gestão de Restaurantes (RMS) desenvolvido pelo grupo *"BOPE"* G03 da turma 4SOAT para o Tech Challenge da [Pós Tech em Software Architecture da FIAP](https://postech.fiap.com.br/curso/software-architecture/).
 
-### O PROBLEMA
+> [!WARNING]  
+> Essa aplicação monolítica foi decomposta em microsserviços e não será mais mantida, nem receberá novas funcionalidades. Visite a [página da organização](https://github.com/Grupo-G03-4SOAT-FIAP) no GitHub para visualizar todos os microsserviços.
+
+## O PROBLEMA
 
 *Há uma lanchonete de bairro que está expandindo devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso. Por exemplo, imagine que um cliente faça um pedido complexo, como um hambúrguer personalizado com ingredientes específicos, acompanhado de batatas fritas e uma bebida. O atendente pode anotar o pedido em um papel e entregá-lo à cozinha, mas não há garantia de que o pedido será preparado corretamente.*
 
@@ -138,6 +141,8 @@ Cloud provider: AWS
 
 ![Diagrama de arquitetura cloud drawio](https://github.com/Grupo-G03-4SOAT-FIAP/rms-api-monolito/assets/5115895/7cf5b858-5c7e-47d6-9def-2cda7e470134)
 *Clique na imagem para ampliar.*
+
+![registry_and_authorizer_dark](https://github.com/Grupo-G03-4SOAT-FIAP/rms-api-monolito/assets/5115895/51c34341-099e-4395-a2a9-acdb62cc6c71)
 
 ## Como contribuir
 
